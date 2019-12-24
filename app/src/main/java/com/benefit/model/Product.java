@@ -1,12 +1,10 @@
 package com.benefit.model;
 
-import android.util.Pair;
 
 import com.google.firebase.firestore.ServerTimestamp;
 
 
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
 
 /**
