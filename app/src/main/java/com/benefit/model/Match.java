@@ -11,5 +11,6 @@ public class Match {
     private String buyerId;
     private String productId;
     private @ServerTimestamp Date timestamp;
+    private boolean isClosed;
 
 }
