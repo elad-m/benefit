@@ -7,18 +7,22 @@ import android.os.Bundle;
 
 import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 public class ChatTest extends AppCompatActivity {
 
     private static final int RC_SIGN_IN = 9001;
 
     private FirebaseFirestore mFirestore;
+    private FirebaseUser mFirebaseUser;
     private boolean isSignIn;
-
+    private List<AuthUI.IdpConfig> authProviders;
 
 
     @Override
@@ -32,6 +36,14 @@ public class ChatTest extends AppCompatActivity {
         mFirestore = FirebaseFirestore.getInstance();
 
         isSignIn = false;
+
+        // Choose authentication providers
+        authProviders = Arrays.asList(
+                new AuthUI.IdpConfig.EmailBuilder().build(),
+                new AuthUI.IdpConfig.PhoneBuilder().build(),
+                new AuthUI.IdpConfig.GoogleBuilder().build());
+
+
     }
 
     @Override
@@ -45,10 +57,9 @@ public class ChatTest extends AppCompatActivity {
     }
 
     public void startSignIn(){
-        Intent intent = AuthUI.getInstance().createSignInIntentBuilder()
-                .setAvailableProviders(Collections.singletonList(
-                        new AuthUI.IdpConfig.EmailBuilder().build()))
-                .setIsSmartLockEnabled(false)
+        Intent intent =  AuthUI.getInstance()
+                .createSignInIntentBuilder()
+                .setAvailableProviders(authProviders)
                 .build();
 
         startActivityForResult(intent, RC_SIGN_IN);
@@ -63,6 +74,9 @@ public class ChatTest extends AppCompatActivity {
 
             if (resultCode != RESULT_OK && FirebaseAuth.getInstance().getCurrentUser() == null) {
                 startSignIn();
+            }
+            else {
+                mFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
             }
         }
     }
