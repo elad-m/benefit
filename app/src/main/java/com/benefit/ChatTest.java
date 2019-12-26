@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 
 import com.benefit.model.User;
 import com.firebase.ui.auth.AuthUI;
@@ -112,6 +113,10 @@ public class ChatTest extends AppCompatActivity {
                 });
             }
         }
+    }
+
+    public void addRandomProduct(View view){
+
     }
 
 }

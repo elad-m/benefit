@@ -6,4 +6,36 @@
     android:layout_height="match_parent"
     tools:context=".ChatTest">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <Button
+            android:id="@+id/addRandomProduct"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="addRandomProduct"
+            android:text="Add random product" />
+
+        <Button
+            android:id="@+id/addMatch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/addRandomProduct"
+            android:text="Add match to a product" />
+
+        <Button
+            android:id="@+id/addNewChat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/addMatch"
+            android:text="Start a Chat" />
+
+
+    </RelativeLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
