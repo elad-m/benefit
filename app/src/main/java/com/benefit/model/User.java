@@ -14,6 +14,9 @@ public class User {
     private Location location;
     private double rating;
 
+    public User(String UID){
+        this.UID = UID;
+    }
 
 
 }
