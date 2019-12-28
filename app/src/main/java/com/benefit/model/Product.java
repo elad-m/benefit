@@ -17,6 +17,8 @@ public class Product {
     private @ServerTimestamp Date auctionDate;
     private Map<String, List<String>> properties;
 
+    public Product(){}
+
     public Product(int id, int categoryId, String sellerId, String title, String description, int views, int likes, Date auctionDate, Map<String, List<String>> properties) {
         this.id = id;
         this.categoryId = categoryId;

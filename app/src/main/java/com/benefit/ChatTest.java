@@ -2,18 +2,22 @@ package com.benefit;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
+import com.benefit.model.Match;
+import com.benefit.model.Product;
 import com.benefit.model.User;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.Query;
@@ -22,6 +26,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 public class ChatTest extends AppCompatActivity {
 
@@ -32,8 +37,14 @@ public class ChatTest extends AppCompatActivity {
     private FirebaseUser mFirebaseUser;
     private User user;
     private CollectionReference usersCollectionReference;
+    private CollectionReference productCollectionReference;
+    private CollectionReference matchCollectionReference;
     private boolean isSignIn;
     private List<AuthUI.IdpConfig> authProviders;
+    private Random random;
+    private Product randomProduct;
+    private Match matchForChat;
+    private RecyclerView mMessageRecyclerView;
 
 
     @Override
@@ -45,8 +56,10 @@ public class ChatTest extends AppCompatActivity {
         FirebaseFirestore.setLoggingEnabled(true);
         // Initialize Firestore
         mFirestore = FirebaseFirestore.getInstance();
-        // Initialize Firestore collection reference
+        // Initialize Firestore collection references
         usersCollectionReference = mFirestore.collection("users");
+        productCollectionReference = mFirestore.collection("products");
+        matchCollectionReference = mFirestore.collection("matches");
 
         isSignIn = false;
 
@@ -56,7 +69,23 @@ public class ChatTest extends AppCompatActivity {
                 new AuthUI.IdpConfig.PhoneBuilder().build(),
                 new AuthUI.IdpConfig.GoogleBuilder().build());
 
-
+        //create random for the test.
+        random = new Random();
+        //add random product
+        productCollectionReference.document("7l0bPsE0fae3DXbF9dhs").get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        randomProduct = document.toObject(Product.class);
+                    }
+                    Log.d(TAG, "get failed with ", task.getException());
+                }
+            }
+        });
+        //initiate chat view
+        mMessageRecyclerView = findViewById(R.id.messageRecyclerView);
     }
 
     @Override
@@ -116,7 +145,13 @@ public class ChatTest extends AppCompatActivity {
     }
 
     public void addRandomProduct(View view){
+        randomProduct = new Product(random.nextInt(100), random.nextInt(3) + 1, "8LO0hWnFQ10uiBHI7WcE", "test product", "desc", 0,0, null,null);
+        productCollectionReference.add(randomProduct);
+    }
 
+    public void addMatchToProduct(View view){
+        matchForChat = new Match(random.nextInt(100), "8LO0hWnFQ10uiBHI7WcE", mFirebaseUser.getUid(), randomProduct.getId());
+        matchCollectionReference.add(matchForChat);
     }
 
 }
