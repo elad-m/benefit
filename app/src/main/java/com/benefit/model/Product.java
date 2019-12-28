@@ -1,6 +1,8 @@
 package com.benefit.model;
 
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 public class Product {
     private int id;
@@ -11,8 +13,9 @@ public class Product {
     private int views;
     private int likes;
     private Date auctionDate;
+    private Map<String, List<String>> properties;
 
-    public Product(int id, int categoryId, int sellerId, String title, String description, int views, int likes, Date auctionDate) {
+    public Product(int id, int categoryId, int sellerId, String title, String description, int views, int likes, Date auctionDate, Map<String, List<String>> properties) {
         this.id = id;
         this.categoryId = categoryId;
         SellerId = sellerId;
@@ -21,6 +24,7 @@ public class Product {
         this.views = views;
         this.likes = likes;
         this.auctionDate = auctionDate;
+        this.properties = properties;
     }
 
 
@@ -54,5 +58,9 @@ public class Product {
 
     public Date getAuctionDate() {
         return auctionDate;
+    }
+
+    public Map<String, List<String>> getProperties() {
+        return properties;
     }
 }
