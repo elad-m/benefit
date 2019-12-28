@@ -1,22 +1,25 @@
 package com.benefit.model;
 
-/**
- * Model POJO for property name.
- */
 public class PropertyName {
-    private String categoryId;
+    private int id;
+    private int categoryId;
     private String name;
-    private String sortOrder;
+    private int sortOrder;
     private boolean isMandatory;
 
-    public PropertyName(){}
-
-    public PropertyName(String categoryId, String name){
+    public PropertyName(int id, int categoryId, String name, int sortOrder, boolean isMandatory) {
+        this.id = id;
         this.categoryId = categoryId;
         this.name = name;
+        this.sortOrder = sortOrder;
+        this.isMandatory = isMandatory;
     }
 
-    public String getCategoryId() {
+    public int getId() {
+        return id;
+    }
+
+    public int getCategoryId() {
         return categoryId;
     }
 
@@ -24,23 +27,11 @@ public class PropertyName {
         return name;
     }
 
-    public String getSortOrder() {
+    public int getSortOrder() {
         return sortOrder;
     }
 
     public boolean isMandatory() {
         return isMandatory;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setSortOrder(String sortOrder) {
-        this.sortOrder = sortOrder;
-    }
-
-    public void setMandatory(boolean mandatory) {
-        isMandatory = mandatory;
     }
 }

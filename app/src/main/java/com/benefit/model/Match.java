@@ -7,26 +7,28 @@ import java.util.Date;
  * Model POJO for match between a user and an product.
  */
 public class Match {
-    private String sellerId;
-    private String buyerId;
+    private int id;
+    private String SellerId;
+    private String BuyerId;
     private String productId;
     private @ServerTimestamp Date timestamp;
     private boolean isClosed = false;
 
     public Match(){}
 
-    public Match(String sellerId, String buyerId, String productId){
-        this.sellerId = sellerId;
-        this.buyerId = buyerId;
+    public Match(int id, String sellerId, String buyerId, String productId){
+        this.id = id;
+        this.SellerId = sellerId;
+        this.BuyerId = buyerId;
         this.productId = productId;
     }
 
     public String getSellerId() {
-        return sellerId;
+        return SellerId;
     }
 
     public String getBuyerId() {
-        return buyerId;
+        return BuyerId;
     }
 
     public String getProductId() {
@@ -39,6 +41,10 @@ public class Match {
 
     public boolean isClosed() {
         return isClosed;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public void setClosed(boolean closed) {

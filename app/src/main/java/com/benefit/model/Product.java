@@ -1,105 +1,68 @@
 package com.benefit.model;
 
-
 import com.google.firebase.firestore.ServerTimestamp;
-
 
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Model POJO for product.
- */
 public class Product {
-    private String categoryId;
-    private Map<String, String> propertiesAndValues;
-    private String sellerId;
-    private String titleText;
-    private String descriptionText;
-    private int viewCount = 0;
-    private int likesCount = 0;
-    private @ServerTimestamp Date auctionTimestamp;
-    private List<String> imagesUrl;
-    private List<String> keywords;
+    private int id;
+    private int categoryId;
+    private String SellerId;
+    private String title;
+    private String description;
+    private int views;
+    private int likes;
+    private @ServerTimestamp Date auctionDate;
+    private Map<String, List<String>> properties;
 
-    public Product(){}
-
-    public Product(String categoryId, String sellerId, String titleText){
+    public Product(int id, int categoryId, String sellerId, String title, String description, int views, int likes, Date auctionDate, Map<String, List<String>> properties) {
+        this.id = id;
         this.categoryId = categoryId;
-        this.sellerId = sellerId;
-        this.titleText = titleText;
+        SellerId = sellerId;
+        this.title = title;
+        this.description = description;
+        this.views = views;
+        this.likes = likes;
+        this.auctionDate = auctionDate;
+        this.properties = properties;
     }
 
-    public String getCategoryId() {
+
+    public int getId() {
+        return id;
+    }
+
+    public int getCategoryId() {
         return categoryId;
     }
 
-    public Map<String, String> getPropertiesAndValues() {
-        return propertiesAndValues;
-    }
-
     public String getSellerId() {
-        return sellerId;
+        return SellerId;
     }
 
-    public String getTitleText() {
-        return titleText;
+    public String getTitle() {
+        return title;
     }
 
-    public String getDescriptionText() {
-        return descriptionText;
+    public String getDescription() {
+        return description;
     }
 
-    public int getViewCount() {
-        return viewCount;
+    public int getViews() {
+        return views;
     }
 
-    public int getLikesCount() {
-        return likesCount;
+    public int getLikes() {
+        return likes;
     }
 
-    public Date getAuctionTimestamp() {
-        return auctionTimestamp;
+    public Date getAuctionDate() {
+        return auctionDate;
     }
 
-    public List<String> getImagesUrl() {
-        return imagesUrl;
-    }
-
-    public List<String> getKeywords() {
-        return keywords;
-    }
-
-    public void setTitleText(String titleText) {
-        this.titleText = titleText;
-    }
-
-    public void setDescriptionText(String descriptionText) {
-        this.descriptionText = descriptionText;
-    }
-
-    public void setViewCount(int viewCount) {
-        this.viewCount = viewCount;
-    }
-
-    public void setLikesCount(int likesCount) {
-        this.likesCount = likesCount;
-    }
-
-    public void setAuctionTimestamp(Date auctionTimestamp) {
-        this.auctionTimestamp = auctionTimestamp;
-    }
-
-    public void setImagesUrl(List<String> imagesUrl) {
-        this.imagesUrl = imagesUrl;
-    }
-
-    public void setKeywords(List<String> keywords) {
-        this.keywords = keywords;
-    }
-
-    public void setPropertiesAndValues(Map<String, String> propertiesAndValues) {
-        this.propertiesAndValues = propertiesAndValues;
+    public Map<String, List<String>> getProperties() {
+        return properties;
     }
 }

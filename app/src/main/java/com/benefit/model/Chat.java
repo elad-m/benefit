@@ -9,7 +9,7 @@ import java.util.List;
  * Model POJO for a single chat massage.
  */
 public class Chat {
-    private String matchId;
+    private int matchId;
     private String fromUserId;
     private String toUserId;
     private @ServerTimestamp Date timestamp;
@@ -17,14 +17,14 @@ public class Chat {
 
     public Chat(){}
 
-    public Chat(String matchId, String fromUserId, String toUserId, String massageText){
+    public Chat(int matchId, String fromUserId, String toUserId, String massageText){
         this.matchId = matchId;
         this.fromUserId = fromUserId;
         this.toUserId = toUserId;
         this.massageText = massageText;
     }
 
-    public String getMatchId() {
+    public int getMatchId() {
         return matchId;
     }
 

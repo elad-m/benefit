@@ -1,34 +1,31 @@
 package com.benefit.model;
 
-/**
- * Model POJO for property value.
- */
 public class PropertyValue {
-    private String propertyName;
-    private String productId;
+    private int id;
+    private int propertyNameId;
+    private int productId;
     private String value;
 
-    public PropertyValue(){}
-
-    public PropertyValue(String propertyName, String productId, String value){
-        this.propertyName = propertyName;
-        this. productId = productId;
+    public PropertyValue(int id, int propertyNameId, int productId, String value) {
+        this.id = id;
+        this.propertyNameId = propertyNameId;
+        this.productId = productId;
         this.value = value;
     }
 
-    public String getPropertyName() {
-        return propertyName;
+    public int getId() {
+        return id;
     }
 
-    public String getProductId() {
+    public int getPropertyNameId() {
+        return propertyNameId;
+    }
+
+    public int getProductId() {
         return productId;
     }
 
     public String getValue() {
         return value;
-    }
-
-    public void setValue(String value) {
-        this.value = value;
     }
 }
