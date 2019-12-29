@@ -88,7 +88,8 @@ public class ChatTest extends AppCompatActivity {
         authProviders = Arrays.asList(
                 new AuthUI.IdpConfig.EmailBuilder().build(),
                 new AuthUI.IdpConfig.PhoneBuilder().build(),
-                new AuthUI.IdpConfig.GoogleBuilder().build());
+                new AuthUI.IdpConfig.GoogleBuilder().build(),
+                new AuthUI.IdpConfig.FacebookBuilder().build());
 
         //gat test product
         productCollectionReference.document(TEST_PRODUCT_ID).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
