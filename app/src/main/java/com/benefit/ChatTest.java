@@ -2,21 +2,34 @@ package com.benefit;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
+import com.benefit.adapter.ChatAdapter;
+import com.benefit.model.Chat;
 import com.benefit.model.Match;
 import com.benefit.model.Product;
 import com.benefit.model.User;
 import com.firebase.ui.auth.AuthUI;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.tasks.OnCanceledListener;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.CollectionReference;
@@ -32,6 +45,9 @@ public class ChatTest extends AppCompatActivity {
 
     private static final int RC_SIGN_IN = 9001;
     private static final String TAG = "ChatTest";
+    private static final String TEST_PRODUCT_ID = "FdvMPG5w0Af58QgYWo9e";
+    private static final String TEST_SELLER_UID = "jHbxY9G5pdO7Qo5k58ulwPsY1fG2";
+    private static final int TEST_MATCH_ID = 81;
 
     private FirebaseFirestore mFirestore;
     private FirebaseUser mFirebaseUser;
@@ -41,10 +57,15 @@ public class ChatTest extends AppCompatActivity {
     private CollectionReference matchCollectionReference;
     private boolean isSignIn;
     private List<AuthUI.IdpConfig> authProviders;
-    private Random random;
-    private Product randomProduct;
+    private Product testProduct;
     private Match matchForChat;
+    private DocumentReference matchDocumentReference;
     private RecyclerView mMessageRecyclerView;
+    private FirestoreRecyclerOptions<Chat> mMessageRecyclerViewOptions;
+    private ChatAdapter mMessageRecyclerViewAdapter;
+    private EditText mMessageEditText;
+    private Button mSendButton;
+
 
 
     @Override
@@ -69,23 +90,63 @@ public class ChatTest extends AppCompatActivity {
                 new AuthUI.IdpConfig.PhoneBuilder().build(),
                 new AuthUI.IdpConfig.GoogleBuilder().build());
 
-        //create random for the test.
-        random = new Random();
-        //add random product
-        productCollectionReference.document("7l0bPsE0fae3DXbF9dhs").get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        //add test product
+        productCollectionReference.document(TEST_PRODUCT_ID).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
-                        randomProduct = document.toObject(Product.class);
+                        testProduct = document.toObject(Product.class);
                     }
                     Log.d(TAG, "get failed with ", task.getException());
                 }
             }
         });
-        //initiate chat view
+        //add test match
+        matchCollectionReference.whereEqualTo("id", TEST_MATCH_ID).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : task.getResult()){
+                        matchForChat = document.toObject(Match.class);
+                        matchDocumentReference = document.getReference();
+                    }
+                } else {
+                    Log.d(TAG, "Error getting users documents: ", task.getException());
+                }
+            }
+        });
+        //initiate chat view elements
         mMessageRecyclerView = findViewById(R.id.messageRecyclerView);
+        Query chatQuery = matchDocumentReference.collection("chat").orderBy("timestamp", Query.Direction.DESCENDING);
+        mMessageRecyclerViewOptions = new FirestoreRecyclerOptions.Builder<Chat>().setQuery(chatQuery, Chat.class).build();
+        mMessageRecyclerViewAdapter = new ChatAdapter(mMessageRecyclerViewOptions);
+        mMessageRecyclerView.setAdapter(mMessageRecyclerViewAdapter);
+        mMessageRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        mMessageEditText = findViewById(R.id.messageEditText);
+        mSendButton = findViewById(R.id.sendButton);
+
+        mMessageEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.toString().trim().length() > 0) {
+                    mSendButton.setEnabled(true);
+                } else {
+                    mSendButton.setEnabled(false);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+
     }
 
     @Override
@@ -96,6 +157,8 @@ public class ChatTest extends AppCompatActivity {
             startSignIn();
             return;
         }
+        mMessageRecyclerViewAdapter.startListening();
+
     }
 
     public void startSignIn(){
@@ -106,6 +169,13 @@ public class ChatTest extends AppCompatActivity {
 
         startActivityForResult(intent, RC_SIGN_IN);
         isSignIn = true;
+    }
+
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mMessageRecyclerViewAdapter.startListening();
     }
 
     @Override
@@ -144,14 +214,31 @@ public class ChatTest extends AppCompatActivity {
         }
     }
 
-    public void addRandomProduct(View view){
-        randomProduct = new Product(random.nextInt(100), random.nextInt(3) + 1, "8LO0hWnFQ10uiBHI7WcE", "test product", "desc", 0,0, null,null);
-        productCollectionReference.add(randomProduct);
-    }
-
     public void addMatchToProduct(View view){
-        matchForChat = new Match(random.nextInt(100), "8LO0hWnFQ10uiBHI7WcE", mFirebaseUser.getUid(), randomProduct.getId());
-        matchCollectionReference.add(matchForChat);
+        matchForChat = new Match(new Random().nextInt(100), TEST_SELLER_UID, mFirebaseUser.getUid(), testProduct.getId());
+        matchCollectionReference.add(matchForChat).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+            @Override
+            public void onSuccess(DocumentReference documentReference) {
+                matchDocumentReference = documentReference;
+                mMessageRecyclerViewAdapter.stopListening();
+                Query chatQuery = matchDocumentReference.collection("chat").orderBy("timestamp", Query.Direction.DESCENDING);
+                mMessageRecyclerViewOptions = new FirestoreRecyclerOptions.Builder<Chat>().setQuery(chatQuery, Chat.class).build();
+                mMessageRecyclerViewAdapter = new ChatAdapter(mMessageRecyclerViewOptions);
+                mMessageRecyclerView.setAdapter(mMessageRecyclerViewAdapter);
+            }
+        })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error adding document", e);
+                    }
+                });
     }
 
+
+    public void sendMassage(View view){
+        Chat massage = new Chat(matchForChat.getId(), matchForChat.getBuyerId(), matchForChat.getSellerId(), mMessageEditText.getText().toString());
+        matchDocumentReference.collection("chat").add(massage);
+        mMessageEditText.setText("");
+    }
 }

@@ -8,25 +8,17 @@
     tools:context=".ChatTest">
 
     <Button
-            android:id="@+id/addRandomProduct"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="addRandomProduct"
-            android:text="Add random product" />
-
-    <Button
         android:id="@+id/addMatch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/addRandomProduct"
         android:onClick="addMatchToProduct"
-        android:text="Add match to a product" />
+        android:text="Add new match to test product" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/messageRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/addMatch"
+        android:layout_below="@id/addMatch"
         android:layout_above="@+id/messageEditLayout"/>
 
     <LinearLayout
@@ -52,7 +44,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:enabled="false"
-            android:text="SEND"/>
+            android:text="SEND"
+            android:onClick="sendMassage"/>
     </LinearLayout>
 
 
