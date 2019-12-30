@@ -5,6 +5,11 @@ import android.util.Log;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import android.content.Intent;
+
+import com.benefit.viewmodel.SignInViewModel;
+import com.firebase.ui.auth.AuthUI;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -16,16 +21,48 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 /**
  * A driver for dealing with FireBase database
  */
 public class DatabaseDriver {
     private FirebaseFirestore db;
     private static final String TAG = "DatabaseDriver";
+    private FirebaseAuth auth;
+    private List<AuthUI.IdpConfig> authProviders;
 
     public DatabaseDriver() {
         this.db = FirebaseFirestore.getInstance();
+        this.auth = FirebaseAuth.getInstance();
+
+        // Enable Firestore logging
         FirebaseFirestore.setLoggingEnabled(true);
+
+        //providers for login
+        authProviders = Arrays.asList(
+                new AuthUI.IdpConfig.EmailBuilder().build(),
+                new AuthUI.IdpConfig.PhoneBuilder().build(),
+                new AuthUI.IdpConfig.GoogleBuilder().build(),
+                new AuthUI.IdpConfig.FacebookBuilder().build());
+    }
+
+    public boolean isSignIn(){
+        return auth.getCurrentUser() != null;
+    }
+
+    public void startSignIn(SignInViewModel signInViewModel){
+        // Sign in with FirebaseUI
+        Intent intent = AuthUI.getInstance().createSignInIntentBuilder()
+                .setAvailableProviders(authProviders)
+                .setIsSmartLockEnabled(false)
+                .build();
+
+        startActivityForResult(intent, RC_SIGN_IN);
+        signInViewModel.setIsSigningIn(true);
+
     }
 
     public FirebaseFirestore getDb() {
