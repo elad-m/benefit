@@ -8,27 +8,30 @@ import java.util.Date;
  */
 public class Match {
     private int id;
-    private String SellerId;
-    private String BuyerId;
+    private String sellerId;
+    private String buyerId;
     private int productId;
     private @ServerTimestamp Date timestamp;
-    private boolean isClosed = false;
+    private boolean isClosed;
 
-    public Match(){}
+    public Match(){
+        this.isClosed = false;
+    }
 
     public Match(int id, String sellerId, String buyerId, int productId){
         this.id = id;
-        this.SellerId = sellerId;
-        this.BuyerId = buyerId;
+        this.sellerId = sellerId;
+        this.buyerId = buyerId;
         this.productId = productId;
+        this.isClosed = false;
     }
 
     public String getSellerId() {
-        return SellerId;
+        return sellerId;
     }
 
     public String getBuyerId() {
-        return BuyerId;
+        return buyerId;
     }
 
     public int getProductId() {

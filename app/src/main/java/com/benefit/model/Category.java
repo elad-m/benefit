@@ -7,6 +7,9 @@ public class Category {
     private int level;
     private boolean isLeaf;
 
+    public Category() {
+    }
+
     public Category(int id, String name, int parentId, int level, boolean isLeaf) {
         this.id = id;
         this.name = name;

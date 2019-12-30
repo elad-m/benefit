@@ -7,7 +7,7 @@ import android.location.Location;
  */
 public class User {
 
-    private String UID;
+    private String uid;
     private String firstName;
     private String lastName;
     private String address;
@@ -16,12 +16,12 @@ public class User {
 
     public User(){}
 
-    public User(String UID){
-        this.UID = UID;
+    public User(String uid){
+        this.uid = uid;
     }
 
-    public String getUID() {
-        return UID;
+    public String getUid() {
+        return uid;
     }
 
     public String getFirstName() {
@@ -44,8 +44,8 @@ public class User {
         return rating;
     }
 
-    public void setUID(String UID) {
-        this.UID = UID;
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 
     public void setFirstName(String firstName) {
