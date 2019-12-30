@@ -1,4 +1,4 @@
-package com.benefit.adapter;
+package com.benefit.adapters;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,21 +16,15 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 
 public class ChatAdapter extends FirestoreRecyclerAdapter<Chat, ChatAdapter.ChatMassageHolder> {
 
-    public static class ChatMassageHolder extends RecyclerView.ViewHolder{
+    static class ChatMassageHolder extends RecyclerView.ViewHolder {
         TextView messageTextView;
 
-        public ChatMassageHolder(View v) {
+        ChatMassageHolder(View v) {
             super(v);
             messageTextView = itemView.findViewById(R.id.messageTextView);
         }
     }
 
-    /**
-     * Create a new RecyclerView adapter that listens to a Firestore Query.  See {@link
-     * FirestoreRecyclerOptions} for configuration options.
-     *
-     * @param options
-     */
     public ChatAdapter(@NonNull FirestoreRecyclerOptions<Chat> options) {
         super(options);
     }
