@@ -32,7 +32,6 @@ public class DatabaseDriver {
     private FirebaseFirestore db;
     private static final String TAG = "DatabaseDriver";
     private FirebaseAuth auth;
-    private List<AuthUI.IdpConfig> authProviders;
 
     public DatabaseDriver() {
         this.db = FirebaseFirestore.getInstance();
@@ -41,33 +40,17 @@ public class DatabaseDriver {
         // Enable Firestore logging
         FirebaseFirestore.setLoggingEnabled(true);
 
-        //providers for login
-        authProviders = Arrays.asList(
-                new AuthUI.IdpConfig.EmailBuilder().build(),
-                new AuthUI.IdpConfig.PhoneBuilder().build(),
-                new AuthUI.IdpConfig.GoogleBuilder().build(),
-                new AuthUI.IdpConfig.FacebookBuilder().build());
     }
 
     public boolean isSignIn(){
         return auth.getCurrentUser() != null;
     }
 
-    public void startSignIn(SignInViewModel signInViewModel){
-        // Sign in with FirebaseUI
-        Intent intent = AuthUI.getInstance().createSignInIntentBuilder()
-                .setAvailableProviders(authProviders)
-                .setIsSmartLockEnabled(false)
-                .build();
-
-        startActivityForResult(intent, RC_SIGN_IN);
-        signInViewModel.setIsSigningIn(true);
-
-    }
-
     public FirebaseFirestore getDb() {
         return this.db;
     }
+
+    public FirebaseAuth getAuth(){ return this.auth;}
 
     public CollectionReference getCollectionByName(String name) {
         return this.db.collection(name);
