@@ -3,13 +3,13 @@ package com.benefit.viewmodel;
 import androidx.lifecycle.ViewModel;
 
 /**
- * ViewModel for MainActivity. Keep data members in a lifecycle conscious way.
+ * ViewModel for SignInActivity. Keep data members in a lifecycle conscious way.
  */
-public class MainActivityViewModel extends ViewModel {
+public class SignInViewModel extends ViewModel {
 
     private boolean mIsSigningIn;
 
-    public MainActivityViewModel(){
+    public SignInViewModel(){
         mIsSigningIn = false;
     }
 
