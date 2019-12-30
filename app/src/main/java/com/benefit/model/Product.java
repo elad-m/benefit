@@ -6,6 +6,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Model POJO for product
+ */
 public class Product {
     private int id;
     private int categoryId;

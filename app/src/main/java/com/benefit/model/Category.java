@@ -1,5 +1,8 @@
 package com.benefit.model;
 
+/**
+ * Model POJO for category of products.
+ */
 public class Category {
     private int id;
     private String name;

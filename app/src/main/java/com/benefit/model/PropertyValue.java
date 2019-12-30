@@ -1,5 +1,8 @@
 package com.benefit.model;
 
+/**
+ * Model POJO for property value.
+ */
 public class PropertyValue {
     private int id;
     private int propertyNameId;

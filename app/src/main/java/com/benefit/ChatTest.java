@@ -15,14 +15,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.benefit.adapter.ChatAdapter;
+import com.benefit.adapters.ChatAdapter;
 import com.benefit.model.Chat;
 import com.benefit.model.Match;
 import com.benefit.model.Product;
 import com.benefit.model.User;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.android.gms.tasks.OnCanceledListener;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;

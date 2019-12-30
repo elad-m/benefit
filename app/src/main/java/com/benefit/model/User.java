@@ -3,7 +3,7 @@ package com.benefit.model;
 import android.location.Location;
 
 /**
- * Model POJO for user
+ * Model POJO for user with location and rating.
  */
 public class User {
 
