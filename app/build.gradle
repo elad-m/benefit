@@ -5,11 +5,12 @@ android {
     buildToolsVersion "29.0.2"
     defaultConfig {
         applicationId "com.benefit"
-        minSdkVersion 19
+        minSdkVersion 21
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
     }
     buildTypes {
         release {
@@ -26,6 +27,17 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    implementation 'com.google.firebase:firebase-auth:19.2.0'
+    implementation 'com.google.firebase:firebase-firestore:21.3.1'
+    implementation 'com.firebaseui:firebase-ui-firestore:5.0.0'
+    implementation 'com.firebaseui:firebase-ui-auth:4.3.2'
+    implementation 'com.facebook.android:facebook-android-sdk:5.0.0'
+    implementation 'com.twitter.sdk.android:twitter-core:3.1.1'
+    implementation 'androidx.multidex:multidex:2.0.1'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0'
+
+
+
 }
 
 apply plugin: 'com.google.gms.google-services'
