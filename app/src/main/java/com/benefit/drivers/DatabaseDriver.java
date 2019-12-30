@@ -22,6 +22,7 @@ public class DatabaseDriver {
 
     public DatabaseDriver() {
         this.db = FirebaseFirestore.getInstance();
+        FirebaseFirestore.setLoggingEnabled(true);
     }
 
     public FirebaseFirestore getDb() {
