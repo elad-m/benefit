@@ -2,7 +2,7 @@ package com.benefit;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
@@ -29,15 +29,22 @@ public class UserProfile extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_user_profile);
 
         ArrayList<ClothingItem> clothingItems = new ArrayList<>();
         clothingItems.add(new ClothingItem(R.drawable.ic_shirt, "edit", "chat"));
         clothingItems.add(new ClothingItem(R.drawable.ic_shirt, "edit", "chat"));
+        clothingItems.add(new ClothingItem(R.drawable.ic_jacket, "edit", "chat"));
+        clothingItems.add(new ClothingItem(R.drawable.ic_jacket, "edit", "chat"));
+        clothingItems.add(new ClothingItem(R.drawable.ic_shirt, "edit", "chat"));
+        clothingItems.add(new ClothingItem(R.drawable.ic_shirt, "edit", "chat"));
+        clothingItems.add(new ClothingItem(R.drawable.ic_jacket, "edit", "chat"));
+        clothingItems.add(new ClothingItem(R.drawable.ic_jacket, "edit", "chat"));
 
         mRecyclerView = findViewById(R.id.items_recyclerk);
         mRecyclerView.setHasFixedSize(true);
-        mLayoutManager = new LinearLayoutManager(this);
+
+        mLayoutManager = new GridLayoutManager(this, 2);
         mAdapter = new ClothingRecyclerAdapter(clothingItems);
 
         mRecyclerView.setLayoutManager(mLayoutManager);
@@ -50,7 +57,6 @@ public class UserProfile extends AppCompatActivity {
                 Intent gallery = new Intent();
                 gallery.setType("image/*");
                 gallery.setAction(Intent.ACTION_GET_CONTENT);
-
                 startActivityForResult(Intent.createChooser(gallery, "Select Picture"), PICK_IMAGE);
             }
         });
