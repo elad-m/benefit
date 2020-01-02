@@ -37,6 +37,11 @@
             android:value="@string/google_maps_key" />
 
         <activity android:name=".SignUpActivity">
+        android:theme="@style/AppTheme">
+        <activity android:name=".filter_options"></activity>
+        <activity android:name=".items_page" />
+        <activity android:name=".ChatTest"></activity>
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
