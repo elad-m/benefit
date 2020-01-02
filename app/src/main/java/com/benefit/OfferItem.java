@@ -1,8 +1,5 @@
 package com.benefit;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -14,16 +11,14 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.squareup.picasso.Picasso;
 
 public class OfferItem extends AppCompatActivity {
 
-    private static final int PICK_IMAGE_REQUEST = 1;
-    private static final int CAPTURE_PHOTO = 2;
-    private static final int MY_CAMERA_PERMISSION_CODE = 100;
-
-    private static final int STORAGE_PERMISSION_CODE = 3;
-    private static final int CAMERA_AND_GALLERY_PERMISSION_CODE = 10;
+    private static final int PICK_IMAGE = 1;
 
     private ImageButton mImageButtonUpload;
     private Uri mImageUri;
@@ -41,7 +36,6 @@ public class OfferItem extends AppCompatActivity {
     private String mItemTitle;
     private String mItemDescription;
 
-    private String mCurrentPhotoPath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,23 +57,30 @@ public class OfferItem extends AppCompatActivity {
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(intent, CAPTURE_PHOTO);
+        startActivityForResult(intent, PICK_IMAGE);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
+        // switch bellow will add a camera capture option in the future
         switch (requestCode) {
-            case PICK_IMAGE_REQUEST:
+            case PICK_IMAGE:
                 loadImageFromGallery(resultCode, data);
-                break;
-            case CAPTURE_PHOTO:
-                takePhotoWithCamera(resultCode, data);
                 break;
             default:
                 Log.d("ImplicitIntents", "Can't handle this intent!");
                 break;
+        }
+    }
+
+    private void loadImageFromGallery(int resultCode, @Nullable Intent data) {
+        if (resultCode == RESULT_OK && data != null && data.getData() != null) {
+            mImageUri = data.getData();
+            Picasso.get()
+                    .load(mImageUri)
+                    .centerCrop().fit().into(mImageButtonUpload);
+
         }
     }
 
@@ -110,27 +111,8 @@ public class OfferItem extends AppCompatActivity {
     }
 
 
-    private void loadImageFromGallery(int resultCode, @Nullable Intent data) {
-        if (resultCode == RESULT_OK && data != null && data.getData() != null) {
-            mImageUri = data.getData();
-            if (mImageButtonUpload.getDrawable() == null) {
-                Picasso.get().load(mImageUri).into(mImageButtonUpload);
-            }
-        }
-    }
-
-    private void takePhotoWithCamera(int resultCode, @Nullable Intent data) {
-        if (resultCode == RESULT_OK && data != null && data.getData() != null) {
-            mImageUri = data.getData();
-            if (mImageButtonUpload.getDrawable() == null) {
-                Picasso.get().load(mImageUri).into(mImageButtonUpload);
-            }
-        }
-    }
-
-
     public void createItem(View view) {
-        //TODO: implement this, mainly taking all data members and sending to server
+
         // the next lines are just to see the text is saved
         mItemTitle = mEdTextTitle.getText().toString();
         mItemDescription = mEdTextDescription.getText().toString();
