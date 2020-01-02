@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "669509049604",
+    "firebase_url": "https://benefit-1c842.firebaseio.com",
+    "project_id": "benefit-1c842",
+    "storage_bucket": "benefit-1c842.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:669509049604:android:2d41749c49200c352dc451",
+        "android_client_info": {
+          "package_name": "com.benefit"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "669509049604-t3b9e3ra5cer7j5fnu7vne5vkb99m5ep.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.benefit",
+            "certificate_hash": "721191516fc218e4576239b294a77a8788765146"
+          }
+        },
+        {
+          "client_id": "669509049604-je3nbeblsgtgf2vquc547146bukmfvdh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDIQbj2tA1eqPw22hnyiH9cLIvQotnDgS4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "669509049604-je3nbeblsgtgf2vquc547146bukmfvdh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
