@@ -21,7 +21,6 @@ public class ChatAdapter extends FirestoreRecyclerAdapter<Chat, ChatAdapter.Chat
 
         ChatMassageHolder(View v) {
             super(v);
-            messageTextView = itemView.findViewById(R.id.messageTextView);
         }
     }
 
