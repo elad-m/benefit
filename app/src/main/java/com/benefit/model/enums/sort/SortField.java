@@ -1,4 +1,4 @@
-package com.benefit.model.enums;
+package com.benefit.model.enums.sort;
 
 public enum SortField {
     DATE,
