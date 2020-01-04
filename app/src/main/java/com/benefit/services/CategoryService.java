@@ -9,7 +9,6 @@ import java.util.List;
 public class CategoryService {
     private DatabaseDriver databaseDriver;
     private CollectionReference categoriesCollection;
-    private static final String TAG = "CategoryService";
     private static final String COLLECTION_NAME = "categories";
 
     public CategoryService(DatabaseDriver databaseDriver) {
