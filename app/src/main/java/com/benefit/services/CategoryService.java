@@ -52,7 +52,14 @@ public class CategoryService {
                         Log.w(TAG, "Error on getCategoryById", e);
                     }
                 });
+        if (categoriesList.isEmpty()) {
+            return null;
+        }
         return categoriesList.get(0);
+    }
+
+    public List<Category> getAllMetaCategories() {
+        return getCategorisByField("level", "0");
     }
 
     public List<Category> getCategorisByField(String fieldName, String fieldValue) {
