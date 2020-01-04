@@ -1,9 +1,17 @@
 package com.benefit.services;
 
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
+
 import com.benefit.drivers.DatabaseDriver;
 import com.benefit.model.Product;
+import com.benefit.model.enums.sort.SortField;
+import com.benefit.model.enums.sort.SortType;
 import com.google.firebase.firestore.CollectionReference;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -51,5 +59,21 @@ public class ProductService {
             }
         }
         return filteredProducts;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public List<Product> sortProducts(List<Product> products, SortField sortField, SortType sortType) {
+        switch (sortField) {
+            case DATE:
+                products.sort(Comparator.comparing(Product::getAuctionDate));
+                break;
+            case LIKES:
+                products.sort(Comparator.comparing(Product::getLikes));
+                break;
+        }
+        if (sortType == SortType.DESC) {
+            Collections.reverse(products);
+        }
+        return products;
     }
 }
