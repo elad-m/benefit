@@ -1,10 +1,13 @@
 package com.benefit.services;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
 import com.benefit.drivers.DatabaseDriver;
 import com.benefit.model.Category;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -17,6 +20,7 @@ import java.util.Objects;
 public class CategoryService {
     private DatabaseDriver databaseDriver;
     private CollectionReference categoriesCollection;
+    private static final String TAG = "CategoryService";
 
     public CategoryService(DatabaseDriver databaseDriver) {
         this.databaseDriver = databaseDriver;
@@ -41,6 +45,12 @@ public class CategoryService {
                             }
                         }
                     }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error on getCategoryById", e);
+                    }
                 });
         return categoriesList.get(0);
     }
@@ -58,6 +68,12 @@ public class CategoryService {
                                 categoriesList.add(categoryDocument.toObject(Category.class));
                             }
                         }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error on getCategorisByField", e);
                     }
                 });
         return categoriesList;
