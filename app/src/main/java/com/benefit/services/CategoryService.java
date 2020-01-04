@@ -2,6 +2,7 @@ package com.benefit.services;
 
 import com.benefit.drivers.DatabaseDriver;
 import com.benefit.model.Category;
+import com.benefit.model.PropertyName;
 import com.google.firebase.firestore.CollectionReference;
 
 import java.util.List;
@@ -31,6 +32,11 @@ public class CategoryService {
 
     public List<Category> getAllMetaCategories() {
         return getCategoriesByField("level", 0);
+    }
+
+    public List<PropertyName> getAllPropertiesByCategoryId(int categoryId) {
+        return this.databaseDriver.getDocumentsByField(
+                "property_name", "categoryId", categoryId, PropertyName.class);
     }
 
     public List<Category> getCategoriesByField(String fieldName, Object fieldValue) {
