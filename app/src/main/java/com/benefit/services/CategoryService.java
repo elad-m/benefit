@@ -1,26 +1,16 @@
 package com.benefit.services;
 
-import android.util.Log;
-
-import androidx.annotation.NonNull;
-
 import com.benefit.drivers.DatabaseDriver;
 import com.benefit.model.Category;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Objects;
 
 public class CategoryService {
     private DatabaseDriver databaseDriver;
     private CollectionReference categoriesCollection;
     private static final String TAG = "CategoryService";
+    private static final String COLLECTION_NAME = "categories";
 
     public CategoryService(DatabaseDriver databaseDriver) {
         this.databaseDriver = databaseDriver;
@@ -32,26 +22,8 @@ public class CategoryService {
     }
 
     public Category getCategoryById(int categoryId) {
-        final List<Category> categoriesList = new LinkedList<>();
-        categoriesCollection
-                .whereEqualTo("id", categoryId)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot categoryDocument : Objects.requireNonNull(task.getResult())) {
-                                categoriesList.add(categoryDocument.toObject(Category.class));
-                            }
-                        }
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG, "Error on getCategoryById", e);
-                    }
-                });
+        List<Category> categoriesList = this.databaseDriver.getDocumentsByField(
+                COLLECTION_NAME, "id", categoryId, Category.class);
         if (categoriesList.isEmpty()) {
             return null;
         }
@@ -59,30 +31,10 @@ public class CategoryService {
     }
 
     public List<Category> getAllMetaCategories() {
-        return getCategorisByField("level", "0");
+        return getCategoriesByField("level", 0);
     }
 
-    public List<Category> getCategorisByField(String fieldName, String fieldValue) {
-        final List<Category> categoriesList = new LinkedList<>();
-        categoriesCollection
-                .whereEqualTo(fieldName, fieldValue)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot categoryDocument : Objects.requireNonNull(task.getResult())) {
-                                categoriesList.add(categoryDocument.toObject(Category.class));
-                            }
-                        }
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG, "Error on getCategorisByField", e);
-                    }
-                });
-        return categoriesList;
+    public List<Category> getCategoriesByField(String fieldName, Object fieldValue) {
+        return this.databaseDriver.getDocumentsByField(COLLECTION_NAME, fieldName, fieldValue, Category.class);
     }
 }
