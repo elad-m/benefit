@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.View;
 
 import com.benefit.drivers.DatabaseDriver;
+import com.benefit.model.User;
 import com.benefit.viewmodel.SignInViewModel;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -45,6 +46,7 @@ public class SignInActivity extends AppCompatActivity implements OnMapReadyCallb
     private CameraPosition mCameraPosition;
 
     private DatabaseDriver databaseDriver;
+    private User user;
     private SignInViewModel sViewModel;
 
     // The entry point to the Fused Location Provider.
