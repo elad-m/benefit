@@ -10,7 +10,8 @@ import java.util.List;
 public class CategoryService {
     private DatabaseDriver databaseDriver;
     private CollectionReference categoriesCollection;
-    private static final String COLLECTION_NAME = "categories";
+    private static final String COLLECTION_NAME_CATEGORY = "categories";
+    private static final String COLLECTION_NAME_PROPERTY_NAME = "property_name";
 
     public CategoryService(DatabaseDriver databaseDriver) {
         this.databaseDriver = databaseDriver;
@@ -23,7 +24,7 @@ public class CategoryService {
 
     public Category getCategoryById(int categoryId) {
         List<Category> categoriesList = this.databaseDriver.getDocumentsByField(
-                COLLECTION_NAME, "id", categoryId, Category.class);
+                COLLECTION_NAME_CATEGORY, "id", categoryId, Category.class);
         if (categoriesList.isEmpty()) {
             return null;
         }
@@ -36,10 +37,10 @@ public class CategoryService {
 
     public List<PropertyName> getAllPropertiesByCategoryId(int categoryId) {
         return this.databaseDriver.getDocumentsByField(
-                "property_name", "categoryId", categoryId, PropertyName.class);
+                COLLECTION_NAME_PROPERTY_NAME, "categoryId", categoryId, PropertyName.class);
     }
 
     public List<Category> getCategoriesByField(String fieldName, Object fieldValue) {
-        return this.databaseDriver.getDocumentsByField(COLLECTION_NAME, fieldName, fieldValue, Category.class);
+        return this.databaseDriver.getDocumentsByField(COLLECTION_NAME_CATEGORY, fieldName, fieldValue, Category.class);
     }
 }
