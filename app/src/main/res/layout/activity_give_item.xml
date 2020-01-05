@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".OfferItem">
+    tools:context=".GiveItemActivity">
 
     <ImageButton
         android:id="@+id/image_button_choose_image"
@@ -172,7 +172,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:checked="true"
-            android:onClick="setClothinDemographicRadioButton"
+            android:onClick="setClothingDemographicRadioButton"
             android:text="Men" />
 
         <RadioButton
@@ -181,7 +181,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:checked="true"
-            android:onClick="setClothinDemographicRadioButton"
+            android:onClick="setClothingDemographicRadioButton"
             android:text="Women" />
 
         <RadioButton
@@ -189,7 +189,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:onClick="setClothinDemographicRadioButton"
+            android:onClick="setClothingDemographicRadioButton"
             android:text="Kids" />
 
     </RadioGroup>
@@ -199,7 +199,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_weight="0.3"
-        android:onClick="createItem"
+        android:onClick="onClickGive"
         android:text="Give"
         android:textSize="20sp" />
 
