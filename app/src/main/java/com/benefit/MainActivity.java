@@ -7,6 +7,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TableLayout;
@@ -45,6 +46,8 @@ public class MainActivity extends AppCompatActivity {
 //        metaCategoryBar.createCategoryBar();
         CategoryScreen categoryScreen = new CategoryScreen(findViewById(android.R.id.content).getRootView(), ct);
         categoryScreen.createCategoryTable();
+        getWindow().setSoftInputMode(
+                WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
     }
 
 //    private void createCategoryTable() {

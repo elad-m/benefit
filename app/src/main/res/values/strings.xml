@@ -43,6 +43,7 @@
     <string name="notifications">Notification</string>
     <string name="my_page">My Page</string>
     <string name="messages">Messages</string>
+    <string name="slogan">Look for your new clothes!</string>
 
     <string-array name="chat_sort_options">
         <item>your items</item>
