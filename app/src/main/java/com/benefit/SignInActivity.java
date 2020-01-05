@@ -120,8 +120,7 @@ public class SignInActivity extends AppCompatActivity implements OnMapReadyCallb
                 .setAvailableProviders(Arrays.asList(
                 new AuthUI.IdpConfig.EmailBuilder().build(),
                 new AuthUI.IdpConfig.PhoneBuilder().build(),
-                new AuthUI.IdpConfig.GoogleBuilder().build()/*,
-                new AuthUI.IdpConfig.FacebookBuilder().build()*/))
+                new AuthUI.IdpConfig.GoogleBuilder().build()))
                 .setIsSmartLockEnabled(false)
                 .build();
         startActivityForResult(intent, RC_SIGN_IN);
