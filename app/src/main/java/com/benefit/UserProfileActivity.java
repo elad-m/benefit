@@ -1,76 +1,79 @@
 package com.benefit;
 
-import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-import android.widget.Toast;
-
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.os.Bundle;
+import android.provider.MediaStore;
+import android.view.View;
+
+import java.io.IOException;
 import java.util.ArrayList;
 
-/**
- * Present to the user its items (i.e. products). User can add, remove, open chat and edit its items.
- */
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class UserProfileActivity extends AppCompatActivity {
 
     private RecyclerView mRecyclerView;
-    private ClothingRecyclerAdapter mAdapter;
+    private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-    ArrayList<ClothingItem> mClothingItems = new ArrayList<>();
 
+    private CircleImageView profileImage;
+    private static final int PICK_IMAGE = 1;
+    Uri imageUri;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile);
 
-        ConstraintLayout constraintLayout = findViewById(R.id.page_header_root_layout);
-        ConstraintSet constraintSet = new ConstraintSet();
-        constraintSet.clone(constraintLayout);
-        constraintSet.connect(R.id.chosen_view, ConstraintSet.RIGHT, R.id.user_icon, ConstraintSet.RIGHT);
-        constraintSet.connect(R.id.chosen_view, ConstraintSet.LEFT, R.id.user_icon, ConstraintSet.LEFT);
-        constraintSet.applyTo(constraintLayout);
+        ArrayList<ClothingItem> clothingItems = new ArrayList<>();
+        clothingItems.add(new ClothingItem(R.drawable.ic_shirt, "edit", "chat"));
+        clothingItems.add(new ClothingItem(R.drawable.ic_shirt, "edit", "chat"));
+        clothingItems.add(new ClothingItem(R.drawable.ic_jacket, "edit", "chat"));
+        clothingItems.add(new ClothingItem(R.drawable.ic_jacket, "edit", "chat"));
+        clothingItems.add(new ClothingItem(R.drawable.ic_shirt, "edit", "chat"));
+        clothingItems.add(new ClothingItem(R.drawable.ic_shirt, "edit", "chat"));
+        clothingItems.add(new ClothingItem(R.drawable.ic_jacket, "edit", "chat"));
+        clothingItems.add(new ClothingItem(R.drawable.ic_jacket, "edit", "chat"));
 
-        // recycler elements
-        mClothingItems.add(new ClothingItem(R.drawable.my_shoes, "Shoes"));
-        mClothingItems.add(new ClothingItem(R.drawable.my_pants, "Pants"));
-        mClothingItems.add(new ClothingItem(R.drawable.my_tshirt, "T-Shirt"));
-
-        buildRecyclerView();
-    }
-
-    private void buildRecyclerView() {
-        // recycler itself
-        mRecyclerView = findViewById(R.id.items_recycler);
+        mRecyclerView = findViewById(R.id.items_recyclerk);
         mRecyclerView.setHasFixedSize(true);
+
         mLayoutManager = new GridLayoutManager(this, 2);
-        mAdapter = new ClothingRecyclerAdapter(mClothingItems);
+        mAdapter = new ClothingRecyclerAdapter(clothingItems);
 
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
 
-        mAdapter.setOnItemClickListener(new ClothingRecyclerAdapter.OnItemClickListener() {
+        profileImage = findViewById(R.id.profile_image);
+        profileImage.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onItemClick(int position) {
-                String message = mClothingItems.get(position).getmTitle() + "was pressed";
-                makeToast(message);
+            public void onClick(View v) {
+                Intent gallery = new Intent();
+                gallery.setType("image/*");
+                gallery.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(Intent.createChooser(gallery, "Select Picture"), PICK_IMAGE);
             }
         });
     }
 
-    private void makeToast(String msg) {
-        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
-    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 
-    public void onClickEdit(View view) {
-        Toast.makeText(this, "Edit button was pressed", Toast.LENGTH_SHORT).show();
-    }
-
-    public void onClickChat(View view) {
-        Toast.makeText(this, "Chat button was pressed", Toast.LENGTH_SHORT).show();
+        if (requestCode == PICK_IMAGE && resultCode == RESULT_OK){
+            imageUri = data.getData();
+            try{
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imageUri);
+                profileImage.setImageBitmap(bitmap);
+            } catch (IOException e){
+                e.printStackTrace();
+            }
+        }
     }
 }
