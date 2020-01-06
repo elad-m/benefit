@@ -34,6 +34,10 @@ public class CategoryService extends ViewModel {
         return getCategoriesByField("level", 0);
     }
 
+    public MutableLiveData<List<Category>> getChildrenByParentId(int parentId) {
+        return getCategoriesByField("parentId", parentId);
+    }
+
     public MutableLiveData<List<PropertyName>> getAllPropertiesByCategoryId(int categoryId) {
         return this.databaseDriver.getDocumentsByField(
                 COLLECTION_NAME_PROPERTY_NAME, "categoryId", categoryId, PropertyName.class);
