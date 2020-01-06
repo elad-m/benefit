@@ -1,4 +1,12 @@
 <resources>
     <string name="app_name">Benefit</string>
+    <string name="chat_title">Your Chatbox</string>
+    
+    <string-array name="chat_sort_options">
+        <item>your items</item>
+        <item>wanted items</item>
+        <item>new to old</item>
+        <item>old to new</item>
+    </string-array>
 
 </resources>
