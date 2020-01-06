@@ -2,6 +2,7 @@ package com.benefit;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.view.View;
@@ -10,14 +11,17 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
 import com.benefit.drivers.DatabaseDriver;
+import com.benefit.services.ChatService;
 import com.benefit.viewmodel.ChatActivityViewModel;
 import com.benefit.viewmodel.SignInViewModel;
 
 public class ChatActivityMain extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     private DatabaseDriver databaseDriver;
+    private ChatService chatService;
     private ChatActivityViewModel cViewModel;
     private Spinner sortMassagesSpinner;
+    private RecyclerView conversationRecyclerView;
     private int sortChoice;
 
 
