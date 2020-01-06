@@ -19,8 +19,6 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 public class ChatAdapter extends FirestoreRecyclerAdapter<Chat, ChatAdapter.ChatMassageHolder> {
 
     static class ChatMassageHolder extends RecyclerView.ViewHolder {
-        TextView messageTextView;
-
         ChatMassageHolder(View v) {
             super(v);
         }
@@ -39,7 +37,7 @@ public class ChatAdapter extends FirestoreRecyclerAdapter<Chat, ChatAdapter.Chat
 
     @Override
     protected void onBindViewHolder(@NonNull ChatMassageHolder chatMassageHolder, int i, @NonNull Chat chat) {
-        chatMassageHolder.messageTextView.setText(chat.getMassageText());
+
     }
 
 }
