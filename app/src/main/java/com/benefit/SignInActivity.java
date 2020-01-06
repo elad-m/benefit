@@ -9,10 +9,8 @@ import androidx.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 
 import com.benefit.drivers.DatabaseDriver;
 import com.benefit.model.User;
@@ -31,7 +29,6 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -141,7 +138,7 @@ public class SignInActivity extends AppCompatActivity implements OnMapReadyCallb
                 startSignIn();
             }
             else {
-                Query getUserQuery = databaseDriver.getCollectionByName("users").whereEqualTo("UID", databaseDriver.getAuth().getUid());
+                Query getUserQuery = databaseDriver.getCollectionReferenceByName("users").whereEqualTo("UID", databaseDriver.getAuth().getUid());
                 getUserQuery.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {

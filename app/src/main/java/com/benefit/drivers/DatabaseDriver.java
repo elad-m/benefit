@@ -52,7 +52,7 @@ public class DatabaseDriver {
 
     public FirebaseAuth getAuth(){ return this.auth;}
 
-    public CollectionReference getCollectionByName(String name) {
+    public CollectionReference getCollectionReferenceByName(String name) {
         return this.db.collection(name);
     }
 
