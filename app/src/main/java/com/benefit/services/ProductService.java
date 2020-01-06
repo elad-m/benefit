@@ -3,6 +3,7 @@ package com.benefit.services;
 import android.os.Build;
 
 import androidx.annotation.RequiresApi;
+import androidx.lifecycle.MutableLiveData;
 
 import com.benefit.drivers.DatabaseDriver;
 import com.benefit.model.Product;
@@ -16,7 +17,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-public class ProductService {
+public class ProductService extends ViewModel {
     private DatabaseDriver databaseDriver;
     private CollectionReference productsCollection;
     private static final String COLLECTION_NAME = "products";
@@ -30,36 +31,40 @@ public class ProductService {
         this.productsCollection.add(product);
     }
 
-    public Product getProductsById(int productId) {
-        List<Product> productList = this.databaseDriver.getDocumentsByField(
-                COLLECTION_NAME, "id", productId, Product.class);
-        return productList.get(0);
+    public MutableLiveData<Product> getProductsById(int productId) {
+        return this.databaseDriver.getSingleDocumentByField(COLLECTION_NAME, "id", productId, Product.class);
     }
 
-    public List<Product> getProductsByCategoryId(int categoryId) {
+    public MutableLiveData<List<Product>> getProductsByCategoryId(int categoryId) {
         return this.databaseDriver.getDocumentsByField(COLLECTION_NAME, "categoryId", categoryId, Product.class);
     }
 
-    public List<Product> getProductsByProperties(int categoryId, Map<String, String> propertiesMap) {
-        List<Product> allProducts = getProductsByCategoryId(categoryId);
-        List<Product> filteredProducts = new LinkedList<>();
-        for (Product product : allProducts) {
-            boolean indicator = true;
-            for (Map.Entry<String, String> filter : propertiesMap.entrySet()) {
-                if (product.getProperties().containsKey(filter.getKey())) {
-                    if (!product.getProperties().get(filter.getKey()).contains(filter.getValue())) {
-                        indicator = false;
-                    }
-                } else {
-                    indicator = false;
-                }
-            }
-            if (indicator) {
-                filteredProducts.add(product);
-            }
-        }
-        return filteredProducts;
-    }
+//    public MutableLiveData<List<Product>> getProductsByProperties(int categoryId, Map<String, String> propertiesMap) {
+//        List<Product> filteredProducts = new LinkedList<>();
+//
+//        for (Map.Entry<String, String> filter : propertiesMap.entrySet()) {
+//
+//        }
+//
+//        List<Product> allProducts = getProductsByCategoryId(categoryId);
+//
+//        for (Product product : allProducts) {
+//            boolean indicator = true;
+//            for (Map.Entry<String, String> filter : propertiesMap.entrySet()) {
+//                if (product.getProperties().containsKey(filter.getKey())) {
+//                    if (!product.getProperties().get(filter.getKey()).contains(filter.getValue())) {
+//                        indicator = false;
+//                    }
+//                } else {
+//                    indicator = false;
+//                }
+//            }
+//            if (indicator) {
+//                filteredProducts.add(product);
+//            }
+//        }
+//        return filteredProducts;
+//    }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public List<Product> sortProducts(List<Product> products, SortField sortField, SortType sortType) {
