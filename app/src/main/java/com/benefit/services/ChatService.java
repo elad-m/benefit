@@ -30,9 +30,7 @@ public class ChatService {
     private User user;
     private CollectionReference matchCollectionRef;
     private List<Match> matchesWithBuyers;
-    private Map<Match,List<Chat>> conversationWithBuyers;
     private List<Match> matchesWithSellers;
-    private Map<Match,List<Chat>> conversationWithSellers;
     private boolean sellersDataIsReady;
     private boolean buyersDataIsReady;
 
@@ -45,7 +43,6 @@ public class ChatService {
         matchCollectionRef = databaseDriver.getCollectionReferenceByName("matches");
         sellersDataIsReady = false;
         matchesWithSellers = new ArrayList<>();
-        conversationWithSellers = new HashMap<>();
         matchCollectionRef.whereEqualTo("buyerId", user.getUid()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
