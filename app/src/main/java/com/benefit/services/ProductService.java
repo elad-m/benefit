@@ -16,20 +16,20 @@ import java.util.Objects;
 
 public class ProductService {
     private DatabaseDriver databaseDriver;
-    private CollectionReference productsCollection;
+    private CollectionReference productsCollectionRef;
 
     public ProductService(DatabaseDriver databaseDriver) {
         this.databaseDriver = databaseDriver;
-        this.productsCollection = this.databaseDriver.getCollectionByName("products");
+        this.productsCollectionRef = this.databaseDriver.getCollectionReferenceByName("products");
     }
 
     public void addProduct(Product product) {
-        this.productsCollection.add(product);
+        this.productsCollectionRef.add(product);
     }
 
     public Product getProductsById(int productId) {
         final List<Product> productList = new LinkedList<>();
-        productsCollection
+        productsCollectionRef
                 .whereEqualTo("id", productId)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -47,7 +47,7 @@ public class ProductService {
 
     public List<Product> getProductsByCategoryId(int categoryId) {
         final List<Product> productList = new LinkedList<>();
-        productsCollection
+        productsCollectionRef
                 .whereEqualTo("categoryId", categoryId)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {

@@ -16,20 +16,20 @@ import java.util.Objects;
 
 public class CategoryService {
     private DatabaseDriver databaseDriver;
-    private CollectionReference categoriesCollection;
+    private CollectionReference categoriesCollectionRef;
 
     public CategoryService(DatabaseDriver databaseDriver) {
         this.databaseDriver = databaseDriver;
-        this.categoriesCollection = this.databaseDriver.getCollectionByName("categories");
+        this.categoriesCollectionRef = this.databaseDriver.getCollectionReferenceByName("categories");
     }
 
     public void addCategory(Category category) {
-        this.categoriesCollection.add(category);
+        this.categoriesCollectionRef.add(category);
     }
 
     public Category getCategoryById(int categoryId) {
         final List<Category> categoriesList = new LinkedList<>();
-        categoriesCollection
+        categoriesCollectionRef
                 .whereEqualTo("id", categoryId)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -47,7 +47,7 @@ public class CategoryService {
 
     public List<Category> getCategorisByField(String fieldName, String fieldValue) {
         final List<Category> categoriesList = new LinkedList<>();
-        categoriesCollection
+        categoriesCollectionRef
                 .whereEqualTo(fieldName, fieldValue)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
