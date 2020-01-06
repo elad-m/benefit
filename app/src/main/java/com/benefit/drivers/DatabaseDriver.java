@@ -2,16 +2,13 @@ package com.benefit.drivers;
 
 import android.util.Log;
 
-import androidx.annotation.NonNull;
+import androidx.lifecycle.MutableLiveData;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -32,27 +29,43 @@ public class DatabaseDriver {
         return this.db.collection(name);
     }
 
-    public <T> List<T> getDocumentsByField(String collectionName, String FieldName, Object FieldValue, final Class<T> typeParameterClass) {
+    public <T> MutableLiveData<T> getSingleDocumentByField(String collectionName, String fieldName, Object fieldValue, final Class<T> typeParameterClass) {
         final List<T> documentsList = new LinkedList<>();
+        final MutableLiveData<T> resultsLiveData = new MutableLiveData<>();
         getCollectionByName(collectionName)
-                .whereEqualTo(FieldName, FieldValue)
+                .whereEqualTo(fieldName, fieldValue)
                 .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
-                                documentsList.add(document.toObject(typeParameterClass));
-                            }
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
+                            documentsList.add(document.toObject(typeParameterClass));
                         }
+                        resultsLiveData.setValue(documentsList.get(0));
                     }
                 })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG, "Error on getDocumentsByField", e);
+                .addOnFailureListener(e -> Log.w(TAG, "Error on getSingleDocumentByField", e));
+        return resultsLiveData;
+    }
+
+    public <T> MutableLiveData<List<T>> getDocumentsByField(String collectionName, String fieldName, Object fieldValue, final Class<T> typeParameterClass) {
+        return getDocumentsByField(collectionName, fieldName, Collections.singletonList(fieldValue), typeParameterClass);
+    }
+
+    public <T> MutableLiveData<List<T>> getDocumentsByField(String collectionName, String fieldName, List<Object> fieldValue, final Class<T> typeParameterClass) {
+        final List<T> documentsList = new LinkedList<>();
+        final MutableLiveData<List<T>> resultsLiveData = new MutableLiveData<>();
+        getCollectionByName(collectionName)
+                .whereIn(fieldName, fieldValue)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
+                            documentsList.add(document.toObject(typeParameterClass));
+                        }
+                        resultsLiveData.setValue(documentsList);
                     }
-                });
-        return documentsList;
+                })
+                .addOnFailureListener(e -> Log.w(TAG, "Error on getDocumentsByField", e));
+        return resultsLiveData;
     }
 }
