@@ -2,29 +2,43 @@ package com.benefit.services;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.benefit.SignInActivity;
 import com.benefit.drivers.DatabaseDriver;
+import com.benefit.model.User;
 import com.firebase.ui.auth.AuthUI;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * This class manage sign up and getting the user object.
  */
 public class UserService extends ViewModel {
     private DatabaseDriver databaseDriver;
-    private boolean mIsSignIn;
+    private CollectionReference usersCollectionRef;
+    private boolean mIsSigningIn;
+    private MutableLiveData<User> user;
+    private static final String COLLECTION_NAME = "users";
+    private static final String TAG = UserService.class.getSimpleName();
 
     public UserService(){
         this.databaseDriver = new DatabaseDriver();
-        mIsSignIn = databaseDriver.isSignIn();
+        mIsSigningIn = false;
+        usersCollectionRef = databaseDriver.getCollectionReferenceByName(COLLECTION_NAME);
     }
 
     public boolean isSignIn(){
-        return (!mIsSignIn && databaseDriver.isSignIn());
+        return (!mIsSigningIn && databaseDriver.isSignIn());
     }
 
     public void startSignIn(AppCompatActivity activity, int signInRequestCode){
@@ -36,15 +50,44 @@ public class UserService extends ViewModel {
                 .setIsSmartLockEnabled(false)
                 .build();
         activity.startActivityForResult(intent, signInRequestCode);
-        mIsSignIn = true;
+        mIsSigningIn = true;
     }
 
-    public void handleOnSignInResult(int resultCode){
-        mIsSignIn = false;
-        if(resultCode == Activity.RESULT_OK && databaseDriver.isSignIn()){
+    public void handleOnSignInResult(int signInRequestCode, int resultCode, AppCompatActivity activity){
+        final List<User> documentsList = new LinkedList<>();
+        mIsSigningIn = false;
+        if(resultCode == Activity.RESULT_OK){
+            Query getUserQuery = usersCollectionRef.whereEqualTo("uid", databaseDriver.getAuth().getUid());
+            getUserQuery.get().addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    if (task.getResult().isEmpty()){
+                        Log.d(TAG, "User is not on database. Starting sign up for new user.");
+                        Intent intent = new Intent(activity, SignInActivity.class);
+                        activity.startActivity(intent);
+                        //need to get user from SigmUpActivity...
+                    }
+                    else {
+                        for (QueryDocumentSnapshot document : task.getResult()){
+                            documentsList.add(document.toObject(User.class));
+                        }
+                        user.setValue(documentsList.get(0));
+                    }
 
+                } else {
+                    Log.d(TAG, "Error getting users documents: ", task.getException());
+                }
+            });
+        }
+        else{
+            if (!databaseDriver.isSignIn()){
+                startSignIn(activity, signInRequestCode);
+            }
         }
 
+    }
+
+    public MutableLiveData<User> getCurrentUser(){
+        return user;
     }
 
 }
