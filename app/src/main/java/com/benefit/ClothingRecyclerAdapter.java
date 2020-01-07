@@ -13,17 +13,46 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
+/**
+ * Adapter for the user's items RecyclerView.
+ */
 public class ClothingRecyclerAdapter  extends RecyclerView.Adapter<ClothingRecyclerAdapter.ClothingViewHolder> {
     private ArrayList<ClothingItem> mClothingItems;
+    private OnItemClickListener mListener;
+
+    public interface OnItemClickListener{
+        void onItemClick(int position);
+    }
+
+    void setOnItemClickListener(OnItemClickListener listener){
+        mListener = listener;
+    }
+
+    public OnItemClickListener getOnItemClickListener() {
+        return mListener;
+    }
 
     static class ClothingViewHolder extends RecyclerView.ViewHolder{
         ImageView mImageView;
         TextView mImageTitle;
 
-        ClothingViewHolder(@NonNull View itemView) {
+        ClothingViewHolder(@NonNull View itemView, final OnItemClickListener listener) {
+            // itemView is the whole card
             super(itemView);
             mImageView = itemView.findViewById(R.id.item_image);
             mImageTitle = itemView.findViewById(R.id.item_title);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (listener != null){
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION){
+                            listener.onItemClick(position);
+                        }
+                    }
+                }
+            });
         }
     }
 
@@ -38,7 +67,7 @@ public class ClothingRecyclerAdapter  extends RecyclerView.Adapter<ClothingRecyc
         View v = LayoutInflater.from(parent.getContext()).inflate(
                 R.layout.clothing_item, parent, false);
         v.findViewById(R.id.image_and_text_layout).setClipToOutline(true);
-        ClothingViewHolder evh = new ClothingViewHolder(v);
+        ClothingViewHolder evh = new ClothingViewHolder(v, mListener);
         return evh;
     }
 
@@ -60,4 +89,6 @@ public class ClothingRecyclerAdapter  extends RecyclerView.Adapter<ClothingRecyc
     public int getItemCount() {
         return mClothingItems.size();
     }
+
+
 }
