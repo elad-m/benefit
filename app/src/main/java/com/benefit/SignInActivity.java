@@ -139,22 +139,19 @@ public class SignInActivity extends AppCompatActivity implements OnMapReadyCallb
             }
             else {
                 Query getUserQuery = databaseDriver.getCollectionReferenceByName("users").whereEqualTo("UID", databaseDriver.getAuth().getUid());
-                getUserQuery.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            if (task.getResult().isEmpty()){
-                                Log.d(TAG, "User is not on database. adding user to data base.");
-                            }
-                            else {
-                                for (QueryDocumentSnapshot document : task.getResult()){
-
-                                }
-                            }
-
-                        } else {
-                            Log.d(TAG, "Error getting users documents: ", task.getException());
+                getUserQuery.get().addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        if (task.getResult().isEmpty()){
+                            Log.d(TAG, "User is not on database. adding user to data base.");
                         }
+                        else {
+                            for (QueryDocumentSnapshot document : task.getResult()){
+
+                            }
+                        }
+
+                    } else {
+                        Log.d(TAG, "Error getting users documents: ", task.getException());
                     }
                 });
             }
