@@ -37,7 +37,7 @@ public class Category {
         return level;
     }
 
-    public boolean isLeaf() {
+    public boolean getIsLeaf() {
         return isLeaf;
     }
 }

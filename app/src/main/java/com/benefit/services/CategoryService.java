@@ -1,22 +1,23 @@
 package com.benefit.services;
 
-import androidx.annotation.NonNull;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModel;
 
 import com.benefit.drivers.DatabaseDriver;
 import com.benefit.model.Category;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import com.benefit.model.PropertyName;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Objects;
 
-public class CategoryService {
+/**
+ * A service which responsible for categories' data
+ */
+public class CategoryService extends ViewModel {
     private DatabaseDriver databaseDriver;
     private CollectionReference categoriesCollection;
+    private static final String COLLECTION_NAME_CATEGORY = "categories";
+    private static final String COLLECTION_NAME_PROPERTY_NAME = "property_name";
 
     public CategoryService(DatabaseDriver databaseDriver) {
         this.databaseDriver = databaseDriver;
@@ -27,39 +28,25 @@ public class CategoryService {
         this.categoriesCollection.add(category);
     }
 
-    public Category getCategoryById(int categoryId) {
-        final List<Category> categoriesList = new LinkedList<>();
-        categoriesCollection
-                .whereEqualTo("id", categoryId)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot categoryDocument : Objects.requireNonNull(task.getResult())) {
-                                categoriesList.add(categoryDocument.toObject(Category.class));
-                            }
-                        }
-                    }
-                });
-        return categoriesList.get(0);
+    public MutableLiveData<Category> getCategoryById(int categoryId) {
+        return this.databaseDriver.getSingleDocumentByField(
+                COLLECTION_NAME_CATEGORY, "id", categoryId, Category.class);
     }
 
-    public List<Category> getCategorisByField(String fieldName, String fieldValue) {
-        final List<Category> categoriesList = new LinkedList<>();
-        categoriesCollection
-                .whereEqualTo(fieldName, fieldValue)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot categoryDocument : Objects.requireNonNull(task.getResult())) {
-                                categoriesList.add(categoryDocument.toObject(Category.class));
-                            }
-                        }
-                    }
-                });
-        return categoriesList;
+    public MutableLiveData<List<Category>> getAllMetaCategories() {
+        return getCategoriesByField("level", 0);
+    }
+
+    public MutableLiveData<List<Category>> getChildrenByParentId(int parentId) {
+        return getCategoriesByField("parentId", parentId);
+    }
+
+    public MutableLiveData<List<PropertyName>> getAllPropertiesByCategoryId(int categoryId) {
+        return this.databaseDriver.getDocumentsByField(
+                COLLECTION_NAME_PROPERTY_NAME, "categoryId", categoryId, PropertyName.class);
+    }
+
+    private MutableLiveData<List<Category>> getCategoriesByField(String fieldName, Object fieldValue) {
+        return this.databaseDriver.getDocumentsByField(COLLECTION_NAME_CATEGORY, fieldName, fieldValue, Category.class);
     }
 }
