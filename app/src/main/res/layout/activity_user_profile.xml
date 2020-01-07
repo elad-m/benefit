@@ -3,33 +3,28 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#ffffff"
     android:orientation="vertical"
-    android:background="@color/cardview_light_background"
     tools:context=".UserProfileActivity">
-
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/profile_image"
-        android:layout_width="96dp"
-        android:layout_height="96dp"
-        android:layout_gravity="center"
-        android:background="@color/cardview_light_background"
-        android:src="@drawable/ic_profile"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="Hello, Name Surname!"/>
-    
+        android:text="Hello, Name Surname!" />
+
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/items_recyclerk"
+        android:id="@+id/items_recycler"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="#ffffff"
         android:padding="4dp"
-        android:scrollbars="vertical"
-        android:background="@android:color/darker_gray">
-    </androidx.recyclerview.widget.RecyclerView>
+        android:scrollbars="vertical"/>
 
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
 
 </LinearLayout>
