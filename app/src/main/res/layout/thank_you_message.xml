@@ -20,7 +20,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:text="Your trash is someone else's treasure!"
+        android:text="This will hopefully be someone else's treasure!"
         android:textAlignment="center"
         android:textSize="18sp" />
 

@@ -3,17 +3,18 @@ package com.benefit;
 public class ClothingItem {
 
     private int mImageResource;
-    private String mEdit;
-    private String mChat;
+    private String mTitle;
 
-    public ClothingItem(int imageResource, String edit, String chat){
+    ClothingItem() {
+    }
+
+    ClothingItem(int imageResource, String title) {
         mImageResource = imageResource;
-        mEdit = edit;
-        mChat = chat;
+        mTitle = title;
     }
 
 
-    public int getmImageResource() {
+    int getmImageResource() {
         return mImageResource;
     }
 
@@ -21,19 +22,12 @@ public class ClothingItem {
         this.mImageResource = mImageResource;
     }
 
-    public String getmEdit() {
-        return mEdit;
+
+    public String getmTitle() {
+        return mTitle;
     }
 
-    public void setmEdit(String mEdit) {
-        this.mEdit = mEdit;
-    }
-
-    public String getmChat() {
-        return mChat;
-    }
-
-    public void setmChat(String mChat) {
-        this.mChat = mChat;
+    public void setmTitle(String mTitle) {
+        this.mTitle = mTitle;
     }
 }
