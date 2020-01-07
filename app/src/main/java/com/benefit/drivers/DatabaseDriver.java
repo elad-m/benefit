@@ -59,7 +59,7 @@ public class DatabaseDriver {
     public <T> LiveData<T> getSingleDocumentByField(String collectionName, String fieldName, Object fieldValue, final Class<T> typeParameterClass) {
         final List<T> documentsList = new LinkedList<>();
         final MutableLiveData<T> resultsLiveData = new MutableLiveData<>();
-        getCollectionByName(collectionName)
+        getCollectionReferenceByName(collectionName)
                 .whereEqualTo(fieldName, fieldValue)
                 .get()
                 .addOnCompleteListener(task -> {
@@ -83,7 +83,7 @@ public class DatabaseDriver {
     public <T> LiveData<List<T>> getDocumentsByField(String collectionName, String fieldName, List<Object> fieldValue, final Class<T> typeParameterClass) {
         final List<T> documentsList = new LinkedList<>();
         final MutableLiveData<List<T>> resultsLiveData = new MutableLiveData<>();
-        getCollectionByName(collectionName)
+        getCollectionReferenceByName(collectionName)
                 .whereIn(fieldName, fieldValue)
                 .get()
                 .addOnCompleteListener(task -> {
