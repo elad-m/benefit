@@ -1,6 +1,8 @@
 package com.benefit;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -8,12 +10,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
+/**
+ * Present to the user its items (i.e. products). User can add, remove, open chat and edit its items.
+ */
 public class UserProfileActivity extends AppCompatActivity {
 
     private RecyclerView mRecyclerView;
-    private RecyclerView.Adapter mAdapter;
+    private ClothingRecyclerAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-
+    ArrayList<ClothingItem> mClothingItems = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,20 +26,41 @@ public class UserProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_user_profile);
 
         // recycler elements
-        ArrayList<ClothingItem> clothingItems = new ArrayList<>();
-        clothingItems.add(new ClothingItem(R.drawable.my_shoes, "Shoes"));
-        clothingItems.add(new ClothingItem(R.drawable.my_shoes, "Shoes another"));
-        clothingItems.add(new ClothingItem(R.drawable.my_shoes, "Shoes 3"));
+        mClothingItems.add(new ClothingItem(R.drawable.my_shoes, "Shoes"));
+        mClothingItems.add(new ClothingItem(R.drawable.my_pants, "Pants"));
+        mClothingItems.add(new ClothingItem(R.drawable.my_tshirt, "T-Shirt"));
 
+        buildRecyclerView();
+    }
+
+    private void buildRecyclerView() {
         // recycler itself
         mRecyclerView = findViewById(R.id.items_recycler);
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new GridLayoutManager(this, 2);
-        mAdapter = new ClothingRecyclerAdapter(clothingItems);
+        mAdapter = new ClothingRecyclerAdapter(mClothingItems);
+
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
 
-
+        mAdapter.setOnItemClickListener(new ClothingRecyclerAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                String message = mClothingItems.get(position).getmTitle() + "was pressed";
+                makeToast(message);
+            }
+        });
     }
 
+    private void makeToast(String msg) {
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+    }
+
+    public void onClickEdit(View view) {
+        Toast.makeText(this, "Edit button was pressed", Toast.LENGTH_SHORT).show();
+    }
+
+    public void onClickChat(View view) {
+        Toast.makeText(this, "Chat button was pressed", Toast.LENGTH_SHORT).show();
+    }
 }

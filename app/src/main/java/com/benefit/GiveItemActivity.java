@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * This activity is used when the user wants to give/upload/offer to his profile.
+ * This activity is used when the user wants to give/upload/offer item to his profile.
  */
 public class GiveItemActivity extends AppCompatActivity {
 
