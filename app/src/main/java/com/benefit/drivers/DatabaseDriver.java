@@ -11,6 +11,7 @@ import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.Collections;
@@ -56,7 +57,7 @@ public class DatabaseDriver {
     public <T> MutableLiveData<T> getSingleDocumentByField(String collectionName, String fieldName, Object fieldValue, final Class<T> typeParameterClass) {
         final List<T> documentsList = new LinkedList<>();
         final MutableLiveData<T> resultsLiveData = new MutableLiveData<>();
-        getCollectionByName(collectionName)
+        getCollectionReferenceByName(collectionName)
                 .whereEqualTo(fieldName, fieldValue)
                 .get()
                 .addOnCompleteListener(task -> {
@@ -80,7 +81,7 @@ public class DatabaseDriver {
     public <T> MutableLiveData<List<T>> getDocumentsByField(String collectionName, String fieldName, List<Object> fieldValue, final Class<T> typeParameterClass) {
         final List<T> documentsList = new LinkedList<>();
         final MutableLiveData<List<T>> resultsLiveData = new MutableLiveData<>();
-        getCollectionByName(collectionName)
+        getCollectionReferenceByName(collectionName)
                 .whereIn(fieldName, fieldValue)
                 .get()
                 .addOnCompleteListener(task -> {

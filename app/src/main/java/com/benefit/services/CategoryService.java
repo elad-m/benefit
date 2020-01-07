@@ -21,7 +21,7 @@ public class CategoryService extends ViewModel {
 
     public CategoryService(DatabaseDriver databaseDriver) {
         this.databaseDriver = databaseDriver;
-        this.categoriesCollection = this.databaseDriver.getCollectionByName("categories");
+        this.categoriesCollection = this.databaseDriver.getCollectionReferenceByName("categories");
     }
 
     public void addCategory(Category category) {

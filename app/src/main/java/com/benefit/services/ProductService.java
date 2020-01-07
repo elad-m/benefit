@@ -32,7 +32,7 @@ public class ProductService extends ViewModel {
 
     public ProductService(DatabaseDriver databaseDriver) {
         this.databaseDriver = databaseDriver;
-        this.productsCollection = this.databaseDriver.getCollectionByName("products");
+        this.productsCollection = this.databaseDriver.getCollectionReferenceByName("products");
     }
 
     public void addProduct(Product product) {
@@ -54,7 +54,7 @@ public class ProductService extends ViewModel {
     public MutableLiveData<List<Product>> getProductsByProperties(int categoryId, Map<String, String> propertiesMap) {
         final List<Product> productsList = new LinkedList<>();
         final MutableLiveData<List<Product>> resultsLiveData = new MutableLiveData<>();
-        this.databaseDriver.getCollectionByName(COLLECTION_NAME)
+        this.databaseDriver.getCollectionReferenceByName(COLLECTION_NAME)
                 .whereEqualTo("categoryId", categoryId)
                 .get()
                 .addOnCompleteListener(task -> {
