@@ -40,7 +40,9 @@ public class DatabaseDriver {
                         for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
                             documentsList.add(document.toObject(typeParameterClass));
                         }
-                        resultsLiveData.setValue(documentsList.get(0));
+                        if (!documentsList.isEmpty()) {
+                            resultsLiveData.setValue(documentsList.get(0));
+                        }
                     }
                 })
                 .addOnFailureListener(e -> Log.w(TAG, "Error on getSingleDocumentByField", e));
