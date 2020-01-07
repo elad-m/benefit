@@ -13,7 +13,9 @@ import com.benefit.model.Chat;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 
-
+/**
+ * An adapter for chat queries
+ */
 public class ChatAdapter extends FirestoreRecyclerAdapter<Chat, ChatAdapter.ChatMassageHolder> {
 
     static class ChatMassageHolder extends RecyclerView.ViewHolder {

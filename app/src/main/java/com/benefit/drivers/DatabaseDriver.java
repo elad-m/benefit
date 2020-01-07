@@ -13,6 +13,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * A driver for dealing with FireBase database
+ */
 public class DatabaseDriver {
     private FirebaseFirestore db;
     private static final String TAG = "DatabaseDriver";

@@ -21,6 +21,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+/**
+ * A service which responsible for products' data
+ */
 public class ProductService extends ViewModel {
     private DatabaseDriver databaseDriver;
     private CollectionReference productsCollection;

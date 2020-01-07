@@ -10,6 +10,9 @@ import com.google.firebase.firestore.CollectionReference;
 
 import java.util.List;
 
+/**
+ * A service which responsible for categories' data
+ */
 public class CategoryService extends ViewModel {
     private DatabaseDriver databaseDriver;
     private CollectionReference categoriesCollection;
