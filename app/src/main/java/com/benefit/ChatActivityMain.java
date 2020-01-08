@@ -1,9 +1,11 @@
 package com.benefit;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -11,14 +13,16 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
 import com.benefit.drivers.DatabaseDriver;
+import com.benefit.model.User;
 import com.benefit.services.ChatService;
-import com.benefit.viewmodel.ChatActivityViewModel;
+import com.benefit.services.UserService;
 
 public class ChatActivityMain extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     private DatabaseDriver databaseDriver;
+    private UserService userService;
     private ChatService chatService;
-    private ChatActivityViewModel cViewModel;
+    private User currentUser;
     private Spinner sortMassagesSpinner;
     private RecyclerView conversationRecyclerView;
     private int sortChoice;
@@ -31,14 +35,20 @@ public class ChatActivityMain extends AppCompatActivity implements AdapterView.O
 
         databaseDriver = new DatabaseDriver();
 
-        // View model
-        cViewModel = ViewModelProviders.of(this).get(ChatActivityViewModel.class);
+        // initiate user
+        userService = ViewModelProviders.of(this).get(UserService.class);
+        userService.getCurrentUser().observe(this, user -> currentUser = user);
 
         //initiate sort spinner
         initiateSortSpinner();
+    }
 
-
-
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (userService.shouldSignIn()){
+            userService.startSignIn(this, UserService.RC_SIGN_IN);
+        }
     }
 
     private void initiateSortSpinner(){
@@ -58,5 +68,13 @@ public class ChatActivityMain extends AppCompatActivity implements AdapterView.O
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == UserService.RC_SIGN_IN){
+            userService.handleOnSignInResult(UserService.RC_SIGN_IN, resultCode, this);
+        }
     }
 }
