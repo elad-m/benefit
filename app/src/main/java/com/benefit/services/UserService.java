@@ -44,7 +44,7 @@ public class UserService extends ViewModel {
     }
 
     public boolean shouldSignIn(){
-        return !mIsSigningIn && isSignIn();
+        return !mIsSigningIn && !isSignIn();
     }
 
     public String getUserUid(){
@@ -95,11 +95,18 @@ public class UserService extends ViewModel {
     }
 
     public LiveData<User> getCurrentUser(){
+        if (user == null) {
+            user = new MutableLiveData<>();
+        }
         return user;
     }
 
     public void setCurrentUser(User user){
         this.user.setValue(user);
+    }
+
+    public void addNewUser(User user){
+        usersCollectionRef.add(user);
     }
 
 }
