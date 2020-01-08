@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.benefit.drivers.DatabaseDriver;
 import com.benefit.model.Category;
+import com.benefit.model.CategoryCluster;
 import com.benefit.model.PropertyName;
 import com.google.firebase.firestore.CollectionReference;
 
@@ -18,6 +19,7 @@ public class CategoryService extends ViewModel {
     private CollectionReference categoriesCollection;
     private static final String COLLECTION_NAME_CATEGORY = "categories";
     private static final String COLLECTION_NAME_PROPERTY_NAME = "property_name";
+    private static final String COLLECTION_NAME_CATEGORY_CLUSTER = "category_cluster";
 
     public CategoryService(DatabaseDriver databaseDriver) {
         this.databaseDriver = databaseDriver;
@@ -44,6 +46,10 @@ public class CategoryService extends ViewModel {
     public MutableLiveData<List<PropertyName>> getAllPropertiesByCategoryId(int categoryId) {
         return this.databaseDriver.getDocumentsByField(
                 COLLECTION_NAME_PROPERTY_NAME, "categoryId", categoryId, PropertyName.class);
+    }
+
+    public MutableLiveData<List<CategoryCluster>> getAllHomepageCategoryClusters() {
+        return this.databaseDriver.getDocumentsByField(COLLECTION_NAME_CATEGORY_CLUSTER, "type", "homepage", CategoryCluster.class);
     }
 
     private MutableLiveData<List<Category>> getCategoriesByField(String fieldName, Object fieldValue) {
