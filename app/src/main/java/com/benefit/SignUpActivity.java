@@ -267,13 +267,14 @@ public class SignUpActivity extends AppCompatActivity implements OnMapReadyCallb
             }
         }
         else {
-            if(lastName.toString().isEmpty()){
+            if(lastName.isEmpty()){
                 Toast.makeText(this, getString(R.string.enter_last_name), Toast.LENGTH_LONG).show();
             }
             else {
                 user.setFirstName(firstName);
                 user.setLastName(lastName);
                 user.setAddress(address);
+                userService.addNewUser(user);
                 userService.setCurrentUser(user);
                 finish();
             }
