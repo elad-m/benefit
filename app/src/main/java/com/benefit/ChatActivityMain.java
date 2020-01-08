@@ -13,7 +13,6 @@ import android.widget.Spinner;
 import com.benefit.drivers.DatabaseDriver;
 import com.benefit.services.ChatService;
 import com.benefit.viewmodel.ChatActivityViewModel;
-import com.benefit.viewmodel.SignInViewModel;
 
 public class ChatActivityMain extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 

@@ -6,7 +6,8 @@
     android:layout_height="match_parent"
     android:gravity="left"
     android:orientation="vertical"
-    tools:context=".SignInActivity">
+    tools:context=".SignUpActivity">
+    <!--TODO: replace with scroll view-->
 
 
     <TextView
@@ -15,7 +16,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="8dp"
-        android:text="Please enter your account details"
+        android:text="@string/sign_up_title"
         android:textSize="18sp" />
 
     <EditText
@@ -24,7 +25,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
         android:ems="10"
-        android:hint="First Name"
+        android:hint="@string/first_name_field"
         android:inputType="textPersonName" />
 
 
@@ -34,7 +35,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
         android:ems="10"
-        android:hint="Last Name"
+        android:hint="@string/last_name_field"
         android:inputType="textPersonName" />
 
 
@@ -44,7 +45,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
         android:ems="10"
-        android:hint="Address"
+        android:hint="@string/address_field"
         android:inputType="textMultiLine" />
 
     <TextView
@@ -53,7 +54,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="24dp"
         android:ems="10"
-        android:text="Your loction" />
+        android:text="@string/map_field_title" />
 
     <fragment
         android:id="@+id/googleMapFragment"
@@ -66,7 +67,7 @@
         android:layout_marginTop="12dp"
         android:layout_marginEnd="12dp"
         android:layout_marginRight="12dp"
-        tools:context="com.benefit.SignInActivity"/>
+        tools:context="com.benefit.SignUpActivity"/>
 
     <Button
         android:id="@+id/button_done"
@@ -74,6 +75,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="32dp"
-        android:text="Done" />
+        android:text="@string/done_button"
+        android:onClick="onDoneClicked"/>
 
 </LinearLayout>

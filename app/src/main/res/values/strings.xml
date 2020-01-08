@@ -1,7 +1,13 @@
 <resources>
     <string name="app_name">Benefit</string>
     <string name="chat_title">Your Chatbox</string>
-    
+    <string name="sign_up_title">Please enter your account details</string>
+    <string name="first_name_field">First Name</string>
+    <string name="last_name_field">Last Name</string>
+    <string name="address_field">Address</string>
+    <string name="map_field_title">Your loction</string>
+    <string name="done_button">Done</string>
+
     <string-array name="chat_sort_options">
         <item>your items</item>
         <item>wanted items</item>
