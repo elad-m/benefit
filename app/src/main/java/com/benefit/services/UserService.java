@@ -5,10 +5,11 @@ import android.content.Intent;
 import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.benefit.SignInActivity;
+import com.benefit.SignUpActivity;
 import com.benefit.drivers.DatabaseDriver;
 import com.benefit.model.User;
 import com.firebase.ui.auth.AuthUI;
@@ -38,7 +39,11 @@ public class UserService extends ViewModel {
     }
 
     public boolean isSignIn(){
-        return (!mIsSigningIn && databaseDriver.isSignIn());
+        return databaseDriver.isSignIn();
+    }
+
+    public String getUserUid(){
+        return databaseDriver.getAuth().getUid();
     }
 
     public void startSignIn(AppCompatActivity activity, int signInRequestCode){
@@ -62,7 +67,7 @@ public class UserService extends ViewModel {
                 if (task.isSuccessful()) {
                     if (task.getResult().isEmpty()){
                         Log.d(TAG, "User is not on database. Starting sign up for new user.");
-                        Intent intent = new Intent(activity, SignInActivity.class);
+                        Intent intent = new Intent(activity, SignUpActivity.class);
                         activity.startActivity(intent);
                         //need to get user from SigmUpActivity...
                     }
@@ -83,11 +88,14 @@ public class UserService extends ViewModel {
                 startSignIn(activity, signInRequestCode);
             }
         }
-
     }
 
-    public MutableLiveData<User> getCurrentUser(){
+    public LiveData<User> getCurrentUser(){
         return user;
+    }
+
+    public void setCurrentUser(User user){
+        this.user.setValue(user);
     }
 
 }

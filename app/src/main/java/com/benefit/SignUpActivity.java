@@ -6,16 +6,15 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProviders;
 
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 
-import com.benefit.drivers.DatabaseDriver;
 import com.benefit.model.User;
-import com.benefit.viewmodel.SignInViewModel;
-import com.firebase.ui.auth.AuthUI;
+import com.benefit.services.UserService;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -29,22 +28,16 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
-import java.util.Arrays;
+public class SignUpActivity extends AppCompatActivity implements OnMapReadyCallback, OnMarkerDragListener {
 
-public class SignInActivity extends AppCompatActivity implements OnMapReadyCallback, OnMarkerDragListener {
-
-    private static final String TAG = SignInViewModel.class.getSimpleName();
+    private static final String TAG = SignUpActivity.class.getSimpleName();
     private static final int RC_SIGN_IN = 9001;
     private GoogleMap mMap;
     private CameraPosition mCameraPosition;
 
-    private DatabaseDriver databaseDriver;
+    private UserService userService;
     private User user;
-    private SignInViewModel sViewModel;
 
     // The entry point to the Fused Location Provider.
     private FusedLocationProviderClient mFusedLocationProviderClient;
@@ -75,12 +68,7 @@ public class SignInActivity extends AppCompatActivity implements OnMapReadyCallb
             mCameraPosition = savedInstanceState.getParcelable(KEY_CAMERA_POSITION);
         }
 
-        setContentView(R.layout.activity_sign_in);
-
-        databaseDriver = new DatabaseDriver();
-
-        // View model
-        sViewModel = ViewModelProviders.of(this).get(SignInViewModel.class);
+        setContentView(R.layout.activity_sign_up);
 
         // Construct a FusedLocationProviderClient.
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
@@ -89,6 +77,24 @@ public class SignInActivity extends AppCompatActivity implements OnMapReadyCallb
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.googleMapFragment);
         mapFragment.getMapAsync(this);
+
+        //get UserService
+        userService = ViewModelProviders.of(this).get(UserService.class);
+
+        //initiate user object
+        initiateUser();
+    }
+
+
+    private void initiateUser(){
+        if (!userService.isSignIn()){ //sanity check
+            Log.d(TAG, "Error - should nor start SignUpActivity before initiate FireBase sign in.");
+            finish();
+        }
+        else {
+            user = new User(userService.getUserUid());
+            user.setRating(0);
+        }
     }
 
     /**
@@ -103,60 +109,6 @@ public class SignInActivity extends AppCompatActivity implements OnMapReadyCallb
         }
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        if (shouldStartSignIn()){
-            startSignIn();
-            return;
-        }
-    }
-
-    private void startSignIn(){
-        Intent intent = AuthUI.getInstance().createSignInIntentBuilder()
-                .setAvailableProviders(Arrays.asList(
-                new AuthUI.IdpConfig.EmailBuilder().build(),
-                new AuthUI.IdpConfig.PhoneBuilder().build(),
-                new AuthUI.IdpConfig.GoogleBuilder().build()))
-                .setIsSmartLockEnabled(false)
-                .build();
-        startActivityForResult(intent, RC_SIGN_IN);
-        sViewModel.setIsSigningIn(true);
-    }
-
-    private boolean shouldStartSignIn() {
-        return (!sViewModel.getIsSigningIn() && !databaseDriver.isSignIn());
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == RC_SIGN_IN) {
-            sViewModel.setIsSigningIn(false);
-
-            if (resultCode != RESULT_OK && !databaseDriver.isSignIn()) {
-                startSignIn();
-            }
-            else {
-                Query getUserQuery = databaseDriver.getCollectionReferenceByName("users").whereEqualTo("UID", databaseDriver.getAuth().getUid());
-                getUserQuery.get().addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        if (task.getResult().isEmpty()){
-                            Log.d(TAG, "User is not on database. adding user to data base.");
-                        }
-                        else {
-                            for (QueryDocumentSnapshot document : task.getResult()){
-
-                            }
-                        }
-
-                    } else {
-                        Log.d(TAG, "Error getting users documents: ", task.getException());
-                    }
-                });
-            }
-        }
-    }
     /**
      * Prompts the user for permission to use the device location.
      */
@@ -237,6 +189,7 @@ public class SignInActivity extends AppCompatActivity implements OnMapReadyCallb
                             // Set the map's camera position to the current location of the device
                             // and add a marker.
                             mLastKnownLocation = task.getResult();
+                            user.setLocation(mLastKnownLocation);
                             LatLng currentLocation = new LatLng(mLastKnownLocation.getLatitude(),
                                             mLastKnownLocation.getLongitude());
                             mSelectedLocation = mMap.addMarker(new MarkerOptions()
@@ -287,6 +240,15 @@ public class SignInActivity extends AppCompatActivity implements OnMapReadyCallb
 
     @Override
     public void onMarkerDragEnd(Marker marker) {
+        if (marker == mSelectedLocation){
+            Location chosenLocation = new Location(LocationManager.GPS_PROVIDER);
+            chosenLocation.setLatitude(marker.getPosition().latitude);
+            chosenLocation.setLongitude(marker.getPosition().longitude);
+            user.setLocation(chosenLocation);
+        }
+    }
 
+    public void onDoneClicked(View view){
+        //to do - implement
     }
 }
