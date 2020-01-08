@@ -12,6 +12,8 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import com.benefit.model.User;
 import com.benefit.services.UserService;
@@ -38,6 +40,7 @@ public class SignUpActivity extends AppCompatActivity implements OnMapReadyCallb
 
     private UserService userService;
     private User user;
+    private EditText firstNameField, lastNameField, addressField;
 
     // The entry point to the Fused Location Provider.
     private FusedLocationProviderClient mFusedLocationProviderClient;
@@ -94,6 +97,9 @@ public class SignUpActivity extends AppCompatActivity implements OnMapReadyCallb
         else {
             user = new User(userService.getUserUid());
             user.setRating(0);
+            firstNameField = findViewById(R.id.first_name_text);
+            lastNameField = findViewById(R.id.last_name_text);
+            addressField = findViewById(R.id.address_text);
         }
     }
 
@@ -249,6 +255,28 @@ public class SignUpActivity extends AppCompatActivity implements OnMapReadyCallb
     }
 
     public void onDoneClicked(View view){
-        //to do - implement
+        String firstName = firstNameField.getText().toString();
+        String lastName= lastNameField.getText().toString();
+        String address = addressField.getText().toString();
+        if (firstName.isEmpty()){
+            if(lastName.isEmpty()){
+                Toast.makeText(this, getString(R.string.enter_first_and_last_name), Toast.LENGTH_LONG).show();
+            }
+            else {
+                Toast.makeText(this, getString(R.string.enter_first_name), Toast.LENGTH_LONG).show();
+            }
+        }
+        else {
+            if(lastName.toString().isEmpty()){
+                Toast.makeText(this, getString(R.string.enter_last_name), Toast.LENGTH_LONG).show();
+            }
+            else {
+                user.setFirstName(firstName);
+                user.setLastName(lastName);
+                user.setAddress(address);
+                userService.setCurrentUser(user);
+                finish();
+            }
+        }
     }
 }
