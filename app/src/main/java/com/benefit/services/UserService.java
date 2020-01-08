@@ -31,6 +31,7 @@ public class UserService extends ViewModel {
     private MutableLiveData<User> user;
     private static final String COLLECTION_NAME = "users";
     private static final String TAG = UserService.class.getSimpleName();
+    public static final int RC_SIGN_IN = 9001;
 
     public UserService(){
         this.databaseDriver = new DatabaseDriver();
@@ -40,6 +41,10 @@ public class UserService extends ViewModel {
 
     public boolean isSignIn(){
         return databaseDriver.isSignIn();
+    }
+
+    public boolean shouldSignIn(){
+        return !mIsSigningIn && isSignIn();
     }
 
     public String getUserUid(){
@@ -69,7 +74,6 @@ public class UserService extends ViewModel {
                         Log.d(TAG, "User is not on database. Starting sign up for new user.");
                         Intent intent = new Intent(activity, SignUpActivity.class);
                         activity.startActivity(intent);
-                        //need to get user from SigmUpActivity...
                     }
                     else {
                         for (QueryDocumentSnapshot document : task.getResult()){
