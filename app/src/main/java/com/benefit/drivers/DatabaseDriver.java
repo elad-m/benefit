@@ -5,7 +5,9 @@ import android.util.Log;
 import androidx.lifecycle.MutableLiveData;
 
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.Collections;
@@ -71,6 +73,24 @@ public class DatabaseDriver {
                     }
                 })
                 .addOnFailureListener(e -> Log.w(TAG, "Error on getDocumentsByField", e));
+        return resultsLiveData;
+    }
+
+    public MutableLiveData<Boolean> deleteDocumentsByField(String collectionName, String fieldName, Object fieldValue) {
+        final MutableLiveData<Boolean> resultsLiveData = new MutableLiveData<>();
+        CollectionReference collectionReference = getCollectionByName(collectionName);
+        Query query = collectionReference.whereEqualTo(fieldName, fieldValue);
+        query.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                for (DocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
+                    collectionReference.document(document.getId()).delete();
+                }
+                resultsLiveData.setValue(true);
+            } else {
+                Log.d(TAG, "Error getting documents in deleteDocumentsByField", task.getException());
+                resultsLiveData.setValue(false);
+            }
+        });
         return resultsLiveData;
     }
 }
