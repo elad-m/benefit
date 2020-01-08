@@ -39,6 +39,10 @@ public class ProductService extends ViewModel {
         this.productsCollection.add(product);
     }
 
+    public MutableLiveData<Boolean> deleteProduct(int productId) {
+        return this.databaseDriver.deleteDocumentsByField(COLLECTION_NAME, "id", productId);
+    }
+
     public MutableLiveData<Product> getProductsById(int productId) {
         return this.databaseDriver.getSingleDocumentByField(COLLECTION_NAME, "id", productId, Product.class);
     }
