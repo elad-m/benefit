@@ -2,10 +2,12 @@ package com.benefit.model;
 
 import android.location.Location;
 
+import java.io.Serializable;
+
 /**
  * Model POJO for user with location and rating.
  */
-public class User {
+public class User implements Serializable {
 
     private String uid;
     private String firstName;
