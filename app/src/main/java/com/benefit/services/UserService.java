@@ -32,6 +32,8 @@ public class UserService extends ViewModel {
     private static final String COLLECTION_NAME = "users";
     private static final String TAG = UserService.class.getSimpleName();
     public static final int RC_SIGN_IN = 9001;
+    public static final int RC_SIGN_UP = 9002;
+    public static final String UID = "UID";
 
     public UserService(){
         this.databaseDriver = new DatabaseDriver();
@@ -51,7 +53,7 @@ public class UserService extends ViewModel {
         return databaseDriver.getAuth().getUid();
     }
 
-    public void startSignIn(AppCompatActivity activity, int signInRequestCode){
+    public void startSignIn(AppCompatActivity activity){
         Intent intent = AuthUI.getInstance().createSignInIntentBuilder()
                 .setAvailableProviders(Arrays.asList(
                         new AuthUI.IdpConfig.EmailBuilder().build(),
@@ -59,37 +61,46 @@ public class UserService extends ViewModel {
                         new AuthUI.IdpConfig.GoogleBuilder().build()))
                 .setIsSmartLockEnabled(false)
                 .build();
-        activity.startActivityForResult(intent, signInRequestCode);
+        activity.startActivityForResult(intent, RC_SIGN_IN);
         mIsSigningIn = true;
     }
 
-    public void handleOnSignInResult(int signInRequestCode, int resultCode, AppCompatActivity activity){
-        final List<User> documentsList = new LinkedList<>();
-        mIsSigningIn = false;
-        if(resultCode == Activity.RESULT_OK){
-            Query getUserQuery = usersCollectionRef.whereEqualTo("uid", databaseDriver.getAuth().getUid());
-            getUserQuery.get().addOnCompleteListener(task -> {
-                if (task.isSuccessful()) {
-                    if (task.getResult().isEmpty()){
-                        Log.d(TAG, "User is not on database. Starting sign up for new user.");
-                        Intent intent = new Intent(activity, SignUpActivity.class);
-                        activity.startActivity(intent);
-                    }
-                    else {
-                        for (QueryDocumentSnapshot document : task.getResult()){
-                            documentsList.add(document.toObject(User.class));
+    public void handleOnSignInResult(int requestCode, int resultCode, Intent data, AppCompatActivity activity) {
+        if (requestCode == RC_SIGN_IN) {
+            final List<User> documentsList = new LinkedList<>();
+            mIsSigningIn = false;
+            if (resultCode == Activity.RESULT_OK) {
+                Query getUserQuery = usersCollectionRef.whereEqualTo("uid", databaseDriver.getAuth().getUid());
+                getUserQuery.get().addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        if (task.getResult().isEmpty()) {
+                            Log.d(TAG, "User is not on database. Starting sign up for new user.");
+                            Intent intent = new Intent(activity, SignUpActivity.class);
+                            activity.startActivityForResult(intent, RC_SIGN_UP);
+                        } else {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                documentsList.add(document.toObject(User.class));
+                            }
+                            user.setValue(documentsList.get(0));
                         }
-                        user.setValue(documentsList.get(0));
+                    } else {
+                        Log.d(TAG, "Error getting users documents: ", task.getException());
                     }
-
-                } else {
-                    Log.d(TAG, "Error getting users documents: ", task.getException());
+                });
+            } else {
+                if (!databaseDriver.isSignIn()) {
+                    startSignIn(activity);
                 }
-            });
+            }
         }
-        else{
-            if (!databaseDriver.isSignIn()){
-                startSignIn(activity, signInRequestCode);
+        if (requestCode == RC_SIGN_UP){
+            User newUser = (User) data.getSerializableExtra(SignUpActivity.USER_REPLY);
+            if (newUser != null) {
+                user.setValue(newUser);
+                usersCollectionRef.add(newUser);
+            }
+            else {
+                Log.d(TAG, "Error! SignUpActivity didn't return user object");
             }
         }
     }
@@ -101,12 +112,5 @@ public class UserService extends ViewModel {
         return user;
     }
 
-    public void setCurrentUser(User user){
-        this.user.setValue(user);
-    }
-
-    public void addNewUser(User user){
-        usersCollectionRef.add(user);
-    }
 
 }

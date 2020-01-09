@@ -6,6 +6,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
@@ -34,11 +35,10 @@ import com.google.android.gms.tasks.Task;
 public class SignUpActivity extends AppCompatActivity implements OnMapReadyCallback, OnMarkerDragListener {
 
     private static final String TAG = SignUpActivity.class.getSimpleName();
-    private static final int RC_SIGN_IN = 9001;
+    public static final String USER_REPLY = "user";
     private GoogleMap mMap;
     private CameraPosition mCameraPosition;
 
-    private UserService userService;
     private User user;
     private EditText firstNameField, lastNameField, addressField;
 
@@ -81,21 +81,20 @@ public class SignUpActivity extends AppCompatActivity implements OnMapReadyCallb
                 .findFragmentById(R.id.googleMapFragment);
         mapFragment.getMapAsync(this);
 
-        //get UserService
-        userService = ViewModelProviders.of(this).get(UserService.class);
-
         //initiate user object
-        initiateUser();
+        String uid = getIntent().getStringExtra(UserService.UID);
+        initiateUser(uid);
     }
 
 
-    private void initiateUser(){
-        if (!userService.isSignIn()){ //sanity check
-            Log.d(TAG, "Error - should nor start SignUpActivity before initiate FireBase sign in.");
+    private void initiateUser(String uid){
+        if (uid == null){ //sanity check
+            Log.d(TAG, "Error - should not start SignUpActivity without uid.");
+            setResult(RESULT_CANCELED);
             finish();
         }
         else {
-            user = new User(userService.getUserUid());
+            user = new User(uid);
             user.setRating(0);
             firstNameField = findViewById(R.id.first_name_text);
             lastNameField = findViewById(R.id.last_name_text);
@@ -274,8 +273,9 @@ public class SignUpActivity extends AppCompatActivity implements OnMapReadyCallb
                 user.setFirstName(firstName);
                 user.setLastName(lastName);
                 user.setAddress(address);
-                userService.addNewUser(user);
-                userService.setCurrentUser(user);
+                Intent replyIntent  = new Intent();
+                replyIntent.putExtra(USER_REPLY, user);
+                setResult(RESULT_OK, replyIntent);
                 finish();
             }
         }

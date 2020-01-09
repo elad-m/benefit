@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.benefit.drivers.DatabaseDriver;
 import com.benefit.model.User;
@@ -37,7 +38,10 @@ public class ChatActivityMain extends AppCompatActivity implements AdapterView.O
 
         // initiate user
         userService = ViewModelProviders.of(this).get(UserService.class);
-        userService.getCurrentUser().observe(this, user -> currentUser = user);
+        userService.getCurrentUser().observe(this, user -> {
+                    currentUser = user;
+                    Toast.makeText(this,"welcome user!", Toast.LENGTH_LONG);
+                });
 
         //initiate sort spinner
         initiateSortSpinner();
@@ -47,7 +51,7 @@ public class ChatActivityMain extends AppCompatActivity implements AdapterView.O
     protected void onStart() {
         super.onStart();
         if (userService.shouldSignIn()){
-            userService.startSignIn(this, UserService.RC_SIGN_IN);
+            userService.startSignIn(this);
         }
     }
 
@@ -73,8 +77,6 @@ public class ChatActivityMain extends AppCompatActivity implements AdapterView.O
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == UserService.RC_SIGN_IN){
-            userService.handleOnSignInResult(UserService.RC_SIGN_IN, resultCode, this);
-        }
+        userService.handleOnSignInResult(requestCode, resultCode, data, this);
     }
 }
