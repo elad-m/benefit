@@ -2,6 +2,7 @@ package com.benefit.services;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.location.Location;
 import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -33,7 +34,6 @@ public class UserService extends ViewModel {
     private static final String TAG = UserService.class.getSimpleName();
     public static final int RC_SIGN_IN = 9001;
     public static final int RC_SIGN_UP = 9002;
-    public static final String UID = "UID";
 
     public UserService(){
         this.databaseDriver = new DatabaseDriver();
@@ -46,7 +46,7 @@ public class UserService extends ViewModel {
     }
 
     public boolean shouldSignIn(){
-        return !mIsSigningIn && !isSignIn();
+        return (!mIsSigningIn && !isSignIn());
     }
 
     public String getUserUid(){
@@ -70,7 +70,8 @@ public class UserService extends ViewModel {
             final List<User> documentsList = new LinkedList<>();
             mIsSigningIn = false;
             if (resultCode == Activity.RESULT_OK) {
-                Query getUserQuery = usersCollectionRef.whereEqualTo("uid", databaseDriver.getAuth().getUid());
+                String uid = databaseDriver.getAuth().getUid();
+                Query getUserQuery = usersCollectionRef.whereEqualTo("uid", uid);
                 getUserQuery.get().addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         if (task.getResult().isEmpty()) {
@@ -94,13 +95,15 @@ public class UserService extends ViewModel {
             }
         }
         if (requestCode == RC_SIGN_UP){
-            User newUser = (User) data.getSerializableExtra(SignUpActivity.USER_REPLY);
-            if (newUser != null) {
+            if (resultCode == Activity.RESULT_OK) {
+                User newUser = new User(databaseDriver.getAuth().getUid());
+                newUser.setFirstName(data.getStringExtra(SignUpActivity.USER_FIRST_NAME_REPLY));
+                newUser.setLastName(data.getStringExtra(SignUpActivity.USER_LAST_NAME_REPLY));
+                newUser.setAddress(data.getStringExtra(SignUpActivity.USER_ADDRESS_NAME_REPLY));
+                newUser.setRating(0);
+                newUser.setLocation((Location) data.getParcelableArrayListExtra(SignUpActivity.USER_LOCATION_REPLY).get(0));
                 user.setValue(newUser);
                 usersCollectionRef.add(newUser);
-            }
-            else {
-                Log.d(TAG, "Error! SignUpActivity didn't return user object");
             }
         }
     }

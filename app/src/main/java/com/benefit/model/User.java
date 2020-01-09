@@ -7,7 +7,7 @@ import java.io.Serializable;
 /**
  * Model POJO for user with location and rating.
  */
-public class User implements Serializable {
+public class User {
 
     private String uid;
     private String firstName;
