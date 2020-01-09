@@ -36,6 +36,9 @@ public class ChatActivityMain extends AppCompatActivity implements AdapterView.O
 
         databaseDriver = new DatabaseDriver();
 
+        //testing!
+        //databaseDriver.getAuth().signOut();
+
         // initiate user
         userService = ViewModelProviders.of(this).get(UserService.class);
         userService.getCurrentUser().observe(this, user -> {

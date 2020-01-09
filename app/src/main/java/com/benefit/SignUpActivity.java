@@ -11,13 +11,12 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.benefit.model.User;
-import com.benefit.services.UserService;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -32,14 +31,19 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
+import java.util.ArrayList;
+
 public class SignUpActivity extends AppCompatActivity implements OnMapReadyCallback, OnMarkerDragListener {
 
     private static final String TAG = SignUpActivity.class.getSimpleName();
-    public static final String USER_REPLY = "user";
+    public static final String USER_FIRST_NAME_REPLY = "firstName";
+    public static final String USER_LAST_NAME_REPLY = "lastName";
+    public static final String USER_ADDRESS_NAME_REPLY = "address";
+    public static final String USER_LOCATION_REPLY = "location";
     private GoogleMap mMap;
+    private Location chosenLocation;
     private CameraPosition mCameraPosition;
 
-    private User user;
     private EditText firstNameField, lastNameField, addressField;
 
     // The entry point to the Fused Location Provider.
@@ -71,6 +75,11 @@ public class SignUpActivity extends AppCompatActivity implements OnMapReadyCallb
             mCameraPosition = savedInstanceState.getParcelable(KEY_CAMERA_POSITION);
         }
 
+        //initiate chosenLocation
+        chosenLocation = new Location(LocationManager.GPS_PROVIDER);
+        chosenLocation.setLatitude(mDefaultLocation.latitude);
+        chosenLocation.setLongitude(mDefaultLocation.longitude);
+
         setContentView(R.layout.activity_sign_up);
 
         // Construct a FusedLocationProviderClient.
@@ -81,26 +90,13 @@ public class SignUpActivity extends AppCompatActivity implements OnMapReadyCallb
                 .findFragmentById(R.id.googleMapFragment);
         mapFragment.getMapAsync(this);
 
-        //initiate user object
-        String uid = getIntent().getStringExtra(UserService.UID);
-        initiateUser(uid);
+        //set views objects
+        firstNameField = findViewById(R.id.first_name_text);
+        lastNameField = findViewById(R.id.last_name_text);
+        addressField = findViewById(R.id.address_text);
+
     }
 
-
-    private void initiateUser(String uid){
-        if (uid == null){ //sanity check
-            Log.d(TAG, "Error - should not start SignUpActivity without uid.");
-            setResult(RESULT_CANCELED);
-            finish();
-        }
-        else {
-            user = new User(uid);
-            user.setRating(0);
-            firstNameField = findViewById(R.id.first_name_text);
-            lastNameField = findViewById(R.id.last_name_text);
-            addressField = findViewById(R.id.address_text);
-        }
-    }
 
     /**
      * Saves the state of the map when the activity is paused.
@@ -194,7 +190,7 @@ public class SignUpActivity extends AppCompatActivity implements OnMapReadyCallb
                             // Set the map's camera position to the current location of the device
                             // and add a marker.
                             mLastKnownLocation = task.getResult();
-                            user.setLocation(mLastKnownLocation);
+                            chosenLocation = mLastKnownLocation;
                             LatLng currentLocation = new LatLng(mLastKnownLocation.getLatitude(),
                                             mLastKnownLocation.getLongitude());
                             mSelectedLocation = mMap.addMarker(new MarkerOptions()
@@ -246,10 +242,8 @@ public class SignUpActivity extends AppCompatActivity implements OnMapReadyCallb
     @Override
     public void onMarkerDragEnd(Marker marker) {
         if (marker == mSelectedLocation){
-            Location chosenLocation = new Location(LocationManager.GPS_PROVIDER);
             chosenLocation.setLatitude(marker.getPosition().latitude);
             chosenLocation.setLongitude(marker.getPosition().longitude);
-            user.setLocation(chosenLocation);
         }
     }
 
@@ -270,11 +264,13 @@ public class SignUpActivity extends AppCompatActivity implements OnMapReadyCallb
                 Toast.makeText(this, getString(R.string.enter_last_name), Toast.LENGTH_LONG).show();
             }
             else {
-                user.setFirstName(firstName);
-                user.setLastName(lastName);
-                user.setAddress(address);
                 Intent replyIntent  = new Intent();
-                replyIntent.putExtra(USER_REPLY, user);
+                replyIntent.putExtra(USER_FIRST_NAME_REPLY, firstName);
+                replyIntent.putExtra(USER_LAST_NAME_REPLY, lastName);
+                replyIntent.putExtra(USER_ADDRESS_NAME_REPLY, address);
+                ArrayList<Parcelable> locationList = new ArrayList<>();
+                locationList.add(chosenLocation);
+                replyIntent.putParcelableArrayListExtra(USER_LOCATION_REPLY, locationList);
                 setResult(RESULT_OK, replyIntent);
                 finish();
             }
