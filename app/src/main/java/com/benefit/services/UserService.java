@@ -70,8 +70,7 @@ public class UserService extends ViewModel {
             final List<User> documentsList = new LinkedList<>();
             mIsSigningIn = false;
             if (resultCode == Activity.RESULT_OK) {
-                String uid = databaseDriver.getAuth().getUid();
-                Query getUserQuery = usersCollectionRef.whereEqualTo("uid", uid);
+                Query getUserQuery = usersCollectionRef.whereEqualTo("uid", getUserUid());
                 getUserQuery.get().addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         if (task.getResult().isEmpty()) {
@@ -111,6 +110,9 @@ public class UserService extends ViewModel {
     public LiveData<User> getCurrentUser(){
         if (user == null) {
             user = new MutableLiveData<>();
+            if(databaseDriver.isSignIn()){
+                user = databaseDriver.getSingleDocumentByField(COLLECTION_NAME, "uid", getUserUid(), User.class);
+            }
         }
         return user;
     }
