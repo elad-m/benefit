@@ -32,7 +32,7 @@ public class ProductService extends ViewModel {
 
     public ProductService(DatabaseDriver databaseDriver) {
         this.databaseDriver = databaseDriver;
-        this.productsCollection = this.databaseDriver.getCollectionByName("products");
+        this.productsCollection = this.databaseDriver.getCollectionByName(COLLECTION_NAME);
     }
 
     public void addProduct(Product product) {
