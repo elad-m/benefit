@@ -61,20 +61,21 @@ public class SearchService extends ViewModel {
         return resultsLiveData;
     }
 
-    private Boolean isProductFitsKeywords(Product product, String[] keywords) {
-        for (String keyword : keywords) {
-            if (!(product.getTitle().contains(keyword) || product.getDescription().contains(keyword))) {
-                return false;
-            }
-        }
-        return true;
-    }
-
     private String[] tokenizeString(String string) {
         String[] tokenized = string.split(" ");
         for (int i = 0; i < tokenized.length; i++) {
             tokenized[i] = tokenized[i].toLowerCase();
         }
         return tokenized;
+    }
+
+    private Boolean isProductFitsKeywords(Product product, String[] keywords) {
+        for (String keyword : keywords) {
+            if (!(product.getTitle().toLowerCase().contains(keyword) ||
+                    product.getDescription().toLowerCase().contains(keyword))) {
+                return false;
+            }
+        }
+        return true;
     }
 }
