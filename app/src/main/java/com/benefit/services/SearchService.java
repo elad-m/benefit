@@ -35,7 +35,7 @@ public class SearchService extends ViewModel {
     }
 
     public MutableLiveData<List<Product>> getProductsBySearchString(String searchQuery, int categoryId) {
-        String[] keywords = searchQuery.split(" ");
+        String[] keywords = tokenizeString(searchQuery);
         final List<Product> productsList = new LinkedList<>();
         final MutableLiveData<List<Product>> resultsLiveData = new MutableLiveData<>();
         Task<QuerySnapshot> querySnapshotTask;
@@ -68,5 +68,13 @@ public class SearchService extends ViewModel {
             }
         }
         return true;
+    }
+
+    private String[] tokenizeString(String string) {
+        String[] tokenized = string.split(" ");
+        for (int i = 0; i < tokenized.length; i++) {
+            tokenized[i] = tokenized[i].toLowerCase();
+        }
+        return tokenized;
     }
 }
