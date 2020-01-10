@@ -40,9 +40,9 @@ public class SearchService extends ViewModel {
         final MutableLiveData<List<Product>> resultsLiveData = new MutableLiveData<>();
         Task<QuerySnapshot> querySnapshotTask;
         if (categoryId < 0) {
-            querySnapshotTask = this.databaseDriver.getCollectionByName(COLLECTION_NAME_PRODUCTS).get();
+            querySnapshotTask = this.productsCollection.get();
         } else {
-            querySnapshotTask = this.databaseDriver.getCollectionByName(COLLECTION_NAME_PRODUCTS).whereEqualTo("categoryId", categoryId).get();
+            querySnapshotTask = this.productsCollection.whereEqualTo("categoryId", categoryId).get();
 
         }
         querySnapshotTask
