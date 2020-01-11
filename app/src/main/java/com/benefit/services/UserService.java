@@ -35,25 +35,25 @@ public class UserService extends ViewModel {
     public static final int RC_SIGN_IN = 9001;
     public static final int RC_SIGN_UP = 9002;
 
-    public UserService(){
+    public UserService() {
         this.databaseDriver = new DatabaseDriver();
         mIsSigningIn = false;
         usersCollectionRef = databaseDriver.getCollectionReferenceByName(COLLECTION_NAME);
     }
 
-    public boolean isSignIn(){
+    public boolean isSignIn() {
         return databaseDriver.isSignIn();
     }
 
-    public boolean shouldSignIn(){
+    public boolean shouldSignIn() {
         return (!mIsSigningIn && !isSignIn());
     }
 
-    public String getUserUid(){
+    public String getUserUid() {
         return databaseDriver.getAuth().getUid();
     }
 
-    public void startSignIn(AppCompatActivity activity){
+    public void startSignIn(AppCompatActivity activity) {
         Intent intent = AuthUI.getInstance().createSignInIntentBuilder()
                 .setAvailableProviders(Arrays.asList(
                         new AuthUI.IdpConfig.EmailBuilder().build(),
@@ -68,7 +68,6 @@ public class UserService extends ViewModel {
     public void handleOnSignInResult(int requestCode, int resultCode, Intent data, AppCompatActivity activity) {
         if (requestCode == RC_SIGN_IN) {
             final List<User> documentsList = new LinkedList<>();
-            mIsSigningIn = false;
             if (resultCode == Activity.RESULT_OK) {
                 Query getUserQuery = usersCollectionRef.whereEqualTo("uid", getUserUid());
                 getUserQuery.get().addOnCompleteListener(task -> {
@@ -82,6 +81,7 @@ public class UserService extends ViewModel {
                                 documentsList.add(document.toObject(User.class));
                             }
                             user.setValue(documentsList.get(0));
+                            mIsSigningIn = false;
                         }
                     } else {
                         Log.d(TAG, "Error getting users documents: ", task.getException());
@@ -89,29 +89,48 @@ public class UserService extends ViewModel {
                 });
             } else {
                 if (!databaseDriver.isSignIn()) {
+                    mIsSigningIn = false;
                     startSignIn(activity);
                 }
             }
         }
-        if (requestCode == RC_SIGN_UP){
+        if (requestCode == RC_SIGN_UP) {
             if (resultCode == Activity.RESULT_OK) {
+                mIsSigningIn = false;
                 User newUser = new User(databaseDriver.getAuth().getUid());
                 newUser.setFirstName(data.getStringExtra(SignUpActivity.USER_FIRST_NAME_REPLY));
                 newUser.setLastName(data.getStringExtra(SignUpActivity.USER_LAST_NAME_REPLY));
                 newUser.setAddress(data.getStringExtra(SignUpActivity.USER_ADDRESS_NAME_REPLY));
                 newUser.setRating(0);
-                newUser.setLocation((Location) data.getParcelableArrayListExtra(SignUpActivity.USER_LOCATION_REPLY).get(0));
+                final Location newUserLocation = (Location) data.getParcelableArrayListExtra(SignUpActivity.USER_LOCATION_REPLY).get(0);
+                newUser.setLocationLatitude(newUserLocation.getLatitude());
+                newUser.setLocationLongitude(newUserLocation.getLongitude());
                 user.setValue(newUser);
                 usersCollectionRef.add(newUser);
+            } else {
+                Log.d(TAG, "Sign up fail. Lunching Sign up activity again.");
+                Intent intent = new Intent(activity, SignUpActivity.class);
+                activity.startActivityForResult(intent, RC_SIGN_UP);
             }
         }
     }
 
-    public LiveData<User> getCurrentUser(){
+    public LiveData<User> getCurrentUser() {
         if (user == null) {
             user = new MutableLiveData<>();
-            if(databaseDriver.isSignIn()){
-                user = databaseDriver.getSingleDocumentByField(COLLECTION_NAME, "uid", getUserUid(), User.class);
+            if (!shouldSignIn()) {
+                final List<User> documentsList = new LinkedList<>();
+                Query getUserQuery = usersCollectionRef.whereEqualTo("uid", getUserUid());
+                getUserQuery.get().addOnCompleteListener(task -> {
+                    if (task.isSuccessful() && !task.getResult().isEmpty()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            documentsList.add(document.toObject(User.class));
+                        }
+                        user.setValue(documentsList.get(0));
+                    } else {
+                        Log.d(TAG, "Error getting user object: ", task.getException());
+                    }
+                });
             }
         }
         return user;
