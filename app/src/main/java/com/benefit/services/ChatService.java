@@ -4,6 +4,8 @@ package com.benefit.services;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModel;
 
 import com.benefit.drivers.DatabaseDriver;
 import com.benefit.model.Chat;
@@ -22,7 +24,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class ChatService {
+public class ChatService extends ViewModel {
 
     private static final String TAG = ChatService.class.getSimpleName();
 
@@ -31,17 +33,11 @@ public class ChatService {
     private CollectionReference matchCollectionRef;
     private List<Match> matchesWithBuyers;
     private List<Match> matchesWithSellers;
-    private boolean sellersDataIsReady;
-    private boolean buyersDataIsReady;
 
-    public ChatService(DatabaseDriver databaseDriver, final User user){
+
+    public ChatService(DatabaseDriver databaseDriver){
         this.databaseDriver = databaseDriver;
-        this.user = user;
-        if (!databaseDriver.isSignIn() || !databaseDriver.getAuth().getUid().equals(user.getUid())){
-            Log.d(TAG, "error: user model object is not matching current firebase user.");
-        }
         matchCollectionRef = databaseDriver.getCollectionReferenceByName("matches");
-        sellersDataIsReady = false;
         matchesWithSellers = new ArrayList<>();
         matchCollectionRef.whereEqualTo("buyerId", user.getUid()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -51,14 +47,12 @@ public class ChatService {
                         Match currentMatch = document.toObject(Match.class);
                         matchesWithSellers.add(currentMatch);
                     }
-                    sellersDataIsReady = true;
                 }
                 else {
                     Log.d(TAG, "Error getting matches with buyerId: " + user.getUid());
                 }
             }
         });
-        buyersDataIsReady = false;
         matchesWithBuyers = new ArrayList<>();
         matchCollectionRef.whereEqualTo("sellerId", user.getUid()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -67,7 +61,6 @@ public class ChatService {
                     for(QueryDocumentSnapshot document : task.getResult()){
                         matchesWithBuyers.add(document.toObject(Match.class));
                     }
-                    buyersDataIsReady = true;
                 }
                 else {
                     Log.d(TAG, "Error getting matches with sellerId: " + user.getUid());
@@ -75,6 +68,16 @@ public class ChatService {
             }
         });
     }
+
+    public void setUser(User user){
+        if (user !=  null){
+            this.user = user;
+        }
+        else {
+            Log.d(TAG, "Error - user is null.");
+        }
+    }
+
 
     public void addMatch(Match match){
         matchCollectionRef.add(match);

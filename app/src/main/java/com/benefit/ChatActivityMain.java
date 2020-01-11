@@ -36,14 +36,12 @@ public class ChatActivityMain extends AppCompatActivity implements AdapterView.O
 
         databaseDriver = new DatabaseDriver();
 
-        //testing!
-        //databaseDriver.getAuth().signOut();
 
         // initiate user
         userService = ViewModelProviders.of(this).get(UserService.class);
         userService.getCurrentUser().observe(this, user -> {
                     currentUser = user;
-                    Toast.makeText(this,"welcome user!", Toast.LENGTH_LONG);
+                    Toast.makeText(this,"welcome user " + currentUser.getFirstName() + "!", Toast.LENGTH_LONG).show();
                 });
 
         //initiate sort spinner
