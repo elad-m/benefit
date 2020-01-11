@@ -1,19 +1,19 @@
 package com.benefit.model;
 
-import android.location.Location;
 
 import java.io.Serializable;
 
 /**
  * Model POJO for user with location and rating.
  */
-public class User {
+public class User implements Serializable{
 
     private String uid;
     private String firstName;
     private String lastName;
     private String address;
-    private Location location;
+    private double locationLatitude;
+    private double locationLongitude;
     private double rating;
 
     public User(){}
@@ -38,10 +38,6 @@ public class User {
         return address;
     }
 
-    public Location getLocation() {
-        return location;
-    }
-
     public double getRating() {
         return rating;
     }
@@ -62,11 +58,23 @@ public class User {
         this.address = address;
     }
 
-    public void setLocation(Location location) {
-        this.location = location;
-    }
-
     public void setRating(double rating) {
         this.rating = rating;
+    }
+
+    public double getLocationLatitude() {
+        return locationLatitude;
+    }
+
+    public void setLocationLatitude(double locationLatitude) {
+        this.locationLatitude = locationLatitude;
+    }
+
+    public double getLocationLongitude() {
+        return locationLongitude;
+    }
+
+    public void setLocationLongitude(double locationLongitude) {
+        this.locationLongitude = locationLongitude;
     }
 }
