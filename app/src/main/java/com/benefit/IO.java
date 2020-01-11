@@ -13,6 +13,7 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -32,33 +33,32 @@ public class IO {
         return writer.toString();
     }
 
-    public static Category getDatabaseFromInputStream(InputStream jsonFileInputStream) {
-        Category ct;
+    public static List<Category> getDatabaseFromInputStream(InputStream jsonFileInputStream) {
+        List<Category> ct;
         try {
             ct = generateDatabaseFromInputStream(jsonFileInputStream);
         } catch (JSONException e) {
             e.printStackTrace();
-            ct = new Category();
+            ct = new ArrayList<>();
         } catch (IOException e) {
             e.printStackTrace();
-            ct = new Category();
+            ct = new ArrayList<>();
         }
         return ct;
     }
 
-    private static Category generateDatabaseFromInputStream(InputStream jsonFileInputStream)
+    private static List<Category> generateDatabaseFromInputStream(InputStream jsonFileInputStream)
             throws JSONException, IOException {
         JSONObject dbJsonRawObject = new JSONObject(readInputStreamToString(jsonFileInputStream));
 
         JSONArray sizesJsonArr = dbJsonRawObject.getJSONArray("categories");
-        Category ct = new Category();
-        List<String> names = new LinkedList<>();
-        List<String> images = new LinkedList<>();
+        List<Category> ct = new ArrayList<>();
+        Category category = new Category();
         for (int i = 0; i < sizesJsonArr.length(); i++) {
-            names.add(sizesJsonArr.getJSONObject(i).getString("name"));
-            images.add(sizesJsonArr.getJSONObject(i).getString("image"));
-            ct.setNames(names);
-            ct.setImages(images);
+            category.setName((sizesJsonArr.getJSONObject(i).getString("name")));
+            category.setImages(sizesJsonArr.getJSONObject(i).getString("image"));
+            ct.add(category);
+//            ct.setImages(images);
         }
         return ct;
     }

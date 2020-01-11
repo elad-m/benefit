@@ -39,6 +39,7 @@
         <activity android:name=".SignUpActivity">
         android:theme="@style/AppTheme">
         <activity android:name=".filter_options"></activity>
+        <activity android:name=".ItemsPage" />
         <activity android:name=".items_page" />
         <activity android:name=".ChatTest"></activity>
         <activity android:name=".MainActivity">

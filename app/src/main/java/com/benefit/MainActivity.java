@@ -3,22 +3,18 @@ package com.benefit;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.TableLayout;
-import android.widget.TableRow;
-import android.widget.TextView;
+import android.widget.Button;
 
 import com.benefit.MacroFiles.Category;
 import com.benefit.UI.CategoryScreen;
 import com.benefit.UI.MetaCategoryBar;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -32,112 +28,96 @@ import com.benefit.services.CategoryService;
 
 public class MainActivity extends AppCompatActivity {
 
-//    List<String> categoryNames;
-//    List<String> categoryImages;
+    CategoryScreen categoryScreen;
+    MetaCategoryBar metaCategoryBar;
+    Category metaCategoryChosen;
+    Button metaButtonChosen;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        initiateWindow();
+        addOnClickListeners();
+    }
+
+    private void addOnClickListeners() {
+        addMetaCategoryListeners();
+        addCategoryListeners();
+    }
+
+    private void addCategoryListeners() {
+        for (final Map.Entry<Category,Button> categoryAndButton: categoryScreen.getCategoryButtonMap().entrySet()){
+            categoryAndButton.getValue().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(v.getContext(), ItemsPage.class);
+                    intent.putExtra("categoryName", categoryAndButton.getKey().getName());
+
+                    v.getContext().startActivity(intent);
+                }
+            });
+        }
+    }
+
+    private void addMetaCategoryListeners() {
+        for (final Map.Entry<Category, Button> metaCategory: metaCategoryBar.getMetaCategoryButtonMap().entrySet()){
+            metaCategory.getValue().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (metaCategoryChosen == null){
+                        instantiateAndColor(metaCategory);
+
+//                        categoryScreen.refreshItems();
+                    } else {
+                        if (!metaCategoryChosen.getName().equals(metaCategory.getKey().getName())){
+                            metaButtonChosen.setBackground(getResources().getDrawable(R.drawable.oval));
+                            instantiateAndColor(metaCategory);
+
+//                            categoryScreen.refreshItems();
+                        } else {
+                            metaButtonChosen.setBackground(getResources().getDrawable(R.drawable.oval));
+                            metaCategoryChosen = null;
+
+//                            categoryScreen.refreshItems();
+                        }
+                    }
+                }
+            });
+        }
+    }
+
+    private void instantiateAndColor(Map.Entry<Category, Button> metaCategory) {
+        metaCategoryChosen = metaCategory.getKey();
+        metaButtonChosen = metaCategory.getValue();
+        metaButtonChosen.setBackground(getResources().getDrawable(R.drawable.filled_oval));
+
+    }
+
+    private void initiateWindow(){
         setContentView(R.layout.activity_main);
-        Category ct = IO.getDatabaseFromInputStream(getResources().openRawResource(R.raw.database));
-//        categoryNames = ct.getNames();
-//        categoryImages = ct.getImages();
-//        MetaCategoryBar metaCategoryBar = new MetaCategoryBar(findViewById(android.R.id.content).getRootView(), ct);
-//        metaCategoryBar.createCategoryBar();
-        CategoryScreen categoryScreen = new CategoryScreen(findViewById(android.R.id.content).getRootView(), ct);
-        categoryScreen.createCategoryTable();
+        findViewById(R.id.search_icon).setBackground(getResources().getDrawable(R.drawable.ic_search_icon_color));
+        findViewById(R.id.slogan).setVisibility(View.VISIBLE);
         getWindow().setSoftInputMode(
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-    }
-
-//    private void createCategoryTable() {
-//        TableLayout itemTable = findViewById(R.id.item_table);
-//        int numberOfRows = getNumberOfRows();
-//        for (int i = 0; i < numberOfRows; i++){
-//            addRow(itemTable, i);
-//        }
-//
-//    }
-//
-//    private void addRow(TableLayout itemTable, int index) {
-//        TableRow tableRow = new TableRow(this);
-//        TableLayout.LayoutParams lp = new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT,
-//                TableLayout.LayoutParams.MATCH_PARENT);
-//        lp.bottomMargin = StaticFunctions.convertDpToPx(10);
-//        lp.topMargin = StaticFunctions.convertDpToPx(10);
-//        lp.gravity = Gravity.CENTER;
-//        lp.setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
-//        tableRow.setLayoutParams(lp);
-//        for (int i = 0; i < 2; i++){
-//            if (2 * index + i < categoryNames.size() - 1) {
-//                addCategory(tableRow, 2 * index + i);
-//            }
-//        }
-//        itemTable.addView(tableRow);
-//
-//    }
-//
-//    private void addCategory(TableRow tableRow, int index) {
-//        FrameLayout category = new FrameLayout(this);
-//        TableRow.LayoutParams lp = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,
-//                TableRow.LayoutParams.WRAP_CONTENT);
-//        lp.leftMargin = StaticFunctions.convertDpToPx(50);
-//        lp.rightMargin = StaticFunctions.convertDpToPx(50);
-//        lp.height = StaticFunctions.convertDpToPx(80);
-//        lp.width = StaticFunctions.convertDpToPx(80);
-//        category.setLayoutParams(lp);
-//        category.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(v.getContext(), items_page.class);
-//                startActivity(intent);
-//            }
-//
-//        });
-////        addImage(category, index);
-//        addText(category, index);
-//        tableRow.addView(category);
-//    }
-//
-//    private void addText(FrameLayout category, int index) {
-//        TextView text = new TextView(this);
-//        text.setText(categoryNames.get(index));
-//        FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,
-//                FrameLayout.LayoutParams.WRAP_CONTENT);
-//        lp.gravity = Gravity.BOTTOM;
-//        text.setLayoutParams(lp);
-//        category.addView(text);
-//    }
-//
-//    private void addImage(FrameLayout category, int index) {
-//        ImageView image = new ImageView(this);
-//        image.setImageDrawable(convertStringToDrawable(categoryImages.get(index)));
-//        FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,
-//                FrameLayout.LayoutParams.WRAP_CONTENT);
-//        lp.bottomMargin = StaticFunctions.convertDpToPx(20);
-//        image.setLayoutParams(lp);
-//        category.addView(image);
-//
-//
-//    }
-//
-//    private Drawable convertStringToDrawable(String name) {
-//        int id = getResources().getIdentifier(name, "drawable",
-//                getPackageName());
-//        return getResources().getDrawable(id);
-//    }
-//
-//    private int getNumberOfRows() {
-//        if (categoryNames.size() % 2 == 0){
-//            return categoryNames.size() / 2;
-//        } else{
-//            return categoryNames.size() / 2  + 1;
-//        }
-//    }
-
-
-
+        List<Category> ct = IO.getDatabaseFromInputStream(getResources().openRawResource(R.raw.database));
+        List<String> list1 = new ArrayList<>();
+        list1.add("men");
+        list1.add("women");
+        list1.add("kids");
+        list1.add("teens");
+        list1.add("toddlers");
+        List<Category> metaList = new ArrayList<>();
+        for (String name:list1){
+            Category category = new Category();
+            category.setName(name);
+            metaList.add(category);
+        }
+        metaCategoryBar = new MetaCategoryBar(findViewById(android.R.id.content).getRootView(), metaList);
+        metaCategoryBar.createCategoryBar();
+        categoryScreen = new CategoryScreen(findViewById(android.R.id.content).getRootView());
+        categoryScreen.createCategoryTable(ct);
 
     }
+}
 
 }

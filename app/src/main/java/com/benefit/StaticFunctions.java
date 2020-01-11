@@ -14,6 +14,10 @@ public class StaticFunctions {
         return (int)px / (int) (Resources.getSystem().getDisplayMetrics().density);
     }
 
+    public static int convertDpToSp(float dp){
+        return (int) convertDpToPx(dp) / (int) Resources.getSystem().getDisplayMetrics().scaledDensity;
+    }
+
     public static Boolean isSubstring(String s1,String s2){
         for (int i = 0; i <= s2.length() - s1.length(); i++){
             int j;

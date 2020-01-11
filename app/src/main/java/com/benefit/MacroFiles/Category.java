@@ -3,31 +3,31 @@ import java.util.List;
 
 public class Category {
 
-        private List<String> names;
-        private List<String> images;
+        private String name;
+        private String image;
 
         public Category() {
         }
 
-        public Category(List<String> names, List<String> images) {
-            this.names = names;
-            this.images = images;
+        public Category(String name, String images) {
+            this.name = name;
+            this.image = image;
         }
 
-        public List<String> getNames() {
-            return names;
+        public String getName() {
+            return name;
         }
 
-        public void setNames(List<String> names) {
-            this.names = names;
+        public void setName(String name) {
+            this.name = name;
         }
 
-        public List<String> getImages() {
-            return images;
+        public String getImages() {
+            return image;
         }
 
-        public void setImages(List<String> images) {
-            this.images = images;
+        public void setImages(String images) {
+            this.image = image;
         }
 //
 //        public List<Crust> getCrusts() {
