@@ -100,6 +100,7 @@ public class ChatService extends ViewModel {
         else {
             matchQuery = matchCollectionRef.whereArrayContains("usersId", user.getUid());
         }
+        matchQuery.whereEqualTo("isClosed", false);
         if (orderNewToOld){
             matchQuery.orderBy("timestamp", Query.Direction.DESCENDING);
         }
