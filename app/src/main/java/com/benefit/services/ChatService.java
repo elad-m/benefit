@@ -85,20 +85,26 @@ public class ChatService extends ViewModel {
         matchCollectionRef.add(match);
     }
 
-    public ConversationAdapter getConversationAdaptor(boolean wantedProducts, boolean userProducts){
+    public ConversationAdapter getConversationAdaptor(boolean wantedProducts, boolean userProducts, boolean orderNewToOld){
         if (user == null){
             Log.d(TAG, "Error - user is null. Can't return a ConversationAdaptor.");
             return null;
         }
         Query matchQuery;
         if (wantedProducts && !userProducts){
-            matchQuery = matchCollectionRef.whereEqualTo("buyerId", user.getUid()).orderBy("timestamp");
+            matchQuery = matchCollectionRef.whereEqualTo("buyerId", user.getUid());
         }
         else if (!wantedProducts && userProducts){
-            matchQuery = matchCollectionRef.whereEqualTo("sellerId", user.getUid()).orderBy("timestamp");
+            matchQuery = matchCollectionRef.whereEqualTo("sellerId", user.getUid());
         }
         else {
-            matchQuery = matchCollectionRef.whereArrayContains("usersId", user.getUid()).orderBy("timestamp");
+            matchQuery = matchCollectionRef.whereArrayContains("usersId", user.getUid());
+        }
+        if (orderNewToOld){
+            matchQuery.orderBy("timestamp", Query.Direction.DESCENDING);
+        }
+        else {
+            matchQuery.orderBy("timestamp", Query.Direction.ASCENDING);
         }
         FirestoreRecyclerOptions<Match> matchRecyclerOptions = new FirestoreRecyclerOptions.Builder<Match>().setQuery(matchQuery, Match.class).build();
         return new ConversationAdapter(matchRecyclerOptions, databaseDriver);
