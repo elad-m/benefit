@@ -4,6 +4,7 @@ import android.os.Build;
 import android.util.Log;
 
 import androidx.annotation.RequiresApi;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -32,26 +33,30 @@ public class ProductService extends ViewModel {
 
     public ProductService(DatabaseDriver databaseDriver) {
         this.databaseDriver = databaseDriver;
-        this.productsCollection = this.databaseDriver.getCollectionByName("products");
+        this.productsCollection = this.databaseDriver.getCollectionByName(COLLECTION_NAME);
     }
 
     public void addProduct(Product product) {
         this.productsCollection.add(product);
     }
 
-    public MutableLiveData<Product> getProductsById(int productId) {
+    public LiveData<Boolean> deleteProduct(int productId) {
+        return this.databaseDriver.deleteDocumentsByField(COLLECTION_NAME, "id", productId);
+    }
+
+    public LiveData<Product> getProductsById(int productId) {
         return this.databaseDriver.getSingleDocumentByField(COLLECTION_NAME, "id", productId, Product.class);
     }
 
-    public MutableLiveData<List<Product>> getProductsByCategoryId(int categoryId) {
+    public LiveData<List<Product>> getProductsByCategoryId(int categoryId) {
         return this.databaseDriver.getDocumentsByField(COLLECTION_NAME, "categoryId", categoryId, Product.class);
     }
 
-    public MutableLiveData<List<Product>> getProductsBySellerId(String sellerId) {
+    public LiveData<List<Product>> getProductsBySellerId(String sellerId) {
         return this.databaseDriver.getDocumentsByField(COLLECTION_NAME, "sellerId", sellerId, Product.class);
     }
 
-    public MutableLiveData<List<Product>> getProductsByProperties(int categoryId, Map<String, String> propertiesMap) {
+    public LiveData<List<Product>> getProductsByProperties(int categoryId, Map<String, String> propertiesMap) {
         final List<Product> productsList = new LinkedList<>();
         final MutableLiveData<List<Product>> resultsLiveData = new MutableLiveData<>();
         this.databaseDriver.getCollectionByName(COLLECTION_NAME)
