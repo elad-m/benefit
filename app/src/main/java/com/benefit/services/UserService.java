@@ -30,7 +30,8 @@ public class UserService extends ViewModel {
     private CollectionReference usersCollectionRef;
     private boolean mIsSigningIn;
     private MutableLiveData<User> user;
-    private static final String COLLECTION_NAME = "users";
+    private static final String COLLECTION_USERS_NAME = "users";
+    private static final String UID = "uid";
     private static final String TAG = UserService.class.getSimpleName();
     public static final int RC_SIGN_IN = 9001;
     public static final int RC_SIGN_UP = 9002;
@@ -38,7 +39,7 @@ public class UserService extends ViewModel {
     public UserService() {
         this.databaseDriver = new DatabaseDriver();
         mIsSigningIn = false;
-        usersCollectionRef = databaseDriver.getCollectionReferenceByName(COLLECTION_NAME);
+        usersCollectionRef = databaseDriver.getCollectionReferenceByName(COLLECTION_USERS_NAME);
     }
 
     public boolean isSignIn() {
@@ -69,7 +70,7 @@ public class UserService extends ViewModel {
         if (requestCode == RC_SIGN_IN) {
             final List<User> documentsList = new LinkedList<>();
             if (resultCode == Activity.RESULT_OK) {
-                Query getUserQuery = usersCollectionRef.whereEqualTo("uid", getUserUid());
+                Query getUserQuery = usersCollectionRef.whereEqualTo(UID, getUserUid());
                 getUserQuery.get().addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         if (task.getResult().isEmpty()) {
@@ -119,18 +120,7 @@ public class UserService extends ViewModel {
         if (user == null) {
             user = new MutableLiveData<>();
             if (databaseDriver.isSignIn() && !mIsSigningIn) {
-                final List<User> documentsList = new LinkedList<>();
-                Query getUserQuery = usersCollectionRef.whereEqualTo("uid", getUserUid());
-                getUserQuery.get().addOnCompleteListener(task -> {
-                    if (task.isSuccessful() && !task.getResult().isEmpty()) {
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            documentsList.add(document.toObject(User.class));
-                        }
-                        user.setValue(documentsList.get(0));
-                    } else {
-                        Log.d(TAG, "Error getting user object: ", task.getException());
-                    }
-                });
+                return databaseDriver.getSingleDocumentByField(COLLECTION_USERS_NAME, UID, getUserUid(), User.class);
             }
         }
         return user;
