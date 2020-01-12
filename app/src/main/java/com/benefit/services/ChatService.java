@@ -7,14 +7,17 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.benefit.adapters.ConversationAdapter;
 import com.benefit.drivers.DatabaseDriver;
 import com.benefit.model.Chat;
 import com.benefit.model.Match;
 import com.benefit.model.User;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -33,7 +36,6 @@ public class ChatService extends ViewModel {
     private CollectionReference matchCollectionRef;
     private List<Match> matchesWithBuyers;
     private List<Match> matchesWithSellers;
-
 
     public ChatService(DatabaseDriver databaseDriver){
         this.databaseDriver = databaseDriver;
@@ -81,6 +83,25 @@ public class ChatService extends ViewModel {
 
     public void addMatch(Match match){
         matchCollectionRef.add(match);
+    }
+
+    public ConversationAdapter getConversationAdaptor(boolean wantedProducts, boolean userProducts){
+        if (user == null){
+            Log.d(TAG, "Error - user is null. Can't return a ConversationAdaptor.");
+            return null;
+        }
+        Query matchQuery;
+        if (wantedProducts && !userProducts){
+            matchQuery = matchCollectionRef.whereEqualTo("buyerId", user.getUid()).orderBy("timestamp");
+        }
+        else if (!wantedProducts && userProducts){
+            matchQuery = matchCollectionRef.whereEqualTo("sellerId", user.getUid()).orderBy("timestamp");
+        }
+        else {
+            matchQuery = matchCollectionRef.whereArrayContains("usersId", user.getUid()).orderBy("timestamp");
+        }
+        FirestoreRecyclerOptions<Match> matchRecyclerOptions = new FirestoreRecyclerOptions.Builder<Match>().setQuery(matchQuery, Match.class).build();
+        return new ConversationAdapter(matchRecyclerOptions, databaseDriver);
     }
 
 

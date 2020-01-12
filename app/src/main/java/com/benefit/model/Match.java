@@ -20,6 +20,9 @@ public class Match {
 
     public Match(){
         this.isClosed = false;
+        this.usersId = new ArrayList<>();
+        usersId.add(sellerId);
+        usersId.add(buyerId);
     }
 
     public Match(int id, String sellerId, String buyerId, int productId){
