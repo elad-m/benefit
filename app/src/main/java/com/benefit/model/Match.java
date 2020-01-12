@@ -1,7 +1,10 @@
 package com.benefit.model;
 
 import com.google.firebase.firestore.ServerTimestamp;
+
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Model POJO for match between a user and an product.
@@ -10,6 +13,7 @@ public class Match {
     private int id;
     private String sellerId;
     private String buyerId;
+    private List<String> usersId;
     private int productId;
     private @ServerTimestamp Date timestamp;
     private boolean isClosed;
@@ -24,6 +28,9 @@ public class Match {
         this.buyerId = buyerId;
         this.productId = productId;
         this.isClosed = false;
+        this.usersId = new ArrayList<>();
+        usersId.add(sellerId);
+        usersId.add(buyerId);
     }
 
     public String getSellerId() {
@@ -52,5 +59,9 @@ public class Match {
 
     public void setClosed(boolean closed) {
         isClosed = closed;
+    }
+
+    public List<String> getUsersId() {
+        return usersId;
     }
 }
