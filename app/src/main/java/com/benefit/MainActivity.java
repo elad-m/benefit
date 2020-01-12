@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.FrameLayout;
 
 import com.benefit.MacroFiles.Category;
 import com.benefit.UI.CategoryScreen;
@@ -46,13 +47,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void addCategoryListeners() {
-        for (final Map.Entry<Category,Button> categoryAndButton: categoryScreen.getCategoryButtonMap().entrySet()){
+        for (final Map.Entry<Category, FrameLayout> categoryAndButton: categoryScreen.getCategoryButtonMap().entrySet()){
             categoryAndButton.getValue().setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(v.getContext(), ItemsPage.class);
-                    intent.putExtra("categoryName", categoryAndButton.getKey().getName());
-
+                    intent.putExtra("category", categoryAndButton.getKey().getName());
+                    if (metaCategoryChosen == null){
+                        intent.putExtra("metaExists", "false");
+                    } else {
+                        intent.putExtra("metaExists", "true");
+                        intent.putExtra("metaCategory", metaCategoryChosen.getName());
+                    }
                     v.getContext().startActivity(intent);
                 }
             });

@@ -8,15 +8,9 @@
     tools:context=".ItemsPage">
 
     <include
-        layout="@layout/page_header"
-        android:id="@+id/header"/>
+        android:id="@+id/first_page_header"
+        layout="@layout/page_header"/>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintHeight_percent="0.833"
-        app:layout_constraintTop_toBottomOf="@id/header"
-        android:orientation="vertical">
 
     <EditText
         android:id="@+id/search_input"
@@ -26,15 +20,23 @@
         android:layout_marginRight="45dp"
         android:background="@drawable/ic_search_bar"
         android:ems="12"
-        android:hint="@string/search"
+        android:hint="Search"
         android:inputType="textPersonName"
-        android:layout_weight="0.06"/>
+        app:layout_constraintHeight_percent="0.054"
+        app:layout_constraintTop_toBottomOf="@id/first_page_header"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/meta_category_guide"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.243" />
 
     <HorizontalScrollView
+        android:id="@+id/metaCategory_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="0.01"
-        android:layout_marginTop="10dp">
+        app:layout_constraintTop_toBottomOf="@id/meta_category_guide">
 
 
         <LinearLayout
@@ -43,14 +45,94 @@
             android:layout_height="match_parent"
             android:orientation="horizontal">
 
+
+            <!--            <Buttongb-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:text="Men"-->
+            <!--                android:textColor="@android:color/black"-->
+            <!--                android:background="@drawable/oval"-->
+            <!--                android:layout_margin="5dp"-->
+            <!--                android:layout_gravity="center_vertical"-->
+            <!--                android:minHeight="35dp"-->
+            <!--                />-->
+
+            <!--            <Button-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:text="Women"-->
+            <!--                android:textColor="@android:color/black"-->
+            <!--                android:background="@drawable/oval"-->
+            <!--                android:layout_margin="4dp"-->
+            <!--                />-->
+
+            <!--            <Button-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:text="Babies"-->
+            <!--                android:textColor="@android:color/black"-->
+            <!--                android:background="@drawable/oval"-->
+            <!--                android:layout_margin="4dp"-->
+            <!--                />-->
+
+            <!--            <Button-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:text="Kids"-->
+            <!--                android:textColor="@android:color/black"-->
+            <!--                android:background="@drawable/oval"-->
+            <!--                android:layout_margin="4dp"-->
+            <!--                />-->
+
+            <!--            <Button-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:text="Teens"-->
+            <!--                android:textColor="@android:color/black"-->
+            <!--                android:background="@drawable/oval"-->
+            <!--                android:layout_margin="4dp"-->
+            <!--                />-->
+
         </LinearLayout>
+
     </HorizontalScrollView>
-        <LinearLayout
-        android:id="@+id/RestofScreen"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.6"
-        android:orientation="vertical" >
+
+
+
+
+<!--    <EditText-->
+<!--        android:id="@+id/search_input"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="0dp"-->
+<!--        android:layout_marginLeft="45dp"-->
+<!--        android:layout_marginRight="45dp"-->
+<!--        android:background="@drawable/ic_search_bar"-->
+<!--        android:ems="12"-->
+<!--        android:hint="@string/search"-->
+<!--        android:inputType="textPersonName"-->
+<!--        android:layout_weight="0.06"/>-->
+
+<!--    <HorizontalScrollView-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_weight="0.01"-->
+<!--        android:layout_marginTop="10dp">-->
+
+
+<!--        <LinearLayout-->
+<!--            android:id="@+id/filter_bar"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:orientation="horizontal">-->
+
+<!--        </LinearLayout>-->
+<!--    </HorizontalScrollView>-->
+<!--        <LinearLayout-->
+<!--        android:id="@+id/RestofScreen"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="0dp"-->
+<!--        android:layout_weight="0.6"-->
+<!--        android:orientation="vertical" >-->
 
 <!--        <EditText-->
 <!--            android:id="@+id/search_input"-->
@@ -115,10 +197,51 @@
 <!--        </LinearLayout>-->
 
 <!--        </HorizontalScrollView>-->
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/current_filter_guide"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.32" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/current_filter_guide_vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.045" />
+
+        <HorizontalScrollView
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            app:layout_constraintHeight_percent="0.028"
+            app:layout_constraintTop_toBottomOf="@id/current_filter_guide"
+            app:layout_constraintLeft_toRightOf="@id/current_filter_guide_vertical">
+
+            <LinearLayout
+                android:id="@+id/current_filters"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+            </LinearLayout>
+
+        </HorizontalScrollView>
+
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/filter_sort_guide"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.36" />
+
         <LinearLayout
+            android:id="@+id/filter_or_sort"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp">
+            app:layout_constraintTop_toBottomOf="@id/filter_sort_guide">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -160,6 +283,13 @@
 
 
         </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/filter_or_sort"
+        android:orientation="vertical"
+        android:layout_marginTop="15dp">
 
         <ScrollView
             android:layout_width="match_parent"
@@ -431,7 +561,7 @@
         </ScrollView>
 
 
-    </LinearLayout>
+<!--    </LinearLayout>-->
     </LinearLayout>
     <!--                            android:layout_gravity="bottom|center"/>-->
 

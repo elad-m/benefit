@@ -44,12 +44,12 @@ public class MetaCategoryBar {
         }
     }
 
-    public void createCategoryBar(Category existingMetaCategory){
+    public void createCategoryBar(String existingMetaCategory){
         LinearLayout bar = view.findViewById(R.id.filter_bar);
         for (int i =0; i< category.size(); i ++){
             Button metaCategory = new Button(view.getContext());
             metaCategory.setText(category.get(i).getName());
-            if (category.get(i).getName().equals(existingMetaCategory.getName())){
+            if (category.get(i).getName().equals(existingMetaCategory)){
                 metaCategory.setBackground(view.getResources().getDrawable(R.drawable.filled_oval));
             }
             else {

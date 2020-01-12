@@ -1,62 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/filter_popup"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white"
     android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/top_of_filter"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="10dp"
-            android:text="@string/filter_title"
-            android:textSize="25sp"
-            android:layout_alignParentTop="true"
-            android:layout_marginStart="15dp"
-            android:layout_weight="0.01"/>
+    <TextView
+        android:id="@+id/top_of_filter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="15dp"
+        android:paddingTop="10dp"
+        android:text="@string/filter_title"
+        android:textSize="25sp" />
 
-        <ScrollView
-            android:id="@+id/filter_scroll"
-            android:layout_marginStart="15dp"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="0.5">
-
-            <LinearLayout
-                android:id="@+id/filter_body"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-            </LinearLayout>
-        </ScrollView>
-
+    <ScrollView
+        android:id="@+id/filter_scroll"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/buttons"
+        android:layout_below="@id/top_of_filter"
+        android:layout_marginStart="15dp">
 
         <LinearLayout
-            android:id="@+id/buttons"
+            android:id="@+id/filter_body"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:orientation="horizontal"
-            android:layout_weight="0.01">
+            android:orientation="vertical">
 
-            <Button
-                android:id="@+id/reset_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.5"
-                android:text="RESET"
-                android:textSize="25sp" />
+<!--            <Button-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="20dp"-->
+<!--                android:text="hello"-->
+<!--                android:background="@drawable/oval"-->
+<!--                />-->
 
-            <Button
-                android:id="@+id/done_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.5"
-                android:text="@string/done"
-                android:textSize="25sp" />
 
         </LinearLayout>
-</LinearLayout>
+    </ScrollView>
+
+
+    <LinearLayout
+        android:id="@+id/buttons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom"
+        android:orientation="horizontal"
+        android:paddingBottom="15dp">
+
+        <Button
+            android:id="@+id/reset_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:text="RESET"
+            android:background="#6d6d6d"
+            android:textSize="25sp" />
+
+        <Button
+            android:id="@+id/done_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:text="@string/done"
+            android:background="#0188b2"
+            android:textSize="25sp" />
+
+    </LinearLayout>
+</RelativeLayout>
