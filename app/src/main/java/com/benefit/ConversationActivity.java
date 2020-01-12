@@ -1,8 +1,6 @@
 package com.benefit;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -35,7 +33,7 @@ public class ConversationActivity extends AppCompatActivity implements AdapterVi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_chat_main);
+        setContentView(R.layout.activity_conversation);
 
         databaseDriver = new DatabaseDriver();
 
