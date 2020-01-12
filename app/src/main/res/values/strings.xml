@@ -10,6 +10,7 @@
     <string name="enter_first_and_last_name">First name and Last name are required. Please enter your first name and last name.</string>
     <string name="enter_first_name">First name is required. Please enter your first name</string>
     <string name="enter_last_name">Last name is required. Please enter your last name</string>
+    <string name="user_item">your item</string>
 
     <string-array name="chat_sort_options">
         <item>your items</item>
