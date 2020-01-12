@@ -2,6 +2,7 @@ package com.benefit;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -13,6 +14,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.benefit.adapters.ConversationAdapter;
 import com.benefit.drivers.DatabaseDriver;
 import com.benefit.model.User;
 import com.benefit.services.ChatService;
@@ -40,23 +42,27 @@ public class ChatActivityMain extends AppCompatActivity implements AdapterView.O
         // initiate user
         userService = ViewModelProviders.of(this).get(UserService.class);
         userService.getCurrentUser().observe(this, user -> {
-                    currentUser = user;
-                    Toast.makeText(this,"welcome user " + currentUser.getFirstName() + "!", Toast.LENGTH_LONG).show();
-                });
+            currentUser = user;
+            Toast.makeText(this, "welcome user " + currentUser.getFirstName() + "!", Toast.LENGTH_LONG).show();
+        });
 
         //initiate sort spinner
         initiateSortSpinner();
+
+        //initiate conversation RecyclerView
+        chatService = ViewModelProviders.of(this).get(ChatService.class);
+        initiateConversationRecyclerView();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        if (userService.shouldSignIn()){
+        if (userService.shouldSignIn()) {
             userService.startSignIn(this);
         }
     }
 
-    private void initiateSortSpinner(){
+    private void initiateSortSpinner() {
         sortMassagesSpinner = findViewById(R.id.sort_spinner);
         ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(this,
                 R.array.chat_sort_options, android.R.layout.simple_spinner_item);
@@ -65,9 +71,27 @@ public class ChatActivityMain extends AppCompatActivity implements AdapterView.O
         sortMassagesSpinner.setOnItemSelectedListener(this);
     }
 
+    private void initiateConversationRecyclerView() {
+        ConversationAdapter conversationAdapter = chatService.getConversationAdaptor(true, true, true);
+        conversationRecyclerView = findViewById(R.id.conversation_recyclerView);
+        conversationRecyclerView.setAdapter(conversationAdapter);
+    }
+
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        parent.getItemAtPosition(position);
+        switch (position) {
+            case 0:
+                conversationRecyclerView.setAdapter(chatService.getConversationAdaptor(false, true, true));
+                break;
+            case 1:
+                conversationRecyclerView.setAdapter(chatService.getConversationAdaptor(true, false, true));
+                break;
+            case 2:
+                conversationRecyclerView.setAdapter(chatService.getConversationAdaptor(true, true, true));
+                break;
+            case 3:
+                conversationRecyclerView.setAdapter(chatService.getConversationAdaptor(true, true, false));
+        }
     }
 
     @Override
