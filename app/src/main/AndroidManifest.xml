@@ -13,7 +13,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ChatActivityMain">
+        <activity android:name=".ChatActivity"></activity>
+        <activity android:name=".ConversationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -31,7 +32,8 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
-        <activity android:name=".SignUpActivity"/>
+
+        <activity android:name=".SignUpActivity" />
         <activity android:name=".MainActivity" />
     </application>
 

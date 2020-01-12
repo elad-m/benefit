@@ -20,7 +20,7 @@ import com.benefit.model.User;
 import com.benefit.services.ChatService;
 import com.benefit.services.UserService;
 
-public class ChatActivityMain extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+public class ConversationActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     private DatabaseDriver databaseDriver;
     private UserService userService;
@@ -28,6 +28,7 @@ public class ChatActivityMain extends AppCompatActivity implements AdapterView.O
     private User currentUser;
     private Spinner sortMassagesSpinner;
     private RecyclerView conversationRecyclerView;
+    private ConversationAdapter conversationAdapter;
     private int sortChoice;
 
 
@@ -44,14 +45,15 @@ public class ChatActivityMain extends AppCompatActivity implements AdapterView.O
         userService.getCurrentUser().observe(this, user -> {
             currentUser = user;
             Toast.makeText(this, "welcome user " + currentUser.getFirstName() + "!", Toast.LENGTH_LONG).show();
+            //initiate conversation RecyclerView
+            initiateConversationRecyclerView();
         });
 
         //initiate sort spinner
         initiateSortSpinner();
 
-        //initiate conversation RecyclerView
         chatService = ViewModelProviders.of(this).get(ChatService.class);
-        initiateConversationRecyclerView();
+
     }
 
     @Override
@@ -59,6 +61,19 @@ public class ChatActivityMain extends AppCompatActivity implements AdapterView.O
         super.onStart();
         if (userService.shouldSignIn()) {
             userService.startSignIn(this);
+            return;
+        }
+
+        if(conversationAdapter != null){
+            conversationAdapter.startListening();
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if(conversationAdapter !=null){
+            conversationAdapter.stopListening();
         }
     }
 
@@ -72,9 +87,10 @@ public class ChatActivityMain extends AppCompatActivity implements AdapterView.O
     }
 
     private void initiateConversationRecyclerView() {
-        ConversationAdapter conversationAdapter = chatService.getConversationAdaptor(true, true, true);
+        conversationAdapter = chatService.getConversationAdaptor(true, true, true);
         conversationRecyclerView = findViewById(R.id.conversation_recyclerView);
         conversationRecyclerView.setAdapter(conversationAdapter);
+        conversationAdapter.startListening();
     }
 
     @Override
