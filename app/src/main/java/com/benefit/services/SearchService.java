@@ -2,6 +2,7 @@ package com.benefit.services;
 
 import android.util.Log;
 
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -30,11 +31,11 @@ public class SearchService extends ViewModel {
         this.productsCollection = this.databaseDriver.getCollectionByName(COLLECTION_NAME_PRODUCTS);
     }
 
-    public MutableLiveData<List<Product>> getProductsBySearchString(String searchQuery) {
+    public LiveData<List<Product>> getProductsBySearchString(String searchQuery) {
         return getProductsBySearchString(searchQuery, -1);
     }
 
-    public MutableLiveData<List<Product>> getProductsBySearchString(String searchQuery, int categoryId) {
+    public LiveData<List<Product>> getProductsBySearchString(String searchQuery, int categoryId) {
         String[] keywords = tokenizeString(searchQuery);
         final List<Product> productsList = new LinkedList<>();
         final MutableLiveData<List<Product>> resultsLiveData = new MutableLiveData<>();

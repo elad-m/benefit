@@ -1,5 +1,6 @@
 package com.benefit.services;
 
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -30,29 +31,29 @@ public class CategoryService extends ViewModel {
         this.categoriesCollection.add(category);
     }
 
-    public MutableLiveData<Category> getCategoryById(int categoryId) {
+    public LiveData<Category> getCategoryById(int categoryId) {
         return this.databaseDriver.getSingleDocumentByField(
                 COLLECTION_NAME_CATEGORY, "id", categoryId, Category.class);
     }
 
-    public MutableLiveData<List<Category>> getAllMetaCategories() {
+    public LiveData<List<Category>> getAllMetaCategories() {
         return getCategoriesByField("level", 0);
     }
 
-    public MutableLiveData<List<Category>> getChildrenByParentId(int parentId) {
+    public LiveData<List<Category>> getChildrenByParentId(int parentId) {
         return getCategoriesByField("parentId", parentId);
     }
 
-    public MutableLiveData<List<PropertyName>> getAllPropertiesByCategoryId(int categoryId) {
+    public LiveData<List<PropertyName>> getAllPropertiesByCategoryId(int categoryId) {
         return this.databaseDriver.getDocumentsByField(
                 COLLECTION_NAME_PROPERTY_NAME, "categoryId", categoryId, PropertyName.class);
     }
 
-    public MutableLiveData<List<CategoryCluster>> getAllHomepageCategoryClusters() {
+    public LiveData<List<CategoryCluster>> getAllHomepageCategoryClusters() {
         return this.databaseDriver.getDocumentsByField(COLLECTION_NAME_CATEGORY_CLUSTER, "type", "homepage", CategoryCluster.class);
     }
 
-    private MutableLiveData<List<Category>> getCategoriesByField(String fieldName, Object fieldValue) {
+    private LiveData<List<Category>> getCategoriesByField(String fieldName, Object fieldValue) {
         return this.databaseDriver.getDocumentsByField(COLLECTION_NAME_CATEGORY, fieldName, fieldValue, Category.class);
     }
 }

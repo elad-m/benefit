@@ -2,6 +2,7 @@ package com.benefit.drivers;
 
 import android.util.Log;
 
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.google.firebase.firestore.CollectionReference;
@@ -34,7 +35,7 @@ public class DatabaseDriver {
         return this.db.collection(name);
     }
 
-    public <T> MutableLiveData<T> getSingleDocumentByField(String collectionName, String fieldName, Object fieldValue, final Class<T> typeParameterClass) {
+    public <T> LiveData<T> getSingleDocumentByField(String collectionName, String fieldName, Object fieldValue, final Class<T> typeParameterClass) {
         final List<T> documentsList = new LinkedList<>();
         final MutableLiveData<T> resultsLiveData = new MutableLiveData<>();
         getCollectionByName(collectionName)
@@ -54,11 +55,11 @@ public class DatabaseDriver {
         return resultsLiveData;
     }
 
-    public <T> MutableLiveData<List<T>> getDocumentsByField(String collectionName, String fieldName, Object fieldValue, final Class<T> typeParameterClass) {
+    public <T> LiveData<List<T>> getDocumentsByField(String collectionName, String fieldName, Object fieldValue, final Class<T> typeParameterClass) {
         return getDocumentsByField(collectionName, fieldName, Collections.singletonList(fieldValue), typeParameterClass);
     }
 
-    public <T> MutableLiveData<List<T>> getDocumentsByField(String collectionName, String fieldName, List<Object> fieldValue, final Class<T> typeParameterClass) {
+    public <T> LiveData<List<T>> getDocumentsByField(String collectionName, String fieldName, List<Object> fieldValue, final Class<T> typeParameterClass) {
         final List<T> documentsList = new LinkedList<>();
         final MutableLiveData<List<T>> resultsLiveData = new MutableLiveData<>();
         getCollectionByName(collectionName)
@@ -76,7 +77,7 @@ public class DatabaseDriver {
         return resultsLiveData;
     }
 
-    public MutableLiveData<Boolean> deleteDocumentsByField(String collectionName, String fieldName, Object fieldValue) {
+    public LiveData<Boolean> deleteDocumentsByField(String collectionName, String fieldName, Object fieldValue) {
         final MutableLiveData<Boolean> resultsLiveData = new MutableLiveData<>();
         CollectionReference collectionReference = getCollectionByName(collectionName);
         Query query = collectionReference.whereEqualTo(fieldName, fieldValue);
