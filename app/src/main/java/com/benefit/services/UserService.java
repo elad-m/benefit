@@ -118,7 +118,7 @@ public class UserService extends ViewModel {
     public LiveData<User> getCurrentUser() {
         if (user == null) {
             user = new MutableLiveData<>();
-            if (!shouldSignIn()) {
+            if (databaseDriver.isSignIn() && !mIsSigningIn) {
                 final List<User> documentsList = new LinkedList<>();
                 Query getUserQuery = usersCollectionRef.whereEqualTo("uid", getUserUid());
                 getUserQuery.get().addOnCompleteListener(task -> {
