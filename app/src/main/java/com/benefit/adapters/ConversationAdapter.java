@@ -107,7 +107,7 @@ public class ConversationAdapter extends FirestoreRecyclerAdapter<Match, Convers
                     }
                 });
         if (match.getSellerId().equals(databaseDriver.getAuth().getUid())){
-            conversationHolder.setProductOwnerName(Resources.getSystem().getString(R.string.user_item));
+            conversationHolder.setProductOwnerName("your item");
         }
         else {
             databaseDriver.getCollectionReferenceByName("users")
