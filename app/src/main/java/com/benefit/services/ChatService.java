@@ -37,8 +37,8 @@ public class ChatService extends ViewModel {
     private List<Match> matchesWithBuyers;
     private List<Match> matchesWithSellers;
 
-    public ChatService(DatabaseDriver databaseDriver){
-        this.databaseDriver = databaseDriver;
+    public ChatService(){
+        this.databaseDriver = new DatabaseDriver();
         matchCollectionRef = databaseDriver.getCollectionReferenceByName("matches");
         matchesWithSellers = new ArrayList<>();
         matchCollectionRef.whereEqualTo("buyerId", user.getUid()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
