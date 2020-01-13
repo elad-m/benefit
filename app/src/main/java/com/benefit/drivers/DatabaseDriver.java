@@ -9,6 +9,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.Collections;
@@ -91,7 +92,7 @@ public class DatabaseDriver {
 
     public LiveData<Boolean> deleteDocumentsByField(String collectionName, String fieldName, Object fieldValue) {
         final MutableLiveData<Boolean> resultsLiveData = new MutableLiveData<>();
-        CollectionReference collectionReference = getCollectionByName(collectionName);
+        CollectionReference collectionReference = getCollectionReferenceByName(collectionName);
         Query query = collectionReference.whereEqualTo(fieldName, fieldValue);
         query.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
