@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center_horizontal"
@@ -9,13 +10,13 @@
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center">
 
         <LinearLayout
             android:id="@+id/image_and_text_layout"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/item_layout_bg"
             android:orientation="vertical"
@@ -24,16 +25,11 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-
             <ImageView
                 android:id="@+id/item_image"
                 android:layout_width="175dp"
                 android:layout_height="175dp"
-                android:contentDescription="Image of item"
-
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:contentDescription="Image of item"/>
 
             <TextView
                 android:id="@+id/item_title"
@@ -42,40 +38,49 @@
                 android:padding="4dp"
                 android:textAlignment="center"
                 android:textSize="12sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/item_image" />
-
+                android:textStyle="bold"/>
         </LinearLayout>
+
 
         <Button
             android:id="@+id/edit_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="#ffffff"
+            android:background="?android:attr/selectableItemBackground"
             android:gravity="center"
+            android:onClick="onClickEdit"
             android:text="Edit"
             android:textColor="#0188b2"
             android:textSize="12sp"
-            android:onClick="onClickEdit"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/chat_button"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/image_and_text_layout" />
 
+        <View
+            android:id="@+id/button_divider"
+            android:layout_width="1dp"
+            android:layout_height="20dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="4dip"
+            android:layout_marginBottom="4dip"
+            android:background="?android:attr/dividerVertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/chat_button"
+            app:layout_constraintStart_toEndOf="@id/edit_button"
+            app:layout_constraintTop_toBottomOf="@id/image_and_text_layout" />
 
         <Button
             android:id="@+id/chat_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="#ffffff"
+            android:layout_margin="0dp"
+            android:background="?android:attr/selectableItemBackground"
             android:gravity="center"
+            android:onClick="onClickChat"
             android:text="Chat"
             android:textColor="#0188b2"
             android:textSize="12sp"
-            android:onClick="onClickChat"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/edit_button"
