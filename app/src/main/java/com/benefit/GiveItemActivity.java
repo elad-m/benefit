@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
@@ -54,10 +55,14 @@ public class GiveItemActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_give_item);
 
+        View view = findViewById(R.id.chosen_view);
+        view.setVisibility(View.INVISIBLE);
+
+        Button button = findViewById(R.id.give_icon);
+        button.setBackground(getResources().getDrawable(R.drawable.ic_give_colored));
+
         mEdTextTitle = findViewById(R.id.item_title_text);
-
         mEdTextDescription = findViewById(R.id.item_description_text);
-
         mImageButtonUpload = findViewById(R.id.image_button_choose_image);
 
         createChipGroups();
