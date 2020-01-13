@@ -40,35 +40,6 @@ public class ChatService extends ViewModel {
     public ChatService(){
         this.databaseDriver = new DatabaseDriver();
         matchCollectionRef = databaseDriver.getCollectionReferenceByName("matches");
-        matchesWithSellers = new ArrayList<>();
-        matchCollectionRef.whereEqualTo("buyerId", user.getUid()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()){
-                    for(QueryDocumentSnapshot document : task.getResult()){
-                        Match currentMatch = document.toObject(Match.class);
-                        matchesWithSellers.add(currentMatch);
-                    }
-                }
-                else {
-                    Log.d(TAG, "Error getting matches with buyerId: " + user.getUid());
-                }
-            }
-        });
-        matchesWithBuyers = new ArrayList<>();
-        matchCollectionRef.whereEqualTo("sellerId", user.getUid()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()){
-                    for(QueryDocumentSnapshot document : task.getResult()){
-                        matchesWithBuyers.add(document.toObject(Match.class));
-                    }
-                }
-                else {
-                    Log.d(TAG, "Error getting matches with sellerId: " + user.getUid());
-                }
-            }
-        });
     }
 
     public void setUser(User user){
