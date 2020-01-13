@@ -8,11 +8,15 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.benefit.adapters.UserProductAdapter;
 import com.benefit.drivers.DatabaseDriver;
 import com.benefit.model.Product;
+import com.benefit.model.User;
 import com.benefit.model.enums.sort.SortField;
 import com.benefit.model.enums.sort.SortType;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.Collections;
@@ -110,5 +114,17 @@ public class ProductService extends ViewModel {
             }
         }
         return indicator;
+    }
+
+    public UserProductAdapter getUserProductsAdapter(User user){
+        if (user == null){
+            Log.d(TAG, "Error - user is null. Can't return a UserProductAdapter.");
+            return null;
+        }
+        FirestoreRecyclerOptions<Product> productRecyclerOptions = new FirestoreRecyclerOptions.
+                Builder<Product>().
+                setQuery(productsCollection.whereEqualTo("sellerId", user.getUid()).orderBy("auctionDate", Query.Direction.ASCENDING), Product.class).
+                build();
+        return new UserProductAdapter(productRecyclerOptions);
     }
 }
