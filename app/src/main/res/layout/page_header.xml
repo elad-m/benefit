@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="0dp"
     android:orientation="vertical"
+    android:id="@+id/page_header_root_layout"
     app:layout_constraintHeight_percent="0.168">
 
     <View
@@ -52,6 +53,7 @@
         app:layout_constraintWidth_percent="0.081" />
 
     <View
+        android:id="@+id/chosen_view"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="#0188b2"
