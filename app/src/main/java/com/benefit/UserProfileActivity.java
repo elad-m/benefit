@@ -2,10 +2,12 @@ package com.benefit;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -26,8 +28,13 @@ public class UserProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile);
 
-        findViewById(R.id.search_icon).setBackground(getResources().getDrawable(R.drawable.ic_search_icon_color));
-        
+        ConstraintLayout constraintLayout = findViewById(R.id.page_header_root_layout);
+        ConstraintSet constraintSet = new ConstraintSet();
+        constraintSet.clone(constraintLayout);
+        constraintSet.connect(R.id.chosen_view, ConstraintSet.RIGHT, R.id.user_icon, ConstraintSet.RIGHT);
+        constraintSet.connect(R.id.chosen_view, ConstraintSet.LEFT, R.id.user_icon, ConstraintSet.LEFT);
+        constraintSet.applyTo(constraintLayout);
+
         // recycler elements
         mClothingItems.add(new ClothingItem(R.drawable.my_shoes, "Shoes"));
         mClothingItems.add(new ClothingItem(R.drawable.my_pants, "Pants"));
