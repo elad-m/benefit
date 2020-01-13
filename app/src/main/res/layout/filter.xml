@@ -56,7 +56,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="0.5"
-            android:text="RESET"
+            android:text="@string/reset"
             android:background="#6d6d6d"
             android:textSize="25sp" />
 

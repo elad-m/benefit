@@ -2,6 +2,7 @@ package com.benefit.model;
 
 import com.google.firebase.firestore.ServerTimestamp;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -9,7 +10,7 @@ import java.util.Map;
 /**
  * Model POJO for product
  */
-public class Product {
+public class Product implements Serializable {
     private int id;
     private int categoryId;
     private String sellerId;

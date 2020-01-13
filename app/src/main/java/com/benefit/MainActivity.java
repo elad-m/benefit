@@ -105,6 +105,8 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.slogan).setVisibility(View.VISIBLE);
         getWindow().setSoftInputMode(
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+
+
         List<Category> ct = IO.getDatabaseFromInputStream(getResources().openRawResource(R.raw.database));
         List<String> list1 = new ArrayList<>();
         list1.add("men");
