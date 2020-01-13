@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -20,7 +21,7 @@
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_gravity="center"
-        android:layout_weight="0.5"
+        android:layout_weight="0.3"
         android:orientation="vertical">
 
         <TextView
@@ -43,11 +44,16 @@
         android:id="@+id/item_title_text"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.7"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="100dp"
+        android:layout_marginBottom="4dp"
+        android:layout_weight="0.3"
+        android:background="@drawable/rounded_edittext"
         android:hint="Add item title"
         android:inputType="text"
-        android:padding="15dp"
-        android:textSize="20sp"
+        android:paddingStart="20dp"
+        android:textSize="15sp"
         android:textStyle="bold" />
 
 
@@ -55,144 +61,106 @@
         android:id="@+id/item_description_text"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.5"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginBottom="4dp"
+        android:layout_weight="0.4"
+        android:background="@drawable/rounded_edittext"
         android:hint="Write anything about this item"
         android:inputType="text"
         android:maxLines="3"
-        android:padding="10dp" />
+        android:paddingStart="20dp"
+        android:textSize="15sp" />
 
-    <RadioGroup
-        android:id="@+id/item_size_radio_group"
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/category_group"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginStart="10dp"
-        android:layout_weight="0.5"
-        android:orientation="horizontal">
+        android:layout_gravity="center_vertical"
+        android:layout_margin="5dp"
+        android:layout_weight="0.3"
+        android:theme="@style/Theme.MaterialComponents.Light"
+        app:checkedChip="@id/shirt_chip"
+        app:chipSpacing="25dp"
+        app:singleLine="true"
+        app:singleSelection="true">
 
         <TextView
-            android:id="@+id/size_header"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Size: "
+            android:padding="6dp"
+            android:text="Categories:"
+            android:textColor="#000000"
             android:textSize="15sp" />
 
-        <RadioButton
-            android:id="@+id/item_size_small_button"
-            android:layout_width="0dp"
+        <com.google.android.material.chip.Chip
+            android:id="@+id/pants_chip"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:checked="true"
-            android:onClick="setSizeRadioButton"
-            android:text="S" />
-
-        <RadioButton
-            android:id="@+id/item_size_medium_button"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:checked="true"
-            android:onClick="setSizeRadioButton"
-            android:text="M" />
-
-        <RadioButton
-            android:id="@+id/item_size_large_button"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="setSizeRadioButton"
-            android:text="L" />
-    </RadioGroup>
-
-    <RadioGroup
-        android:id="@+id/item_category_radio_group"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginStart="10dp"
-        android:layout_weight="0.5"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/category_header"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Category: "
-            android:textSize="15sp" />
-
-        <RadioButton
-            android:id="@+id/item_shirt_button"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:checked="true"
-            android:onClick="setCategoryRadioButton"
-            android:text="Shirt" />
-
-        <RadioButton
-            android:id="@+id/item_pants_button"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:checked="true"
-            android:onClick="setCategoryRadioButton"
             android:text="Pants" />
 
-        <RadioButton
-            android:id="@+id/item_shoes_button"
-            android:layout_width="0dp"
+        <com.google.android.material.chip.Chip
+            android:id="@+id/shirt_chip"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="setCategoryRadioButton"
-            android:text="Shoes" />
-    </RadioGroup>
+            android:text="Shirt" />
 
-    <RadioGroup
-        android:id="@+id/item_clothing_demographic_radio_group"
+        <com.google.android.material.chip.Chip
+            android:id="@+id/shoes_chip"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Shoes" />
+
+    </com.google.android.material.chip.ChipGroup>
+
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/demographic_group"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_gravity="center_horizontal|center_vertical"
-        android:layout_marginStart="10dp"
-        android:layout_weight="0.5"
-        android:orientation="horizontal">
+        android:layout_gravity="center_vertical"
+        android:layout_margin="5dp"
+        android:layout_weight="0.3"
+        android:theme="@style/Theme.MaterialComponents.Light"
+        app:checkedChip="@id/women_chip"
+        app:chipSpacing="25dp"
+        app:singleLine="true"
+        app:singleSelection="true">
 
         <TextView
-            android:id="@+id/clothing_demographic_header"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="For whom: "
+            android:padding="6dp"
+            android:text="For Whom:"
+            android:textColor="#000000"
             android:textSize="15sp" />
 
-        <RadioButton
-            android:id="@+id/item_men_button"
-            android:layout_width="0dp"
+        <com.google.android.material.chip.Chip
+            android:id="@+id/men_chip"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:checked="true"
-            android:onClick="setClothingDemographicRadioButton"
             android:text="Men" />
 
-        <RadioButton
-            android:id="@+id/item_women_button"
-            android:layout_width="0dp"
+        <com.google.android.material.chip.Chip
+            android:id="@+id/women_chip"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:checked="true"
-            android:onClick="setClothingDemographicRadioButton"
             android:text="Women" />
 
-        <RadioButton
-            android:id="@+id/item_kids_button"
-            android:layout_width="0dp"
+        <com.google.android.material.chip.Chip
+            android:id="@+id/kids_chip"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="setClothingDemographicRadioButton"
             android:text="Kids" />
 
-    </RadioGroup>
+    </com.google.android.material.chip.ChipGroup>
+
 
     <Button
         android:layout_width="200dp"

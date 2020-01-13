@@ -8,14 +8,14 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.benefit.model.Product;
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
 import com.squareup.picasso.Picasso;
 
 import java.util.Calendar;
@@ -36,12 +36,9 @@ public class GiveItemActivity extends AppCompatActivity {
     private ImageButton mImageButtonUpload;
     private Uri mImageUri;
 
-    private RadioGroup sizeRadioGroup;
-    private RadioButton sizeRadioButton;
-    private RadioGroup categoryRadioGroup;
-    private RadioButton categoryRadioButton;
-    private RadioGroup clothingDemographicRadioGroup;
-    private RadioButton clothingDemographicRadioButton;
+
+    private ChipGroup categoryGroup;
+    private ChipGroup demographicGroup;
 
     private EditText mEdTextTitle;
     private EditText mEdTextDescription;
@@ -57,16 +54,51 @@ public class GiveItemActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_give_item);
 
-        sizeRadioGroup = findViewById(R.id.item_size_radio_group);
-        categoryRadioGroup = findViewById(R.id.item_category_radio_group);
-        clothingDemographicRadioGroup = findViewById(R.id.item_clothing_demographic_radio_group);
-
         mEdTextTitle = findViewById(R.id.item_title_text);
+
         mEdTextDescription = findViewById(R.id.item_description_text);
 
         mImageButtonUpload = findViewById(R.id.image_button_choose_image);
 
+        createChipGroups();
     }
+
+
+    private void createChipGroups() {
+        createCateforyGroup();
+        createDemographicGroup();
+    }
+
+    private void createCateforyGroup() {
+        categoryGroup = findViewById(R.id.category_group);
+        categoryGroup.setOnCheckedChangeListener(new ChipGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(ChipGroup chipGroup, int i) {
+
+                Chip chip = chipGroup.findViewById(i);
+                if (chip != null)
+                    Toast.makeText(getApplicationContext(), "Chip is " + chip.getText(), Toast.LENGTH_SHORT).show();
+
+
+            }
+        });
+    }
+
+    private void createDemographicGroup() {
+        demographicGroup = findViewById(R.id.demographic_group);
+        demographicGroup.setOnCheckedChangeListener(new ChipGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(ChipGroup chipGroup, int i) {
+
+                Chip chip = chipGroup.findViewById(i);
+                if (chip != null)
+                    Toast.makeText(getApplicationContext(), "Chip is " + chip.getText(), Toast.LENGTH_SHORT).show();
+
+
+            }
+        });
+    }
+
 
     public void openFileChooser(View v) {
         Intent intent = new Intent();
@@ -100,31 +132,6 @@ public class GiveItemActivity extends AppCompatActivity {
     }
 
 
-    public void setSizeRadioButton(View v) {
-        int radioId = sizeRadioGroup.getCheckedRadioButtonId();
-        sizeRadioButton = findViewById(radioId);
-
-        Toast.makeText(this, "selected size: " + sizeRadioButton.getText(),
-                Toast.LENGTH_SHORT).show();
-    }
-
-    public void setCategoryRadioButton(View v) {
-        int radioId = categoryRadioGroup.getCheckedRadioButtonId();
-        categoryRadioButton = findViewById(radioId);
-
-        Toast.makeText(this, "selected category: " + categoryRadioButton.getText(),
-                Toast.LENGTH_SHORT).show();
-    }
-
-
-    public void setClothingDemographicRadioButton(View v) {
-        int radioId = clothingDemographicRadioGroup.getCheckedRadioButtonId();
-        clothingDemographicRadioButton = findViewById(radioId);
-
-        Toast.makeText(this, "selected for: " + clothingDemographicRadioButton.getText(),
-                Toast.LENGTH_SHORT).show();
-    }
-
     private Map<String, List<String>> getProductProperties() {
         Map<String, List<String>> properties = new HashMap<>();
         // todo: add actual list? WHY LIST?
@@ -136,12 +143,22 @@ public class GiveItemActivity extends AppCompatActivity {
 
 
     public void onClickGive(View view) {
-        mItemTitle = mEdTextTitle.getText().toString();
-        mItemDescription = mEdTextDescription.getText().toString();
+        if (mEdTextTitle != null) {
+            mItemTitle = mEdTextTitle.getText().toString();
+        } else {
+            mItemTitle = "No title written";
+        }
+        if (mEdTextDescription != null) {
+            mItemDescription = mEdTextDescription.getText().toString();
+        } else {
+            mItemDescription = "No item Description";
+        }
         Date date = Calendar.getInstance().getTime();
         Map<String, List<String>> properties = getProductProperties();
         List<String> imagesUrls = new LinkedList<>();
-        imagesUrls.add(mImageUri.toString());  // todo: hope this cuts it
+        if (mImageUri != null) {
+            imagesUrls.add(mImageUri.toString());  // todo: should prompt a message that you must take a picture
+        }
         // todo: change to real id
         Product product = new Product(64, 3, "sellerID", mItemTitle, mItemDescription,
                 0, 0, date, properties, imagesUrls);
