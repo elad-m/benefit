@@ -34,8 +34,6 @@ public class ChatService extends ViewModel {
     private DatabaseDriver databaseDriver;
     private User user;
     private CollectionReference matchCollectionRef;
-    private List<Match> matchesWithBuyers;
-    private List<Match> matchesWithSellers;
 
     public ChatService(){
         this.databaseDriver = new DatabaseDriver();
