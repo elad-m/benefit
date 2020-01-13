@@ -2,6 +2,7 @@ package com.benefit;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
@@ -88,24 +89,27 @@ public class ConversationActivity extends AppCompatActivity implements AdapterVi
     private void initiateConversationRecyclerView() {
         conversationAdapter = chatService.getConversationAdaptor(true, true, true);
         conversationRecyclerView = findViewById(R.id.conversation_recyclerView);
+        conversationRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         conversationRecyclerView.setAdapter(conversationAdapter);
         conversationAdapter.startListening();
     }
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        switch (position) {
-            case 0:
-                conversationRecyclerView.setAdapter(chatService.getConversationAdaptor(false, true, true));
-                break;
-            case 1:
-                conversationRecyclerView.setAdapter(chatService.getConversationAdaptor(true, false, true));
-                break;
-            case 2:
-                conversationRecyclerView.setAdapter(chatService.getConversationAdaptor(true, true, true));
-                break;
-            case 3:
-                conversationRecyclerView.setAdapter(chatService.getConversationAdaptor(true, true, false));
+        if (conversationRecyclerView != null) {
+            switch (position) {
+                case 0:
+                    conversationRecyclerView.setAdapter(chatService.getConversationAdaptor(false, true, true));
+                    break;
+                case 1:
+                    conversationRecyclerView.setAdapter(chatService.getConversationAdaptor(true, false, true));
+                    break;
+                case 2:
+                    conversationRecyclerView.setAdapter(chatService.getConversationAdaptor(true, true, true));
+                    break;
+                case 3:
+                    conversationRecyclerView.setAdapter(chatService.getConversationAdaptor(true, true, false));
+            }
         }
     }
 
