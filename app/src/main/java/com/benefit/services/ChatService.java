@@ -71,10 +71,10 @@ public class ChatService extends ViewModel {
         }
         matchQuery.whereEqualTo("isClosed", false);
         if (orderNewToOld){
-            matchQuery.orderBy("timestamp", Query.Direction.DESCENDING);
+            matchQuery.orderBy("timestamp", Query.Direction.ASCENDING);
         }
         else {
-            matchQuery.orderBy("timestamp", Query.Direction.ASCENDING);
+            matchQuery.orderBy("timestamp", Query.Direction.DESCENDING);
         }
         FirestoreRecyclerOptions<Match> matchRecyclerOptions = new FirestoreRecyclerOptions.Builder<Match>().setQuery(matchQuery, Match.class).build();
         return new ConversationAdapter(matchRecyclerOptions, databaseDriver);

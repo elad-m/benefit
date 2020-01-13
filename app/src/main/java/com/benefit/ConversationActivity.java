@@ -99,17 +99,20 @@ public class ConversationActivity extends AppCompatActivity implements AdapterVi
         if (conversationRecyclerView != null) {
             switch (position) {
                 case 0:
-                    conversationRecyclerView.setAdapter(chatService.getConversationAdaptor(false, true, true));
+                   conversationAdapter = chatService.getConversationAdaptor(false, true, true);
                     break;
                 case 1:
-                    conversationRecyclerView.setAdapter(chatService.getConversationAdaptor(true, false, true));
+                    conversationAdapter = chatService.getConversationAdaptor(true, false, true);
                     break;
                 case 2:
-                    conversationRecyclerView.setAdapter(chatService.getConversationAdaptor(true, true, true));
+                    conversationAdapter = chatService.getConversationAdaptor(true, true, true);
                     break;
                 case 3:
-                    conversationRecyclerView.setAdapter(chatService.getConversationAdaptor(true, true, false));
+                    conversationAdapter = chatService.getConversationAdaptor(true, true, false);
             }
+            conversationRecyclerView.setAdapter(conversationAdapter);
+            conversationAdapter.startListening();
+
         }
     }
 
