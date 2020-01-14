@@ -11,6 +11,7 @@
         layout="@layout/page_header" />
 
     <LinearLayout
+        android:id="@+id/activity_root_linear_layout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:orientation="vertical"
@@ -29,9 +30,8 @@
 
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_weight="0.3"
             android:orientation="vertical">
 
             <TextView
@@ -53,12 +53,11 @@
         <EditText
             android:id="@+id/item_title_text"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
             android:layout_marginTop="4dp"
             android:layout_marginEnd="100dp"
             android:layout_marginBottom="4dp"
-            android:layout_weight="0.3"
             android:background="@drawable/rounded_edittext"
             android:hint="Add item title"
             android:inputType="text"
@@ -70,12 +69,11 @@
         <EditText
             android:id="@+id/item_description_text"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
             android:layout_marginTop="4dp"
             android:layout_marginEnd="4dp"
             android:layout_marginBottom="4dp"
-            android:layout_weight="0.4"
             android:background="@drawable/rounded_edittext"
             android:hint="Write anything about this item"
             android:inputType="text"
@@ -84,56 +82,11 @@
             android:textSize="15sp" />
 
         <com.google.android.material.chip.ChipGroup
-            android:id="@+id/category_group"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_gravity="center_vertical"
-            android:layout_margin="5dp"
-            android:layout_weight="0.3"
-            android:theme="@style/Theme.MaterialComponents.Light"
-            app:checkedChip="@id/shirt_chip"
-            app:chipSpacing="25dp"
-            app:singleLine="true"
-            app:singleSelection="true">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="6dp"
-                android:text="Categories:"
-                android:textColor="#000000"
-                android:textSize="15sp" />
-
-            <com.google.android.material.chip.Chip
-                android:id="@+id/pants_chip"
-                style="@style/Widget.MaterialComponents.Chip.Choice"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Pants" />
-
-            <com.google.android.material.chip.Chip
-                android:id="@+id/shirt_chip"
-                style="@style/Widget.MaterialComponents.Chip.Choice"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Shirt" />
-
-            <com.google.android.material.chip.Chip
-                android:id="@+id/shoes_chip"
-                style="@style/Widget.MaterialComponents.Chip.Choice"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Shoes" />
-
-        </com.google.android.material.chip.ChipGroup>
-
-        <com.google.android.material.chip.ChipGroup
             android:id="@+id/demographic_group"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_margin="5dp"
-            android:layout_weight="0.3"
             android:theme="@style/Theme.MaterialComponents.Light"
             app:checkedChip="@id/women_chip"
             app:chipSpacing="25dp"
@@ -144,7 +97,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="6dp"
-                android:text="For Whom:"
+                android:text="HARDCODED For Whom:"
                 android:textColor="#000000"
                 android:textSize="15sp" />
 
@@ -153,30 +106,24 @@
                 style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Men" />
+                android:text="Men"
+                android:textSize="15sp" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/women_chip"
                 style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Women" />
-
-            <com.google.android.material.chip.Chip
-                android:id="@+id/kids_chip"
-                style="@style/Widget.MaterialComponents.Chip.Choice"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Kids" />
+                android:text="Women"
+                android:textSize="15sp" />
 
         </com.google.android.material.chip.ChipGroup>
 
-
         <Button
+            android:id="@+id/give_button"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_weight="0.3"
             android:onClick="onClickGive"
             android:text="Give"
             android:textSize="20sp" />
