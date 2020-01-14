@@ -7,6 +7,7 @@ import androidx.annotation.RequiresApi;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.benefit.adapters.UserProductAdapter;
 import com.benefit.drivers.DatabaseDriver;
@@ -116,7 +117,7 @@ public class ProductService extends ViewModel {
         return indicator;
     }
 
-    public UserProductAdapter getUserProductsAdapter(User user){
+    public RecyclerView.Adapter getUserProductsRecyclerViewAdapter(User user){
         if (user == null){
             Log.d(TAG, "Error - user is null. Can't return a UserProductAdapter.");
             return null;
