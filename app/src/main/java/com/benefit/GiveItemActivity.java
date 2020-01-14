@@ -119,7 +119,7 @@ public class GiveItemActivity extends AppCompatActivity {
                             Toast.LENGTH_SHORT).show();
             }
         });
-        
+
         activityRootLinearLayout.addView(
                 chipGroup,activityRootLinearLayout.getChildCount() - 1);
     }
