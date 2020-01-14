@@ -44,7 +44,7 @@ public class ProductService extends ViewModel {
         return this.databaseDriver.deleteDocumentsByField(COLLECTION_NAME, "id", productId);
     }
 
-    public LiveData<Product> getProductsById(int productId) {
+    public LiveData<Product> getProductById(int productId) {
         return this.databaseDriver.getSingleDocumentByField(COLLECTION_NAME, "id", productId, Product.class);
     }
 
