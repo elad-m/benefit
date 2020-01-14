@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/backgroundColor"
@@ -108,6 +109,19 @@
             android:textColor="@color/productPageTextPrimaryColor"
             android:textSize="@dimen/productPageGeneralTextSize"
             android:textStyle="normal" />
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <fragment
+            android:id="@+id/productPageMapFragment"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:paddingLeft="@dimen/productPageGeneralPaddingLeft"
+            tools:context="com.benefit.ProductPageActivity" />
     </TableRow>
 
 
