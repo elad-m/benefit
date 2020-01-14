@@ -1,141 +1,142 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/product_page_layout"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@color/backgroundColor"
-    android:gravity="center"
-    android:layoutDirection="ltr"
-    android:orientation="vertical">
+    android:layout_height="match_parent"
+    tools:context=".ProductPageActivity">
 
-    <TableRow
+    <include
+        android:id="@+id/layout_top_area"
+        layout="@layout/top_area" />
+
+    <TableLayout
         android:layout_width="match_parent"
-        android:layout_height="257dp">
+        android:layout_height="wrap_content"
+        android:background="@color/backgroundColor"
+        android:gravity="center"
+        android:layoutDirection="ltr"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@id/layout_top_area">
 
-        <TextView
-            android:id="@+id/doughThickTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="toolbar placeholder"
-            android:textColor="@android:color/black"
-            android:textStyle="bold" />
-    </TableRow>
 
-    <TableRow
-        android:layout_width="match_parent"
-        android:layout_height="145dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="sans-serif"
-            android:text="@string/backButtonCaption"
-            android:textColor="@color/primaryBlue"
-            android:textSize="@dimen/backButtonCaptionSize"
-            android:textStyle="normal" />
-    </TableRow>
-
-    <TableRow
-        android:layout_width="match_parent"
-        android:layout_height="514dp">
-        <!--        <ImageView-->
-        <!--            android:id="@+id/prpImagePlaceholder"-->
-        <!--            android:layout_width="wrap_content"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:background="@null"-->
-        <!--            android:gravity="center"-->
-        <!--            app:srcCompat="@drawable/ic_prp_image_placeholder" />-->
-    </TableRow>
-
-    <TableRow
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <TextView
-            android:id="@+id/textviewProductPageTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="sans-serif"
-            android:paddingLeft="@dimen/productPageGeneralPaddingLeft"
-            android:textColor="@color/productPageTextPrimaryColor"
-            android:textSize="@dimen/productPageTitleSize"
-            android:textStyle="normal" />
-    </TableRow>
-
-    <TableRow
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <TextView
-            android:id="@+id/textviewProductPageDescription"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="sans-serif"
-            android:paddingLeft="@dimen/productPageGeneralPaddingLeft"
-            android:textColor="@color/productPageTextSecondaryColor"
-            android:textSize="@dimen/productPageGeneralTextSize"
-            android:textStyle="normal" />
-    </TableRow>
-
-    <TableRow
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <TextView
-            android:id="@+id/textviewProductPageProperties"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="sans-serif"
-            android:paddingLeft="@dimen/productPageGeneralPaddingLeft"
-            android:paddingTop="@dimen/productPageSectionPaddingTop"
-            android:textColor="@color/productPageTextPrimaryColor"
-            android:textSize="@dimen/productPageGeneralTextSize"
-            android:textStyle="normal" />
-    </TableRow>
-
-    <TableRow
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <TextView
-            android:id="@+id/textviewProductPageLocationTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="sans-serif"
-            android:paddingLeft="@dimen/productPageGeneralPaddingLeft"
-            android:paddingTop="@dimen/productPageSectionPaddingTop"
-            android:text="@string/productPageLocationTitleCaption"
-            android:textColor="@color/productPageTextPrimaryColor"
-            android:textSize="@dimen/productPageGeneralTextSize"
-            android:textStyle="normal" />
-    </TableRow>
-
-    <TableRow
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <fragment
-            android:id="@+id/productPageMapFragment"
-            android:name="com.google.android.gms.maps.SupportMapFragment"
+        <TableRow
             android:layout_width="match_parent"
-            android:layout_height="250dp"
-            android:paddingLeft="@dimen/productPageGeneralPaddingLeft"
-            tools:context="com.benefit.ProductPageActivity" />
-    </TableRow>
+            android:layout_height="145dp">
 
-    <TableRow
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif"
+                android:text="@string/backButtonCaption"
+                android:textColor="@color/primaryBlue"
+                android:textSize="@dimen/backButtonCaptionSize"
+                android:textStyle="normal" />
+        </TableRow>
 
-        <Button
-            android:layout_width="300dp"
-            android:layout_height="77dp"
-            android:background="@drawable/ic_contact_giver_button"
-            android:text="Contact Giver"
-            android:textColor="@color/primaryBlue"
-            android:textSize="36sp" />
-    </TableRow>
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="514dp">
+            <!--        <ImageView-->
+            <!--            android:id="@+id/prpImagePlaceholder"-->
+            <!--            android:layout_width="wrap_content"-->
+            <!--            android:layout_height="wrap_content"-->
+            <!--            android:background="@null"-->
+            <!--            android:gravity="center"-->
+            <!--            app:srcCompat="@drawable/ic_prp_image_placeholder" />-->
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/textviewProductPageTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif"
+                android:paddingLeft="@dimen/productPageGeneralPaddingLeft"
+                android:textColor="@color/productPageTextPrimaryColor"
+                android:textSize="@dimen/productPageTitleSize"
+                android:textStyle="normal" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/textviewProductPageDescription"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif"
+                android:paddingLeft="@dimen/productPageGeneralPaddingLeft"
+                android:textColor="@color/productPageTextSecondaryColor"
+                android:textSize="@dimen/productPageGeneralTextSize"
+                android:textStyle="normal" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/textviewProductPageProperties"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif"
+                android:paddingLeft="@dimen/productPageGeneralPaddingLeft"
+                android:paddingTop="@dimen/productPageSectionPaddingTop"
+                android:textColor="@color/productPageTextPrimaryColor"
+                android:textSize="@dimen/productPageGeneralTextSize"
+                android:textStyle="normal" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/textviewProductPageLocationTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif"
+                android:paddingLeft="@dimen/productPageGeneralPaddingLeft"
+                android:paddingTop="@dimen/productPageSectionPaddingTop"
+                android:text="@string/productPageLocationTitleCaption"
+                android:textColor="@color/productPageTextPrimaryColor"
+                android:textSize="@dimen/productPageGeneralTextSize"
+                android:textStyle="normal" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <fragment
+                android:id="@+id/productPageMapFragment"
+                android:name="com.google.android.gms.maps.SupportMapFragment"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:paddingLeft="@dimen/productPageGeneralPaddingLeft"
+                tools:context="com.benefit.ProductPageActivity" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:layout_width="300dp"
+                android:layout_height="77dp"
+                android:background="@drawable/ic_contact_giver_button"
+                android:text="Contact Giver"
+                android:textColor="@color/primaryBlue"
+                android:textSize="36sp" />
+        </TableRow>
 
 
-</TableLayout>
+    </TableLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
