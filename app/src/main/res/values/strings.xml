@@ -5,6 +5,7 @@
     <string name="facebook_application_id" translatable="false">2550633185150206</string>
     <string name="facebook_login_protocol_scheme" translatable="false">fb2550633185150206</string>
     <string name="backButtonCaption">Back</string>
+    <string name="prodactPageLocationTitleCaption">Location</string>
     <string name="productPagePropertiesSeparator">|</string>
     <string name="productPagePropertiesValuesSeparator">,</string>
 </resources>
