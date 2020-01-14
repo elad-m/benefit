@@ -25,20 +25,22 @@ public class DatabaseDriver {
 
     public DatabaseDriver() {
         this.db = FirebaseFirestore.getInstance();
+
+
     }
 
     public FirebaseFirestore getDb() {
         return this.db;
     }
 
-    public CollectionReference getCollectionByName(String name) {
+    public CollectionReference getCollectionReferenceByName(String name) {
         return this.db.collection(name);
     }
 
     public <T> LiveData<T> getSingleDocumentByField(String collectionName, String fieldName, Object fieldValue, final Class<T> typeParameterClass) {
         final List<T> documentsList = new LinkedList<>();
         final MutableLiveData<T> resultsLiveData = new MutableLiveData<>();
-        getCollectionByName(collectionName)
+        getCollectionReferenceByName(collectionName)
                 .whereEqualTo(fieldName, fieldValue)
                 .get()
                 .addOnCompleteListener(task -> {
@@ -62,7 +64,7 @@ public class DatabaseDriver {
     public <T> LiveData<List<T>> getDocumentsByField(String collectionName, String fieldName, List<Object> fieldValue, final Class<T> typeParameterClass) {
         final List<T> documentsList = new LinkedList<>();
         final MutableLiveData<List<T>> resultsLiveData = new MutableLiveData<>();
-        getCollectionByName(collectionName)
+        getCollectionReferenceByName(collectionName)
                 .whereIn(fieldName, fieldValue)
                 .get()
                 .addOnCompleteListener(task -> {
@@ -79,7 +81,7 @@ public class DatabaseDriver {
 
     public LiveData<Boolean> deleteDocumentsByField(String collectionName, String fieldName, Object fieldValue) {
         final MutableLiveData<Boolean> resultsLiveData = new MutableLiveData<>();
-        CollectionReference collectionReference = getCollectionByName(collectionName);
+        CollectionReference collectionReference = getCollectionReferenceByName(collectionName);
         Query query = collectionReference.whereEqualTo(fieldName, fieldValue);
         query.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {

@@ -28,7 +28,7 @@ public class SearchService extends ViewModel {
 
     public SearchService(DatabaseDriver databaseDriver) {
         this.databaseDriver = databaseDriver;
-        this.productsCollection = this.databaseDriver.getCollectionByName(COLLECTION_NAME_PRODUCTS);
+        this.productsCollection = this.databaseDriver.getCollectionReferenceByName(COLLECTION_NAME_PRODUCTS);
     }
 
     public LiveData<List<Product>> getProductsBySearchString(String searchQuery) {
