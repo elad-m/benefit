@@ -124,5 +124,18 @@
             tools:context="com.benefit.ProductPageActivity" />
     </TableRow>
 
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:layout_width="300dp"
+            android:layout_height="77dp"
+            android:background="@drawable/ic_contact_giver_button"
+            android:text="Contact Giver"
+            android:textColor="@color/primaryBlue"
+            android:textSize="36sp" />
+    </TableRow>
+
 
 </TableLayout>
