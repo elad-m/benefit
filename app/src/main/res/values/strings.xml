@@ -39,6 +39,7 @@
     <string name="dialog_thank_you_image_description">Chest of gold to convey message of treasure</string>
     <string name="dialog_done_button_text">Done</string>
 
+    <string name="backButtonCaption">Back</string>
     <string-array name="chat_sort_options">
         <item>your items</item>
         <item>wanted items</item>
