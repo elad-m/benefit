@@ -1,10 +1,5 @@
 package com.benefit;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -12,6 +7,11 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.benefit.adapters.ConversationAdapter;
 import com.benefit.drivers.DatabaseDriver;
@@ -62,7 +62,7 @@ public class ConversationActivity extends AppCompatActivity implements AdapterVi
     protected void onStart() {
         super.onStart();
 
-        if(conversationAdapter != null){
+        if (conversationAdapter != null) {
             conversationAdapter.startListening();
         }
     }
@@ -70,7 +70,7 @@ public class ConversationActivity extends AppCompatActivity implements AdapterVi
     @Override
     protected void onStop() {
         super.onStop();
-        if(conversationAdapter !=null){
+        if (conversationAdapter != null) {
             conversationAdapter.stopListening();
         }
     }
@@ -85,7 +85,7 @@ public class ConversationActivity extends AppCompatActivity implements AdapterVi
     }
 
     private void initiateConversationRecyclerView() {
-        conversationAdapter = chatService.getConversationRecyclerViewAdaptor(true, true, true);
+        conversationAdapter = (ConversationAdapter) chatService.getConversationRecyclerViewAdaptor(true, true, true);
         conversationRecyclerView = findViewById(R.id.conversation_recyclerView);
         conversationRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         conversationRecyclerView.setAdapter(conversationAdapter);
@@ -97,16 +97,16 @@ public class ConversationActivity extends AppCompatActivity implements AdapterVi
         if (conversationRecyclerView != null) {
             switch (position) {
                 case 0:
-                   conversationAdapter = chatService.getConversationRecyclerViewAdaptor(false, true, true);
+                    conversationAdapter = (ConversationAdapter) chatService.getConversationRecyclerViewAdaptor(false, true, true);
                     break;
                 case 1:
-                    conversationAdapter = chatService.getConversationRecyclerViewAdaptor(true, false, true);
+                    conversationAdapter = (ConversationAdapter) chatService.getConversationRecyclerViewAdaptor(true, false, true);
                     break;
                 case 2:
-                    conversationAdapter = chatService.getConversationRecyclerViewAdaptor(true, true, true);
+                    conversationAdapter = (ConversationAdapter) chatService.getConversationRecyclerViewAdaptor(true, true, true);
                     break;
                 case 3:
-                    conversationAdapter = chatService.getConversationRecyclerViewAdaptor(true, true, false);
+                    conversationAdapter = (ConversationAdapter) chatService.getConversationRecyclerViewAdaptor(true, true, false);
             }
             conversationRecyclerView.setAdapter(conversationAdapter);
             conversationAdapter.startListening();
