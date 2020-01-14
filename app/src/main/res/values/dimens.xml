@@ -32,6 +32,6 @@
     <dimen name="backButtonCaptionSize">24sp</dimen>
     <dimen name="productPageGeneralPaddingLeft">23dp</dimen>
     <dimen name="productPageTitleSize">32sp</dimen>
-    <dimen name="productPageGeneralTextSize">24sp</dimen>
-    <dimen name="productPageSectionPaddingTop">26dp</dimen>
+    <dimen name="productPageDescriptionSize">24sp</dimen>
+    <dimen name="productPagePropertiesSize">24sp</dimen>
 </resources>
