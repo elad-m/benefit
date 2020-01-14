@@ -36,4 +36,6 @@
     <dimen name="give_button_text_size">30sp</dimen>
     <dimen name="productPageSeparatorSize">1dp</dimen>
     <dimen name="productPageBottomPartMargin">15dp</dimen>
+    <dimen name="productPageDescriptionSize">24sp</dimen>
+    <dimen name="productPagePropertiesSize">24sp</dimen>
 </resources>
