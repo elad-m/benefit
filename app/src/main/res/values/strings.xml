@@ -15,6 +15,7 @@
     <string name="user_address_relay">address</string>
     <string name="user_last_name_relay">lastName</string>
     <string name="user_first_name_relay">firstName</string>
+    <string name="top_area_slogan">Look for your new clothes!</string>
 
     <string name="backButtonCaption">Back</string>
     <string name="productPageLocationTitleCaption">Location</string>
