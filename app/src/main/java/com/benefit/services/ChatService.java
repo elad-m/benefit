@@ -8,6 +8,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.benefit.adapters.ConversationAdapter;
+import com.benefit.drivers.AuthenticationDriver;
 import com.benefit.drivers.DatabaseDriver;
 import com.benefit.model.Chat;
 import com.benefit.model.Match;
@@ -32,11 +33,13 @@ public class ChatService extends ViewModel {
     private static final String TAG = ChatService.class.getSimpleName();
 
     private DatabaseDriver databaseDriver;
+    private AuthenticationDriver authenticationDriver;
     private User user;
     private CollectionReference matchCollectionRef;
 
     public ChatService(){
         this.databaseDriver = new DatabaseDriver();
+        this.authenticationDriver = new AuthenticationDriver();
         matchCollectionRef = databaseDriver.getCollectionReferenceByName("matches");
     }
 
@@ -77,7 +80,7 @@ public class ChatService extends ViewModel {
             matchQuery.orderBy("timestamp", Query.Direction.DESCENDING);
         }
         FirestoreRecyclerOptions<Match> matchRecyclerOptions = new FirestoreRecyclerOptions.Builder<Match>().setQuery(matchQuery, Match.class).build();
-        return new ConversationAdapter(matchRecyclerOptions, databaseDriver);
+        return new ConversationAdapter(matchRecyclerOptions, databaseDriver, authenticationDriver);
     }
 
 

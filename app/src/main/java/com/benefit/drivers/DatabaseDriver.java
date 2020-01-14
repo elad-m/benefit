@@ -23,26 +23,16 @@ import java.util.Objects;
 public class DatabaseDriver {
     private FirebaseFirestore db;
     private static final String TAG = "DatabaseDriver";
-    private FirebaseAuth auth;
 
     public DatabaseDriver() {
         this.db = FirebaseFirestore.getInstance();
-        this.auth = FirebaseAuth.getInstance();
 
-        // Enable Firestore logging
-        FirebaseFirestore.setLoggingEnabled(true);
 
-    }
-
-    public boolean isSignIn(){
-        return auth.getCurrentUser() != null;
     }
 
     public FirebaseFirestore getDb() {
         return this.db;
     }
-
-    public FirebaseAuth getAuth(){ return this.auth;}
 
     public CollectionReference getCollectionReferenceByName(String name) {
         return this.db.collection(name);

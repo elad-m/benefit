@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.benefit.ChatActivity;
 import com.benefit.R;
+import com.benefit.drivers.AuthenticationDriver;
 import com.benefit.drivers.DatabaseDriver;
 import com.benefit.model.Chat;
 import com.benefit.model.Match;
@@ -78,10 +79,12 @@ public class ConversationAdapter extends FirestoreRecyclerAdapter<Match, Convers
     }
 
     private DatabaseDriver databaseDriver;
+    private AuthenticationDriver authenticationDriver;
 
-    public ConversationAdapter(@NonNull FirestoreRecyclerOptions<Match> options, DatabaseDriver databaseDriver) {
+    public ConversationAdapter(@NonNull FirestoreRecyclerOptions<Match> options, DatabaseDriver databaseDriver, AuthenticationDriver authenticationDriver) {
         super(options);
         this.databaseDriver = databaseDriver;
+        this.authenticationDriver = authenticationDriver;
     }
 
     @NonNull
@@ -106,7 +109,7 @@ public class ConversationAdapter extends FirestoreRecyclerAdapter<Match, Convers
                         }
                     }
                 });
-        if (match.getSellerId().equals(databaseDriver.getAuth().getUid())){
+        if (match.getSellerId().equals(authenticationDriver.getUserUid())){
             conversationHolder.setProductOwnerName(conversationHolder.itemView.getContext().getString(R.string.user_item));
         }
         else {

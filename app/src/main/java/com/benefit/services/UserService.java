@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.benefit.R;
 import com.benefit.SignUpActivity;
+import com.benefit.drivers.AuthenticationDriver;
 import com.benefit.drivers.DatabaseDriver;
 import com.benefit.model.User;
 import com.firebase.ui.auth.AuthUI;
@@ -28,6 +29,7 @@ import java.util.List;
  */
 public class UserService extends ViewModel {
     private DatabaseDriver databaseDriver;
+    private AuthenticationDriver authenticationDriver;
     private CollectionReference usersCollectionRef;
     private boolean mIsSigningIn;
     private MutableLiveData<User> user;
@@ -39,12 +41,13 @@ public class UserService extends ViewModel {
 
     public UserService() {
         this.databaseDriver = new DatabaseDriver();
+        this.authenticationDriver = new AuthenticationDriver();
         mIsSigningIn = false;
         usersCollectionRef = databaseDriver.getCollectionReferenceByName(COLLECTION_USERS_NAME);
     }
 
     public boolean isSignIn() {
-        return databaseDriver.isSignIn();
+        return authenticationDriver.isSignIn();
     }
 
     public boolean shouldSignIn() {
@@ -52,7 +55,7 @@ public class UserService extends ViewModel {
     }
 
     public String getUserUid() {
-        return databaseDriver.getAuth().getUid();
+        return authenticationDriver.getUserUid();
     }
 
     public void startSignIn(AppCompatActivity activity) {
@@ -90,7 +93,7 @@ public class UserService extends ViewModel {
                     }
                 });
             } else {
-                if (!databaseDriver.isSignIn()) {
+                if (!authenticationDriver.isSignIn()) {
                     mIsSigningIn = false;
                     startSignIn(activity);
                 }
@@ -99,7 +102,7 @@ public class UserService extends ViewModel {
         if (requestCode == RC_SIGN_UP) {
             if (resultCode == Activity.RESULT_OK) {
                 mIsSigningIn = false;
-                User newUser = new User(databaseDriver.getAuth().getUid());
+                User newUser = new User(authenticationDriver.getUserUid());
                 newUser.setFirstName(data.getStringExtra(activity.getString(R.string.user_first_name_relay)));
                 newUser.setLastName(data.getStringExtra(activity.getString(R.string.user_last_name_relay)));
                 newUser.setAddress(data.getStringExtra(activity.getString(R.string.user_address_relay)));
@@ -120,7 +123,7 @@ public class UserService extends ViewModel {
     public LiveData<User> getCurrentUser() {
         if (user == null) {
             user = new MutableLiveData<>();
-            if (databaseDriver.isSignIn() && !mIsSigningIn) {
+            if (authenticationDriver.isSignIn() && !mIsSigningIn) {
                 return databaseDriver.getSingleDocumentByField(COLLECTION_USERS_NAME, UID, getUserUid(), User.class);
             }
         }
