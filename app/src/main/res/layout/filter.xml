@@ -58,6 +58,7 @@
             android:layout_weight="0.5"
             android:text="@string/reset"
             android:background="#6d6d6d"
+            android:textColor="#ffff"
             android:textSize="25sp" />
 
         <Button
@@ -67,6 +68,7 @@
             android:layout_weight="0.5"
             android:text="@string/done"
             android:background="#0188b2"
+            android:textColor="#ffff"
             android:textSize="25sp" />
 
     </LinearLayout>
