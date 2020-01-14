@@ -37,10 +37,10 @@ import io.opencensus.resource.Resource;
 public class ConversationAdapter extends FirestoreRecyclerAdapter<Match, ConversationAdapter.ConversationHolder> {
 
     static class ConversationHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView productTitle, productOwnerName, lastChatDate, giveOrWantText;
-        Product product;
-        Match match;
-        final DateFormat dateFormat = new SimpleDateFormat("h:mm a yy.MM.dd");
+        private TextView productTitle, productOwnerName, lastChatDate, giveOrWantText;
+        private Product product;
+        private Match match;
+        private final DateFormat dateFormat = new SimpleDateFormat("h:mm a yy.MM.dd");
 
         ConversationHolder(View v) {
             super(v);
@@ -107,7 +107,7 @@ public class ConversationAdapter extends FirestoreRecyclerAdapter<Match, Convers
                     }
                 });
         if (match.getSellerId().equals(databaseDriver.getAuth().getUid())){
-            conversationHolder.setProductOwnerName("your item");
+            conversationHolder.setProductOwnerName(conversationHolder.itemView.getContext().getString(R.string.user_item));
         }
         else {
             databaseDriver.getCollectionReferenceByName("users")

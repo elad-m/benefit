@@ -5,7 +5,7 @@
     <string name="first_name_field">First Name</string>
     <string name="last_name_field">Last Name</string>
     <string name="address_field">Address</string>
-    <string name="map_field_title">Your loction</string>
+    <string name="map_field_title">Your location</string>
     <string name="done_button">Done</string>
     <string name="enter_first_and_last_name">First name and Last name are required. Please enter your first name and last name.</string>
     <string name="enter_first_name">First name is required. Please enter your first name</string>
