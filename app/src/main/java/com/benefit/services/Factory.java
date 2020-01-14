@@ -18,14 +18,4 @@ public class Factory {
             }
         };
     }
-
-    public static ViewModelProvider.Factory getUserServiceFactory() {
-        return new ViewModelProvider.Factory() {
-            @NonNull
-            @Override
-            public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-                return (T) new UserService();
-            }
-        };
-    }
 }
