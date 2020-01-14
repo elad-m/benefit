@@ -33,13 +33,16 @@ import com.google.android.gms.tasks.Task;
 
 import java.util.ArrayList;
 
+/**
+ * This activity handle sign up a new user
+ */
 public class SignUpActivity extends AppCompatActivity implements OnMapReadyCallback, OnMarkerDragListener {
 
     private static final String TAG = SignUpActivity.class.getSimpleName();
-    public static final String USER_FIRST_NAME_REPLY = "firstName";
-    public static final String USER_LAST_NAME_REPLY = "lastName";
-    public static final String USER_ADDRESS_NAME_REPLY = "address";
-    public static final String USER_LOCATION_REPLY = "location";
+    // Keys for storing activity state.
+    private static final String KEY_CAMERA_POSITION = "camera_position";
+    private static final String KEY_LOCATION = "location";
+
     private GoogleMap mMap;
     private Location chosenLocation;
     private CameraPosition mCameraPosition;
@@ -61,9 +64,6 @@ public class SignUpActivity extends AppCompatActivity implements OnMapReadyCallb
     private Location mLastKnownLocation;
     private Marker mSelectedLocation;
 
-    // Keys for storing activity state.
-    private static final String KEY_CAMERA_POSITION = "camera_position";
-    private static final String KEY_LOCATION = "location";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -265,12 +265,12 @@ public class SignUpActivity extends AppCompatActivity implements OnMapReadyCallb
             }
             else {
                 Intent replyIntent  = new Intent();
-                replyIntent.putExtra(USER_FIRST_NAME_REPLY, firstName);
-                replyIntent.putExtra(USER_LAST_NAME_REPLY, lastName);
-                replyIntent.putExtra(USER_ADDRESS_NAME_REPLY, address);
+                replyIntent.putExtra(getString(R.string.user_first_name_relay), firstName);
+                replyIntent.putExtra(getString(R.string.user_last_name_relay), lastName);
+                replyIntent.putExtra(getString(R.string.user_address_relay), address);
                 ArrayList<Parcelable> locationList = new ArrayList<>();
                 locationList.add(chosenLocation);
-                replyIntent.putParcelableArrayListExtra(USER_LOCATION_REPLY, locationList);
+                replyIntent.putParcelableArrayListExtra(getString(R.string.user_location_relay), locationList);
                 setResult(RESULT_OK, replyIntent);
                 finish();
             }

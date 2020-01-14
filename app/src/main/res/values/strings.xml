@@ -11,6 +11,10 @@
     <string name="enter_first_name">First name is required. Please enter your first name</string>
     <string name="enter_last_name">Last name is required. Please enter your last name</string>
     <string name="user_item">your item</string>
+    <string name="user_location_relay">location</string>
+    <string name="user_address_relay">address</string>
+    <string name="user_last_name_relay">lastName</string>
+    <string name="user_first_name_relay">firstName</string>
 
     <string-array name="chat_sort_options">
         <item>your items</item>

@@ -10,6 +10,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.benefit.R;
 import com.benefit.SignUpActivity;
 import com.benefit.drivers.DatabaseDriver;
 import com.benefit.model.User;
@@ -99,11 +100,11 @@ public class UserService extends ViewModel {
             if (resultCode == Activity.RESULT_OK) {
                 mIsSigningIn = false;
                 User newUser = new User(databaseDriver.getAuth().getUid());
-                newUser.setFirstName(data.getStringExtra(SignUpActivity.USER_FIRST_NAME_REPLY));
-                newUser.setLastName(data.getStringExtra(SignUpActivity.USER_LAST_NAME_REPLY));
-                newUser.setAddress(data.getStringExtra(SignUpActivity.USER_ADDRESS_NAME_REPLY));
+                newUser.setFirstName(data.getStringExtra(activity.getString(R.string.user_first_name_relay)));
+                newUser.setLastName(data.getStringExtra(activity.getString(R.string.user_last_name_relay)));
+                newUser.setAddress(data.getStringExtra(activity.getString(R.string.user_address_relay)));
                 newUser.setRating(0);
-                final Location newUserLocation = (Location) data.getParcelableArrayListExtra(SignUpActivity.USER_LOCATION_REPLY).get(0);
+                final Location newUserLocation = (Location) data.getParcelableArrayListExtra(activity.getString(R.string.user_location_relay)).get(0);
                 newUser.setLocationLatitude(newUserLocation.getLatitude());
                 newUser.setLocationLongitude(newUserLocation.getLongitude());
                 user.setValue(newUser);
