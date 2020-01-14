@@ -3,7 +3,6 @@ package com.benefit.adapters;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -31,7 +30,7 @@ public class ChatAdapter extends FirestoreRecyclerAdapter<Chat, ChatAdapter.Chat
     @NonNull
     @Override
     public ChatMassageHolder onCreateViewHolder(@NonNull ViewGroup group, int viewType) {
-        View view = LayoutInflater.from(group.getContext()).inflate(R.layout.chat_massage, group, false);
+        View view = LayoutInflater.from(group.getContext()).inflate(R.layout.chat_message, group, false);
         return new ChatMassageHolder(view);
     }
 
