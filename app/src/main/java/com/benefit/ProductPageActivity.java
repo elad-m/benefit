@@ -4,6 +4,7 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
@@ -22,6 +23,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 import java.util.Map;
@@ -53,9 +55,11 @@ public class ProductPageActivity extends AppCompatActivity implements OnMapReady
         TextView textViewTitle = findViewById(R.id.textviewProductPageTitle);
         TextView textViewDescription = findViewById(R.id.textviewProductPageDescription);
         TextView textViewProperties = findViewById(R.id.textviewProductPageProperties);
+        ImageView imageView = findViewById(R.id.prpImagePlaceholder);
         textViewTitle.setText(product.getTitle());
         textViewDescription.setText(product.getDescription());
         textViewProperties.setText(getPropertiesString(product.getProperties()));
+        Picasso.get().load(product.getImagesUrls().get(0)).into(imageView);
         final Observer<User> userObserver = this::displayMap;
         userService.getUserById(product.getSellerId()).observe(this, userObserver);
     }

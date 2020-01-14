@@ -15,7 +15,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/backgroundColor"
-        android:gravity="center"
         android:layoutDirection="ltr"
         android:orientation="vertical"
         app:layout_constraintTop_toBottomOf="@id/layout_top_area">
@@ -23,28 +22,48 @@
 
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="145dp">
+            android:layout_height="wrap_content">
 
-            <TextView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="sans-serif"
-                android:text="@string/backButtonCaption"
-                android:textColor="@color/primaryBlue"
-                android:textSize="@dimen/backButtonCaptionSize"
-                android:textStyle="normal" />
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/productPageGeneralPaddingLeft">
+
+                <ImageView
+                    android:id="@+id/product_page_back_arrow"
+                    android:layout_width="24dp"
+                    android:layout_height="18dp"
+                    android:contentDescription="@string/backButtonCaption"
+                    app:srcCompat="@drawable/ic_back_arrow" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif"
+                    android:paddingLeft="4dp"
+                    android:text="@string/backButtonCaption"
+                    android:textColor="@color/primaryBlue"
+                    android:textSize="@dimen/backButtonCaptionSize"
+                    android:textStyle="normal" />
+
+            </LinearLayout>
         </TableRow>
 
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="514dp">
-            <!--        <ImageView-->
-            <!--            android:id="@+id/prpImagePlaceholder"-->
-            <!--            android:layout_width="wrap_content"-->
-            <!--            android:layout_height="wrap_content"-->
-            <!--            android:background="@null"-->
-            <!--            android:gravity="center"-->
-            <!--            app:srcCompat="@drawable/ic_prp_image_placeholder" />-->
+            android:layout_height="wrap_content"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/prpImagePlaceholder"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:background="@null"
+                android:gravity="center"
+                android:paddingTop="@dimen/productPageSectionPaddingTop"
+                android:scaleType="fitCenter" />
         </TableRow>
 
         <TableRow
@@ -112,31 +131,42 @@
 
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:gravity="center">
 
             <fragment
                 android:id="@+id/productPageMapFragment"
                 android:name="com.google.android.gms.maps.SupportMapFragment"
-                android:layout_width="match_parent"
-                android:layout_height="250dp"
-                android:paddingLeft="@dimen/productPageGeneralPaddingLeft"
+                android:layout_width="330dp"
+                android:layout_height="150dp"
+                android:gravity="center"
                 tools:context="com.benefit.ProductPageActivity" />
         </TableRow>
 
+
+    </TableLayout>
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:gravity="center">
 
             <Button
-                android:layout_width="300dp"
-                android:layout_height="77dp"
+                android:layout_width="200dp"
+                android:layout_height="51dp"
                 android:background="@drawable/ic_contact_giver_button"
+                android:gravity="center"
                 android:text="Contact Giver"
                 android:textColor="@color/primaryBlue"
-                android:textSize="36sp" />
+                android:textSize="22sp" />
         </TableRow>
-
-
     </TableLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
