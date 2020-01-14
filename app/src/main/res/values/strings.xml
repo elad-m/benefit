@@ -57,6 +57,7 @@
     <string name="divider">|</string>
     <string name="sort">SORT</string>
 
+    <string name="backButtonCaption">Back</string>
     <string-array name="chat_sort_options">
         <item>your items</item>
         <item>wanted items</item>

@@ -29,4 +29,5 @@
     <dimen name="give_item_padding_top_and_bottom">10dp</dimen>
     <dimen name="give_button_width">200dp</dimen>
     <dimen name="give_button_text_size">30sp</dimen>
+    <dimen name="backButtonCaptionSize">24sp</dimen>
 </resources>
