@@ -16,6 +16,7 @@
     <string name="user_last_name_relay">lastName</string>
     <string name="user_first_name_relay">firstName</string>
 
+    <string name="backButtonCaption">Back</string>
     <string-array name="chat_sort_options">
         <item>your items</item>
         <item>wanted items</item>
