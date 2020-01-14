@@ -40,6 +40,7 @@
     <string name="dialog_done_button_text">Done</string>
 
     <string name="backButtonCaption">Back</string>
+    <string name="prodactPageLocationTitleCaption">Location</string>
     <string name="productPagePropertiesSeparator">|</string>
     <string name="productPagePropertiesValuesSeparator">,</string>
     <string-array name="chat_sort_options">
