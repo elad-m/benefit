@@ -6,6 +6,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.benefit.adapters.ConversationAdapter;
 import com.benefit.drivers.AuthenticationDriver;
@@ -57,7 +58,7 @@ public class ChatService extends ViewModel {
         matchCollectionRef.add(match);
     }
 
-    public ConversationAdapter getConversationAdaptor(boolean wantedProducts, boolean userProducts, boolean orderNewToOld){
+    public RecyclerView.Adapter getConversationRecyclerViewAdaptor(boolean wantedProducts, boolean userProducts, boolean orderNewToOld){
         if (user == null){
             Log.d(TAG, "Error - user is null. Can't return a ConversationAdaptor.");
             return null;

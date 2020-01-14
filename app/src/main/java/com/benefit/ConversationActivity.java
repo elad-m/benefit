@@ -87,7 +87,7 @@ public class ConversationActivity extends AppCompatActivity implements AdapterVi
     }
 
     private void initiateConversationRecyclerView() {
-        conversationAdapter = chatService.getConversationAdaptor(true, true, true);
+        conversationAdapter = chatService.getConversationRecyclerViewAdaptor(true, true, true);
         conversationRecyclerView = findViewById(R.id.conversation_recyclerView);
         conversationRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         conversationRecyclerView.setAdapter(conversationAdapter);
@@ -99,16 +99,16 @@ public class ConversationActivity extends AppCompatActivity implements AdapterVi
         if (conversationRecyclerView != null) {
             switch (position) {
                 case 0:
-                   conversationAdapter = chatService.getConversationAdaptor(false, true, true);
+                   conversationAdapter = chatService.getConversationRecyclerViewAdaptor(false, true, true);
                     break;
                 case 1:
-                    conversationAdapter = chatService.getConversationAdaptor(true, false, true);
+                    conversationAdapter = chatService.getConversationRecyclerViewAdaptor(true, false, true);
                     break;
                 case 2:
-                    conversationAdapter = chatService.getConversationAdaptor(true, true, true);
+                    conversationAdapter = chatService.getConversationRecyclerViewAdaptor(true, true, true);
                     break;
                 case 3:
-                    conversationAdapter = chatService.getConversationAdaptor(true, true, false);
+                    conversationAdapter = chatService.getConversationRecyclerViewAdaptor(true, true, false);
             }
             conversationRecyclerView.setAdapter(conversationAdapter);
             conversationAdapter.startListening();
