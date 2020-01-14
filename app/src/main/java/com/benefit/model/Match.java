@@ -2,7 +2,9 @@ package com.benefit.model;
 
 import com.google.firebase.firestore.ServerTimestamp;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -31,9 +33,7 @@ public class Match {
         this.buyerId = buyerId;
         this.productId = productId;
         this.isClosed = false;
-        this.usersId = new ArrayList<>();
-        usersId.add(sellerId);
-        usersId.add(buyerId);
+        this.usersId = Arrays.asList(sellerId, buyerId);
     }
 
     public String getSellerId() {
