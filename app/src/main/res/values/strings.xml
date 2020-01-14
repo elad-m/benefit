@@ -39,6 +39,9 @@
     <string name="dialog_thank_you_image_description">Chest of gold to convey message of treasure</string>
     <string name="dialog_done_button_text">Done</string>
 
+    <!-- Facebook application ID and custom URL scheme (app ID prefixed by 'fb'). -->
+    <string name="facebook_application_id" translatable="false">2550633185150206</string>
+    <string name="facebook_login_protocol_scheme" translatable="false">fb2550633185150206</string>
     <string name="backButtonCaption">Back</string>
     <string name="prodactPageLocationTitleCaption">Location</string>
     <string name="productPagePropertiesSeparator">|</string>
