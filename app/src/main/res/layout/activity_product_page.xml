@@ -104,7 +104,7 @@
             android:fontFamily="sans-serif"
             android:paddingLeft="@dimen/productPageGeneralPaddingLeft"
             android:paddingTop="@dimen/productPageSectionPaddingTop"
-            android:text="@string/prodactPageLocationTitleCaption"
+            android:text="@string/productPageLocationTitleCaption"
             android:textColor="@color/productPageTextPrimaryColor"
             android:textSize="@dimen/productPageGeneralTextSize"
             android:textStyle="normal" />
