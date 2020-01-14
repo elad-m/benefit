@@ -73,7 +73,7 @@
             android:fontFamily="sans-serif"
             android:paddingLeft="@dimen/productPageGeneralPaddingLeft"
             android:textColor="@color/productPageTextSecondaryColor"
-            android:textSize="@dimen/productPageDescriptionSize"
+            android:textSize="@dimen/productPageGeneralTextSize"
             android:textStyle="normal" />
     </TableRow>
 
@@ -87,8 +87,26 @@
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif"
             android:paddingLeft="@dimen/productPageGeneralPaddingLeft"
+            android:paddingTop="@dimen/productPageSectionPaddingTop"
             android:textColor="@color/productPageTextPrimaryColor"
-            android:textSize="@dimen/productPagePropertiesSize"
+            android:textSize="@dimen/productPageGeneralTextSize"
+            android:textStyle="normal" />
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/textviewProductPageLocationTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif"
+            android:paddingLeft="@dimen/productPageGeneralPaddingLeft"
+            android:paddingTop="@dimen/productPageSectionPaddingTop"
+            android:text="@string/prodactPageLocationTitleCaption"
+            android:textColor="@color/productPageTextPrimaryColor"
+            android:textSize="@dimen/productPageGeneralTextSize"
             android:textStyle="normal" />
     </TableRow>
 
