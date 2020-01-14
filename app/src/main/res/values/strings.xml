@@ -1,8 +1,26 @@
 <resources>
     <string name="app_name">Benefit</string>
+    <string name="chat_title">Your Chatbox</string>
+    <string name="sign_up_title">Please enter your account details</string>
+    <string name="first_name_field">First Name</string>
+    <string name="last_name_field">Last Name</string>
+    <string name="address_field">Address</string>
+    <string name="map_field_title">Your location</string>
+    <string name="done_button">Done</string>
+    <string name="enter_first_and_last_name">First name and Last name are required. Please enter your first name and last name.</string>
+    <string name="enter_first_name">First name is required. Please enter your first name</string>
+    <string name="enter_last_name">Last name is required. Please enter your last name</string>
+    <string name="user_item">your item</string>
+    <string name="user_location_relay">location</string>
+    <string name="user_address_relay">address</string>
+    <string name="user_last_name_relay">lastName</string>
+    <string name="user_first_name_relay">firstName</string>
 
-    <!-- Facebook application ID and custom URL scheme (app ID prefixed by 'fb'). -->
-    <string name="facebook_application_id" translatable="false">2550633185150206</string>
-    <string name="facebook_login_protocol_scheme" translatable="false">fb2550633185150206</string>
+    <string-array name="chat_sort_options">
+        <item>your items</item>
+        <item>wanted items</item>
+        <item>new to old</item>
+        <item>old to new</item>
+    </string-array>
 
 </resources>
