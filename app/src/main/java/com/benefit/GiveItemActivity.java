@@ -2,13 +2,11 @@ package com.benefit;
 
 import android.app.Dialog;
 import android.content.Intent;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -50,15 +48,19 @@ public class GiveItemActivity extends AppCompatActivity {
     private Dialog thankYouMessage;
     private Button giveButton;
     private LinearLayout activityRootLinearLayout;
+    private LayoutInflater inflater;
 
     private DatabaseDriver databaseDriver = new DatabaseDriver();
     private CategoryService categoryService;
+
+    private boolean categoriesInflatedOnce = false;
 
     // the following group are fields for creating a Product
     private Uri mImageUri;
     private EditText mEdTextTitle;
     private EditText mEdTextDescription;
     private int mMetaCategory;
+    private int mCategory;
 
 
     @Override
@@ -67,14 +69,13 @@ public class GiveItemActivity extends AppCompatActivity {
         setContentView(R.layout.activity_give_item);
 
         createActionBar();
-        initiateDataMembers();
+        instantiateDataMembers();
+        createCategoryService();
         createMetaCategoriesChips();
 
-//        createChipGroups();
-
-
     }
-    private void createCategoryService(){
+
+    private void createCategoryService() {
         ViewModelProvider.Factory categoryServiceFactory = new ViewModelProvider.Factory() {
             @NonNull
             @Override
@@ -87,10 +88,18 @@ public class GiveItemActivity extends AppCompatActivity {
                 .get(CategoryService.class);
     }
 
+    private View createChipAsView(Category category) {
+        View chipAsView = inflater.inflate(R.layout.chip_layout, null);
+        Chip chip = (Chip) chipAsView;
+        chip.setText(category.getName());
+        chip.setTag(category);
+        return chipAsView;
+    }
+
+
     private void createMetaCategoriesChips() {
-        createCategoryService();
-        LayoutInflater inflater = LayoutInflater.from(this);
-        ChipGroup chipGroup = createChipGroup(inflater);
+        inflater = LayoutInflater.from(this);
+        ChipGroup chipGroup = createChipGroup("For Whom: ");
 
         final List<Category> metaCategories = new LinkedList<>();
         final Observer<List<Category>> metaCategoriesObserver = new Observer<List<Category>>() {
@@ -98,14 +107,11 @@ public class GiveItemActivity extends AppCompatActivity {
             @Override
             public void onChanged(List<Category> categories) {
                 metaCategories.addAll(categories);
-                for (Category category: metaCategories){
-                    View chipAsView = inflater.inflate(R.layout.chip_layout, null);
-                    Chip chip = (Chip) chipAsView;
-                    chip.setText(category.getName());
-                    chipGroup.addView(chipAsView);
+                for (Category category : metaCategories) {
+                    chipGroup.addView(createChipAsView(category));
                 }
-                View firstChip = chipGroup.getChildAt(1);  // because the first child is textView
-                ((Chip) firstChip).setChecked(true);
+                ((Chip) chipGroup.getChildAt(1)).setChecked(true);  // because the first child is textView
+                mMetaCategory = metaCategories.get(0).getId();
             }
         };
         categoryService.getAllMetaCategories().observe(this, metaCategoriesObserver);
@@ -114,60 +120,79 @@ public class GiveItemActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(ChipGroup chipGroup, int i) {
                 Chip chip = chipGroup.findViewById(i);
-                if (chip != null)
-                    Toast.makeText(getApplicationContext(), "Chip is " + chip.getText(),
+                if (chip != null) {
+                    String chipText = chip.getText().toString();
+                    // i-1: since i here counts the chips in 1,2,.. but list goes 0,1..
+                    mMetaCategory = ((Category) chip.getTag()).getId();
+                    createCategoriesChipsFromMetaCategory();
+                    Toast.makeText(getApplicationContext(), "Chip is " + chipText,
                             Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
         activityRootLinearLayout.addView(
-                chipGroup,activityRootLinearLayout.getChildCount() - 1);
+                chipGroup, activityRootLinearLayout.getChildCount() - 1);
     }
 
-    private ChipGroup createChipGroup(LayoutInflater inflater) {
+    private void createCategoriesChipsFromMetaCategory() {
+        ChipGroup chipGroup = createChipGroup("Categories");
+
+        final List<Category> categories = new LinkedList<>();
+        final Observer<List<Category>> categoriesObserver = new Observer<List<Category>>() {
+
+            @Override
+            public void onChanged(List<Category> inputCategories) {
+                categories.addAll(inputCategories);
+                for (Category category : categories) {
+                    chipGroup.addView(createChipAsView(category));
+                }
+                ((Chip) chipGroup.getChildAt(1)).setChecked(true);  // because the first child is textView
+                mCategory = categories.get(0).getId();
+            }
+        };
+
+        chipGroup.setOnCheckedChangeListener(new ChipGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(ChipGroup chipGroup, int i) {
+                Chip chip = chipGroup.findViewById(i);
+                if (chip != null) {
+                    String chipText = chip.getText().toString();
+                    mCategory = ((Category) chip.getTag()).getId();
+                    Toast.makeText(getApplicationContext(), "Chip is " + chipText,
+                            Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        categoryService.getChildrenByParentId(mMetaCategory).observe(this, categoriesObserver);
+        addCategoriesChipGroupToLayout(chipGroup);
+        categoriesInflatedOnce = true;
+    }
+
+    private void addCategoriesChipGroupToLayout(ChipGroup chipGroup) {
+        if (categoriesInflatedOnce) {
+            View chipGroupView = activityRootLinearLayout
+                    .getChildAt(activityRootLinearLayout.getChildCount() - 2);
+            activityRootLinearLayout.removeView(chipGroupView);
+            activityRootLinearLayout.addView(
+                    chipGroup, activityRootLinearLayout.getChildCount() - 1);
+
+        } else {
+            activityRootLinearLayout.addView(
+                    chipGroup, activityRootLinearLayout.getChildCount() - 1);
+        }
+    }
+
+
+    private ChipGroup createChipGroup(String groupName) {
         View chipGroupAsView = inflater.inflate(R.layout.chip_group_layout, null);
         ChipGroup chipGroup = (ChipGroup) chipGroupAsView;
+        ((TextView) chipGroup.getChildAt(0)).setText(groupName);
         return chipGroup;
     }
 
-    private void addTextToGroup(ChipGroup metaCategoryChipGroup, String text) {
-        TextView groupNameView = new TextView(this);
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        groupNameView.setLayoutParams(params);
-        groupNameView.setText(text);
-        groupNameView.setTextSize(15);
-        groupNameView.setTextColor(Color.parseColor("#000000"));
-        groupNameView.setPadding(6,6,6,6);
-        metaCategoryChipGroup.addView(groupNameView);
-    }
 
-    private void createChip(String name, ChipGroup group) {
-        Chip chip = new Chip(this);
-        ChipGroup.LayoutParams params = new ChipGroup.LayoutParams(
-                ChipGroup.LayoutParams.WRAP_CONTENT, ChipGroup.LayoutParams.WRAP_CONTENT);
-
-        chip.setLayoutParams(params);
-        chip.setText(name);
-        chip.setTextSize(15);
-        // todo: style and id
-        group.addView(chip);
-    }
-
-    private ChipGroup createMetaCategoryChipGroup() {
-        // todo: id?
-        ChipGroup metaCategoryChipGroup = new ChipGroup(this);
-        ChipGroup.LayoutParams params = new ChipGroup.LayoutParams(
-                ChipGroup.LayoutParams.MATCH_PARENT, ChipGroup.LayoutParams.WRAP_CONTENT);
-        params.setMargins(5,5,5,5);
-        metaCategoryChipGroup.setLayoutParams(params);
-        metaCategoryChipGroup.setChipSpacing(25);
-        metaCategoryChipGroup.setSingleLine(true);
-        metaCategoryChipGroup.setSelectionRequired(true);
-        return metaCategoryChipGroup;
-    }
-
-    private void initiateDataMembers() {
+    private void instantiateDataMembers() {
         mEdTextTitle = findViewById(R.id.item_title_text);
         mEdTextDescription = findViewById(R.id.item_description_text);
         giveButton = findViewById(R.id.give_button);
@@ -180,41 +205,6 @@ public class GiveItemActivity extends AppCompatActivity {
 
         Button givePlusButton = findViewById(R.id.give_icon);
         givePlusButton.setBackground(getResources().getDrawable(R.drawable.ic_give_colored));
-    }
-
-    private void createChipGroups() {
-        createCategoryGroup();
-        createMetaCategoryGroup();
-    }
-
-    private void createCategoryGroup() {
-        ChipGroup categoryGroup = findViewById(R.id.category_group);
-        categoryGroup.setOnCheckedChangeListener(new ChipGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(ChipGroup chipGroup, int i) {
-
-                Chip chip = chipGroup.findViewById(i);
-                if (chip != null)
-                    Toast.makeText(getApplicationContext(), "Chip is " + chip.getText(), Toast.LENGTH_SHORT).show();
-
-
-            }
-        });
-    }
-
-    private void createMetaCategoryGroup() {
-        ChipGroup demographicGroup = findViewById(R.id.demographic_group);
-        demographicGroup.setOnCheckedChangeListener(new ChipGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(ChipGroup chipGroup, int i) {
-
-                Chip chip = chipGroup.findViewById(i);
-                if (chip != null)
-                    Toast.makeText(getApplicationContext(), "Chip is " + chip.getText(), Toast.LENGTH_SHORT).show();
-
-
-            }
-        });
     }
 
 
