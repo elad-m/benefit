@@ -8,17 +8,16 @@
     tools:context=".ProductPageActivity">
 
     <include
-        android:id="@+id/layout_top_area"
+        android:id="@+id/product_page_top_area"
         layout="@layout/top_area" />
 
     <TableLayout
+        android:id="@+id/product_page_back_area"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/backgroundColor"
         android:layoutDirection="ltr"
-        android:orientation="vertical"
-        app:layout_constraintTop_toBottomOf="@id/layout_top_area">
-
+        app:layout_constraintTop_toBottomOf="@id/product_page_top_area">
 
         <TableRow
             android:layout_width="match_parent"
@@ -28,6 +27,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
+                android:gravity="center_vertical"
                 android:paddingLeft="@dimen/productPageGeneralPaddingLeft">
 
                 <ImageView
@@ -49,113 +49,143 @@
 
             </LinearLayout>
         </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center">
-
-            <ImageView
-                android:id="@+id/prpImagePlaceholder"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:adjustViewBounds="true"
-                android:background="@null"
-                android:gravity="center"
-                android:paddingTop="@dimen/productPageSectionPaddingTop"
-                android:scaleType="fitCenter" />
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/textviewProductPageTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="sans-serif"
-                android:paddingLeft="@dimen/productPageGeneralPaddingLeft"
-                android:textColor="@color/productPageTextPrimaryColor"
-                android:textSize="@dimen/productPageTitleSize"
-                android:textStyle="normal" />
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/textviewProductPageDescription"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="sans-serif"
-                android:paddingLeft="@dimen/productPageGeneralPaddingLeft"
-                android:textColor="@color/productPageTextSecondaryColor"
-                android:textSize="@dimen/productPageGeneralTextSize"
-                android:textStyle="normal" />
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/textviewProductPageProperties"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="sans-serif"
-                android:paddingLeft="@dimen/productPageGeneralPaddingLeft"
-                android:paddingTop="@dimen/productPageSectionPaddingTop"
-                android:textColor="@color/productPageTextPrimaryColor"
-                android:textSize="@dimen/productPageGeneralTextSize"
-                android:textStyle="normal" />
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/textviewProductPageLocationTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="sans-serif"
-                android:paddingLeft="@dimen/productPageGeneralPaddingLeft"
-                android:paddingTop="@dimen/productPageSectionPaddingTop"
-                android:text="@string/productPageLocationTitleCaption"
-                android:textColor="@color/productPageTextPrimaryColor"
-                android:textSize="@dimen/productPageGeneralTextSize"
-                android:textStyle="normal" />
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center">
-
-            <fragment
-                android:id="@+id/productPageMapFragment"
-                android:name="com.google.android.gms.maps.SupportMapFragment"
-                android:layout_width="330dp"
-                android:layout_height="150dp"
-                android:gravity="center"
-                tools:context="com.benefit.ProductPageActivity" />
-        </TableRow>
-
-
     </TableLayout>
 
     <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/product_page_bottom_area"
+        app:layout_constraintTop_toBottomOf="@id/product_page_back_area">
+        <ScrollView
+            android:id="@+id/product_page_scrollview"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/backgroundColor"
+                android:layoutDirection="ltr"
+                android:orientation="vertical">
+
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:id="@+id/prpImagePlaceholder"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:adjustViewBounds="true"
+                        android:background="@null"
+                        android:gravity="center"
+                        android:paddingTop="@dimen/productPageSectionPaddingTop"
+                        android:scaleType="fitCenter" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/textviewProductPageTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif"
+                        android:paddingLeft="@dimen/productPageGeneralPaddingLeft"
+                        android:textColor="@color/productPageTextPrimaryColor"
+                        android:textSize="@dimen/productPageTitleSize"
+                        android:textStyle="normal" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/textviewProductPageDescription"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif"
+                        android:paddingLeft="@dimen/productPageGeneralPaddingLeft"
+                        android:textColor="@color/productPageTextSecondaryColor"
+                        android:textSize="@dimen/productPageGeneralTextSize"
+                        android:textStyle="normal" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/textviewProductPageProperties"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif"
+                        android:paddingLeft="@dimen/productPageGeneralPaddingLeft"
+                        android:paddingTop="@dimen/productPageSectionPaddingTop"
+                        android:textColor="@color/productPageTextPrimaryColor"
+                        android:textSize="@dimen/productPageGeneralTextSize"
+                        android:textStyle="normal" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/textviewProductPageLocationTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif"
+                        android:paddingLeft="@dimen/productPageGeneralPaddingLeft"
+                        android:paddingTop="@dimen/productPageSectionPaddingTop"
+                        android:text="@string/productPageLocationTitleCaption"
+                        android:textColor="@color/productPageTextPrimaryColor"
+                        android:textSize="@dimen/productPageGeneralTextSize"
+                        android:textStyle="normal" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center">
+
+                    <fragment
+                        android:id="@+id/productPageMapFragment"
+                        android:name="com.google.android.gms.maps.SupportMapFragment"
+                        android:layout_width="330dp"
+                        android:layout_height="150dp"
+                        android:gravity="center"
+                        tools:context="com.benefit.ProductPageActivity" />
+                </TableRow>
+
+
+            </TableLayout>
+        </ScrollView>
+    </TableLayout>
+
+
+    <TableLayout
+        android:id="@+id/product_page_bottom_area"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/productPageSeparatorSize"
+            android:background="@color/productPageTextSecondaryColor" />
+
 
         <TableRow
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/productPageBottomPartMargin"
+            android:layout_marginBottom="@dimen/productPageBottomPartMargin"
             android:gravity="center">
 
             <Button
