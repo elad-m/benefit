@@ -97,21 +97,19 @@ public class ProductService extends ViewModel {
         if (product.getProperties() == null || product.getProperties().isEmpty()) {
             return false;
         }
-        boolean indicator = true;
         for (Map.Entry<String, List<String>> filter : propertiesMap.entrySet()) {
             if (product.getProperties() != null) {
                 if (product.getProperties().containsKey(filter.getKey())) {
                     for (String value : filter.getValue()) {
                         if (!product.getProperties().get(filter.getKey()).contains(value)) {
-                            indicator = false;
+                            return false;
                         }
-
                     }
                 } else {
-                    indicator = false;
+                    return false;
                 }
             }
         }
-        return indicator;
+        return true;
     }
 }
