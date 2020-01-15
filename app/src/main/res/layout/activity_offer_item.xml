@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".OfferItem">
+
+    <ImageButton
+        android:id="@+id/image_button_choose_image"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:layout_gravity="center"
+        android:background="@color/cardview_shadow_start_color"
+        android:contentDescription="Image of item will uploaded to here"
+        android:onClick="openFileChooser"
+        android:src="@drawable/ic_image_placeholder" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_gravity="center"
+        android:layout_weight="0.5"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:text=" - Take a photo in a well lit room"
+            android:textSize="12sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:text="- Use uniform background color as much as possible."
+            android:textSize="12sp" />
+    </LinearLayout>
+
+
+    <EditText
+        android:id="@+id/item_title_text"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.7"
+        android:hint="Add item title"
+        android:inputType="text"
+        android:padding="15dp"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+
+    <EditText
+        android:id="@+id/item_description_text"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.5"
+        android:hint="Write anything about this item"
+        android:inputType="text"
+        android:maxLines="3"
+        android:padding="10dp" />
+
+    <RadioGroup
+        android:id="@+id/item_size_radio_group"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginStart="10dp"
+        android:layout_weight="0.5"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/size_header"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Size: "
+            android:textSize="15sp" />
+
+        <RadioButton
+            android:id="@+id/item_size_small_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:checked="true"
+            android:onClick="setSizeRadioButton"
+            android:text="S" />
+
+        <RadioButton
+            android:id="@+id/item_size_medium_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:checked="true"
+            android:onClick="setSizeRadioButton"
+            android:text="M" />
+
+        <RadioButton
+            android:id="@+id/item_size_large_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="setSizeRadioButton"
+            android:text="L" />
+    </RadioGroup>
+
+    <RadioGroup
+        android:id="@+id/item_category_radio_group"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginStart="10dp"
+        android:layout_weight="0.5"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/category_header"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Category: "
+            android:textSize="15sp" />
+
+        <RadioButton
+            android:id="@+id/item_shirt_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:checked="true"
+            android:onClick="setCategoryRadioButton"
+            android:text="Shirt" />
+
+        <RadioButton
+            android:id="@+id/item_pants_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:checked="true"
+            android:onClick="setCategoryRadioButton"
+            android:text="Pants" />
+
+        <RadioButton
+            android:id="@+id/item_shoes_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="setCategoryRadioButton"
+            android:text="Shoes" />
+    </RadioGroup>
+
+    <RadioGroup
+        android:id="@+id/item_clothing_demographic_radio_group"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_gravity="center_horizontal|center_vertical"
+        android:layout_marginStart="10dp"
+        android:layout_weight="0.5"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/clothing_demographic_header"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="For whom: "
+            android:textSize="15sp" />
+
+        <RadioButton
+            android:id="@+id/item_men_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:checked="true"
+            android:onClick="setClothinDemographicRadioButton"
+            android:text="Men" />
+
+        <RadioButton
+            android:id="@+id/item_women_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:checked="true"
+            android:onClick="setClothinDemographicRadioButton"
+            android:text="Women" />
+
+        <RadioButton
+            android:id="@+id/item_kids_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="setClothinDemographicRadioButton"
+            android:text="Kids" />
+
+    </RadioGroup>
+
+    <Button
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="0.3"
+        android:onClick="createItem"
+        android:text="Give"
+        android:textSize="20sp" />
+
+
+</LinearLayout>
