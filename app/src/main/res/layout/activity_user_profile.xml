@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/cardview_light_background"
-    tools:context=".UserProfile">
+    tools:context=".UserProfileActivity">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/profile_image"
@@ -23,7 +23,7 @@
     
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/items_recyclerk"
+        android:id="@+id/items_recycler"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="4dp"

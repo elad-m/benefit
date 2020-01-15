@@ -35,11 +35,6 @@ public class UserProfileActivity extends AppCompatActivity {
         constraintSet.connect(R.id.chosen_view, ConstraintSet.LEFT, R.id.user_icon, ConstraintSet.LEFT);
         constraintSet.applyTo(constraintLayout);
 
-        // recycler elements
-        mClothingItems.add(new ClothingItem(R.drawable.my_shoes, "Shoes"));
-        mClothingItems.add(new ClothingItem(R.drawable.my_pants, "Pants"));
-        mClothingItems.add(new ClothingItem(R.drawable.my_tshirt, "T-Shirt"));
-
         buildRecyclerView();
     }
 
