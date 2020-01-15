@@ -14,6 +14,7 @@ import com.benefit.drivers.DatabaseDriver;
 import com.benefit.model.Chat;
 import com.benefit.model.Match;
 import com.benefit.model.User;
+import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -58,7 +59,7 @@ public class ChatService extends ViewModel {
         matchCollectionRef.add(match);
     }
 
-    public RecyclerView.Adapter getConversationRecyclerViewAdaptor(boolean wantedProducts, boolean userProducts, boolean orderNewToOld){
+    public FirestoreRecyclerAdapter getConversationRecyclerViewAdaptor(boolean wantedProducts, boolean userProducts, boolean orderNewToOld){
         if (user == null){
             Log.d(TAG, "Error - user is null. Can't return a ConversationAdaptor.");
             return null;

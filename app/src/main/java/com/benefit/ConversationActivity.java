@@ -18,6 +18,7 @@ import com.benefit.drivers.DatabaseDriver;
 import com.benefit.model.User;
 import com.benefit.services.ChatService;
 import com.benefit.services.UserService;
+import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 
 public class ConversationActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
@@ -27,7 +28,7 @@ public class ConversationActivity extends AppCompatActivity implements AdapterVi
     private User currentUser;
     private Spinner sortMassagesSpinner;
     private RecyclerView conversationRecyclerView;
-    private ConversationAdapter conversationAdapter;
+    private FirestoreRecyclerAdapter conversationAdapter;
     private int sortChoice;
 
 
