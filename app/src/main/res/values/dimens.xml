@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="backButtonCaptionSize">18sp</dimen>
-    <dimen name="productPageGeneralPaddingLeft">18dp</dimen>
+    <dimen name="productPageGeneralPaddingLeft">16dp</dimen>
     <dimen name="productPageTitleSize">22sp</dimen>
     <dimen name="productPageGeneralTextSize">16sp</dimen>
     <dimen name="productPageSectionPaddingTop">20dp</dimen>
+    <dimen name="productPageSeparatorSize">1dp</dimen>
+    <dimen name="productPageBottomPartMargin">15dp</dimen>
 </resources>
