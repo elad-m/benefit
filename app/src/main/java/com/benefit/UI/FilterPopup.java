@@ -1,20 +1,26 @@
 package com.benefit.UI;
 
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Build;
 import android.view.Gravity;
 import android.view.View;
-import android.widget.Button;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
+
 import androidx.annotation.RequiresApi;
+import androidx.core.content.ContextCompat;
 
 import com.benefit.R;
 import com.benefit.StaticFunctions;
 import com.benefit.model.PropertyName;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,8 +29,7 @@ public class FilterPopup {
 
     private View view;
     private List<PropertyName> filters;
-//    private Map<String, Button> filterOptionsMap;
-    private Map<String, String> currentFilters;
+    private Map<String, List<String>> currentFilters;
 
     public FilterPopup(View view, List<PropertyName> filters){
         this.view = view;
@@ -32,7 +37,7 @@ public class FilterPopup {
         this.filters = filters;
     }
 
-    public void populateFilter(Map<String, String> currentFilters){
+    public void populateFilter(Map<String, List<String>> currentFilters){
         LinearLayout body = view.findViewById(R.id.filter_body);
 
         this.currentFilters = currentFilters;
@@ -42,93 +47,186 @@ public class FilterPopup {
         }
     }
 
-    private void addFilter(PropertyName filter, LinearLayout body) {
-        LinearLayout newLine = new LinearLayout(view.getContext());
-        newLine.setOrientation(LinearLayout.HORIZONTAL);
-        addLineTitle(filter, newLine);
-        addAttributes(filter, newLine);
+    private void addFilter(PropertyName filter, LinearLayout body){
+        RelativeLayout line = new RelativeLayout(view.getContext());
+        defineLineAttributes(line);
+        int titleId = addLineTitle(filter, line);
+
+
+        addAttributes(filter, line, titleId);
+        body.addView(line);
+    }
+
+    private void defineLineAttributes(RelativeLayout line) {
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT );
-        int margin = StaticFunctions.convertDpToPx(5);
-        layoutParams.setMargins(0, margin, 0, margin);
-        newLine.setLayoutParams(layoutParams);
-        body.addView(newLine);
+                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        layoutParams.height = 0;
+        layoutParams.weight = (float)0.3;
+        line.setLayoutParams(layoutParams);
     }
 
-    private void addAttributes(PropertyName filter, LinearLayout newLine) {
-        HorizontalScrollView scrollAttribute = new HorizontalScrollView(view.getContext());
-        LinearLayout attributeList = new LinearLayout(view.getContext());
-        attributeList.setOrientation(LinearLayout.HORIZONTAL);
-        for (final String attribute: filter.getValidValues()){
+    private void addAttributes(PropertyName filter, RelativeLayout line, int titleId) {
+        HorizontalScrollView scrollView = new HorizontalScrollView(view.getContext());
+        setScrollViewToRightOfText(scrollView, titleId);
+        ChipGroup chipGroup = new ChipGroup(view.getContext());
+        chipGroup.setChipSpacing(StaticFunctions.convertDpToPx(10));
 
-            final Button attributeButton = new Button(view.getContext());
-            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.WRAP_CONTENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT);
-            int margin = StaticFunctions.convertDpToPx(8);
-            layoutParams.setMargins(margin, margin, margin, margin);
-//            layoutParams.height = ;
-//            layoutParams.height = StaticFunctions.convertDpToPx(20);
-            layoutParams.gravity = Gravity.CENTER_VERTICAL;
-            attributeButton.setLayoutParams(layoutParams);
-            attributeButton.setText(attribute);
-            if (currentFilters != null && containsKeyAndValue(filter.getName(), attribute)){
-                attributeButton.setBackground(view.getResources().getDrawable(R.drawable.filled_oval));
-                attributeButton.setTextColor(Color.parseColor("#ffff"));
-            } else {
-                attributeButton.setBackground(view.getResources().getDrawable(R.drawable.oval));
-            }
-//            attributeButton.setTextSize(TypedValue.COMPLEX_UNIT_PX, attributeButton.getHeight()/ 2);
-//            attributeButton.setTextSize(StaticFunctions.convertDpToSp(StaticFunctions.
-//                    convertPixelsToDp((float) (0.015 * view.getResources().getDisplayMetrics().heightPixels))));
+        setChipGroupLayoutParams(chipGroup);
+        if (filter.getValidValues() != null) {
+            for (final String property : filter.getValidValues()) {
 
-//            attributeButton.setMinimumHeight((int) (0.02 * view.getResources().getDisplayMetrics().heightPixels));
-//            attributeButton.setMinHeight((int) (0.02 * view.getResources().getDisplayMetrics().heightPixels));
-            attributeButton.setOnClickListener(new View.OnClickListener() {
-                @RequiresApi(api = Build.VERSION_CODES.N)
-                @Override
-                public void onClick(View v) {
-                    if (currentFilters != null && containsKeyAndValue(filter.getName(), attribute)){
-                        attributeButton.setBackground(view.getResources().getDrawable(R.drawable.oval));
-                        currentFilters.remove(filter.getName(), attribute);
-                    } else {
-                        attributeButton.setBackground(view.getResources().getDrawable(R.drawable.filled_oval));
-                        currentFilters.put(filter.getName(), attribute);
-                    }
+                Chip chip = new Chip(view.getContext(), null, R.attr.CustomChipChoiceStyle);
+                chip.setText(property);
+                chip.setChipStrokeColor(ColorStateList.valueOf(ContextCompat.getColor(view.getContext(), R.color.black)));
+                chip.setChipStrokeColorResource(R.color.black);
+                chip.setChipStrokeWidth(StaticFunctions.convertDpToPx(1));
+
+//            final Button attributeButton = new Button(view.getContext());
+//            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+//                    LinearLayout.LayoutParams.WRAP_CONTENT,
+//                    LinearLayout.LayoutParams.WRAP_CONTENT);
+//            int margin = StaticFunctions.convertDpToPx(8);
+//            layoutParams.setMargins(margin, margin, margin, margin);
+////            layoutParams.height = ;
+////            layoutParams.height = StaticFunctions.convertDpToPx(20);
+//            layoutParams.gravity = Gravity.CENTER_VERTICAL;
+//            attributeButton.setLayoutParams(layoutParams);
+//            attributeButton.setText(attribute);
+                if (currentFilterContainsKeyAndValue(filter.getName(), property)) {
+                    chip.setChipBackgroundColor(ColorStateList.valueOf(ContextCompat.getColor(view.getContext(), R.color.lightBlue)));
+                    chip.setTextColor(Color.WHITE);
                 }
-            });
-            attributeList.addView(attributeButton);
 
+                chip.setOnClickListener(new View.OnClickListener() {
+                    @RequiresApi(api = Build.VERSION_CODES.N)
+                    @Override
+                    public void onClick(View view) {
+                        if (currentFilterContainsKeyAndValue(filter.getName(), property)) {
+                            chip.setChipBackgroundColor(ColorStateList.valueOf(ContextCompat.getColor(view.getContext(), R.color.browser_actions_bg_grey)));
+                            chip.setTextColor(Color.BLACK);
+                            removeAttributeToCurrentFilters(filter.getName(), property);
+                        } else {
+                            chip.setChipBackgroundColor(ColorStateList.valueOf(ContextCompat.getColor(view.getContext(), R.color.lightBlue)));
+                            chip.setTextColor(Color.WHITE);
+                            addAttributeToCurrentFilters(filter.getName(), property);
+                        }
+                    }
+                });
+//            chipGroup.addView(chip);
+//            else {
+//                chip.setBackground(view.getResources().getDrawable(R.drawable.oval));
+//            }
+////            attributeButton.setTextSize(TypedValue.COMPLEX_UNIT_PX, attributeButton.getHeight()/ 2);
+////            attributeButton.setTextSize(StaticFunctions.convertDpToSp(StaticFunctions.
+////                    convertPixelsToDp((float) (0.015 * view.getResources().getDisplayMetrics().heightPixels))));
+//
+////            attributeButton.setMinimumHeight((int) (0.02 * view.getResources().getDisplayMetrics().heightPixels));
+////            attributeButton.setMinHeight((int) (0.02 * view.getResources().getDisplayMetrics().heightPixels));
+//            attributeButton.setOnClickListener(new View.OnClickListener() {
+//                @RequiresApi(api = Build.VERSION_CODES.N)
+//                @Override
+//                public void onClick(View v) {
+//                    if (currentFilters != null && currentFilterContainsKeyAndValue(filter.getName(), attribute)){
+//                        attributeButton.setBackground(view.getResources().getDrawable(R.drawable.oval));
+//                        currentFilters.remove(filter.getName(), attribute);
+//                    } else {
+//                        attributeButton.setBackground(view.getResources().getDrawable(R.drawable.filled_oval));
+//                        currentFilters.put(filter.getName(), attribute);
+//                    }
+//                }
+//            });
+//            attributeList.addView(attributeButton);
+//
+                chipGroup.addView(chip);
+
+            }
+            scrollView.addView(chipGroup);
+
+            line.addView(scrollView);
         }
-        scrollAttribute.addView(attributeList);
-        newLine.addView(scrollAttribute);
+
     }
 
-    private boolean containsKeyAndValue(String filter, String attribute) {
-        if (currentFilters.containsKey(filter) && currentFilters.get(filter).equals(attribute)){
-            return true;
+    private void removeAttributeToCurrentFilters(String name, String property) {
+        if (currentFilters.get(name).size() > 1){
+            currentFilters.get(name).remove(property);
         } else {
-            return false;
+            currentFilters.remove(name);
         }
     }
 
-    private void addLineTitle(PropertyName filter, LinearLayout newLine) {
+    private void addAttributeToCurrentFilters(String name, String property) {
+        if (currentFilters.containsKey(name)){
+            currentFilters.get(name).add(property);
+        } else {
+            List<String> newList = new ArrayList<>();
+            newList.add(property);
+            currentFilters.put(name, newList);
+        }
+    }
+
+    private void setScrollViewToRightOfText(HorizontalScrollView scrollView, int titleId) {
+        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,
+                RelativeLayout.LayoutParams.WRAP_CONTENT);
+        layoutParams.addRule(RelativeLayout.RIGHT_OF, titleId);
+        scrollView.setLayoutParams(layoutParams);
+
+    }
+
+    private void setChipGroupLayoutParams(ChipGroup chipGroup) {
+        HorizontalScrollView.LayoutParams layoutParams = new HorizontalScrollView.LayoutParams(
+                HorizontalScrollView.LayoutParams.WRAP_CONTENT,
+                HorizontalScrollView.LayoutParams.MATCH_PARENT);
+        layoutParams.gravity = Gravity.CENTER_VERTICAL;
+        int margin = StaticFunctions.convertDpToPx(5);
+        layoutParams.setMargins(margin, margin, margin, margin);
+        chipGroup.setLayoutParams(layoutParams);
+
+
+
+    }
+
+    private boolean currentFilterContainsKeyAndValue(String filter, String attribute) {
+        if (currentFilters.containsKey(filter)){
+            for (String currentFilterAttribute: currentFilters.get(filter)){
+                if (currentFilterAttribute.equals(attribute)){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private int addLineTitle(PropertyName filter, RelativeLayout line) {
         TextView filterName = new TextView(view.getContext());
+        setTextAttributes(filterName, filter);
+        setLayoutAttributes(filterName);
+        line.addView(filterName);
+        filterName.setId(View.generateViewId());
+        return filterName.getId();
+    }
+
+    private void setLayoutAttributes(TextView filterName) {
+        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,
+                RelativeLayout.LayoutParams.WRAP_CONTENT);
+        layoutParams.addRule(RelativeLayout.CENTER_VERTICAL);
+        layoutParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+        filterName.setLayoutParams(layoutParams);
+        int padding = StaticFunctions.convertDpToPx(6);
+        filterName.setPadding(padding, padding, padding, padding);
+    }
+
+    private void setTextAttributes(TextView filterName, PropertyName filter) {
         String name = filter.getName() + view.getResources().getString(R.string.filter_break);
         filterName.setText(name);
         filterName.setTextSize(StaticFunctions.convertDpToSp(15));
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT);
-        layoutParams.gravity = Gravity.CENTER_VERTICAL;
-        filterName.setLayoutParams(layoutParams);
-        newLine.addView(filterName);
     }
 
-    public Map<String, String> getCurrentFilters(){
+    public Map<String, List<String>> getCurrentFilters(){
         return currentFilters;
     }
 
-    public void refresh() {
+    public void refreshFilter() {
         LinearLayout body = view.findViewById(R.id.filter_body);
         body.removeAllViews();
         currentFilters.clear();

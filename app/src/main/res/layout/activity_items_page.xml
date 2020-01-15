@@ -1,15 +1,15 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@android:color/white"
     android:orientation="vertical"
-    tools:context=".ItemsPage">
+    tools:context=".ItemsPageActivity">
 
     <include
         android:id="@+id/first_page_header"
-        layout="@layout/page_header"/>
+        layout="@layout/page_header" />
 
 
     <EditText
@@ -23,14 +23,14 @@
         android:hint="Search"
         android:inputType="textPersonName"
         app:layout_constraintHeight_percent="0.054"
-        app:layout_constraintTop_toBottomOf="@id/first_page_header"/>
+        app:layout_constraintTop_toBottomOf="@id/first_page_header" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/meta_category_guide"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.243" />
+        app:layout_constraintGuide_percent="0.2" />
 
     <HorizontalScrollView
         android:id="@+id/metaCategory_bar"
@@ -46,164 +46,40 @@
             android:orientation="horizontal">
 
 
-            <!--            <Buttongb-->
-            <!--                android:layout_width="wrap_content"-->
-            <!--                android:layout_height="wrap_content"-->
-            <!--                android:text="Men"-->
-            <!--                android:textColor="@android:color/black"-->
-            <!--                android:background="@drawable/oval"-->
-            <!--                android:layout_margin="5dp"-->
-            <!--                android:layout_gravity="center_vertical"-->
-            <!--                android:minHeight="35dp"-->
-            <!--                />-->
-
-            <!--            <Button-->
-            <!--                android:layout_width="wrap_content"-->
-            <!--                android:layout_height="wrap_content"-->
-            <!--                android:text="Women"-->
-            <!--                android:textColor="@android:color/black"-->
-            <!--                android:background="@drawable/oval"-->
-            <!--                android:layout_margin="4dp"-->
-            <!--                />-->
-
-            <!--            <Button-->
-            <!--                android:layout_width="wrap_content"-->
-            <!--                android:layout_height="wrap_content"-->
-            <!--                android:text="Babies"-->
-            <!--                android:textColor="@android:color/black"-->
-            <!--                android:background="@drawable/oval"-->
-            <!--                android:layout_margin="4dp"-->
-            <!--                />-->
-
-            <!--            <Button-->
-            <!--                android:layout_width="wrap_content"-->
-            <!--                android:layout_height="wrap_content"-->
-            <!--                android:text="Kids"-->
-            <!--                android:textColor="@android:color/black"-->
-            <!--                android:background="@drawable/oval"-->
-            <!--                android:layout_margin="4dp"-->
-            <!--                />-->
-
-            <!--            <Button-->
-            <!--                android:layout_width="wrap_content"-->
-            <!--                android:layout_height="wrap_content"-->
-            <!--                android:text="Teens"-->
-            <!--                android:textColor="@android:color/black"-->
-            <!--                android:background="@drawable/oval"-->
-            <!--                android:layout_margin="4dp"-->
-            <!--                />-->
-
         </LinearLayout>
 
     </HorizontalScrollView>
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/filter_guide"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.28" />
+
+
+    <Button
+        android:id="@+id/filter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:onClick="openFilter"
+        android:text="@string/filter"
+        android:textSize="20sp"
+        android:textColor="#0188b2"
+        app:layout_constraintTop_toBottomOf="@id/filter_guide"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintHorizontal_chainStyle="spread"/>
 
 
 
-<!--    <EditText-->
-<!--        android:id="@+id/search_input"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="0dp"-->
-<!--        android:layout_marginLeft="45dp"-->
-<!--        android:layout_marginRight="45dp"-->
-<!--        android:background="@drawable/ic_search_bar"-->
-<!--        android:ems="12"-->
-<!--        android:hint="@string/search"-->
-<!--        android:inputType="textPersonName"-->
-<!--        android:layout_weight="0.06"/>-->
-
-<!--    <HorizontalScrollView-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_weight="0.01"-->
-<!--        android:layout_marginTop="10dp">-->
-
-
-<!--        <LinearLayout-->
-<!--            android:id="@+id/filter_bar"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="match_parent"-->
-<!--            android:orientation="horizontal">-->
-
-<!--        </LinearLayout>-->
-<!--    </HorizontalScrollView>-->
-<!--        <LinearLayout-->
-<!--        android:id="@+id/RestofScreen"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="0dp"-->
-<!--        android:layout_weight="0.6"-->
-<!--        android:orientation="vertical" >-->
-
-<!--        <EditText-->
-<!--            android:id="@+id/search_input"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:ems="10"-->
-<!--            android:layout_marginLeft="45dp"-->
-<!--            android:layout_marginRight="45dp"-->
-<!--            android:hint="Search"-->
-<!--            android:inputType="textPersonName" />-->
-
-
-
-<!--        <HorizontalScrollView-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content">-->
-
-
-<!--        <LinearLayout-->
-<!--            android:id="@+id/filter_bar"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:orientation="horizontal">-->
-
-
-
-
-<!--            <Button-->
-            <!--                android:layout_width="wrap_content"-->
-            <!--                android:layout_height="wrap_content"-->
-            <!--                android:textColor="@android:color/black"-->
-            <!--                android:text="Men" />-->
-
-            <!--            <Button-->
-            <!--                android:layout_width="wrap_content"-->
-            <!--                android:layout_height="wrap_content"-->
-            <!--                android:textColor="@android:color/black"-->
-            <!--                android:text="Women"-->
-            <!--                />-->
-
-            <!--            <Button-->
-            <!--                android:layout_width="wrap_content"-->
-            <!--                android:layout_height="wrap_content"-->
-            <!--                android:textColor="@android:color/black"-->
-            <!--                android:text="Babies"-->
-            <!--                />-->
-
-            <!--            <Button-->
-            <!--                android:layout_width="wrap_content"-->
-            <!--                android:layout_height="wrap_content"-->
-            <!--                android:textColor="@android:color/black"-->
-            <!--                android:text="Kids"-->
-            <!--                />-->
-
-            <!--            <Button-->
-            <!--                android:layout_width="wrap_content"-->
-            <!--                android:layout_height="wrap_content"-->
-            <!--                android:textColor="@android:color/black"-->
-            <!--                android:text="Teens"-->
-            <!--                />-->
-
-<!--        </LinearLayout>-->
-
-<!--        </HorizontalScrollView>-->
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/current_filter_guide"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.32" />
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/current_filters_guide"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.38" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/current_filter_guide_vertical"
@@ -212,359 +88,35 @@
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.045" />
 
-        <HorizontalScrollView
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            app:layout_constraintHeight_percent="0.028"
-            app:layout_constraintTop_toBottomOf="@id/current_filter_guide"
-            app:layout_constraintLeft_toRightOf="@id/current_filter_guide_vertical">
-
-            <LinearLayout
-                android:id="@+id/current_filters"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
-
-            </LinearLayout>
-
-        </HorizontalScrollView>
-
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/filter_sort_guide"
+    <HorizontalScrollView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.36" />
+        android:layout_height="0dp"
+        app:layout_constraintHeight_percent="0.028"
+        app:layout_constraintLeft_toRightOf="@id/current_filter_guide_vertical"
+        app:layout_constraintBottom_toTopOf="@id/current_filters_guide">
 
         <LinearLayout
-            android:id="@+id/filter_or_sort"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/filter_sort_guide">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.3"/>
-
-            <Button
-                android:id="@+id/filter"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/filter"
-                android:textSize="30sp"
-                android:background="@android:color/white"
-                android:onClick="openFilter"
-                />
-
-            <TextView
-                android:id="@+id/sort"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/divider"
-                android:textSize="30sp"
-                android:onClick="openFilter"
-                />
-
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/sort"
-                android:textSize="30sp"
-                android:background="@android:color/white"
-                android:onClick="openSort"
-                />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.3"/>
-
+            android:id="@+id/current_filters"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
 
         </LinearLayout>
 
-    <LinearLayout
+    </HorizontalScrollView>
+
+
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/categories"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/filter_or_sort"
-        android:orientation="vertical"
-        android:layout_marginTop="15dp">
+        android:layout_marginTop="15dp"
+        android:scrollbars="vertical"
+        app:layout_constraintTop_toBottomOf="@id/current_filters_guide">
 
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TableLayout
-                android:id="@+id/item_table"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-
-                <!--                <TableRow-->
-                <!--                    android:id="@+id/top_row"-->
-                <!--                    android:layout_width="match_parent"-->
-                <!--                    android:layout_height="match_parent"-->
-                <!--                    android:layout_marginTop="10dp"-->
-                <!--                    android:layout_marginBottom="10dp"-->
-                <!--                    android:gravity="center"-->
-                <!--                    android:layoutDirection="ltr"-->
-                <!--                    android:paddingBottom="1dp">-->
-
-                <!--                    <FrameLayout-->
-                <!--                        android:id="@+id/first_item"-->
-                <!--                        android:layout_width="80dp"-->
-                <!--                        android:layout_height="80dp"-->
-                <!--                        android:layout_marginRight="50dp"-->
-                <!--                        android:layout_marginLeft="50dp">-->
-
-
-                <!--                        <ImageView-->
-                <!--                            android:layout_width="wrap_content"-->
-                <!--                            android:layout_height="wrap_content"-->
-                <!--                            android:paddingBottom="20dp"/>-->
-
-                <!--                        <TextView-->
-                <!--                            android:layout_width="wrap_content"-->
-                <!--                            android:layout_height="wrap_content"-->
-                <!--                            android:text="Dresses"-->
-                <!--                            android:layout_gravity="bottom|center"/>-->
-                <!--                    </FrameLayout>-->
-
-                <!--                    <FrameLayout-->
-                <!--                        android:id="@+id/second_item"-->
-                <!--                        android:layout_width="80dp"-->
-                <!--                        android:layout_height="80dp"-->
-                <!--                        android:layout_marginRight="50dp"-->
-                <!--                        android:layout_marginLeft="50dp">-->
-
-                <!--                        <ImageView-->
-                <!--                            android:layout_width="wrap_content"-->
-                <!--                            android:layout_height="wrap_content"-->
-                <!--                            android:paddingBottom="20dp"/>-->
-
-                <!--                        <TextView-->
-                <!--                            android:layout_width="wrap_content"-->
-                <!--                            android:layout_height="wrap_content"-->
-                <!--                            android:text="Dresses"-->
-                <!--                            android:layout_gravity="bottom|center"/>-->
-                <!--                    </FrameLayout>-->
-
-
-                <!--                </TableRow>-->
-
-                <!--                <TableRow-->
-                <!--                    android:id="@+id/top_row"-->
-                <!--                    android:layout_width="match_parent"-->
-                <!--                    android:layout_height="match_parent"-->
-                <!--                    android:layout_marginTop="10dp"-->
-                <!--                    android:layout_marginBottom="10dp"-->
-                <!--                    android:gravity="center"-->
-                <!--                    android:layoutDirection="ltr"-->
-                <!--                    android:paddingBottom="1dp">-->
-
-                <!--                    <FrameLayout-->
-                <!--                        android:id="@+id/first_item"-->
-                <!--                        android:layout_width="80dp"-->
-                <!--                        android:layout_height="80dp"-->
-                <!--                        android:layout_marginRight="50dp"-->
-                <!--                        android:layout_marginLeft="50dp">-->
-
-
-                <!--                        <ImageView-->
-                <!--                            android:layout_width="wrap_content"-->
-                <!--                            android:layout_height="wrap_content"-->
-                <!--                            android:paddingBottom="20dp"/>-->
-
-                <!--                        <TextView-->
-                <!--                            android:layout_width="wrap_content"-->
-                <!--                            android:layout_height="wrap_content"-->
-                <!--                            android:text="Dresses"-->
-                <!--                            android:layout_gravity="bottom|center"/>-->
-                <!--                    </FrameLayout>-->
-
-                <!--                    <FrameLayout-->
-                <!--                        android:id="@+id/second_item"-->
-                <!--                        android:layout_width="80dp"-->
-                <!--                        android:layout_height="80dp"-->
-                <!--                        android:layout_marginRight="50dp"-->
-                <!--                        android:layout_marginLeft="50dp">-->
-
-                <!--                        <ImageView-->
-                <!--                            android:layout_width="wrap_content"-->
-                <!--                            android:layout_height="wrap_content"-->
-                <!--                            android:paddingBottom="20dp"/>-->
-
-                <!--                        <TextView-->
-                <!--                            android:layout_width="wrap_content"-->
-                <!--                            android:layout_height="wrap_content"-->
-                <!--                            android:text="Dresses"-->
-                <!--                            android:layout_gravity="bottom|center"/>-->
-                <!--                    </FrameLayout>-->
-
-
-                <!--                </TableRow>-->
-                <!--                <TableRow-->
-                <!--                    android:id="@+id/top_row"-->
-                <!--                    android:layout_width="match_parent"-->
-                <!--                    android:layout_height="match_parent"-->
-                <!--                    android:layout_marginTop="10dp"-->
-                <!--                    android:layout_marginBottom="10dp"-->
-                <!--                    android:gravity="center"-->
-                <!--                    android:layoutDirection="ltr"-->
-                <!--                    android:paddingBottom="1dp">-->
-
-                <!--                    <FrameLayout-->
-                <!--                        android:id="@+id/first_item"-->
-                <!--                        android:layout_width="80dp"-->
-                <!--                        android:layout_height="80dp"-->
-                <!--                        android:layout_marginRight="50dp"-->
-                <!--                        android:layout_marginLeft="50dp">-->
-
-
-                <!--                        <ImageView-->
-                <!--                            android:layout_width="wrap_content"-->
-                <!--                            android:layout_height="wrap_content"-->
-                <!--                            android:paddingBottom="20dp"/>-->
-
-                <!--                        <TextView-->
-                <!--                            android:layout_width="wrap_content"-->
-                <!--                            android:layout_height="wrap_content"-->
-                <!--                            android:text="Dresses"-->
-                <!--                            android:layout_gravity="bottom|center"/>-->
-                <!--                    </FrameLayout>-->
-
-                <!--                    <FrameLayout-->
-                <!--                        android:id="@+id/second_item"-->
-                <!--                        android:layout_width="80dp"-->
-                <!--                        android:layout_height="80dp"-->
-                <!--                        android:layout_marginRight="50dp"-->
-                <!--                        android:layout_marginLeft="50dp">-->
-
-                <!--                        <ImageView-->
-                <!--                            android:layout_width="wrap_content"-->
-                <!--                            android:layout_height="wrap_content"-->
-                <!--                            android:paddingBottom="20dp"/>-->
-
-                <!--                        <TextView-->
-                <!--                            android:layout_width="wrap_content"-->
-                <!--                            android:layout_height="wrap_content"-->
-                <!--                            android:text="Dresses"-->
-                <!--                            android:layout_gravity="bottom|center"/>-->
-                <!--                    </FrameLayout>-->
-
-
-                <!--                </TableRow>-->
-                <!--                <TableRow-->
-                <!--                    android:id="@+id/top_row"-->
-                <!--                    android:layout_width="match_parent"-->
-                <!--                    android:layout_height="match_parent"-->
-                <!--                    android:layout_marginTop="10dp"-->
-                <!--                    android:layout_marginBottom="10dp"-->
-                <!--                    android:gravity="center"-->
-                <!--                    android:layoutDirection="ltr"-->
-                <!--                    android:paddingBottom="1dp">-->
-
-                <!--                    <FrameLayout-->
-                <!--                        android:id="@+id/first_item"-->
-                <!--                        android:layout_width="80dp"-->
-                <!--                        android:layout_height="80dp"-->
-                <!--                        android:layout_marginRight="50dp"-->
-                <!--                        android:layout_marginLeft="50dp">-->
-
-
-                <!--                        <ImageView-->
-                <!--                            android:layout_width="wrap_content"-->
-                <!--                            android:layout_height="wrap_content"-->
-                <!--                            android:paddingBottom="20dp"/>-->
-
-                <!--                        <TextView-->
-                <!--                            android:layout_width="wrap_content"-->
-                <!--                            android:layout_height="wrap_content"-->
-                <!--                            android:text="Dresses"-->
-                <!--                            android:layout_gravity="bottom|center"/>-->
-                <!--                    </FrameLayout>-->
-
-                <!--                    <FrameLayout-->
-                <!--                        android:id="@+id/second_item"-->
-                <!--                        android:layout_width="80dp"-->
-                <!--                        android:layout_height="80dp"-->
-                <!--                        android:layout_marginRight="50dp"-->
-                <!--                        android:layout_marginLeft="50dp">-->
-
-                <!--                        <ImageView-->
-                <!--                            android:layout_width="wrap_content"-->
-                <!--                            android:layout_height="wrap_content"-->
-                <!--                            android:paddingBottom="20dp"/>-->
-
-                <!--                        <TextView-->
-                <!--                            android:layout_width="wrap_content"-->
-                <!--                            android:layout_height="wrap_content"-->
-                <!--                            android:text="Dresses"-->
-                <!--                            android:layout_gravity="bottom|center"/>-->
-                <!--                    </FrameLayout>-->
-
-
-                <!--                </TableRow>-->
-                <!--                <TableRow-->
-                <!--                    android:id="@+id/top_row"-->
-                <!--                    android:layout_width="match_parent"-->
-                <!--                    android:layout_height="match_parent"-->
-                <!--                    android:layout_marginTop="10dp"-->
-                <!--                    android:layout_marginBottom="10dp"-->
-                <!--                    android:gravity="center"-->
-                <!--                    android:layoutDirection="ltr"-->
-                <!--                    android:paddingBottom="1dp">-->
-
-                <!--                    <FrameLayout-->
-                <!--                        android:id="@+id/first_item"-->
-                <!--                        android:layout_width="80dp"-->
-                <!--                        android:layout_height="80dp"-->
-                <!--                        android:layout_marginRight="50dp"-->
-                <!--                        android:layout_marginLeft="50dp">-->
-
-
-                <!--                        <ImageView-->
-                <!--                            android:layout_width="wrap_content"-->
-                <!--                            android:layout_height="wrap_content"-->
-                <!--                            android:paddingBottom="20dp"/>-->
-
-                <!--                        <TextView-->
-                <!--                            android:layout_width="wrap_content"-->
-                <!--                            android:layout_height="wrap_content"-->
-                <!--                            android:text="Dresses"-->
-                <!--                            android:layout_gravity="bottom|center"/>-->
-                <!--                    </FrameLayout>-->
-
-                <!--                    <FrameLayout-->
-                <!--                        android:id="@+id/second_item"-->
-                <!--                        android:layout_width="80dp"-->
-                <!--                        android:layout_height="80dp"-->
-                <!--                        android:layout_marginRight="50dp"-->
-                <!--                        android:layout_marginLeft="50dp">-->
-
-                <!--                        <ImageView-->
-                <!--                            android:layout_width="wrap_content"-->
-                <!--                            android:layout_height="wrap_content"-->
-                <!--                            android:paddingBottom="20dp"/>-->
-
-                <!--                        <TextView-->
-                <!--                            android:layout_width="wrap_content"-->
-                <!--                            android:layout_height="wrap_content"-->
-                <!--                            android:text="Dresses"-->
-                <!--                    </FrameLayout>-->
-
-
-                <!--                </TableRow>-->
-
-            </TableLayout>
-        </ScrollView>
-
-
-<!--    </LinearLayout>-->
-    </LinearLayout>
-    <!--                            android:layout_gravity="bottom|center"/>-->
-
+    </androidx.recyclerview.widget.RecyclerView>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

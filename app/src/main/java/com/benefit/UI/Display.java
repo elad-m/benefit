@@ -24,13 +24,13 @@ public class Display {
     private int typeOfDisplay;
 
 
-    public Display(View view, int typeOfDisplay){
+    public Display(View view, int typeOfDisplay) {
         this.view = view;
         this.typeOfDisplay = typeOfDisplay;
         displayableItems = new ArrayList<>();
     }
 
-    public <T extends Displayable> void createDisplayTable(List<T> displayableItems){
+    public <T extends Displayable> void populateDisplayTable(List<T> displayableItems) {
         this.displayableItems.addAll(displayableItems);
         mRecyclerView = view.findViewById(R.id.categories);
         mRecyclerView.setHasFixedSize(true);
@@ -38,20 +38,13 @@ public class Display {
         mAdapter = new DisplayableRecycleAdapter(displayableItems, typeOfDisplay);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
-//        mAdapter.setOnItemClickListener(new DisplayableRecycleAdapter.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(int position) {
-//////                String message = displayableItems.get(position).getName() + "was pressed";
-//////                makeToast(message);
-//            }
-//        });
     }
 
-    public DisplayableRecycleAdapter getmAdapter(){
+    public DisplayableRecycleAdapter getmAdapter() {
         return mAdapter;
     }
 
-    public RecyclerView getmRecyclerView(){
+    public RecyclerView getmRecyclerView() {
         return mRecyclerView;
     }
 
@@ -59,11 +52,11 @@ public class Display {
         return displayableItems;
     }
 
-    public <T extends Displayable> void refreshDisplay(List<T> displayableItems){
+    public <T extends Displayable> void refreshDisplay(List<T> displayableItems) {
         mRecyclerView = view.findViewById(R.id.categories);
         mRecyclerView.removeAllViews();
-        displayableItems.clear();
-        createDisplayTable(displayableItems);
+        this.displayableItems.clear();
+        populateDisplayTable(displayableItems);
 
     }
 }

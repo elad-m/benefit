@@ -10,9 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
-
-//import com.squareup.picasso.Picasso;
-
+import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -86,8 +84,7 @@ public class DisplayableRecycleAdapter extends RecyclerView.Adapter<DisplayableR
                         R.layout.product_item, parent, false);
                 break;
         }
-
-        v.findViewById(R.id.image_and_text_layout).setClipToOutline(true);
+//        v.findViewById(R.id.image_and_text_layout).setClipToOutline(true);
         DisplayViewHolder evh = new DisplayViewHolder(v, mListener);
         return evh;
     }
@@ -96,13 +93,10 @@ public class DisplayableRecycleAdapter extends RecyclerView.Adapter<DisplayableR
     public void onBindViewHolder(@NonNull DisplayViewHolder holder, int position) {
         Displayable displayableItem = displayableItems.get(position);
         // no "if empty" because clothingItem always has the resource data member initialized
-//        Picasso.get()
-//                .load(clothingItem.getmImageResource())
-//                .error(R.drawable.ic_image_placeholder)
-//                .placeholder(R.drawable.ic_image_placeholder)
-//                .centerCrop()
-//                .fit()
-//                .into(holder.mImageView);
+        Picasso.get()
+                .load("https://imagizer.imageshack.com/img922/2971/e4k2Ee.png").centerCrop()
+                .fit()
+                .into(holder.mImageView);
         holder.mImageTitle.setText(displayableItem.getName());
     }
 

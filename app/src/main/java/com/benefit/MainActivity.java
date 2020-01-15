@@ -13,7 +13,6 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.benefit.UI.Display;
 import com.benefit.UI.MetaCategoryBar;
@@ -52,20 +51,35 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        extractExtras();
         initiateWindow();
+    }
+
+    private void extractExtras() {
+        Bundle bundle = getIntent().getExtras();
+        if (bundle == null){
+            metaCategoryChosen = null;
+        } else {
+            metaCategoryChosen = (Category)bundle.getSerializable("metaCategory");
+        }
     }
 
     private void addCategoryListeners() {
         display.getmAdapter().setOnItemClickListener(new DisplayableRecycleAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                startNewActivity(display.getDisplayableItems().get(position));
+                Displayable itemClicked = display.getDisplayableItems().get(position);
+                if (itemsDisplayed == CLUSTERS_DISPLAYED || ((Category)itemClicked).getIsLeaf()) {
+                    openProductsPage(itemClicked);
+                } else {
+                    showChildrenOfParent(((Category)itemClicked).getId());
+                }
             }
         });
     }
 
-    private void startNewActivity(Displayable displayable) {
-        Intent intent = new Intent(this, ItemsPage.class);
+    private void openProductsPage(Displayable displayable) {
+        Intent intent = new Intent(this, ItemsPageActivity.class);
         switch (itemsDisplayed){
             case CLUSTERS_DISPLAYED:
                 intent.putExtra("displayed", CLUSTERS_DISPLAYED);
@@ -81,7 +95,6 @@ public class MainActivity extends AppCompatActivity {
                     intent.putExtra("metaCategory", metaCategoryChosen);
                 }
                 break;
-
         }
         startActivity(intent);
     }
@@ -93,20 +106,21 @@ public class MainActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     if (metaCategoryChosen == null){
                         instantiateAndColor(metaCategory);
-                        getChildrenOfParent();
+                        showChildrenOfParent(metaCategoryChosen.getId());
                         itemsDisplayed = CATEGORIES_DISPLAYED;
                     } else {
                         if (!metaCategoryChosen.getName().equals(metaCategory.getKey().getName())){
                             metaButtonChosen.setBackground(getResources().getDrawable(R.drawable.oval));
                             metaButtonChosen.setTextColor(Color.BLACK);
                             instantiateAndColor(metaCategory);
-                            getChildrenOfParent();
+                            showChildrenOfParent(metaCategoryChosen.getId());
                             itemsDisplayed = CATEGORIES_DISPLAYED;
                         } else {
+                            metaButtonChosen = metaCategory.getValue();
                             metaButtonChosen.setBackground(getResources().getDrawable(R.drawable.oval));
                             metaButtonChosen.setTextColor(Color.BLACK);
                             metaCategoryChosen = null;
-                            getCategoryClusters();
+                            showCategoryClusters();
                             itemsDisplayed = CLUSTERS_DISPLAYED;
                         }
                     }
@@ -124,17 +138,29 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initiateWindow(){
-        setContentView(R.layout.activity_main);
-        findViewById(R.id.search_icon).setBackground(getResources().getDrawable(R.drawable.ic_search_icon_color));
-        findViewById(R.id.slogan).setVisibility(View.VISIBLE);
-        getWindow().setSoftInputMode(
-                WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+        addScreenSettings();
         metaCategoryBar = new MetaCategoryBar(findViewById(android.R.id.content).getRootView());
         display = new Display(findViewById(android.R.id.content).getRootView(), CATEGORIES);
         createCategoryService();
-        createMetaCategories();
-        getCategoryClusters();
-        itemsDisplayed = CLUSTERS_DISPLAYED;
+        showMetaCategories();
+        showItemsOnScreen();
+    }
+
+    private void addScreenSettings() {
+        setContentView(R.layout.activity_main);
+        findViewById(R.id.search_icon).setBackground(getResources().getDrawable(R.drawable.ic_search_icon_color));
+        getWindow().setSoftInputMode(
+                WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+    }
+
+    private void showItemsOnScreen() {
+        if (metaCategoryChosen != null){
+            showChildrenOfParent(metaCategoryChosen.getId());
+            itemsDisplayed = CATEGORIES_DISPLAYED;
+        } else {
+            showCategoryClusters();
+            itemsDisplayed = CLUSTERS_DISPLAYED;
+        }
     }
 
     private void createCategoryService() {
@@ -148,14 +174,14 @@ public class MainActivity extends AppCompatActivity {
         this.categoryService = ViewModelProviders.of(this, categoryServiceFactory).get(CategoryService.class);
     }
 
-    private void createMetaCategories() {
+    private void showMetaCategories() {
         final List<Category> metaCategories = new LinkedList<>();
         final Observer<List<Category>> metaCategoriesObserver = new Observer<List<Category>>() {
 
             @Override
             public void onChanged(List<Category> categories) {
                 metaCategories.addAll(categories);
-                metaCategoryBar.createCategoryBar(metaCategories);
+                metaCategoryBar.createCategoryBar(metaCategories, metaCategoryChosen);
                 addMetaCategoryListeners();
             }
         };
@@ -163,21 +189,21 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void getCategoryClusters() {
+    private void showCategoryClusters() {
         final List<CategoryCluster> categoryClusters = new LinkedList<>();
         final Observer<List<CategoryCluster>> categoryObserver = new Observer<List<CategoryCluster>>() {
 
             @Override
             public void onChanged(List<CategoryCluster> clusters) {
                 categoryClusters.addAll(clusters);
-                display.createDisplayTable(categoryClusters);
+                display.populateDisplayTable(categoryClusters);
                 addCategoryListeners();
             }
         };
         categoryService.getAllHomepageCategoryClusters().observe(this, categoryObserver);
     }
 
-    private void getChildrenOfParent(){
+    private void showChildrenOfParent(int parentId){
         final List<Category> childrenCategories = new LinkedList<>();
         final Observer<List<Category>> childCategoryObserver = new Observer<List<Category>>() {
 
@@ -188,11 +214,9 @@ public class MainActivity extends AppCompatActivity {
                 addCategoryListeners();
             }
         };
-        categoryService.getChildrenByParentId(metaCategoryChosen.getId()).observe(this, childCategoryObserver);
+        categoryService.getChildrenByParentId(parentId).observe(this, childCategoryObserver);
 
     }
-
-
 }
 
 }

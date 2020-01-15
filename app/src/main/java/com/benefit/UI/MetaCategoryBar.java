@@ -26,53 +26,45 @@ public class MetaCategoryBar {
         metaCategoryButtonMap = new HashMap<>();
     }
 
-    public void createCategoryBar(List<Category> category){
+    private void setBarLayoutParams(Button metaCategoryButton) {
+        LinearLayout.LayoutParams linearLayoutParams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+        int marginToSet = StaticFunctions.convertDpToPx(4);
+        linearLayoutParams.setMargins(marginToSet, marginToSet, marginToSet, marginToSet);
+        metaCategoryButton.setLayoutParams(linearLayoutParams);
+    }
+
+
+    public void createCategoryBar(List<Category> category, Category existingMetaCategory){
         this.category = category;
         LinearLayout bar = view.findViewById(R.id.filter_bar);
         for (int i =0; i< category.size(); i ++){
-            Button metaCategory = new Button(view.getContext());
-            metaCategory.setText(category.get(i).getName());
-            metaCategory.setBackground(view.getResources().getDrawable(R.drawable.oval));
-            LinearLayout.LayoutParams linearLayoutParams = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.WRAP_CONTENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT);
-            int marginToSet = StaticFunctions.convertDpToPx(4);
-            linearLayoutParams.setMargins(marginToSet, marginToSet, marginToSet, marginToSet);
-            metaCategory.setLayoutParams(linearLayoutParams);
-            metaCategory.setMinimumHeight(StaticFunctions.convertDpToPx(25));
-            metaCategory.setMinHeight(StaticFunctions.convertDpToPx(25));
-            bar.addView(metaCategory);
-            metaCategoryButtonMap.put(category.get(i), metaCategory);
+            Button metaCategoryButton = new Button(view.getContext());
+            metaCategoryButton.setText(category.get(i).getName());
+            setBackgroundColor(existingMetaCategory, metaCategoryButton, i);
+            setBarLayoutParams(metaCategoryButton);
+//            LinearLayout.LayoutParams linearLayoutParams = new LinearLayout.LayoutParams(
+//                    LinearLayout.LayoutParams.WRAP_CONTENT,
+//                    LinearLayout.LayoutParams.WRAP_CONTENT);
+//            int marginToSet = StaticFunctions.convertDpToPx(4);
+//            linearLayoutParams.setMargins(marginToSet, marginToSet, marginToSet, marginToSet);
+//            metaCategoryButton.setLayoutParams(linearLayoutParams);
+            metaCategoryButton.setMinimumHeight(StaticFunctions.convertDpToPx(20));
+            metaCategoryButton.setMinHeight(StaticFunctions.convertDpToPx(20));
+            bar.addView(metaCategoryButton);
+            metaCategoryButtonMap.put(category.get(i), metaCategoryButton);
         }
     }
 
-    public Button createCategoryBar(List<Category> category, String existingMetaCategory){
-        Button chosenButton = null;
-        this.category = category;
-        LinearLayout bar = view.findViewById(R.id.filter_bar);
-        for (int i =0; i< category.size(); i ++){
-            Button metaCategory = new Button(view.getContext());
-            metaCategory.setText(category.get(i).getName());
-            if (category.get(i).getName().equals(existingMetaCategory)){
-                metaCategory.setBackground(view.getResources().getDrawable(R.drawable.filled_oval));
-                metaCategory.setTextColor(Color.WHITE);
-                chosenButton = metaCategory;
-            }
-            else {
-                metaCategory.setBackground(view.getResources().getDrawable(R.drawable.oval));
-            }
-            LinearLayout.LayoutParams linearLayoutParams = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.WRAP_CONTENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT);
-            int marginToSet = StaticFunctions.convertDpToPx(4);
-            linearLayoutParams.setMargins(marginToSet, marginToSet, marginToSet, marginToSet);
-            metaCategory.setLayoutParams(linearLayoutParams);
-            metaCategory.setMinimumHeight(StaticFunctions.convertDpToPx(25));
-            metaCategory.setMinHeight(StaticFunctions.convertDpToPx(25));
-            bar.addView(metaCategory);
-            metaCategoryButtonMap.put(category.get(i), metaCategory);
+    private void setBackgroundColor(Category existingMetaCategory, Button metaCategoryButton, int index) {
+        if (existingMetaCategory != null && category.get(index).getName().equals(existingMetaCategory.getName())){
+            metaCategoryButton.setBackground(view.getResources().getDrawable(R.drawable.filled_oval));
+            metaCategoryButton.setTextColor(Color.WHITE);
         }
-        return chosenButton;
+        else {
+            metaCategoryButton.setBackground(view.getResources().getDrawable(R.drawable.oval));
+        }
     }
 
     public Map<Category, Button> getMetaCategoryButtonMap() {

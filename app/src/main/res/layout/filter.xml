@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/filter_popup"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -30,13 +31,96 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-<!--            <Button-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="20dp"-->
-<!--                android:text="hello"-->
-<!--                android:background="@drawable/oval"-->
-<!--                />-->
+<!--            <RelativeLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="0dp"-->
+<!--                android:layout_weight="0.3">-->
+<!--                <TextView-->
+<!--                    android:id="@+id/for_whom"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:padding="6dp"-->
+<!--                    android:text="For Whom:"-->
+<!--                    android:textColor="#000000"-->
+<!--                    android:textSize="15sp"-->
+<!--                    android:layout_alignParentLeft="true"-->
+<!--                    android:layout_centerVertical="true"/>-->
 
+<!--            <HorizontalScrollView-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:layout_toRightOf="@id/for_whom"-->
+<!--                >-->
+
+<!--&lt;!&ndash;                <LinearLayout&ndash;&gt;-->
+<!--&lt;!&ndash;                    android:layout_width="wrap_content"&ndash;&gt;-->
+<!--&lt;!&ndash;                    android:layout_height="wrap_content">&ndash;&gt;-->
+
+<!--&lt;!&ndash;            &ndash;&gt;-->
+<!--            <com.google.android.material.chip.ChipGroup-->
+<!--                android:id="@+id/demographic_group"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:layout_gravity="center_vertical"-->
+<!--                android:layout_margin="5dp"-->
+
+<!--                android:theme="@style/Theme.MaterialComponents.Light"-->
+<!--                app:checkedChip="@id/women_chip"-->
+<!--                app:chipSpacing="10dp"-->
+<!--                app:singleLine="true"-->
+<!--                app:singleSelection="true">-->
+
+
+
+
+
+
+<!--                <com.google.android.material.chip.Chip-->
+<!--                    android:id="@+id/men_chip"-->
+<!--                    style="@style/Widget.MaterialComponents.Chip.Choice"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="Men" />-->
+
+<!--                <com.google.android.material.chip.Chip-->
+<!--                    android:id="@+id/women_chip"-->
+<!--                    style="@style/Widget.MaterialComponents.Chip.Choice"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="Women" />-->
+
+<!--                <com.google.android.material.chip.Chip-->
+<!--                    android:id="@+id/kids_chip"-->
+<!--                    style="@style/Widget.MaterialComponents.Chip.Choice"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="Kids" />-->
+
+<!--                <com.google.android.material.chip.Chip-->
+<!--                    android:id="@+id/m_chip"-->
+<!--                    style="@style/Widget.MaterialComponents.Chip.Choice"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="Men" />-->
+
+<!--                <com.google.android.material.chip.Chip-->
+<!--                    android:id="@+id/w_chip"-->
+<!--                    style="@style/Widget.MaterialComponents.Chip.Choice"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="Women" />-->
+
+<!--                <com.google.android.material.chip.Chip-->
+<!--                    android:id="@+id/k_chip"-->
+<!--                    style="@style/Widget.MaterialComponents.Chip.Choice"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="Kids" />-->
+
+<!--            </com.google.android.material.chip.ChipGroup>-->
+<!--&lt;!&ndash;                </LinearLayout>&ndash;&gt;-->
+<!--</HorizontalScrollView>-->
+<!--            </RelativeLayout>-->
 
         </LinearLayout>
     </ScrollView>

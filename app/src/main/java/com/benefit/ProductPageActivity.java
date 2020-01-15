@@ -6,7 +6,7 @@ import android.os.Bundle;
 
 import com.benefit.model.Product;
 
-public class product_page extends AppCompatActivity {
+public class ProductPageActivity extends AppCompatActivity {
 
     private Product product;
 
@@ -21,8 +21,8 @@ public class product_page extends AppCompatActivity {
     }
 
     private void extractExtras() {
-        Bundle bundle = getIntent().getExtras();
-        product = (Product) bundle.getSerializable("product");
+//        Bundle bundle = getIntent().getExtras();
+//        product = (Product) bundle.getSerializable("product");
     }
 
 

@@ -56,7 +56,7 @@ public class ProductService extends ViewModel {
         return this.databaseDriver.getDocumentsByField(COLLECTION_NAME, "sellerId", sellerId, Product.class);
     }
 
-    public LiveData<List<Product>> getProductsByProperties(int categoryId, Map<String, String> propertiesMap) {
+    public LiveData<List<Product>> getProductsByProperties(int categoryId, Map<String, List<String>> propertiesMap) {
         final List<Product> productsList = new LinkedList<>();
         final MutableLiveData<List<Product>> resultsLiveData = new MutableLiveData<>();
         this.databaseDriver.getCollectionReferenceByName(COLLECTION_NAME)
@@ -66,9 +66,9 @@ public class ProductService extends ViewModel {
                     if (task.isSuccessful()) {
                         for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
                             Product product = document.toObject(Product.class);
-                            if (isPropertiesMapInProduct(product, propertiesMap)) {
-                                productsList.add(product);
-                            }
+//                            if (isPropertiesMapInProduct(product, propertiesMap)) {
+//                                productsList.add(product);
+//                            }
                         }
                         resultsLiveData.setValue(productsList);
                     }
