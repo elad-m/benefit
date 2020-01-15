@@ -27,10 +27,12 @@
         <TextView
             android:id="@+id/sign_up_title_text_view"
             style="@style/instructionsText"
+            android:layout_gravity="center_horizontal"
             android:text="@string/sign_in_title" />
 
         <LinearLayout
-            android:layout_marginVertical="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
             android:id="@+id/sign_in_buttons"
             android:orientation="horizontal"
             android:layout_width="match_parent"
@@ -43,13 +45,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:visibility="visible"
-                android:layout_marginHorizontal="8dp"/>
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"/>
 
             <Button
                 android:visibility="gone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
                 android:background="@drawable/fui_idp_button_background_email"
                 android:text="mail" />
 
@@ -57,48 +61,82 @@
                 android:visibility="gone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
                 android:background="@drawable/fui_idp_button_background_phone"
                 android:text="phone" />
 
 
         </LinearLayout>
 
-        <EditText
-            android:id="@+id/first_name_text"
-            android:layout_width="wrap_content"
+        <TextView
+            android:id="@+id/first_name_title_text"
+            android:text="@string/first_name_field"
+            style="@style/editFieldsTitle" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:ems="10"
-            android:hint="@string/first_name_field"
-            android:inputType="textPersonName" />
+            android:layout_marginStart="48dp"
+            android:layout_marginEnd="48dp"
+            app:boxStrokeColor="@color/black"
+            app:boxStrokeWidth="2dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/first_name_input_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
 
-        <EditText
-            android:id="@+id/last_name_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:ems="10"
-            android:hint="@string/last_name_field"
-            android:inputType="textPersonName" />
-
-
-        <EditText
-            android:id="@+id/address_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:ems="10"
-            android:hint="@string/address_field"
-            android:inputType="textMultiLine" />
+        </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
-            android:id="@+id/loction_label"
-            android:layout_width="wrap_content"
+            android:id="@+id/last_name_title_text"
+            android:text="@string/last_name_field"
+            style="@style/editFieldsTitle" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="24dp"
-            android:ems="10"
+            android:layout_marginStart="48dp"
+            android:layout_marginEnd="48dp"
+            app:boxStrokeColor="@color/black"
+            app:boxStrokeWidth="2dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/last_name_input_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/address_title_text"
+            android:text="@string/address_field"
+            style="@style/editFieldsTitle" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="48dp"
+            android:layout_marginEnd="48dp"
+            app:boxStrokeColor="@color/black"
+            app:boxStrokeWidth="2dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/address_input_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/map_title"
+            style="@style/instructionsText"
+            android:layout_marginStart="48dp"
+            android:layout_marginEnd="48dp"
             android:text="@string/map_field_title" />
 
         <fragment
@@ -121,7 +159,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="32dp"
             android:onClick="onDoneClicked"
-            android:text="@string/done_button" />
+            android:text="@string/lets_start" />
 
     </LinearLayout>
 </ScrollView>

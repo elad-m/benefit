@@ -91,9 +91,11 @@ public class SignUpActivity extends AppCompatActivity implements OnMapReadyCallb
         mapFragment.getMapAsync(this);
 
         //set views objects
+        /**
         firstNameField = findViewById(R.id.first_name_text);
         lastNameField = findViewById(R.id.last_name_text);
         addressField = findViewById(R.id.address_text);
+         */
 
     }
 
