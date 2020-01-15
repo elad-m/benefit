@@ -12,7 +12,6 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -26,11 +25,14 @@ import com.benefit.drivers.DatabaseDriver;
 import com.benefit.model.Category;
 import com.benefit.model.Product;
 import com.benefit.services.CategoryService;
+import com.benefit.services.ProductService;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.squareup.picasso.Picasso;
 
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -45,22 +47,26 @@ public class GiveItemActivity extends AppCompatActivity {
     private static final int PICK_IMAGE = 1;
     private static final int SNAP_PHOTO = 2;
 
-    private Dialog thankYouMessage;
-    private Button giveButton;
+    private Dialog thankYouDailog;
+    private Dialog dialogReturnsToActivity;
     private LinearLayout activityRootLinearLayout;
     private LayoutInflater inflater;
+    private List<String> conditions = Arrays.asList("New", "Used");
+    private List<String> sizes = Arrays.asList("S", "M", "L", "XL");
 
     private DatabaseDriver databaseDriver = new DatabaseDriver();
     private CategoryService categoryService;
+    private ProductService productService;
 
     private boolean categoriesInflatedOnce = false;
 
     // the following group are fields for creating a Product
     private Uri mImageUri;
     private EditText mEdTextTitle;
-    private EditText mEdTextDescription;
     private int mMetaCategory;
     private int mCategory;
+    private String mSize;
+    private String mCondition;
 
 
     @Override
@@ -71,8 +77,76 @@ public class GiveItemActivity extends AppCompatActivity {
         createActionBar();
         instantiateDataMembers();
         createCategoryService();
+        createProductService();
+        createPropertiesChips();
         createMetaCategoriesChips();
 
+    }
+
+    private void createConditionChips() {
+        ChipGroup conditionGroup = createChipGroup("Condition: ");
+        for (String condition : conditions) {
+            View chipAsView = inflater.inflate(R.layout.chip_layout, null);
+            Chip chip = (Chip) chipAsView;
+            chip.setText(condition);
+            chip.setTag(condition);
+            conditionGroup.addView(chipAsView);
+        }
+        ((Chip) conditionGroup.getChildAt(1)).setChecked(true);  // because the first child is textView
+        mCondition = conditions.get(0);
+        conditionGroup.setOnCheckedChangeListener(new ChipGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(ChipGroup chipGroup, int i) {
+                Chip chip = chipGroup.findViewById(i);
+                if (chip != null) {
+                    mCondition = chip.getText().toString();
+                }
+            }
+        });
+        activityRootLinearLayout.addView(
+                conditionGroup, activityRootLinearLayout.getChildCount() - 1);
+    }
+
+    private void createPropertiesChips() {
+        createConditionChips();
+        createSizeChips();
+    }
+
+    private void createSizeChips() {
+        ChipGroup sizeGroup = createChipGroup("Size: ");
+        for (String size : sizes) {
+            View chipAsView = inflater.inflate(R.layout.chip_layout, null);
+            Chip chip = (Chip) chipAsView;
+            chip.setText(size);
+            chip.setTag(size);
+            sizeGroup.addView(chipAsView);
+        }
+        ((Chip) sizeGroup.getChildAt(1)).setChecked(true);  // because the first child is textView
+        mSize = sizes.get(0);
+        sizeGroup.setOnCheckedChangeListener(new ChipGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(ChipGroup chipGroup, int i) {
+                Chip chip = chipGroup.findViewById(i);
+                if (chip != null) {
+                    mSize = chip.getText().toString();
+                }
+            }
+        });
+        activityRootLinearLayout.addView(
+                sizeGroup, activityRootLinearLayout.getChildCount() - 1);
+    }
+
+    private void createProductService() {
+        ViewModelProvider.Factory productServiceFactory = new ViewModelProvider.Factory() {
+            @NonNull
+            @Override
+            public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
+                return (T) new ProductService(databaseDriver);
+            }
+        };
+        this.productService = ViewModelProviders
+                .of(this, productServiceFactory)
+                .get(ProductService.class);
     }
 
     private void createCategoryService() {
@@ -96,11 +170,8 @@ public class GiveItemActivity extends AppCompatActivity {
         return chipAsView;
     }
 
-
-    private void createMetaCategoriesChips() {
-        inflater = LayoutInflater.from(this);
+    private ChipGroup createMetaCategoriesObserver() {
         ChipGroup chipGroup = createChipGroup("For Whom: ");
-
         final List<Category> metaCategories = new LinkedList<>();
         final Observer<List<Category>> metaCategoriesObserver = new Observer<List<Category>>() {
 
@@ -115,29 +186,33 @@ public class GiveItemActivity extends AppCompatActivity {
             }
         };
         categoryService.getAllMetaCategories().observe(this, metaCategoriesObserver);
+        return chipGroup;
+    }
 
+    private void setOnCheckedChangeListenerForMetaCategories(ChipGroup chipGroup) {
         chipGroup.setOnCheckedChangeListener(new ChipGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(ChipGroup chipGroup, int i) {
                 Chip chip = chipGroup.findViewById(i);
                 if (chip != null) {
-                    String chipText = chip.getText().toString();
-                    // i-1: since i here counts the chips in 1,2,.. but list goes 0,1..
                     mMetaCategory = ((Category) chip.getTag()).getId();
                     createCategoriesChipsFromMetaCategory();
-                    Toast.makeText(getApplicationContext(), "Chip is " + chipText,
-                            Toast.LENGTH_SHORT).show();
                 }
             }
         });
 
+    }
+
+    private void createMetaCategoriesChips() {
+        ChipGroup chipGroup = createMetaCategoriesObserver();
+        setOnCheckedChangeListenerForMetaCategories(chipGroup);
         activityRootLinearLayout.addView(
                 chipGroup, activityRootLinearLayout.getChildCount() - 1);
     }
 
-    private void createCategoriesChipsFromMetaCategory() {
-        ChipGroup chipGroup = createChipGroup("Categories");
 
+    private ChipGroup createCategoriesObserver() {
+        ChipGroup chipGroup = createChipGroup("Categories: ");
         final List<Category> categories = new LinkedList<>();
         final Observer<List<Category>> categoriesObserver = new Observer<List<Category>>() {
 
@@ -151,20 +226,25 @@ public class GiveItemActivity extends AppCompatActivity {
                 mCategory = categories.get(0).getId();
             }
         };
+        categoryService.getChildrenByParentId(mMetaCategory).observe(this, categoriesObserver);
+        return chipGroup;
+    }
 
+    private void setOnCheckedChangeListenerForCategories(ChipGroup chipGroup) {
         chipGroup.setOnCheckedChangeListener(new ChipGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(ChipGroup chipGroup, int i) {
                 Chip chip = chipGroup.findViewById(i);
                 if (chip != null) {
-                    String chipText = chip.getText().toString();
                     mCategory = ((Category) chip.getTag()).getId();
-                    Toast.makeText(getApplicationContext(), "Chip is " + chipText,
-                            Toast.LENGTH_SHORT).show();
                 }
             }
         });
-        categoryService.getChildrenByParentId(mMetaCategory).observe(this, categoriesObserver);
+    }
+
+    private void createCategoriesChipsFromMetaCategory() {
+        ChipGroup chipGroup = createCategoriesObserver();
+        setOnCheckedChangeListenerForCategories(chipGroup);
         addCategoriesChipGroupToLayout(chipGroup);
         categoriesInflatedOnce = true;
     }
@@ -194,15 +274,13 @@ public class GiveItemActivity extends AppCompatActivity {
 
     private void instantiateDataMembers() {
         mEdTextTitle = findViewById(R.id.item_title_text);
-        mEdTextDescription = findViewById(R.id.item_description_text);
-        giveButton = findViewById(R.id.give_button);
         activityRootLinearLayout = findViewById(R.id.activity_root_linear_layout);
+        inflater = LayoutInflater.from(this);
     }
 
     private void createActionBar() {
         View view = findViewById(R.id.chosen_view);
         view.setVisibility(View.INVISIBLE);
-
         Button givePlusButton = findViewById(R.id.give_icon);
         givePlusButton.setBackground(getResources().getDrawable(R.drawable.ic_give_colored));
     }
@@ -236,7 +314,7 @@ public class GiveItemActivity extends AppCompatActivity {
             mImageUri = data.getData();
             Picasso.get()
                     .load(mImageUri)
-                    .centerCrop().fit().into(mImageButtonUpload);
+                    .centerCrop().rotate(90).fit().into(mImageButtonUpload);
 
         }
     }
@@ -244,50 +322,72 @@ public class GiveItemActivity extends AppCompatActivity {
 
     private Map<String, List<String>> getProductProperties() {
         Map<String, List<String>> properties = new HashMap<>();
-        // todo: add actual list? WHY LIST?
-        properties.put("Size", (new LinkedList<String>()));
-        properties.put("Category", new LinkedList<String>());
-        properties.put("Demographic", new LinkedList<String>());
+        properties.put("Size", Collections.singletonList(mSize));
+        properties.put("Condition", Collections.singletonList(mCondition));
         return properties;
+    }
+
+    private String getTitleText() {
+        String itemTitle;
+        if (mEdTextTitle != null) {
+            itemTitle = mEdTextTitle.getText().toString();
+        } else {
+            itemTitle = "No title written";
+        }
+        return itemTitle;
     }
 
 
     public void onClickGive(View view) {
-        String mItemTitle;
-        if (mEdTextTitle != null) {
-            mItemTitle = mEdTextTitle.getText().toString();
+        if (mImageUri == null) {
+            createNoPhotoDialog();
         } else {
-            mItemTitle = "No title written";
+            String itemTitle = getTitleText();
+            String itemDescription = "No item Description";
+            Date date = Calendar.getInstance().getTime();
+            Map<String, List<String>> properties = getProductProperties();
+            List<String> imagesUrls = loadImagesUrls();
+            Product product = new Product(411, mCategory, "jHbxY9G5pdO7Qo5k58ulwPsY1fG2",
+                    itemTitle, itemDescription, 0, 0, date, properties, imagesUrls);
+            productService.addProduct(product);
+            createThankYouDailog();
         }
-        String mItemDescription;
-        if (mEdTextDescription != null) {
-            mItemDescription = mEdTextDescription.getText().toString();
-        } else {
-            mItemDescription = "No item Description";
-        }
-        Date date = Calendar.getInstance().getTime();
-        Map<String, List<String>> properties = getProductProperties();
-        List<String> imagesUrls = new LinkedList<>();
-        if (mImageUri != null) {
-            imagesUrls.add(mImageUri.toString());  // todo: should prompt a message that you must take a picture
-        }
-        // todo: change to real id
-
-        Product product = new Product(64, 3, "sellerID", mItemTitle, mItemDescription,
-                0, 0, date, properties, imagesUrls);
-        // Now serializing should start, of product (and user)
-
-        // Thank you message
-        thankYouMessage = new Dialog(this);
-        thankYouMessage.setContentView(R.layout.thank_you_message);
-        thankYouMessage.show();
     }
 
-    public void done(View view) {
-        thankYouMessage.dismiss();
+    private List<String> loadImagesUrls() {
+        List<String> imagesUrls = new LinkedList<>();
+        imagesUrls.add(mImageUri.toString());
+        return  imagesUrls;
+    }
+
+    private void createThankYouDailog() {
+        thankYouDailog = new Dialog(this);
+        thankYouDailog.setContentView(R.layout.thank_you_dialog);
+        thankYouDailog.show();
+    }
+
+
+    public void doneButton(View view) {
+        thankYouDailog.dismiss();
         Intent intent = new Intent(this, UserProfileActivity.class);
         startActivity(intent);
     }
 
 
+    public void gotItButton(View view) {
+        dialogReturnsToActivity.dismiss();
+    }
+
+    private void createNoPhotoDialog() {
+        dialogReturnsToActivity = new Dialog(this);
+        dialogReturnsToActivity.setContentView((R.layout.no_photo_dialog));
+        dialogReturnsToActivity.show();
+    }
+
+
+    public void popTipsDialog(View view) {
+        dialogReturnsToActivity = new Dialog(this);
+        dialogReturnsToActivity.setContentView(R.layout.photoshooting_tips_dialog);
+        dialogReturnsToActivity.show();
+    }
 }

@@ -20,7 +20,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:text="Greate! This will become someone else's treasure!"
+        android:text="Great! This will become someone else's treasure!"
         android:textAlignment="center"
         android:textSize="18sp" />
 
@@ -36,6 +36,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:onClick="done"
+        android:onClick="doneButton"
         android:text="Done" />
 </LinearLayout>
