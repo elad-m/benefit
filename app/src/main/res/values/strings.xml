@@ -16,7 +16,7 @@
     <string name="user_last_name_relay">lastName</string>
     <string name="user_first_name_relay">firstName</string>
     <string name="benefit_logo_description">benefit logo</string>
-    <string name="sign_in_title">Please sign in</string>
+    <string name="sign_in_title">Please enter your account details</string>
     <string name="lets_start">Let\'s start</string>
 
     <string-array name="chat_sort_options">

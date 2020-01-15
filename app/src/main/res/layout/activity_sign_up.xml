@@ -18,9 +18,9 @@
             android:id="@+id/Logo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="120dp"
-            android:layout_marginTop="32dp"
-            android:layout_marginRight="120dp"
+            android:layout_marginLeft="80dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginRight="80dp"
             android:contentDescription="@string/benefit_logo_description"
             app:srcCompat="@drawable/ic_benefit_logo_big" />
 
@@ -31,6 +31,7 @@
             android:text="@string/sign_in_title" />
 
         <LinearLayout
+            android:visibility="visible"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
             android:id="@+id/sign_in_buttons"
@@ -70,6 +71,7 @@
         </LinearLayout>
 
         <TextView
+            android:layout_marginTop="8dp"
             android:id="@+id/first_name_title_text"
             android:text="@string/first_name_field"
             style="@style/editFieldsTitle" />
@@ -79,7 +81,6 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="48dp"
             android:layout_marginEnd="48dp"
-            app:boxStrokeColor="@color/black"
             app:boxStrokeWidth="2dp"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
@@ -91,6 +92,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
+            android:layout_marginTop="8dp"
             android:id="@+id/last_name_title_text"
             android:text="@string/last_name_field"
             style="@style/editFieldsTitle" />
@@ -100,7 +102,6 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="48dp"
             android:layout_marginEnd="48dp"
-            app:boxStrokeColor="@color/black"
             app:boxStrokeWidth="2dp"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
@@ -114,6 +115,7 @@
         <TextView
             android:id="@+id/address_title_text"
             android:text="@string/address_field"
+            android:layout_marginTop="8dp"
             style="@style/editFieldsTitle" />
 
         <com.google.android.material.textfield.TextInputLayout
@@ -121,7 +123,6 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="48dp"
             android:layout_marginEnd="48dp"
-            app:boxStrokeColor="@color/black"
             app:boxStrokeWidth="2dp"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
@@ -133,6 +134,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
+            android:layout_marginTop="8dp"
             android:id="@+id/map_title"
             style="@style/instructionsText"
             android:layout_marginStart="48dp"
@@ -152,14 +154,14 @@
             android:layout_marginRight="12dp"
             tools:context="com.benefit.SignUpActivity" />
 
+
         <Button
             android:id="@+id/button_done"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="240dp"
+            android:layout_height="70dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="32dp"
-            android:onClick="onDoneClicked"
-            android:text="@string/lets_start" />
+            android:onClick="onDoneClicked" />
 
     </LinearLayout>
 </ScrollView>
