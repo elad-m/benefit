@@ -101,8 +101,11 @@ public class ProductService extends ViewModel {
         for (Map.Entry<String, List<String>> filter : propertiesMap.entrySet()) {
             if (product.getProperties() != null) {
                 if (product.getProperties().containsKey(filter.getKey())) {
-                    if (!product.getProperties().get(filter.getKey()).contains(filter.getValue())) {
-                        indicator = false;
+                    for (String value : filter.getValue()) {
+                        if (!product.getProperties().get(filter.getKey()).contains(value)) {
+                            indicator = false;
+                        }
+
                     }
                 } else {
                     indicator = false;
