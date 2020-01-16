@@ -9,7 +9,7 @@
 
     <include
         android:id="@+id/product_page_top_area"
-        layout="@layout/top_area" />
+        layout="@layout/page_header" />
 
     <TableLayout
         android:id="@+id/product_page_back_area"
