@@ -6,23 +6,25 @@ import com.google.firebase.firestore.FirebaseFirestore;
 /**
  * A driver for dealing with FireBase authentication
  */
-public class AuthenticationDriver{
+public class AuthenticationDriver {
     private FirebaseAuth auth;
 
-    public AuthenticationDriver(){
+    public AuthenticationDriver() {
         this.auth = FirebaseAuth.getInstance();
 
         // Enable Firestore logging
         FirebaseFirestore.setLoggingEnabled(true);
     }
 
-    public boolean isSignIn(){
+    public boolean isSignIn() {
         return auth.getCurrentUser() != null;
     }
 
-    public FirebaseAuth getAuth(){ return this.auth;}
+    public FirebaseAuth getAuth() {
+        return this.auth;
+    }
 
-    public String getUserUid(){
+    public String getUserUid() {
         return auth.getUid();
     }
 

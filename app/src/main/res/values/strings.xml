@@ -15,6 +15,29 @@
     <string name="user_address_relay">address</string>
     <string name="user_last_name_relay">lastName</string>
     <string name="user_first_name_relay">firstName</string>
+    <string name="condition_chip_group_heading">Condition:</string>
+    <string name="size_chip_group_heading">Size:</string>
+    <string name="metacategory_chip_group_heading">For Whom:</string>
+    <string name="categories_chip_group_heading">Categories:</string>
+    <string name="size_property_name">Size</string>
+    <string name="condition_property_name">Condition</string>
+    <string name="no_title_value">No title written</string>
+    <string name="no_description_value">No item Description</string>
+    <string name="description_of_image_of_item_upload">Image of item will uploaded to here</string>
+    <string name="description_of_image_for_photoshooting_tips">Lightbulb image for photoshooting tips</string>
+    <string name="click_for_tips_for_good_photography">Click for tips for good photography</string>
+    <string name="hint_item_title">Add item title...</string>
+    <string name="give_button">Give</string>
+    <string name="clothing_item_image_description">Image of item</string>
+    <string name="clothing_item_edit_button_text">Edit</string>
+    <string name="clothing_item_delete_button">Delete</string>
+    <string name="no_photo_dialog_message">Please upload a photo!</string>
+    <string name="dialog_got_it_button_text">Got it!</string>
+    <string name="photoshooting_tips_heading">Tips!</string>
+    <string name="dialog_thank_you_heading">Thank you!</string>
+    <string name="dialog_thank_you_message">Great! This will become someone else\'s treasure!</string>
+    <string name="dialog_thank_you_image_description">Chest of gold to convey message of treasure</string>
+    <string name="dialog_done_button_text">Done</string>
 
     <string-array name="chat_sort_options">
         <item>your items</item>
