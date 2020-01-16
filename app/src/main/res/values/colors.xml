@@ -14,8 +14,4 @@
     <color name="black">#000000</color>
     <color name="productPageTextPrimaryColor">#000000</color>
     <color name="productPageTextSecondaryColor">#c4c4c4</color>
-    <color name="backgroundColor">#ffffff</color>
-    <color name="primaryBlue">#0188b2</color>
-    <color name="productPageTextPrimaryColor">#000000</color>
-    <color name="productPageTextSecondaryColor">#c4c4c4</color>
 </resources>
