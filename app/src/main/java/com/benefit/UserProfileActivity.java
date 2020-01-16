@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.benefit.adapters.ClothingRecyclerAdapter;
-import com.benefit.ui.profile.ClothingItem;
+import com.benefit.UI.profile.ClothingItem;
 
 import java.util.ArrayList;
 

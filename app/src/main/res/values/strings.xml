@@ -46,11 +46,11 @@
     <string name="slogan">Look for your new clothes!</string>
     <string name="filter_break">:  </string>
     <string name="done">DONE</string>
+    <string name="reset">RESET</string>
     <string name="filter_title">Select From:</string>
-    <string name="filter">FILTER</string>
+    <string name="filter">FILTERS</string>
     <string name="divider">|</string>
     <string name="sort">SORT</string>
-    <string name="search">Search</string>
 
     <string-array name="chat_sort_options">
         <item>your items</item>

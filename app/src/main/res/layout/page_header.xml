@@ -5,8 +5,6 @@
     android:layout_height="0dp"
     android:orientation="vertical"
     app:layout_constraintHeight_percent="0.14">
-    android:id="@+id/page_header_root_layout"
-    app:layout_constraintHeight_percent="0.168">
 
     <View
         android:id="@+id/horizontal_line"

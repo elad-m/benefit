@@ -14,8 +14,10 @@ import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
-import com.benefit.UI.AllProductsScreen;
-import com.benefit.UI.FilterPopup;
+import com.benefit.UI.Displayable;
+import com.benefit.UI.DisplayableRecycleAdapter;
+import com.benefit.UI.Items.AllProductsScreen;
+import com.benefit.UI.Items.FilterPopup;
 import com.benefit.drivers.DatabaseDriver;
 import com.benefit.model.Category;
 import com.benefit.model.CategoryCluster;
@@ -57,7 +59,7 @@ public class ItemsPageActivity extends AppCompatActivity {
     }
 
     private void extractExtras(Bundle bundle) {
-        switch (bundle.getInt("displayed")){
+        switch (bundle.getInt("displayed")) {
             case CLUSTERS_DISPLAYED:
                 whichProductsDisplayed = CLUSTERS_DISPLAYED;
                 currentCategory = null;
@@ -67,7 +69,7 @@ public class ItemsPageActivity extends AppCompatActivity {
             case CATEGORIES_DISPLAYED:
                 whichProductsDisplayed = CATEGORIES_DISPLAYED;
                 currentCategory = (Category) bundle.getSerializable("category");
-                if (bundle.getString("metaExists").equals("true")){
+                if (bundle.getString("metaExists").equals("true")) {
                     metaCategoryChosen = (Category) bundle.get("metaCategory");
                 } else {
                     metaCategoryChosen = null;
@@ -99,7 +101,7 @@ public class ItemsPageActivity extends AppCompatActivity {
     }
 
     private void setPopupOnClickListeners(View layout, final PopupWindow popup, final FilterPopup filterPopup) {
-        Button reset =  layout.findViewById(R.id.reset_button);
+        Button reset = layout.findViewById(R.id.reset_button);
         reset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -121,9 +123,9 @@ public class ItemsPageActivity extends AppCompatActivity {
     }
 
     private void getAllFilteredItems() {
-        switch (whichProductsDisplayed){
+        switch (whichProductsDisplayed) {
             case CLUSTERS_DISPLAYED:
-                for (int id: categoryCluster.getCategoryIdList()){
+                for (int id : categoryCluster.getCategoryIdList()) {
                     showFilteredProducts(id);
                 }
                 break;
@@ -138,7 +140,7 @@ public class ItemsPageActivity extends AppCompatActivity {
 
             @Override
             public void onChanged(List<Product> products) {
-                if (refresh){
+                if (refresh) {
                     activityScreen.refreshTable(products);
                     refresh = false;
                 } else {
@@ -152,11 +154,11 @@ public class ItemsPageActivity extends AppCompatActivity {
     }
 
     private void addMetaCategoryListeners() {
-        for (final Map.Entry<Category, Button> metaCategory: activityScreen.getMetaCategoryButtonMap().entrySet()){
+        for (final Map.Entry<Category, Button> metaCategory : activityScreen.getMetaCategoryButtonMap().entrySet()) {
             metaCategory.getValue().setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (metaCategoryChosen != null && metaCategoryChosen.getName().equals(metaCategory.getKey().getName())){
+                    if (metaCategoryChosen != null && metaCategoryChosen.getName().equals(metaCategory.getKey().getName())) {
                         startMainActivity();
                     } else {
                         startMainActivity(metaCategory.getKey());
@@ -177,13 +179,13 @@ public class ItemsPageActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void initiateWindow(){
+    private void initiateWindow() {
         addScreenSettings();
         activityScreen = new AllProductsScreen(findViewById(android.R.id.content).getRootView(), currentCategory, categoryCluster);
         createServices();
         getAllMetaCategories();
         addProductsToScreen();
-        if (whichProductsDisplayed == CATEGORIES_DISPLAYED){
+        if (whichProductsDisplayed == CATEGORIES_DISPLAYED) {
             getFilters(currentCategory.getId());
         } else {
             getAllCategoryFilters();
@@ -204,15 +206,15 @@ public class ItemsPageActivity extends AppCompatActivity {
     }
 
     private void getAllCategoryFilters() {
-        for (int categoryId: categoryCluster.getCategoryIdList()) {
+        for (int categoryId : categoryCluster.getCategoryIdList()) {
             getFilters(categoryId);
         }
     }
 
     private void addProductsToScreen() {
-        switch (whichProductsDisplayed){
+        switch (whichProductsDisplayed) {
             case CLUSTERS_DISPLAYED:
-                for (int categoryId: categoryCluster.getCategoryIdList()){
+                for (int categoryId : categoryCluster.getCategoryIdList()) {
                     addProducts(categoryId);
                 }
                 break;
@@ -244,7 +246,7 @@ public class ItemsPageActivity extends AppCompatActivity {
         this.categoryService = ViewModelProviders.of(this, categoryServiceFactory).get(CategoryService.class);
     }
 
-    private void getFilters(int categoryId){
+    private void getFilters(int categoryId) {
         final Observer<List<PropertyName>> propertiesObserver = new Observer<List<PropertyName>>() {
 
             @Override
@@ -268,7 +270,7 @@ public class ItemsPageActivity extends AppCompatActivity {
 
     }
 
-    private void addProducts(int categoryId){
+    private void addProducts(int categoryId) {
         final Observer<List<Product>> productObserver = new Observer<List<Product>>() {
 
             @Override

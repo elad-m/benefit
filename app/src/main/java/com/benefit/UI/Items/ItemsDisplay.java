@@ -1,18 +1,18 @@
-package com.benefit.UI;
+package com.benefit.UI.Items;
 
 import android.view.View;
 
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.benefit.Displayable;
-import com.benefit.DisplayableRecycleAdapter;
 import com.benefit.R;
+import com.benefit.UI.Displayable;
+import com.benefit.UI.DisplayableRecycleAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Display {
+public class ItemsDisplay {
 
     private View view;
 
@@ -24,7 +24,7 @@ public class Display {
     private int typeOfDisplay;
 
 
-    public Display(View view, int typeOfDisplay) {
+    public ItemsDisplay(View view, int typeOfDisplay) {
         this.view = view;
         this.typeOfDisplay = typeOfDisplay;
         displayableItems = new ArrayList<>();

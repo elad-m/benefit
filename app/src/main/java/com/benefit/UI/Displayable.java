@@ -1,4 +1,4 @@
-package com.benefit;
+package com.benefit.UI;
 
 /**
  * Represents a UI component of an item: the rounded rectangle with a photo and title.

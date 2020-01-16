@@ -14,8 +14,10 @@ import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
-import com.benefit.UI.Display;
-import com.benefit.UI.MetaCategoryBar;
+import com.benefit.UI.Displayable;
+import com.benefit.UI.DisplayableRecycleAdapter;
+import com.benefit.UI.Items.ItemsDisplay;
+import com.benefit.UI.Items.MetaCategoryBar;
 import com.benefit.drivers.DatabaseDriver;
 import com.benefit.model.Category;
 import com.benefit.model.CategoryCluster;
@@ -25,25 +27,15 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.View;
-
-import com.benefit.drivers.DatabaseDriver;
-import com.benefit.model.Category;
-import com.benefit.services.CategoryService;
-
 public class MainActivity extends AppCompatActivity {
 
     private static final int CATEGORIES = 1;
     private static final int CATEGORIES_DISPLAYED = 1;
     private static final int CLUSTERS_DISPLAYED = 2;
-    Display display;
-    MetaCategoryBar metaCategoryBar;
-    Category metaCategoryChosen;
-    Button metaButtonChosen;
+    private ItemsDisplay itemsDisplay;
+    private MetaCategoryBar metaCategoryBar;
+    private Category metaCategoryChosen;
+    private Button metaButtonChosen;
     private DatabaseDriver databaseDriver = new DatabaseDriver();
     private CategoryService categoryService;
     private int itemsDisplayed;
@@ -57,22 +49,22 @@ public class MainActivity extends AppCompatActivity {
 
     private void extractExtras() {
         Bundle bundle = getIntent().getExtras();
-        if (bundle == null){
+        if (bundle == null) {
             metaCategoryChosen = null;
         } else {
-            metaCategoryChosen = (Category)bundle.getSerializable("metaCategory");
+            metaCategoryChosen = (Category) bundle.getSerializable("metaCategory");
         }
     }
 
     private void addCategoryListeners() {
-        display.getmAdapter().setOnItemClickListener(new DisplayableRecycleAdapter.OnItemClickListener() {
+        itemsDisplay.getmAdapter().setOnItemClickListener(new DisplayableRecycleAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                Displayable itemClicked = display.getDisplayableItems().get(position);
-                if (itemsDisplayed == CLUSTERS_DISPLAYED || ((Category)itemClicked).getIsLeaf()) {
+                Displayable itemClicked = itemsDisplay.getDisplayableItems().get(position);
+                if (itemsDisplayed == CLUSTERS_DISPLAYED || ((Category) itemClicked).getIsLeaf()) {
                     openProductsPage(itemClicked);
                 } else {
-                    showChildrenOfParent(((Category)itemClicked).getId());
+                    showChildrenOfParent(((Category) itemClicked).getId());
                 }
             }
         });
@@ -80,15 +72,15 @@ public class MainActivity extends AppCompatActivity {
 
     private void openProductsPage(Displayable displayable) {
         Intent intent = new Intent(this, ItemsPageActivity.class);
-        switch (itemsDisplayed){
+        switch (itemsDisplayed) {
             case CLUSTERS_DISPLAYED:
                 intent.putExtra("displayed", CLUSTERS_DISPLAYED);
-                intent.putExtra("cluster", (CategoryCluster)displayable);
+                intent.putExtra("cluster", (CategoryCluster) displayable);
                 break;
             case CATEGORIES:
                 intent.putExtra("displayed", CATEGORIES_DISPLAYED);
-                intent.putExtra("category", (Category)displayable);
-                if (metaCategoryChosen == null){
+                intent.putExtra("category", (Category) displayable);
+                if (metaCategoryChosen == null) {
                     intent.putExtra("metaExists", "false");
                 } else {
                     intent.putExtra("metaExists", "true");
@@ -100,16 +92,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void addMetaCategoryListeners() {
-        for (final Map.Entry<Category, Button> metaCategory: metaCategoryBar.getMetaCategoryButtonMap().entrySet()){
+        for (final Map.Entry<Category, Button> metaCategory : metaCategoryBar.getMetaCategoryButtonMap().entrySet()) {
             metaCategory.getValue().setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (metaCategoryChosen == null){
+                    if (metaCategoryChosen == null) {
                         instantiateAndColor(metaCategory);
                         showChildrenOfParent(metaCategoryChosen.getId());
                         itemsDisplayed = CATEGORIES_DISPLAYED;
                     } else {
-                        if (!metaCategoryChosen.getName().equals(metaCategory.getKey().getName())){
+                        if (!metaCategoryChosen.getName().equals(metaCategory.getKey().getName())) {
                             metaButtonChosen.setBackground(getResources().getDrawable(R.drawable.oval));
                             metaButtonChosen.setTextColor(Color.BLACK);
                             instantiateAndColor(metaCategory);
@@ -137,14 +129,66 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void initiateWindow(){
+    private void initiateWindow() {
         addScreenSettings();
         metaCategoryBar = new MetaCategoryBar(findViewById(android.R.id.content).getRootView());
-        display = new Display(findViewById(android.R.id.content).getRootView(), CATEGORIES);
+        itemsDisplay = new ItemsDisplay(findViewById(android.R.id.content).getRootView(), CATEGORIES);
         createCategoryService();
         showMetaCategories();
         showItemsOnScreen();
+        setHeaderListeners();
     }
+
+    private void setHeaderListeners() {
+        findViewById(R.id.give_icon).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startGiveActivity();
+            }
+        });
+
+        findViewById(R.id.give_icon).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startUserProfileActivity();
+            }
+        });
+
+        findViewById(R.id.give_icon).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startSearchActivity();
+            }
+        });
+
+        findViewById(R.id.give_icon).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startMessageActivity();
+            }
+        });
+    }
+
+    private void startMessageActivity() {
+        Intent intent = new Intent(this, ConversationActivity.class);
+        startActivity(intent);
+    }
+
+    private void startSearchActivity() {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+    }
+
+    private void startUserProfileActivity() {
+        Intent intent = new Intent(this, UserProfileActivity.class);
+        startActivity(intent);
+    }
+
+    private void startGiveActivity() {
+        Intent intent = new Intent(this, GiveItemActivity.class);
+        startActivity(intent);
+    }
+
 
     private void addScreenSettings() {
         setContentView(R.layout.activity_main);
@@ -154,7 +198,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showItemsOnScreen() {
-        if (metaCategoryChosen != null){
+        if (metaCategoryChosen != null) {
             showChildrenOfParent(metaCategoryChosen.getId());
             itemsDisplayed = CATEGORIES_DISPLAYED;
         } else {
@@ -196,27 +240,25 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onChanged(List<CategoryCluster> clusters) {
                 categoryClusters.addAll(clusters);
-                display.populateDisplayTable(categoryClusters);
+                itemsDisplay.populateDisplayTable(categoryClusters);
                 addCategoryListeners();
             }
         };
         categoryService.getAllHomepageCategoryClusters().observe(this, categoryObserver);
     }
 
-    private void showChildrenOfParent(int parentId){
+    private void showChildrenOfParent(int parentId) {
         final List<Category> childrenCategories = new LinkedList<>();
         final Observer<List<Category>> childCategoryObserver = new Observer<List<Category>>() {
 
             @Override
             public void onChanged(List<Category> categories) {
                 childrenCategories.addAll(categories);
-                display.refreshDisplay(childrenCategories);
+                itemsDisplay.refreshDisplay(childrenCategories);
                 addCategoryListeners();
             }
         };
         categoryService.getChildrenByParentId(parentId).observe(this, childCategoryObserver);
 
     }
-}
-
 }

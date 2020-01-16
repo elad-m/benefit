@@ -1,4 +1,4 @@
-package com.benefit.UI;
+package com.benefit.UI.Items;
 
 import android.graphics.Color;
 import android.view.View;
@@ -20,7 +20,7 @@ public class MetaCategoryBar {
     private Map<Category, Button> metaCategoryButtonMap;
 
 
-    public MetaCategoryBar(View view){
+    public MetaCategoryBar(View view) {
         this.view = view;
 
         metaCategoryButtonMap = new HashMap<>();
@@ -36,10 +36,10 @@ public class MetaCategoryBar {
     }
 
 
-    public void createCategoryBar(List<Category> category, Category existingMetaCategory){
+    public void createCategoryBar(List<Category> category, Category existingMetaCategory) {
         this.category = category;
         LinearLayout bar = view.findViewById(R.id.filter_bar);
-        for (int i =0; i< category.size(); i ++){
+        for (int i = 0; i < category.size(); i++) {
             Button metaCategoryButton = new Button(view.getContext());
             metaCategoryButton.setText(category.get(i).getName());
             setBackgroundColor(existingMetaCategory, metaCategoryButton, i);
@@ -58,11 +58,10 @@ public class MetaCategoryBar {
     }
 
     private void setBackgroundColor(Category existingMetaCategory, Button metaCategoryButton, int index) {
-        if (existingMetaCategory != null && category.get(index).getName().equals(existingMetaCategory.getName())){
+        if (existingMetaCategory != null && category.get(index).getName().equals(existingMetaCategory.getName())) {
             metaCategoryButton.setBackground(view.getResources().getDrawable(R.drawable.filled_oval));
             metaCategoryButton.setTextColor(Color.WHITE);
-        }
-        else {
+        } else {
             metaCategoryButton.setBackground(view.getResources().getDrawable(R.drawable.oval));
         }
     }

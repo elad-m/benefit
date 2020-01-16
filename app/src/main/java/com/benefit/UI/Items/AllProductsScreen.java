@@ -1,4 +1,4 @@
-package com.benefit.UI;
+package com.benefit.UI.Items;
 
 import android.content.Context;
 import android.view.Gravity;
@@ -10,15 +10,14 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.benefit.Displayable;
-import com.benefit.DisplayableRecycleAdapter;
 import com.benefit.R;
 import com.benefit.StaticFunctions;
+import com.benefit.UI.Displayable;
+import com.benefit.UI.DisplayableRecycleAdapter;
 import com.benefit.model.Category;
 import com.benefit.model.CategoryCluster;
 import com.benefit.model.Product;
 import com.benefit.model.PropertyName;
-import com.benefit.services.CategoryService;
 
 import java.util.List;
 import java.util.Map;
@@ -34,31 +33,32 @@ public class AllProductsScreen {
     private FilterPopup filterPopup;
     private PopupWindow popup;
     private MetaCategoryBar metaCategoryBar;
-    private Display display;
+    private ItemsDisplay itemsDisplay;
 
 
-    public AllProductsScreen(View view, Category currentCategory, CategoryCluster categoryCluster){
+    public AllProductsScreen(View view, Category currentCategory, CategoryCluster categoryCluster) {
         this.view = view;
         this.currentCategory = currentCategory;
         this.categoryCluster = categoryCluster;
-        display = new Display(view.findViewById(android.R.id.content).getRootView(), PRODUCTS);
+        itemsDisplay = new ItemsDisplay(view.findViewById(android.R.id.content).getRootView(), PRODUCTS);
     }
 
-    public void addMetaCategoryBar(List<Category> categories, Category metaCategoryChosen){
+    public void addMetaCategoryBar(List<Category> categories, Category metaCategoryChosen) {
         metaCategoryBar = new MetaCategoryBar(view.findViewById(android.R.id.content).getRootView());
         metaCategoryBar.createCategoryBar(categories, metaCategoryChosen);
     }
 
     public void addDisplayTable(List<Product> products) {
-        display.populateDisplayTable(products);
+        itemsDisplay.populateDisplayTable(products);
     }
 
-    public void refreshTable(List<Product> products){
-        display.refreshDisplay(products);
+    public void refreshTable(List<Product> products) {
+        itemsDisplay.refreshDisplay(products);
     }
 
     /**
      * writes the filter bar on the screen
+     *
      * @param currentFilters the current filters of the items
      */
     public void writeFiltersOnScreen(Map<String, List<String>> currentFilters) {
@@ -66,7 +66,7 @@ public class AllProductsScreen {
         currentFilterLayout.removeAllViews();
         writeCategoryInFilterBar(currentFilterLayout);
         if (currentFilters.size() > 0) {
-            for (List<String> nameOfAttributes: currentFilters.values()) {
+            for (List<String> nameOfAttributes : currentFilters.values()) {
                 writeOrSign(currentFilterLayout);
                 int i = 0;
                 while (i < nameOfAttributes.size() - 1) {
@@ -112,11 +112,12 @@ public class AllProductsScreen {
 
     /**
      * opens the filter popup
+     *
      * @param currentFilters the current filters wanted
      */
     public void openFilter(View view, List<PropertyName> filters, Map<String, List<String>> currentFilters) {
 
-        RelativeLayout viewGroup =  view.findViewById(R.id.filter_popup);
+        RelativeLayout viewGroup = view.findViewById(R.id.filter_popup);
         LayoutInflater layoutInflater = (LayoutInflater) view.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         popupView = layoutInflater.inflate(R.layout.filter, viewGroup);
         placePopupOnScreen();
@@ -145,25 +146,28 @@ public class AllProductsScreen {
 
     /**
      * gets the popup view
+     *
      * @return popup view
      */
-    public View getPopupView(){
+    public View getPopupView() {
         return popupView;
     }
 
     /**
      * gets the filter popup
+     *
      * @return filterPopup
      */
-    public FilterPopup getFilterPopup(){
+    public FilterPopup getFilterPopup() {
         return filterPopup;
     }
 
     /**
      * get the popup window
+     *
      * @return popup
      */
-    public PopupWindow getPopup(){
+    public PopupWindow getPopup() {
         return popup;
     }
 
@@ -171,11 +175,11 @@ public class AllProductsScreen {
         return metaCategoryBar.getMetaCategoryButtonMap();
     }
 
-    public DisplayableRecycleAdapter getmAdapter(){
-        return display.getmAdapter();
+    public DisplayableRecycleAdapter getmAdapter() {
+        return itemsDisplay.getmAdapter();
     }
 
     public List<? extends Displayable> getDisplayableItems() {
-        return display.getDisplayableItems();
+        return itemsDisplay.getDisplayableItems();
     }
 }

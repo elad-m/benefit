@@ -1,4 +1,4 @@
-package com.benefit.UI;
+package com.benefit.UI.Items;
 
 import android.content.res.ColorStateList;
 import android.graphics.Color;
@@ -10,15 +10,14 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.google.android.material.chip.Chip;
-import com.google.android.material.chip.ChipGroup;
-
 import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
 
 import com.benefit.R;
 import com.benefit.StaticFunctions;
 import com.benefit.model.PropertyName;
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,23 +30,23 @@ public class FilterPopup {
     private List<PropertyName> filters;
     private Map<String, List<String>> currentFilters;
 
-    public FilterPopup(View view, List<PropertyName> filters){
+    public FilterPopup(View view, List<PropertyName> filters) {
         this.view = view;
         currentFilters = new HashMap<>();
         this.filters = filters;
     }
 
-    public void populateFilter(Map<String, List<String>> currentFilters){
+    public void populateFilter(Map<String, List<String>> currentFilters) {
         LinearLayout body = view.findViewById(R.id.filter_body);
 
         this.currentFilters = currentFilters;
 
-        for (PropertyName filter: filters){
+        for (PropertyName filter : filters) {
             addFilter(filter, body);
         }
     }
 
-    private void addFilter(PropertyName filter, LinearLayout body){
+    private void addFilter(PropertyName filter, LinearLayout body) {
         RelativeLayout line = new RelativeLayout(view.getContext());
         defineLineAttributes(line);
         int titleId = addLineTitle(filter, line);
@@ -61,7 +60,7 @@ public class FilterPopup {
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         layoutParams.height = 0;
-        layoutParams.weight = (float)0.3;
+        layoutParams.weight = (float) 0.3;
         line.setLayoutParams(layoutParams);
     }
 
@@ -81,17 +80,6 @@ public class FilterPopup {
                 chip.setChipStrokeColorResource(R.color.black);
                 chip.setChipStrokeWidth(StaticFunctions.convertDpToPx(1));
 
-//            final Button attributeButton = new Button(view.getContext());
-//            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-//                    LinearLayout.LayoutParams.WRAP_CONTENT,
-//                    LinearLayout.LayoutParams.WRAP_CONTENT);
-//            int margin = StaticFunctions.convertDpToPx(8);
-//            layoutParams.setMargins(margin, margin, margin, margin);
-////            layoutParams.height = ;
-////            layoutParams.height = StaticFunctions.convertDpToPx(20);
-//            layoutParams.gravity = Gravity.CENTER_VERTICAL;
-//            attributeButton.setLayoutParams(layoutParams);
-//            attributeButton.setText(attribute);
                 if (currentFilterContainsKeyAndValue(filter.getName(), property)) {
                     chip.setChipBackgroundColor(ColorStateList.valueOf(ContextCompat.getColor(view.getContext(), R.color.lightBlue)));
                     chip.setTextColor(Color.WHITE);
@@ -112,31 +100,6 @@ public class FilterPopup {
                         }
                     }
                 });
-//            chipGroup.addView(chip);
-//            else {
-//                chip.setBackground(view.getResources().getDrawable(R.drawable.oval));
-//            }
-////            attributeButton.setTextSize(TypedValue.COMPLEX_UNIT_PX, attributeButton.getHeight()/ 2);
-////            attributeButton.setTextSize(StaticFunctions.convertDpToSp(StaticFunctions.
-////                    convertPixelsToDp((float) (0.015 * view.getResources().getDisplayMetrics().heightPixels))));
-//
-////            attributeButton.setMinimumHeight((int) (0.02 * view.getResources().getDisplayMetrics().heightPixels));
-////            attributeButton.setMinHeight((int) (0.02 * view.getResources().getDisplayMetrics().heightPixels));
-//            attributeButton.setOnClickListener(new View.OnClickListener() {
-//                @RequiresApi(api = Build.VERSION_CODES.N)
-//                @Override
-//                public void onClick(View v) {
-//                    if (currentFilters != null && currentFilterContainsKeyAndValue(filter.getName(), attribute)){
-//                        attributeButton.setBackground(view.getResources().getDrawable(R.drawable.oval));
-//                        currentFilters.remove(filter.getName(), attribute);
-//                    } else {
-//                        attributeButton.setBackground(view.getResources().getDrawable(R.drawable.filled_oval));
-//                        currentFilters.put(filter.getName(), attribute);
-//                    }
-//                }
-//            });
-//            attributeList.addView(attributeButton);
-//
                 chipGroup.addView(chip);
 
             }
@@ -148,7 +111,7 @@ public class FilterPopup {
     }
 
     private void removeAttributeToCurrentFilters(String name, String property) {
-        if (currentFilters.get(name).size() > 1){
+        if (currentFilters.get(name).size() > 1) {
             currentFilters.get(name).remove(property);
         } else {
             currentFilters.remove(name);
@@ -156,7 +119,7 @@ public class FilterPopup {
     }
 
     private void addAttributeToCurrentFilters(String name, String property) {
-        if (currentFilters.containsKey(name)){
+        if (currentFilters.containsKey(name)) {
             currentFilters.get(name).add(property);
         } else {
             List<String> newList = new ArrayList<>();
@@ -183,13 +146,12 @@ public class FilterPopup {
         chipGroup.setLayoutParams(layoutParams);
 
 
-
     }
 
     private boolean currentFilterContainsKeyAndValue(String filter, String attribute) {
-        if (currentFilters.containsKey(filter)){
-            for (String currentFilterAttribute: currentFilters.get(filter)){
-                if (currentFilterAttribute.equals(attribute)){
+        if (currentFilters.containsKey(filter)) {
+            for (String currentFilterAttribute : currentFilters.get(filter)) {
+                if (currentFilterAttribute.equals(attribute)) {
                     return true;
                 }
             }
@@ -222,7 +184,7 @@ public class FilterPopup {
         filterName.setTextSize(StaticFunctions.convertDpToSp(15));
     }
 
-    public Map<String, List<String>> getCurrentFilters(){
+    public Map<String, List<String>> getCurrentFilters() {
         return currentFilters;
     }
 

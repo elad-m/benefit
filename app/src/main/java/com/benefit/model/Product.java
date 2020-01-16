@@ -1,6 +1,6 @@
 package com.benefit.model;
 
-import com.benefit.Displayable;
+import com.benefit.UI.Displayable;
 import com.google.firebase.firestore.ServerTimestamp;
 
 import java.io.Serializable;

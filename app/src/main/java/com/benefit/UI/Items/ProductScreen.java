@@ -1,4 +1,4 @@
-package com.benefit.UI;
+package com.benefit.UI.Items;
 
 import android.view.View;
 import android.widget.TextView;
@@ -14,7 +14,7 @@ public class ProductScreen {
     private final View view;
     private Product product;
 
-    public ProductScreen(View view, Product product){
+    public ProductScreen(View view, Product product) {
         this.view = view;
         this.product = product;
         createProductScreen();
@@ -26,8 +26,8 @@ public class ProductScreen {
 
     private void addInfo() {
         Map<String, List<String>> properties = product.getProperties();
-        for (Map.Entry<String, List<String>> entry: properties.entrySet())
-            switch (entry.getKey()){
+        for (Map.Entry<String, List<String>> entry : properties.entrySet())
+            switch (entry.getKey()) {
                 case "gender":
                     TextView gender = view.findViewById(R.id.gender);
                     gender.setText(entry.getValue().get(0));

@@ -1,4 +1,4 @@
-package com.benefit;
+package com.benefit.UI;
 
 import android.os.Build;
 import android.view.LayoutInflater;
@@ -10,7 +10,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.benefit.R;
 import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,11 +29,11 @@ public class DisplayableRecycleAdapter extends RecyclerView.Adapter<DisplayableR
     private int typeOfDisplay;
 
 
-    public interface OnItemClickListener{
+    public interface OnItemClickListener {
         void onItemClick(int position);
     }
 
-    public void setOnItemClickListener(OnItemClickListener listener){
+    public void setOnItemClickListener(OnItemClickListener listener) {
         mListener = listener;
     }
 
@@ -38,7 +41,7 @@ public class DisplayableRecycleAdapter extends RecyclerView.Adapter<DisplayableR
         return mListener;
     }
 
-    static class DisplayViewHolder extends RecyclerView.ViewHolder{
+    static class DisplayViewHolder extends RecyclerView.ViewHolder {
         ImageView mImageView;
         TextView mImageTitle;
 
@@ -51,9 +54,9 @@ public class DisplayableRecycleAdapter extends RecyclerView.Adapter<DisplayableR
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (listener != null){
+                    if (listener != null) {
                         int position = getAdapterPosition();
-                        if (position != RecyclerView.NO_POSITION){
+                        if (position != RecyclerView.NO_POSITION) {
                             listener.onItemClick(position);
                         }
                     }
@@ -62,7 +65,7 @@ public class DisplayableRecycleAdapter extends RecyclerView.Adapter<DisplayableR
         }
     }
 
-    public <T extends Displayable> DisplayableRecycleAdapter(List<T> itemList, int typeOfDisplay){
+    public <T extends Displayable> DisplayableRecycleAdapter(List<T> itemList, int typeOfDisplay) {
         displayableItems = new ArrayList<>();
         displayableItems.addAll(itemList);
         this.typeOfDisplay = typeOfDisplay;
@@ -72,9 +75,9 @@ public class DisplayableRecycleAdapter extends RecyclerView.Adapter<DisplayableR
     @NonNull
     @Override
     public DisplayViewHolder onCreateViewHolder(@NonNull ViewGroup parent,
-                                                                         int viewType) {
+                                                int viewType) {
         View v = null;
-        switch (typeOfDisplay){
+        switch (typeOfDisplay) {
             case CATEGORIES:
                 v = LayoutInflater.from(parent.getContext()).inflate(
                         R.layout.category_item, parent, false);

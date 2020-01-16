@@ -143,17 +143,6 @@
         android:background="@android:color/black"
         app:layout_constraintTop_toBottomOf="@id/horizontal_line_guide"/>
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/product_button_text"
-        android:textColor="#0188b2"
-        android:background="@drawable/oval"
-        app:layout_constraintTop_toBottomOf="@id/horizontal_line_guide"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
 
-        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

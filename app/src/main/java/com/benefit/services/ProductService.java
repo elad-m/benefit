@@ -66,9 +66,9 @@ public class ProductService extends ViewModel {
                     if (task.isSuccessful()) {
                         for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
                             Product product = document.toObject(Product.class);
-//                            if (isPropertiesMapInProduct(product, propertiesMap)) {
-//                                productsList.add(product);
-//                            }
+                            if (isPropertiesMapInProduct(product, propertiesMap)) {
+                                productsList.add(product);
+                            }
                         }
                         resultsLiveData.setValue(productsList);
                     }
@@ -93,12 +93,12 @@ public class ProductService extends ViewModel {
         return products;
     }
 
-    private boolean isPropertiesMapInProduct(Product product, Map<String, String> propertiesMap) {
+    private boolean isPropertiesMapInProduct(Product product, Map<String, List<String>> propertiesMap) {
         if (product.getProperties() == null || product.getProperties().isEmpty()) {
             return false;
         }
         boolean indicator = true;
-        for (Map.Entry<String, String> filter : propertiesMap.entrySet()) {
+        for (Map.Entry<String, List<String>> filter : propertiesMap.entrySet()) {
             if (product.getProperties() != null) {
                 if (product.getProperties().containsKey(filter.getKey())) {
                     if (!product.getProperties().get(filter.getKey()).contains(filter.getValue())) {

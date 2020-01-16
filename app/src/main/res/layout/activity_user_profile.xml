@@ -8,6 +8,10 @@
     tools:context=".UserProfileActivity">
 
 
+    <include
+        layout="@layout/page_header"
+        android:id="@+id/page_header_root_layout"/>
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

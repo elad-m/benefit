@@ -36,12 +36,10 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <activity android:name=".SignUpActivity">
+        <activity android:name=".SignUpActivity"></activity>
         android:theme="@style/AppTheme">
         <activity android:name=".ProductPageActivity"></activity>
-        <activity android:name=".filter_options" />
         <activity android:name=".ItemsPageActivity" />
-        <activity android:name=".items_page" />
         <activity android:name=".ChatTest"></activity>
         <activity android:name=".MainActivity">
             <intent-filter>
@@ -57,7 +55,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity"></activity>
     </application>
 
 </manifest>
