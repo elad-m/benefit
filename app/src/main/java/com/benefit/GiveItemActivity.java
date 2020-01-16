@@ -84,7 +84,7 @@ public class GiveItemActivity extends AppCompatActivity {
     }
 
     private void createConditionChips() {
-        ChipGroup conditionGroup = createChipGroup("Condition: ");
+        ChipGroup conditionGroup = createChipGroup(getString(R.string.condition_chip_group_heading));
         for (String condition : conditions) {
             View chipAsView = inflater.inflate(R.layout.chip_layout, null);
             Chip chip = (Chip) chipAsView;
@@ -113,7 +113,7 @@ public class GiveItemActivity extends AppCompatActivity {
     }
 
     private void createSizeChips() {
-        ChipGroup sizeGroup = createChipGroup("Size: ");
+        ChipGroup sizeGroup = createChipGroup(this.getString(R.string.size_chip_group_heading));
         for (String size : sizes) {
             View chipAsView = inflater.inflate(R.layout.chip_layout, null);
             Chip chip = (Chip) chipAsView;
@@ -171,7 +171,7 @@ public class GiveItemActivity extends AppCompatActivity {
     }
 
     private ChipGroup createMetaCategoriesObserver() {
-        ChipGroup chipGroup = createChipGroup("For Whom: ");
+        ChipGroup chipGroup = createChipGroup(this.getString(R.string.metacategory_chip_group_heading));
         final List<Category> metaCategories = new LinkedList<>();
         final Observer<List<Category>> metaCategoriesObserver = new Observer<List<Category>>() {
 
@@ -212,7 +212,7 @@ public class GiveItemActivity extends AppCompatActivity {
 
 
     private ChipGroup createCategoriesObserver() {
-        ChipGroup chipGroup = createChipGroup("Categories: ");
+        ChipGroup chipGroup = createChipGroup(this.getString(R.string.categories_chip_group_heading));
         final List<Category> categories = new LinkedList<>();
         final Observer<List<Category>> categoriesObserver = new Observer<List<Category>>() {
 
@@ -322,8 +322,10 @@ public class GiveItemActivity extends AppCompatActivity {
 
     private Map<String, List<String>> getProductProperties() {
         Map<String, List<String>> properties = new HashMap<>();
-        properties.put("Size", Collections.singletonList(mSize));
-        properties.put("Condition", Collections.singletonList(mCondition));
+        properties.put(this.getString(R.string.size_property_name),
+                Collections.singletonList(mSize));
+        properties.put(this.getString(R.string.condition_property_name),
+                Collections.singletonList(mCondition));
         return properties;
     }
 
@@ -332,7 +334,7 @@ public class GiveItemActivity extends AppCompatActivity {
         if (mEdTextTitle != null) {
             itemTitle = mEdTextTitle.getText().toString();
         } else {
-            itemTitle = "No title written";
+            itemTitle = this.getString(R.string.no_title_value);
         }
         return itemTitle;
     }
@@ -343,7 +345,7 @@ public class GiveItemActivity extends AppCompatActivity {
             createNoPhotoDialog();
         } else {
             String itemTitle = getTitleText();
-            String itemDescription = "No item Description";
+            String itemDescription = this.getString(R.string.no_description_value);
             Date date = Calendar.getInstance().getTime();
             Map<String, List<String>> properties = getProductProperties();
             List<String> imagesUrls = loadImagesUrls();
@@ -357,7 +359,7 @@ public class GiveItemActivity extends AppCompatActivity {
     private List<String> loadImagesUrls() {
         List<String> imagesUrls = new LinkedList<>();
         imagesUrls.add(mImageUri.toString());
-        return  imagesUrls;
+        return imagesUrls;
     }
 
     private void createThankYouDailog() {

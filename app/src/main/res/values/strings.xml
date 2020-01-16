@@ -15,6 +15,14 @@
     <string name="user_address_relay">address</string>
     <string name="user_last_name_relay">lastName</string>
     <string name="user_first_name_relay">firstName</string>
+    <string name="condition_chip_group_heading">Condition:</string>
+    <string name="size_chip_group_heading">Size:</string>
+    <string name="metacategory_chip_group_heading">For Whom:</string>
+    <string name="categories_chip_group_heading">Categories:</string>
+    <string name="size_property_name">Size</string>
+    <string name="condition_property_name">Condition</string>
+    <string name="no_title_value">No title written</string>
+    <string name="no_description_value">No item Description</string>
 
     <string-array name="chat_sort_options">
         <item>your items</item>
