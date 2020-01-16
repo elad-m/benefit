@@ -1,4 +1,4 @@
-package com.benefit;
+package com.benefit.ui.profile;
 
 /**
  * Represents a UI component of an item: the rounded rectangle with a photo and title.
@@ -9,16 +9,16 @@ public class ClothingItem {
     private int mImageResource;
     private String mTitle;
 
-    ClothingItem() {
+    public ClothingItem() {
     }
 
-    ClothingItem(int imageResource, String title) {
+    public ClothingItem(int imageResource, String title) {
         mImageResource = imageResource;
         mTitle = title;
     }
 
 
-    int getmImageResource() {
+    public int getmImageResource() {
         return mImageResource;
     }
 

@@ -5,8 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center_horizontal"
-    android:layout_margin="4dp"
-    app:cardElevation="0dp">
+    android:layout_margin="@dimen/clothing_item_layout_margin"
+    app:cardElevation="@dimen/clothing_item_card_elevation">
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -27,17 +27,17 @@
 
             <ImageView
                 android:id="@+id/item_image"
-                android:layout_width="175dp"
-                android:layout_height="175dp"
-                android:contentDescription="Image of item" />
+                android:layout_width="@dimen/clothing_item_image_width"
+                android:layout_height="@dimen/clothing_item_image_height"
+                android:contentDescription="@string/clothing_item_image_description" />
 
             <TextView
                 android:id="@+id/item_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="4dp"
+                android:padding="@dimen/clothing_item_title_padding"
                 android:textAlignment="center"
-                android:textSize="12sp"
+                android:textSize="@dimen/clothing_item_title_text_size"
                 android:textStyle="bold" />
         </LinearLayout>
 
@@ -49,38 +49,38 @@
             android:background="?android:attr/selectableItemBackground"
             android:gravity="center"
             android:onClick="onClickEdit"
-            android:text="Edit"
-            android:textColor="#0188b2"
-            android:textSize="12sp"
+            android:text="@string/clothing_item_edit_button_text"
+            android:textColor="@color/colorBenefitBlue"
+            android:textSize="@dimen/clothing_item_edit_button_text_size"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/chat_button"
+            app:layout_constraintEnd_toStartOf="@id/delete_button"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/image_and_text_layout" />
 
         <View
             android:id="@+id/button_divider"
-            android:layout_width="1dp"
-            android:layout_height="20dp"
+            android:layout_width="@dimen/clothing_item_separating_line_width"
+            android:layout_height="@dimen/clothing_item_separating_line_height"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="4dip"
-            android:layout_marginBottom="4dip"
+            android:layout_marginTop="@dimen/clothing_item_separating_line_margin_top"
+            android:layout_marginBottom="@dimen/clothing_item_separating_line_margin_bottom"
             android:background="?android:attr/dividerVertical"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/chat_button"
+            app:layout_constraintEnd_toStartOf="@id/delete_button"
             app:layout_constraintStart_toEndOf="@id/edit_button"
             app:layout_constraintTop_toBottomOf="@id/image_and_text_layout" />
 
         <Button
-            android:id="@+id/chat_button"
+            android:id="@+id/delete_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="0dp"
+            android:layout_margin="@dimen/clothing_item_chat_button_margins"
             android:background="?android:attr/selectableItemBackground"
             android:gravity="center"
             android:onClick="onClickChat"
-            android:text="Chat"
-            android:textColor="#0188b2"
-            android:textSize="12sp"
+            android:text="@string/clothing_item_delete_button"
+            android:textColor="@color/colorBenefitBlue"
+            android:textSize="@dimen/clothing_item_edit_button_text_size"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/edit_button"

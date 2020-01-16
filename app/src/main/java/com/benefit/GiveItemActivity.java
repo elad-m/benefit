@@ -46,6 +46,7 @@ public class GiveItemActivity extends AppCompatActivity {
 
     private static final int PICK_IMAGE = 1;
     private static final int SNAP_PHOTO = 2;
+    private static final int CHILD_INDEX_CHIP = 1;
 
     private Dialog thankYouDailog;
     private Dialog dialogReturnsToActivity;
@@ -92,7 +93,7 @@ public class GiveItemActivity extends AppCompatActivity {
             chip.setTag(condition);
             conditionGroup.addView(chipAsView);
         }
-        ((Chip) conditionGroup.getChildAt(1)).setChecked(true);  // because the first child is textView
+        ((Chip) conditionGroup.getChildAt(CHILD_INDEX_CHIP)).setChecked(true);
         mCondition = conditions.get(0);
         conditionGroup.setOnCheckedChangeListener(new ChipGroup.OnCheckedChangeListener() {
             @Override
@@ -121,7 +122,7 @@ public class GiveItemActivity extends AppCompatActivity {
             chip.setTag(size);
             sizeGroup.addView(chipAsView);
         }
-        ((Chip) sizeGroup.getChildAt(1)).setChecked(true);  // because the first child is textView
+        ((Chip) sizeGroup.getChildAt(CHILD_INDEX_CHIP)).setChecked(true);
         mSize = sizes.get(0);
         sizeGroup.setOnCheckedChangeListener(new ChipGroup.OnCheckedChangeListener() {
             @Override
@@ -181,7 +182,7 @@ public class GiveItemActivity extends AppCompatActivity {
                 for (Category category : metaCategories) {
                     chipGroup.addView(createChipAsView(category));
                 }
-                ((Chip) chipGroup.getChildAt(1)).setChecked(true);  // because the first child is textView
+                ((Chip) chipGroup.getChildAt(CHILD_INDEX_CHIP)).setChecked(true);
                 mMetaCategory = metaCategories.get(0).getId();
             }
         };
@@ -222,7 +223,7 @@ public class GiveItemActivity extends AppCompatActivity {
                 for (Category category : categories) {
                     chipGroup.addView(createChipAsView(category));
                 }
-                ((Chip) chipGroup.getChildAt(1)).setChecked(true);  // because the first child is textView
+                ((Chip) chipGroup.getChildAt(CHILD_INDEX_CHIP)).setChecked(true);
                 mCategory = categories.get(0).getId();
             }
         };

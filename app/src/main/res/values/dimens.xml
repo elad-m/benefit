@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="chip_text_size">15sp</dimen>
+    <dimen name="default_corner_radius">5dp</dimen>
+    <dimen name="clothing_item_layout_margin">4dp</dimen>
+    <dimen name="clothing_item_card_elevation">0dp</dimen>
+    <dimen name="clothing_item_image_width">175dp</dimen>
+    <dimen name="clothing_item_image_height">175dp</dimen>
+    <dimen name="clothing_item_title_padding">4dp</dimen>
+    <dimen name="clothing_item_title_text_size">12sp</dimen>
+    <dimen name="clothing_item_edit_button_text_size">12sp</dimen>
+    <dimen name="clothing_item_separating_line_width">1dp</dimen>
+    <dimen name="clothing_item_separating_line_height">20dp</dimen>
+    <dimen name="clothing_item_separating_line_margin_top">4dp</dimen>
+    <dimen name="clothing_item_separating_line_margin_bottom">4dp</dimen>
+    <dimen name="clothing_item_chat_button_margins">0dp</dimen>
+    <dimen name="dialog_margins">20dp</dimen>
+    <dimen name="dialog_text_size">22sp</dimen>
+    <dimen name="dialog_image_width_and_height">105dp</dimen>
+    <dimen name="dialog_text_size2">18sp</dimen>
+    <dimen name="chip_group_margin">5dp</dimen>
+    <dimen name="chip_group_text_view_margin">10dp</dimen>
+    <dimen name="chip_group_text_view_padding">5dp</dimen>
+    <dimen name="give_item_text_views_text_size">15sp</dimen>
+    <dimen name="give_item_image_width_and_height">250dp</dimen>
+    <dimen name="give_item_margins">5dp</dimen>
+    <dimen name="give_item_title_end_margin">100dp</dimen>
+    <dimen name="give_item_title_padding_start_and_end">20dp</dimen>
+    <dimen name="give_item_padding_top_and_bottom">10dp</dimen>
+    <dimen name="give_button_width">200dp</dimen>
+    <dimen name="give_button_text_size">30sp</dimen>
+</resources>

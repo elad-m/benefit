@@ -1,4 +1,4 @@
-package com.benefit;
+package com.benefit.adapters;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +9,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.benefit.R;
+import com.benefit.ui.profile.ClothingItem;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -24,7 +26,7 @@ public class ClothingRecyclerAdapter  extends RecyclerView.Adapter<ClothingRecyc
         void onItemClick(int position);
     }
 
-    void setOnItemClickListener(OnItemClickListener listener){
+    public void setOnItemClickListener(OnItemClickListener listener){
         mListener = listener;
     }
 
@@ -56,7 +58,7 @@ public class ClothingRecyclerAdapter  extends RecyclerView.Adapter<ClothingRecyc
         }
     }
 
-    ClothingRecyclerAdapter(ArrayList<ClothingItem> itemList){
+    public ClothingRecyclerAdapter(ArrayList<ClothingItem> itemList){
         mClothingItems = itemList;
     }
 
@@ -64,11 +66,10 @@ public class ClothingRecyclerAdapter  extends RecyclerView.Adapter<ClothingRecyc
     @Override
     public ClothingRecyclerAdapter.ClothingViewHolder onCreateViewHolder(@NonNull ViewGroup parent,
                                                                          int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(
+        View clothingItemAsView = LayoutInflater.from(parent.getContext()).inflate(
                 R.layout.clothing_item, parent, false);
-        v.findViewById(R.id.image_and_text_layout).setClipToOutline(true);
-        ClothingViewHolder evh = new ClothingViewHolder(v, mListener);
-        return evh;
+        clothingItemAsView.findViewById(R.id.image_and_text_layout).setClipToOutline(true);
+        return new ClothingViewHolder(clothingItemAsView, mListener);
     }
 
     @Override

@@ -9,16 +9,16 @@
         android:id="@+id/massage_heading"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:text="Tips!"
+        android:layout_margin="@dimen/dialog_margins"
+        android:text="@string/photoshooting_tips_heading"
         android:textAlignment="center"
-        android:textSize="22sp"
+        android:textSize="@dimen/dialog_text_size"
         android:textStyle="bold" />
 
     <ImageView
-        android:layout_width="169dp"
-        android:layout_height="105dp"
-        android:layout_margin="10dp"
+        android:layout_width="@dimen/dialog_image_width_and_height"
+        android:layout_height="@dimen/dialog_image_width_and_height"
+        android:layout_margin="@dimen/dialog_margins"
         android:contentDescription="Chest of gold to convey message of treasure"
         android:src="@drawable/ic_tips_lightbulb" />
 
@@ -26,7 +26,7 @@
         android:id="@+id/got_it_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
+        android:layout_margin="@dimen/dialog_margins"
         android:onClick="gotItButton"
-        android:text="Got it!" />
+        android:text="@string/dialog_got_it_button_text" />
 </LinearLayout>
