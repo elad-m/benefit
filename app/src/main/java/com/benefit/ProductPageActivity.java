@@ -31,7 +31,7 @@ import java.util.Objects;
 
 public class ProductPageActivity extends AppCompatActivity implements OnMapReadyCallback {
 
-    private int productId = 111;
+    private int productId = 111; // FIXME: should contain the productId that user asked
     private ProductService productService;
     private UserService userService;
 
