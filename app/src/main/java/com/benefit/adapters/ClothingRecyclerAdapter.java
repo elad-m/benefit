@@ -18,15 +18,15 @@ import java.util.ArrayList;
 /**
  * Adapter for the user's items RecyclerView.
  */
-public class ClothingRecyclerAdapter  extends RecyclerView.Adapter<ClothingRecyclerAdapter.ClothingViewHolder> {
+public class ClothingRecyclerAdapter extends RecyclerView.Adapter<ClothingRecyclerAdapter.ClothingViewHolder> {
     private ArrayList<ClothingItem> mClothingItems;
     private OnItemClickListener mListener;
 
-    public interface OnItemClickListener{
+    public interface OnItemClickListener {
         void onItemClick(int position);
     }
 
-    public void setOnItemClickListener(OnItemClickListener listener){
+    public void setOnItemClickListener(OnItemClickListener listener) {
         mListener = listener;
     }
 
@@ -34,7 +34,7 @@ public class ClothingRecyclerAdapter  extends RecyclerView.Adapter<ClothingRecyc
         return mListener;
     }
 
-    static class ClothingViewHolder extends RecyclerView.ViewHolder{
+    static class ClothingViewHolder extends RecyclerView.ViewHolder {
         ImageView mImageView;
         TextView mImageTitle;
 
@@ -47,9 +47,9 @@ public class ClothingRecyclerAdapter  extends RecyclerView.Adapter<ClothingRecyc
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (listener != null){
+                    if (listener != null) {
                         int position = getAdapterPosition();
-                        if (position != RecyclerView.NO_POSITION){
+                        if (position != RecyclerView.NO_POSITION) {
                             listener.onItemClick(position);
                         }
                     }
@@ -58,7 +58,7 @@ public class ClothingRecyclerAdapter  extends RecyclerView.Adapter<ClothingRecyc
         }
     }
 
-    public ClothingRecyclerAdapter(ArrayList<ClothingItem> itemList){
+    public ClothingRecyclerAdapter(ArrayList<ClothingItem> itemList) {
         mClothingItems = itemList;
     }
 

@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layoutDirection="ltr"
     tools:context=".GiveItemActivity">
 
     <include
@@ -28,8 +29,7 @@
                 android:layout_margin="@dimen/give_item_margins"
                 android:gravity="center"
                 android:text="Please add a picture, title and choose from the categories below"
-                android:textSize="@dimen/give_item_text_views_text_size"
-                />
+                android:textSize="@dimen/give_item_text_views_text_size" />
 
             <ImageButton
                 android:id="@+id/image_button_choose_image"
