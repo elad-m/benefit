@@ -7,8 +7,10 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 public class StorageDriver extends ViewModel {
     private FirebaseStorage storage;
@@ -26,13 +28,14 @@ public class StorageDriver extends ViewModel {
             String destFileName = "images/" + System.currentTimeMillis();
             StorageReference ref = this.storageReference.child(destFileName);
             ref.putFile(imageUri)
-                    .addOnSuccessListener(taskSnapshot -> resultsLiveData.setValue(destFileName))
+                    .addOnSuccessListener((UploadTask.TaskSnapshot taskSnapshot) -> {
+                        Task<Uri> downloadUri = taskSnapshot.getStorage().getDownloadUrl();
+                        if (downloadUri.isSuccessful()) {
+                            resultsLiveData.setValue(downloadUri.getResult().toString());
+                        }
+                    })
                     .addOnFailureListener(e -> Log.w(TAG, "Error on uploadImage", e));
         }
         return resultsLiveData;
-    }
-
-    private String getFileExtension(Uri uri) {
-        return uri.toString().substring(uri.toString().lastIndexOf("."));
     }
 }
