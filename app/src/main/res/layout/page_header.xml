@@ -5,6 +5,8 @@
     android:layout_height="0dp"
     android:orientation="vertical"
     android:id="@+id/page_header_root_layout"
+    android:background="@color/backgroundColor"
+    android:layoutDirection="ltr"
     app:layout_constraintHeight_percent="0.168">
 
     <View
@@ -114,14 +116,14 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:gravity="center_horizontal"
-        android:text="insert slogan here"
+        android:text="@string/top_area_slogan"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintDimensionRatio="13:1"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/horizontal_line"
-        app:layout_constraintWidth_percent="0.6"
-        android:visibility="invisible"/>
+        app:layout_constraintWidth_percent="0.6" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/give_right_guideline"
