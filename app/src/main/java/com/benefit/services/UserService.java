@@ -68,5 +68,9 @@ public class UserService extends ViewModel {
         return getUserFromUid(authenticationDriver.getUserUid());
     }
 
+    public void addUserToDatabase(User user){
+        usersCollectionRef.add(user);
+    }
+
 
 }
