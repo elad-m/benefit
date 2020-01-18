@@ -42,6 +42,7 @@ import java.util.ArrayList;
  */
 public class SignInActivity extends AppCompatActivity implements OnMapReadyCallback, OnMarkerDragListener {
 
+    public enum LoginState{NOT_SIGN_IN, LOGGING_IN, SIGN_IN_GET_USER, NEW_USER_SIGN_UP, FINISH};
     private static final String TAG = SignInActivity.class.getSimpleName();
     // Keys for storing activity state.
     private static final String KEY_CAMERA_POSITION = "camera_position";
