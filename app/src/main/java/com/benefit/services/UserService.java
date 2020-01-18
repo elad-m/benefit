@@ -27,9 +27,9 @@ public class UserService extends ViewModel {
     private static final String UID = "uid";
     private static final String TAG = UserService.class.getSimpleName();
 
-    public UserService() {
-        this.databaseDriver = new DatabaseDriver();
-        this.authenticationDriver = new AuthenticationDriver();
+    public UserService(DatabaseDriver databaseDriver, AuthenticationDriver authenticationDriver) {
+        this.databaseDriver = databaseDriver;
+        this.authenticationDriver = authenticationDriver;
         usersCollectionRef = databaseDriver.getCollectionReferenceByName(COLLECTION_USERS_NAME);
     }
 
