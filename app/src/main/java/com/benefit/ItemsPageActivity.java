@@ -53,6 +53,7 @@ public class ItemsPageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         currentFilters = new HashMap<>();
         allFilters = new ArrayList<>();
+        setHeaderListeners();
         Bundle bundle = getIntent().getExtras();
         extractExtras(bundle);
         initiateWindow();
@@ -90,9 +91,10 @@ public class ItemsPageActivity extends AppCompatActivity {
     }
 
     private void displayProductInNewWindow(Product productClicked) {
-        Intent intent = new Intent(this, ProductPageActivity.class);
-        intent.putExtra("product", productClicked);
-        startActivity(intent);
+        //todo undelete this when the page is added
+//        Intent intent = new Intent(this, ProductPageActivity.class);
+//        intent.putExtra("product", productClicked);
+//        startActivity(intent);
     }
 
     public void openFilter(View view) {
@@ -282,4 +284,55 @@ public class ItemsPageActivity extends AppCompatActivity {
         productService.getProductsByCategoryId(categoryId).observe(this, productObserver);
 
     }
+
+    private void setHeaderListeners() {
+        findViewById(R.id.give_icon).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startGiveActivity();
+            }
+        });
+
+        findViewById(R.id.give_icon).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startUserProfileActivity();
+            }
+        });
+
+        findViewById(R.id.give_icon).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startSearchActivity();
+            }
+        });
+
+        findViewById(R.id.give_icon).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startMessageActivity();
+            }
+        });
+    }
+
+    private void startMessageActivity() {
+        Intent intent = new Intent(this, ConversationActivity.class);
+        startActivity(intent);
+    }
+
+    private void startSearchActivity() {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+    }
+
+    private void startUserProfileActivity() {
+        Intent intent = new Intent(this, UserProfileActivity.class);
+        startActivity(intent);
+    }
+
+    private void startGiveActivity() {
+        Intent intent = new Intent(this, GiveItemActivity.class);
+        startActivity(intent);
+    }
+
 }

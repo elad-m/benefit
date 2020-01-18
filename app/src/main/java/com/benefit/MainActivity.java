@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         extractExtras();
         initiateWindow();
+        setHeaderListeners();
     }
 
     private void extractExtras() {
@@ -136,7 +137,6 @@ public class MainActivity extends AppCompatActivity {
         createCategoryService();
         showMetaCategories();
         showItemsOnScreen();
-        setHeaderListeners();
     }
 
     private void setHeaderListeners() {
@@ -188,7 +188,6 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, GiveItemActivity.class);
         startActivity(intent);
     }
-
 
     private void addScreenSettings() {
         setContentView(R.layout.activity_main);

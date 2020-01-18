@@ -97,7 +97,7 @@ public class DisplayableRecycleAdapter extends RecyclerView.Adapter<DisplayableR
         Displayable displayableItem = displayableItems.get(position);
         // no "if empty" because clothingItem always has the resource data member initialized
         Picasso.get()
-                .load("https://imagizer.imageshack.com/img922/2971/e4k2Ee.png").centerCrop()
+                .load(displayableItem.getImageResource()).centerCrop()
                 .fit()
                 .into(holder.mImageView);
         holder.mImageTitle.setText(displayableItem.getName());

@@ -82,6 +82,7 @@ public class GiveItemActivity extends AppCompatActivity {
         createPropertiesChips();
         createMetaCategoriesChips();
 
+        setHeaderListeners();
     }
 
     private void createConditionChips() {
@@ -393,4 +394,55 @@ public class GiveItemActivity extends AppCompatActivity {
         dialogReturnsToActivity.setContentView(R.layout.photoshooting_tips_dialog);
         dialogReturnsToActivity.show();
     }
+
+    private void setHeaderListeners() {
+        findViewById(R.id.give_icon).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startGiveActivity();
+            }
+        });
+
+        findViewById(R.id.give_icon).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startUserProfileActivity();
+            }
+        });
+
+        findViewById(R.id.give_icon).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startSearchActivity();
+            }
+        });
+
+        findViewById(R.id.give_icon).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startMessageActivity();
+            }
+        });
+    }
+
+    private void startMessageActivity() {
+        Intent intent = new Intent(this, ConversationActivity.class);
+        startActivity(intent);
+    }
+
+    private void startSearchActivity() {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+    }
+
+    private void startUserProfileActivity() {
+        Intent intent = new Intent(this, UserProfileActivity.class);
+        startActivity(intent);
+    }
+
+    private void startGiveActivity() {
+        Intent intent = new Intent(this, GiveItemActivity.class);
+        startActivity(intent);
+    }
+
 }
