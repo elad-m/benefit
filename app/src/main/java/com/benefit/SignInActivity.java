@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.lifecycle.ViewModelProviders;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -14,9 +13,13 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.benefit.viewmodel.SignInViewModel;
+import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -30,24 +33,29 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.ArrayList;
 
 /**
- * This activity handle sign up a new user
+ * This activity handle sign in and adding new user to database.
  */
-public class SignUpActivity extends AppCompatActivity implements OnMapReadyCallback, OnMarkerDragListener {
+public class SignInActivity extends AppCompatActivity implements OnMapReadyCallback, OnMarkerDragListener {
 
-    private static final String TAG = SignUpActivity.class.getSimpleName();
+    private static final String TAG = SignInActivity.class.getSimpleName();
     // Keys for storing activity state.
     private static final String KEY_CAMERA_POSITION = "camera_position";
     private static final String KEY_LOCATION = "location";
 
     private GoogleMap mMap;
-    private Location chosenLocation;
     private CameraPosition mCameraPosition;
+    private SignInViewModel viewModel;
 
-    private EditText firstNameField, lastNameField, addressField;
+    //view elements
+    private LinearLayout signInButtons, signUpForm;
+    private SignInButton googleSignInButton;
+    private Button mailSignIn, phoneSignIn;
+    private TextInputEditText firstNameField, lastNameField, addressField;
 
     // The entry point to the Fused Location Provider.
     private FusedLocationProviderClient mFusedLocationProviderClient;
@@ -75,12 +83,7 @@ public class SignUpActivity extends AppCompatActivity implements OnMapReadyCallb
             mCameraPosition = savedInstanceState.getParcelable(KEY_CAMERA_POSITION);
         }
 
-        //initiate chosenLocation
-        chosenLocation = new Location(LocationManager.GPS_PROVIDER);
-        chosenLocation.setLatitude(mDefaultLocation.latitude);
-        chosenLocation.setLongitude(mDefaultLocation.longitude);
-
-        setContentView(R.layout.activity_sign_up);
+        setContentView(R.layout.activity_sign_in);
 
         // Construct a FusedLocationProviderClient.
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
@@ -192,7 +195,7 @@ public class SignUpActivity extends AppCompatActivity implements OnMapReadyCallb
                             // Set the map's camera position to the current location of the device
                             // and add a marker.
                             mLastKnownLocation = task.getResult();
-                            chosenLocation = mLastKnownLocation;
+
                             LatLng currentLocation = new LatLng(mLastKnownLocation.getLatitude(),
                                             mLastKnownLocation.getLongitude());
                             mSelectedLocation = mMap.addMarker(new MarkerOptions()
@@ -244,8 +247,8 @@ public class SignUpActivity extends AppCompatActivity implements OnMapReadyCallb
     @Override
     public void onMarkerDragEnd(Marker marker) {
         if (marker == mSelectedLocation){
-            chosenLocation.setLatitude(marker.getPosition().latitude);
-            chosenLocation.setLongitude(marker.getPosition().longitude);
+            viewModel.getUser().setLocationLatitude(marker.getPosition().latitude);
+            viewModel.getUser().setLocationLongitude(marker.getPosition().longitude);
         }
     }
 
@@ -266,15 +269,10 @@ public class SignUpActivity extends AppCompatActivity implements OnMapReadyCallb
                 Toast.makeText(this, getString(R.string.enter_last_name), Toast.LENGTH_LONG).show();
             }
             else {
-                Intent replyIntent  = new Intent();
-                replyIntent.putExtra(getString(R.string.user_first_name_relay), firstName);
-                replyIntent.putExtra(getString(R.string.user_last_name_relay), lastName);
-                replyIntent.putExtra(getString(R.string.user_address_relay), address);
-                ArrayList<Parcelable> locationList = new ArrayList<>();
-                locationList.add(chosenLocation);
-                replyIntent.putParcelableArrayListExtra(getString(R.string.user_location_relay), locationList);
-                setResult(RESULT_OK, replyIntent);
-                finish();
+                viewModel.getUser().setFirstName(firstName);
+                viewModel.getUser().setLastName(lastName);
+                viewModel.getUser().setAddress(address);
+                //more code TODO
             }
         }
     }

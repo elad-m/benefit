@@ -45,7 +45,7 @@ public class ConversationActivity extends AppCompatActivity implements AdapterVi
         userService.getCurrentUser().observe(this, user -> {
             currentUser = user;
             chatService.setUser(user);
-            Toast.makeText(this, "welcome user " + currentUser.getFirstName() + "!", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "welcome user " + currentUser.getFullName() + "!", Toast.LENGTH_LONG).show();
             //initiate conversation RecyclerView
             initiateConversationRecyclerView();
         });
@@ -60,10 +60,6 @@ public class ConversationActivity extends AppCompatActivity implements AdapterVi
     @Override
     protected void onStart() {
         super.onStart();
-        if (userService.shouldSignIn()) {
-            userService.startSignIn(this);
-            return;
-        }
 
         if(conversationAdapter != null){
             conversationAdapter.startListening();
@@ -125,6 +121,5 @@ public class ConversationActivity extends AppCompatActivity implements AdapterVi
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        userService.handleOnSignInResult(requestCode, resultCode, data, this);
     }
 }
