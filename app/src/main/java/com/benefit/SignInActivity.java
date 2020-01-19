@@ -18,6 +18,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.benefit.viewmodel.SignInViewModel;
@@ -57,7 +58,8 @@ public class SignInActivity extends AppCompatActivity implements OnMapReadyCallb
     //view elements
     private LinearLayout signInButtons, signUpForm;
     private SignInButton googleSignInButton;
-    private Button mailSignIn, phoneSignIn;
+    private Button mailSignInButton, phoneSignInButton;
+    private TextView title;
     private TextInputEditText firstNameField, lastNameField, addressField;
 
     // The entry point to the Fused Location Provider.
@@ -91,14 +93,21 @@ public class SignInActivity extends AppCompatActivity implements OnMapReadyCallb
         //initiate viewmodle
         viewModel = ViewModelProviders.of(this).get(SignInViewModel.class);
 
-
-
         //set views objects
-        /**
-        firstNameField = findViewById(R.id.first_name_text);
-        lastNameField = findViewById(R.id.last_name_text);
-        addressField = findViewById(R.id.address_text);
-         */
+        setUpViewElements();
+
+    }
+
+    private void setUpViewElements(){
+        signInButtons = findViewById(R.id.sign_in_buttons);
+        signUpForm = findViewById(R.id.sign_up_form);
+        title = findViewById(R.id.sign_up_title_text_view);
+        googleSignInButton = findViewById(R.id.google_sign_in_button);
+        mailSignInButton = findViewById(R.id.mail_sign_in_button);
+        phoneSignInButton = findViewById(R.id.phone_sign_in_button);
+        firstNameField = findViewById(R.id.first_name_input_text);
+        lastNameField = findViewById(R.id.last_name_input_text);
+        addressField = findViewById(R.id.address_input_text);
 
     }
 
@@ -112,6 +121,28 @@ public class SignInActivity extends AppCompatActivity implements OnMapReadyCallb
         mapFragment.getMapAsync(this);
     }
 
+    private void updateAccordingToLoginState(){
+        switch (viewModel.getLoginState()){
+            case NOT_SIGN_IN:
+                signInButtons.setVisibility(LinearLayout.VISIBLE);
+                signUpForm.setVisibility(LinearLayout.GONE);
+                title.setText(R.string.sign_in_title);
+                break;
+            case NEW_USER_SIGN_UP:
+                signInButtons.setVisibility(LinearLayout.GONE);
+                signUpForm.setVisibility(LinearLayout.VISIBLE);
+                title.setText(getString(R.string.sign_up_title));
+                initiateGoogleMap();
+                break;
+        }
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        updateAccordingToLoginState();
+    }
 
     /**
      * Saves the state of the map when the activity is paused.
