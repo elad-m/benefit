@@ -69,9 +69,9 @@ public class AllProductsScreen {
             for (List<String> nameOfAttributes : currentFilters.values()) {
                 writeOrSign(currentFilterLayout);
                 int i = 0;
-                while (i < nameOfAttributes.size() - 1) {
+                while (i < nameOfAttributes.size()) {
                     writeFilter(nameOfAttributes.get(i), currentFilterLayout);
-                    if (i < currentFilters.size() - 1) {
+                    if (i < nameOfAttributes.size() - 1) {
                         writeOrSign(currentFilterLayout);
                     }
                     i++;

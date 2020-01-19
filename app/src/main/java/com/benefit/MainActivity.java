@@ -6,10 +6,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
-import androidx.appcompat.widget.SearchView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
@@ -85,9 +85,9 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra("displayed", CATEGORIES_DISPLAYED);
                 intent.putExtra("category", (Category) displayable);
                 if (metaCategoryChosen == null) {
-                    intent.putExtra("metaExists", "false");
+                    intent.putExtra("metaExists", false);
                 } else {
-                    intent.putExtra("metaExists", "true");
+                    intent.putExtra("metaExists", true);
                     intent.putExtra("metaCategory", metaCategoryChosen);
                 }
                 break;
@@ -140,56 +140,6 @@ public class MainActivity extends AppCompatActivity {
         createCategoryService();
         showMetaCategories();
         showItemsOnScreen();
-    }
-
-    private void setHeaderListeners() {
-        findViewById(R.id.give_icon).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startGiveActivity();
-            }
-        });
-
-        findViewById(R.id.user_icon).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startUserProfileActivity();
-            }
-        });
-
-        findViewById(R.id.search_icon).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startSearchActivity();
-            }
-        });
-
-        findViewById(R.id.message_icon).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startMessageActivity();
-            }
-        });
-    }
-
-    private void startMessageActivity() {
-        Intent intent = new Intent(this, ConversationActivity.class);
-        startActivity(intent);
-    }
-
-    private void startSearchActivity() {
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
-    }
-
-    private void startUserProfileActivity() {
-        Intent intent = new Intent(this, UserProfileActivity.class);
-        startActivity(intent);
-    }
-
-    private void startGiveActivity() {
-        Intent intent = new Intent(this, GiveItemActivity.class);
-        startActivity(intent);
     }
 
     private void addScreenSettings() {
@@ -250,6 +200,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showChildrenOfParent(int parentId) {
+        itemsDisplay.refreshDisplay();
         final Observer<List<Category>> childCategoryObserver = new Observer<List<Category>>() {
 
             @Override
@@ -267,14 +218,14 @@ public class MainActivity extends AppCompatActivity {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+                if (query.length() >= 1) {
+                    startItemActivityWithSearch(query);
+                }
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                if(newText.length() >= 1){
-                    startItemActivityWithSearch(newText);
-                }
                 return false;
             }
         });
@@ -286,4 +237,55 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra("searchResult", newText);
         startActivity(intent);
     }
+
+    private void setHeaderListeners() {
+        findViewById(R.id.give_icon).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startGiveActivity();
+            }
+        });
+
+        findViewById(R.id.user_icon).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startUserProfileActivity();
+            }
+        });
+
+        findViewById(R.id.search_icon).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startSearchActivity();
+            }
+        });
+
+        findViewById(R.id.message_icon).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startMessageActivity();
+            }
+        });
+    }
+
+    private void startMessageActivity() {
+        Intent intent = new Intent(this, ConversationActivity.class);
+        startActivity(intent);
+    }
+
+    private void startSearchActivity() {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+    }
+
+    private void startUserProfileActivity() {
+        Intent intent = new Intent(this, UserProfileActivity.class);
+        startActivity(intent);
+    }
+
+    private void startGiveActivity() {
+        Intent intent = new Intent(this, GiveItemActivity.class);
+        startActivity(intent);
+    }
+
 }

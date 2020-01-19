@@ -13,7 +13,7 @@
         layout="@layout/page_header" />
 
 
-    <EditText
+    <androidx.appcompat.widget.SearchView
         android:id="@+id/search_input"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -105,9 +105,6 @@
         </LinearLayout>
 
     </HorizontalScrollView>
-
-
-
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/categories"

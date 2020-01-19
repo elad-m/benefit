@@ -6,10 +6,10 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.PopupWindow;
-import androidx.appcompat.widget.SearchView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
@@ -35,13 +35,14 @@ import java.util.Map;
 
 public class ItemsPageActivity extends AppCompatActivity {
 
-    private static final int CATEGORIES_DISPLAYED = 1;
-    private static final int CLUSTERS_DISPLAYED = 2;
+    private static final int ONE_CATEGORY_DISPLAYED = 1;
+    private static final int MULTIPLE_CATEGORIES_DISPLAYED = 2;
     private static final int CATEGORY_PRODUCTS = 1;
     private static final int FILTERED_PRODUCTS = 2;
     private static final int ALL_CATEGORY_SEARCH = 1;
     private static final int SPECIFIC_CATEGORY_SEARCH = 2;
 
+    private boolean are_products_displayed = false;
     private List<PropertyName> allFilters;
     private Category currentCategory;
     private Category metaCategoryChosen;
@@ -59,45 +60,30 @@ public class ItemsPageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         currentFilters = new HashMap<>();
         allFilters = new ArrayList<>();
-        setHeaderListeners();
+        createServices();
         Bundle bundle = getIntent().getExtras();
         extractExtras(bundle);
         initiateWindow();
         addSearchListener();
-    }
-
-    private void addSearchListener() {
-        SearchView searchView = findViewById(R.id.search_input);
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                if(newText.length() >= 1){
-                    search(SPECIFIC_CATEGORY_SEARCH, newText);
-                }
-                return false;
-            }
-        });
+        setHeaderListeners();
     }
 
     private void extractExtras(Bundle bundle) {
-        if (bundle.getBoolean("searchReceived")){
+        if (bundle.getBoolean("searchReceived")) {
             search(ALL_CATEGORY_SEARCH, bundle.getString("searchResult"));
+            are_products_displayed = true;
         } else {
             switch (bundle.getInt("displayed")) {
-                case CLUSTERS_DISPLAYED:
-                    whichProductsDisplayed = CLUSTERS_DISPLAYED;
+                case MULTIPLE_CATEGORIES_DISPLAYED:
+                    whichProductsDisplayed = MULTIPLE_CATEGORIES_DISPLAYED;
                     currentCategory = null;
                     categoryCluster = (CategoryCluster) bundle.getSerializable("cluster");
                     metaCategoryChosen = null;
                     break;
-                case CATEGORIES_DISPLAYED:
-                    whichProductsDisplayed = CATEGORIES_DISPLAYED;
+                case ONE_CATEGORY_DISPLAYED:
+                    whichProductsDisplayed = ONE_CATEGORY_DISPLAYED;
                     currentCategory = (Category) bundle.getSerializable("category");
-                    if (bundle.getString("metaExists").equals("true")) {
+                    if (bundle.getBoolean("metaExists")) {
                         metaCategoryChosen = (Category) bundle.get("metaCategory");
                     } else {
                         metaCategoryChosen = null;
@@ -119,15 +105,16 @@ public class ItemsPageActivity extends AppCompatActivity {
         switch (whatSearched) {
             case ALL_CATEGORY_SEARCH:
                 searchService.getProductsBySearchString(searchResult).observe(this, searchObserver);
+                break;
             case SPECIFIC_CATEGORY_SEARCH:
                 switch (whichProductsDisplayed) {
-                    case CLUSTERS_DISPLAYED:
+                    case MULTIPLE_CATEGORIES_DISPLAYED:
                         for (int categoryId : categoryCluster.getCategoryIdList()) {
                             searchService.getProductsBySearchString(searchResult, categoryId).
                                     observe(this, searchObserver);
                         }
                         break;
-                    case CATEGORIES_DISPLAYED:
+                    case ONE_CATEGORY_DISPLAYED:
                         searchService.getProductsBySearchString(searchResult, currentCategory.getId()).
                                 observe(this, searchObserver);
                         break;
@@ -135,65 +122,78 @@ public class ItemsPageActivity extends AppCompatActivity {
         }
     }
 
-    private void addProductListeners() {
-        activityScreen.getmAdapter().setOnItemClickListener(new DisplayableRecycleAdapter.OnItemClickListener() {
+    private void createServices() {
+        createCategoryService();
+        createProductService();
+        createSearchService();
+    }
+
+    private void createSearchService() {
+        ViewModelProvider.Factory searchServiceFactory = new ViewModelProvider.Factory() {
+            @NonNull
             @Override
-            public void onItemClick(int position) {
-                Displayable itemClicked = activityScreen.getDisplayableItems().get(position);
-                displayProductInNewWindow((Product) itemClicked);
+            public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
+                return (T) new SearchService(databaseDriver);
             }
-        });
+        };
+        this.searchService = ViewModelProviders.of(this, searchServiceFactory).get(SearchService.class);
     }
 
-    private void displayProductInNewWindow(Product productClicked) {
-        //todo undelete this when the page is added
-//        Intent intent = new Intent(this, ProductPageActivity.class);
-//        intent.putExtra("product", productClicked);
-//        startActivity(intent);
-    }
-
-    public void openFilter(View view) {
-        activityScreen.openFilter(view, allFilters, currentFilters);
-        setPopupOnClickListeners(activityScreen.getPopupView(), activityScreen.getPopup(), activityScreen.getFilterPopup());
-    }
-
-    private void setPopupOnClickListeners(View layout, final PopupWindow popup, final FilterPopup filterPopup) {
-        Button reset = layout.findViewById(R.id.reset_button);
-        reset.setOnClickListener(new View.OnClickListener() {
+    private void createProductService() {
+        ViewModelProvider.Factory productServiceFactory = new ViewModelProvider.Factory() {
+            @NonNull
             @Override
-            public void onClick(View v) {
-                filterPopup.refreshFilter();
+            public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
+                return (T) new ProductService(databaseDriver);
             }
-        });
-
-        Button done = layout.findViewById(R.id.done_button);
-        done.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                currentFilters = filterPopup.getCurrentFilters();
-                popup.dismiss();
-                activityScreen.writeFiltersOnScreen(currentFilters);
-                activityScreen.refreshTable();
-                if (currentFilters.size() == 0){
-                    addProductsToScreen();
-                } else {
-                    showAllFilteredItems();
-                }
-            }
-        });
+        };
+        this.productService = ViewModelProviders.of(this, productServiceFactory).get(ProductService.class);
     }
 
-    private void showAllFilteredItems() {
-        switch (whichProductsDisplayed) {
-            case CLUSTERS_DISPLAYED:
-                for (int id : categoryCluster.getCategoryIdList()) {
-                    showProducts(FILTERED_PRODUCTS, id);
-                }
-                break;
-            case CATEGORIES_DISPLAYED:
-                showProducts(FILTERED_PRODUCTS, currentCategory.getId());
-                break;
+    private void createCategoryService() {
+        ViewModelProvider.Factory categoryServiceFactory = new ViewModelProvider.Factory() {
+            @NonNull
+            @Override
+            public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
+                return (T) new CategoryService(databaseDriver);
+            }
+        };
+        this.categoryService = ViewModelProviders.of(this, categoryServiceFactory).get(CategoryService.class);
+    }
+
+    private void initiateWindow() {
+        addScreenSettings();
+        activityScreen = new AllProductsScreen(findViewById(android.R.id.content).getRootView(), currentCategory, categoryCluster);
+        getAllMetaCategories();
+        if (!are_products_displayed) {
+            addProductsToScreen();
+            if (whichProductsDisplayed == ONE_CATEGORY_DISPLAYED) {
+                getFilters(currentCategory.getId());
+            } else {
+                getAllCategoryFilters();
+            }
+            activityScreen.writeFiltersOnScreen(currentFilters);
         }
+    }
+
+    private void addScreenSettings() {
+        setContentView(R.layout.activity_items_page);
+        findViewById(R.id.search_icon).setBackground(getResources().getDrawable(R.drawable.ic_search_icon_color));
+        getWindow().setSoftInputMode(
+                WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+    }
+
+    private void getAllMetaCategories() {
+        final Observer<List<Category>> metaCategoriesObserver = new Observer<List<Category>>() {
+
+            @Override
+            public void onChanged(List<Category> categories) {
+                activityScreen.addMetaCategoryBar(categories, metaCategoryChosen);
+                addMetaCategoryListeners();
+            }
+        };
+        categoryService.getAllMetaCategories().observe(this, metaCategoriesObserver);
+
     }
 
     private void addMetaCategoryListeners() {
@@ -222,83 +222,52 @@ public class ItemsPageActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void initiateWindow() {
-        addScreenSettings();
-        activityScreen = new AllProductsScreen(findViewById(android.R.id.content).getRootView(), currentCategory, categoryCluster);
-        createServices();
-        getAllMetaCategories();
-        addProductsToScreen();
-        if (whichProductsDisplayed == CATEGORIES_DISPLAYED) {
-            getFilters(currentCategory.getId());
-        } else {
-            getAllCategoryFilters();
-        }
-        activityScreen.writeFiltersOnScreen(currentFilters);
-    }
-
-    private void addScreenSettings() {
-        setContentView(R.layout.activity_items_page);
-        findViewById(R.id.search_icon).setBackground(getResources().getDrawable(R.drawable.ic_search_icon_color));
-        getWindow().setSoftInputMode(
-                WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-    }
-
-    private void createServices() {
-        createCategoryService();
-        createProductService();
-        createSearchService();
-    }
-
-    private void createSearchService(){
-        ViewModelProvider.Factory searchServiceFactory = new ViewModelProvider.Factory() {
-            @NonNull
-            @Override
-            public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-                return (T) new SearchService(databaseDriver);
-            }
-        };
-        this.searchService = ViewModelProviders.of(this, searchServiceFactory).get(SearchService.class);
-    }
-
-    private void getAllCategoryFilters() {
-        for (int categoryId : categoryCluster.getCategoryIdList()) {
-            getFilters(categoryId);
-        }
-    }
-
     private void addProductsToScreen() {
         switch (whichProductsDisplayed) {
-            case CLUSTERS_DISPLAYED:
+            case MULTIPLE_CATEGORIES_DISPLAYED:
                 for (int categoryId : categoryCluster.getCategoryIdList()) {
                     showProducts(CATEGORY_PRODUCTS, categoryId);
                 }
                 break;
-            case CATEGORIES_DISPLAYED:
+            case ONE_CATEGORY_DISPLAYED:
                 showProducts(CATEGORY_PRODUCTS, currentCategory.getId());
                 break;
         }
     }
 
-    private void createProductService() {
-        ViewModelProvider.Factory productServiceFactory = new ViewModelProvider.Factory() {
-            @NonNull
+    private void showProducts(int productsToShow, int categoryId) {
+        final Observer<List<Product>> productObserver = new Observer<List<Product>>() {
+
             @Override
-            public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-                return (T) new ProductService(databaseDriver);
+            public void onChanged(List<Product> products) {
+                activityScreen.addDisplayTable(products);
+                addProductListeners();
             }
         };
-        this.productService = ViewModelProviders.of(this, productServiceFactory).get(ProductService.class);
+        switch (productsToShow) {
+            case CATEGORY_PRODUCTS:
+                productService.getProductsByCategoryId(categoryId).observe(this, productObserver);
+            case FILTERED_PRODUCTS:
+                productService.getProductsByProperties(categoryId, currentFilters).observe(this, productObserver);
+
+        }
     }
 
-    private void createCategoryService() {
-        ViewModelProvider.Factory categoryServiceFactory = new ViewModelProvider.Factory() {
-            @NonNull
+    private void addProductListeners() {
+        activityScreen.getmAdapter().setOnItemClickListener(new DisplayableRecycleAdapter.OnItemClickListener() {
             @Override
-            public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-                return (T) new CategoryService(databaseDriver);
+            public void onItemClick(int position) {
+                Displayable itemClicked = activityScreen.getDisplayableItems().get(position);
+                displayProductInNewWindow((Product) itemClicked);
             }
-        };
-        this.categoryService = ViewModelProviders.of(this, categoryServiceFactory).get(CategoryService.class);
+        });
+    }
+
+    private void displayProductInNewWindow(Product productClicked) {
+        //todo undelete this when the page is added
+//        Intent intent = new Intent(this, ProductPageActivity.class);
+//        intent.putExtra("product", productClicked);
+//        startActivity(intent);
     }
 
     private void getFilters(int categoryId) {
@@ -312,35 +281,72 @@ public class ItemsPageActivity extends AppCompatActivity {
         categoryService.getAllPropertiesByCategoryId(categoryId).observe(this, propertiesObserver);
     }
 
-    private void getAllMetaCategories() {
-        final Observer<List<Category>> metaCategoriesObserver = new Observer<List<Category>>() {
-
-            @Override
-            public void onChanged(List<Category> categories) {
-                activityScreen.addMetaCategoryBar(categories, metaCategoryChosen);
-                addMetaCategoryListeners();
-            }
-        };
-        categoryService.getAllMetaCategories().observe(this, metaCategoriesObserver);
-
+    private void getAllCategoryFilters() {
+        for (int categoryId : categoryCluster.getCategoryIdList()) {
+            getFilters(categoryId);
+        }
     }
 
-    private void showProducts(int productsToShow, int categoryId) {
-        final Observer<List<Product>> productObserver = new Observer<List<Product>>() {
+    public void openFilter(View view) {
+        activityScreen.openFilter(view, allFilters, currentFilters);
+        setFilterOnClickListeners(activityScreen.getPopupView(), activityScreen.getPopup(), activityScreen.getFilterPopup());
+    }
+
+    private void setFilterOnClickListeners(View layout, final PopupWindow popup, final FilterPopup filterPopup) {
+        Button reset = layout.findViewById(R.id.reset_button);
+        reset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                filterPopup.refreshFilter();
+            }
+        });
+
+        Button done = layout.findViewById(R.id.done_button);
+        done.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                currentFilters = filterPopup.getCurrentFilters();
+                popup.dismiss();
+                activityScreen.writeFiltersOnScreen(currentFilters);
+                activityScreen.refreshTable();
+                if (currentFilters.size() == 0) {
+                    addProductsToScreen();
+                } else {
+                    showAllFilteredItems();
+                }
+            }
+        });
+    }
+
+    private void showAllFilteredItems() {
+        switch (whichProductsDisplayed) {
+            case MULTIPLE_CATEGORIES_DISPLAYED:
+                for (int id : categoryCluster.getCategoryIdList()) {
+                    showProducts(FILTERED_PRODUCTS, id);
+                }
+                break;
+            case ONE_CATEGORY_DISPLAYED:
+                showProducts(FILTERED_PRODUCTS, currentCategory.getId());
+                break;
+        }
+    }
+
+    private void addSearchListener() {
+        SearchView searchView = findViewById(R.id.search_input);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
 
             @Override
-            public void onChanged(List<Product> products) {
-                activityScreen.addDisplayTable(products);
-                addProductListeners();
+            public boolean onQueryTextChange(String newText) {
+                if (newText.length() >= 1) {
+                    search(SPECIFIC_CATEGORY_SEARCH, newText);
+                }
+                return false;
             }
-        };
-        switch (productsToShow){
-            case CATEGORY_PRODUCTS:
-                productService.getProductsByCategoryId(categoryId).observe(this, productObserver);
-            case FILTERED_PRODUCTS:
-                productService.getProductsByProperties(categoryId, currentFilters).observe(this, productObserver);
-
-        }
+        });
     }
 
     private void setHeaderListeners() {
