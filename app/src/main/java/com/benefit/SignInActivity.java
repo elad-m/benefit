@@ -243,6 +243,7 @@ public class SignInActivity extends AppCompatActivity implements OnMapReadyCallb
                         Toast.makeText(this, R.string.sign_in_fail_massage, Toast.LENGTH_LONG).show();
                         viewModel.setLoginState(LoginState.NOT_SIGN_IN);
                     }
+                    updateAccordingToLoginState();
                 });
             } catch (ApiException e) {
                 // Google Sign In failed, update UI appropriately
@@ -307,6 +308,7 @@ public class SignInActivity extends AppCompatActivity implements OnMapReadyCallb
             if (mLocationPermissionGranted) {
                 mMap.setMyLocationEnabled(true);
                 mMap.getUiSettings().setMyLocationButtonEnabled(true);
+                mMap.getUiSettings().setZoomControlsEnabled(true);
             } else {
                 mMap.setMyLocationEnabled(false);
                 mMap.getUiSettings().setMyLocationButtonEnabled(false);
