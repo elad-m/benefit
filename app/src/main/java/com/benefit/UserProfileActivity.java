@@ -81,21 +81,21 @@ public class UserProfileActivity extends AppCompatActivity {
             }
         });
 
-        findViewById(R.id.give_icon).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.user_icon).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startUserProfileActivity();
             }
         });
 
-        findViewById(R.id.give_icon).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.search_icon).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startSearchActivity();
             }
         });
 
-        findViewById(R.id.give_icon).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.message_icon).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startMessageActivity();

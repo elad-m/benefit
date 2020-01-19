@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.PopupWindow;
+import androidx.appcompat.widget.SearchView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -25,6 +26,7 @@ import com.benefit.model.Product;
 import com.benefit.model.PropertyName;
 import com.benefit.services.CategoryService;
 import com.benefit.services.ProductService;
+import com.benefit.services.SearchService;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,6 +37,10 @@ public class ItemsPageActivity extends AppCompatActivity {
 
     private static final int CATEGORIES_DISPLAYED = 1;
     private static final int CLUSTERS_DISPLAYED = 2;
+    private static final int CATEGORY_PRODUCTS = 1;
+    private static final int FILTERED_PRODUCTS = 2;
+    private static final int ALL_CATEGORY_SEARCH = 1;
+    private static final int SPECIFIC_CATEGORY_SEARCH = 2;
 
     private List<PropertyName> allFilters;
     private Category currentCategory;
@@ -42,11 +48,11 @@ public class ItemsPageActivity extends AppCompatActivity {
     private CategoryCluster categoryCluster;
     private Map<String, List<String>> currentFilters;
     private AllProductsScreen activityScreen;
-    private boolean refresh = false;
     private int whichProductsDisplayed;
     private DatabaseDriver databaseDriver = new DatabaseDriver();
     private CategoryService categoryService;
     private ProductService productService;
+    private SearchService searchService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,26 +63,75 @@ public class ItemsPageActivity extends AppCompatActivity {
         Bundle bundle = getIntent().getExtras();
         extractExtras(bundle);
         initiateWindow();
+        addSearchListener();
+    }
+
+    private void addSearchListener() {
+        SearchView searchView = findViewById(R.id.search_input);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                if(newText.length() >= 1){
+                    search(SPECIFIC_CATEGORY_SEARCH, newText);
+                }
+                return false;
+            }
+        });
     }
 
     private void extractExtras(Bundle bundle) {
-        switch (bundle.getInt("displayed")) {
-            case CLUSTERS_DISPLAYED:
-                whichProductsDisplayed = CLUSTERS_DISPLAYED;
-                currentCategory = null;
-                categoryCluster = (CategoryCluster) bundle.getSerializable("cluster");
-                metaCategoryChosen = null;
-                break;
-            case CATEGORIES_DISPLAYED:
-                whichProductsDisplayed = CATEGORIES_DISPLAYED;
-                currentCategory = (Category) bundle.getSerializable("category");
-                if (bundle.getString("metaExists").equals("true")) {
-                    metaCategoryChosen = (Category) bundle.get("metaCategory");
-                } else {
+        if (bundle.getBoolean("searchReceived")){
+            search(ALL_CATEGORY_SEARCH, bundle.getString("searchResult"));
+        } else {
+            switch (bundle.getInt("displayed")) {
+                case CLUSTERS_DISPLAYED:
+                    whichProductsDisplayed = CLUSTERS_DISPLAYED;
+                    currentCategory = null;
+                    categoryCluster = (CategoryCluster) bundle.getSerializable("cluster");
                     metaCategoryChosen = null;
+                    break;
+                case CATEGORIES_DISPLAYED:
+                    whichProductsDisplayed = CATEGORIES_DISPLAYED;
+                    currentCategory = (Category) bundle.getSerializable("category");
+                    if (bundle.getString("metaExists").equals("true")) {
+                        metaCategoryChosen = (Category) bundle.get("metaCategory");
+                    } else {
+                        metaCategoryChosen = null;
+                    }
+                    categoryCluster = null;
+                    break;
+            }
+        }
+    }
+
+    private void search(int whatSearched, String searchResult) {
+        final Observer<List<Product>> searchObserver = new Observer<List<Product>>() {
+            @Override
+            public void onChanged(List<Product> products) {
+                activityScreen.addDisplayTable(products);
+                addProductListeners();
+            }
+        };
+        switch (whatSearched) {
+            case ALL_CATEGORY_SEARCH:
+                searchService.getProductsBySearchString(searchResult).observe(this, searchObserver);
+            case SPECIFIC_CATEGORY_SEARCH:
+                switch (whichProductsDisplayed) {
+                    case CLUSTERS_DISPLAYED:
+                        for (int categoryId : categoryCluster.getCategoryIdList()) {
+                            searchService.getProductsBySearchString(searchResult, categoryId).
+                                    observe(this, searchObserver);
+                        }
+                        break;
+                    case CATEGORIES_DISPLAYED:
+                        searchService.getProductsBySearchString(searchResult, currentCategory.getId()).
+                                observe(this, searchObserver);
+                        break;
                 }
-                categoryCluster = null;
-                break;
         }
     }
 
@@ -118,41 +173,27 @@ public class ItemsPageActivity extends AppCompatActivity {
                 currentFilters = filterPopup.getCurrentFilters();
                 popup.dismiss();
                 activityScreen.writeFiltersOnScreen(currentFilters);
-                refresh = true;
-                getAllFilteredItems();
+                activityScreen.refreshTable();
+                if (currentFilters.size() == 0){
+                    addProductsToScreen();
+                } else {
+                    showAllFilteredItems();
+                }
             }
         });
     }
 
-    private void getAllFilteredItems() {
+    private void showAllFilteredItems() {
         switch (whichProductsDisplayed) {
             case CLUSTERS_DISPLAYED:
                 for (int id : categoryCluster.getCategoryIdList()) {
-                    showFilteredProducts(id);
+                    showProducts(FILTERED_PRODUCTS, id);
                 }
                 break;
             case CATEGORIES_DISPLAYED:
-                showFilteredProducts(currentCategory.getId());
+                showProducts(FILTERED_PRODUCTS, currentCategory.getId());
                 break;
         }
-    }
-
-    private void showFilteredProducts(int categoryId) {
-        final Observer<List<Product>> productObserver = new Observer<List<Product>>() {
-
-            @Override
-            public void onChanged(List<Product> products) {
-                if (refresh) {
-                    activityScreen.refreshTable(products);
-                    refresh = false;
-                } else {
-                    activityScreen.addDisplayTable(products);
-                }
-                addProductListeners();
-            }
-        };
-        productService.getProductsByProperties(categoryId, currentFilters).observe(this, productObserver);
-
     }
 
     private void addMetaCategoryListeners() {
@@ -205,6 +246,18 @@ public class ItemsPageActivity extends AppCompatActivity {
     private void createServices() {
         createCategoryService();
         createProductService();
+        createSearchService();
+    }
+
+    private void createSearchService(){
+        ViewModelProvider.Factory searchServiceFactory = new ViewModelProvider.Factory() {
+            @NonNull
+            @Override
+            public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
+                return (T) new SearchService(databaseDriver);
+            }
+        };
+        this.searchService = ViewModelProviders.of(this, searchServiceFactory).get(SearchService.class);
     }
 
     private void getAllCategoryFilters() {
@@ -217,11 +270,11 @@ public class ItemsPageActivity extends AppCompatActivity {
         switch (whichProductsDisplayed) {
             case CLUSTERS_DISPLAYED:
                 for (int categoryId : categoryCluster.getCategoryIdList()) {
-                    addProducts(categoryId);
+                    showProducts(CATEGORY_PRODUCTS, categoryId);
                 }
                 break;
             case CATEGORIES_DISPLAYED:
-                addProducts(currentCategory.getId());
+                showProducts(CATEGORY_PRODUCTS, currentCategory.getId());
                 break;
         }
     }
@@ -272,7 +325,7 @@ public class ItemsPageActivity extends AppCompatActivity {
 
     }
 
-    private void addProducts(int categoryId) {
+    private void showProducts(int productsToShow, int categoryId) {
         final Observer<List<Product>> productObserver = new Observer<List<Product>>() {
 
             @Override
@@ -281,8 +334,13 @@ public class ItemsPageActivity extends AppCompatActivity {
                 addProductListeners();
             }
         };
-        productService.getProductsByCategoryId(categoryId).observe(this, productObserver);
+        switch (productsToShow){
+            case CATEGORY_PRODUCTS:
+                productService.getProductsByCategoryId(categoryId).observe(this, productObserver);
+            case FILTERED_PRODUCTS:
+                productService.getProductsByProperties(categoryId, currentFilters).observe(this, productObserver);
 
+        }
     }
 
     private void setHeaderListeners() {
@@ -293,21 +351,21 @@ public class ItemsPageActivity extends AppCompatActivity {
             }
         });
 
-        findViewById(R.id.give_icon).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.user_icon).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startUserProfileActivity();
             }
         });
 
-        findViewById(R.id.give_icon).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.search_icon).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startSearchActivity();
             }
         });
 
-        findViewById(R.id.give_icon).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.message_icon).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startMessageActivity();

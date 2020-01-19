@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import androidx.appcompat.widget.SearchView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -36,9 +37,9 @@ public class MainActivity extends AppCompatActivity {
     private MetaCategoryBar metaCategoryBar;
     private Category metaCategoryChosen;
     private Button metaButtonChosen;
+    private int itemsDisplayed;
     private DatabaseDriver databaseDriver = new DatabaseDriver();
     private CategoryService categoryService;
-    private int itemsDisplayed;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
         extractExtras();
         initiateWindow();
         setHeaderListeners();
+        addSearchListener();
     }
 
     private void extractExtras() {
@@ -65,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
                 if (itemsDisplayed == CLUSTERS_DISPLAYED || ((Category) itemClicked).getIsLeaf()) {
                     openProductsPage(itemClicked);
                 } else {
+                    itemsDisplay.refreshDisplay();
                     showChildrenOfParent(((Category) itemClicked).getId());
                 }
             }
@@ -147,21 +150,21 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        findViewById(R.id.give_icon).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.user_icon).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startUserProfileActivity();
             }
         });
 
-        findViewById(R.id.give_icon).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.search_icon).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startSearchActivity();
             }
         });
 
-        findViewById(R.id.give_icon).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.message_icon).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startMessageActivity();
@@ -247,17 +250,40 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showChildrenOfParent(int parentId) {
-        final List<Category> childrenCategories = new LinkedList<>();
         final Observer<List<Category>> childCategoryObserver = new Observer<List<Category>>() {
 
             @Override
             public void onChanged(List<Category> categories) {
-                childrenCategories.addAll(categories);
-                itemsDisplay.refreshDisplay(childrenCategories);
+                itemsDisplay.populateDisplayTable(categories);
                 addCategoryListeners();
             }
         };
         categoryService.getChildrenByParentId(parentId).observe(this, childCategoryObserver);
 
+    }
+
+    private void addSearchListener() {
+        SearchView searchView = findViewById(R.id.search_input);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                if(newText.length() >= 1){
+                    startItemActivityWithSearch(newText);
+                }
+                return false;
+            }
+        });
+    }
+
+    private void startItemActivityWithSearch(String newText) {
+        Intent intent = new Intent(this, ItemsPageActivity.class);
+        intent.putExtra("searchReceived", true);
+        intent.putExtra("searchResult", newText);
+        startActivity(intent);
     }
 }

@@ -52,8 +52,8 @@ public class AllProductsScreen {
         itemsDisplay.populateDisplayTable(products);
     }
 
-    public void refreshTable(List<Product> products) {
-        itemsDisplay.refreshDisplay(products);
+    public void refreshTable() {
+        itemsDisplay.refreshDisplay();
     }
 
     /**

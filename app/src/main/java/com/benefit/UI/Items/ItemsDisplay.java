@@ -52,11 +52,10 @@ public class ItemsDisplay {
         return displayableItems;
     }
 
-    public <T extends Displayable> void refreshDisplay(List<T> displayableItems) {
+    public <T extends Displayable> void refreshDisplay() {
         mRecyclerView = view.findViewById(R.id.categories);
         mRecyclerView.removeAllViews();
         this.displayableItems.clear();
-        populateDisplayTable(displayableItems);
-
+//        populateDisplayTable(displayableItems);
     }
 }
