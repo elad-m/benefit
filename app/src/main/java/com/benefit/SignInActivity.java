@@ -116,6 +116,7 @@ public class SignInActivity extends AppCompatActivity implements OnMapReadyCallb
         signUpForm = findViewById(R.id.sign_up_form);
         title = findViewById(R.id.sign_up_title_text_view);
         googleSignInButton = findViewById(R.id.google_sign_in_button);
+        googleSignInButton.setOnClickListener(this::onGoogleSignInClicked);
         mailSignInButton = findViewById(R.id.mail_sign_in_button);
         phoneSignInButton = findViewById(R.id.phone_sign_in_button);
         firstNameField = findViewById(R.id.first_name_input_text);
@@ -415,7 +416,8 @@ public class SignInActivity extends AppCompatActivity implements OnMapReadyCallb
                 viewModel.getUser().setFirstName(firstName);
                 viewModel.getUser().setLastName(lastName);
                 viewModel.getUser().setAddress(address);
-                //more code TODO
+                viewModel.setLoginState(LoginState.FINISH);
+                updateAccordingToLoginState();
             }
         }
     }
