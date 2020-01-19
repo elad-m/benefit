@@ -21,9 +21,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.benefit.ui.WorkaroundMapFragment;
 import com.benefit.viewmodel.SignInViewModel;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -66,6 +68,7 @@ public class SignInActivity extends AppCompatActivity implements OnMapReadyCallb
     private Observer<Boolean> gettingNewUserSucceeded;
 
     //view elements
+    private ScrollView scrollView;
     private LinearLayout signInButtons, signUpForm;
     private SignInButton googleSignInButton;
     private Button mailSignInButton, phoneSignInButton;
@@ -112,6 +115,7 @@ public class SignInActivity extends AppCompatActivity implements OnMapReadyCallb
     }
 
     private void setUpViewElements(){
+        scrollView = findViewById(R.id.sign_in_scrollview);
         signInButtons = findViewById(R.id.sign_in_buttons);
         signUpForm = findViewById(R.id.sign_up_form);
         title = findViewById(R.id.sign_up_title_text_view);
@@ -377,6 +381,16 @@ public class SignInActivity extends AppCompatActivity implements OnMapReadyCallb
 
         // Get the current location of the device and set the position of the map.
         getDeviceLocation();
+
+        // disable scrollview when touching the map
+        ((WorkaroundMapFragment) getSupportFragmentManager().findFragmentById(R.id.googleMapFragment))
+                .setListener(new WorkaroundMapFragment.OnTouchListener() {
+                    @Override
+                    public void onTouch()
+                    {
+                        scrollView.requestDisallowInterceptTouchEvent(true);
+                    }
+                });
     }
 
     @Override
