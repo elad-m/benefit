@@ -1,13 +1,13 @@
 package com.benefit.ui.profile;
 
 /**
- * Represents a ui component of an item: the rounded rectangle with a photo and title.
+ * Represents a UI component of an item: the rounded rectangle with a photo and title.
  * Used in the RecyclerView as the object of the CardView.
  */
 public class ClothingItem {
 
 
-    private long mProductId;
+    private int mProductId;
     private String mImageUrl;
     private String mTitle;
 
@@ -15,7 +15,7 @@ public class ClothingItem {
     }
 
 
-    public ClothingItem(String imageUrl, String title, long id) {
+    public ClothingItem(String imageUrl, String title, int id) {
         mImageUrl = imageUrl;
         mTitle = title;
         mProductId = id;
@@ -37,7 +37,7 @@ public class ClothingItem {
         this.mTitle = mTitle;
     }
 
-    public long getmProductId() {
+    public int getmProductId() {
         return mProductId;
     }
 

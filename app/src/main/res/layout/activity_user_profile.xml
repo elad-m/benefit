@@ -16,51 +16,21 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintHeight_percent="0.86"
-        app:layout_constraintTop_toBottomOf="@id/user_profile_page_header">
-
-        <LinearLayout
-            android:id="@+id/greeting_and_compliment_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/items_recycler">
-
-            <TextView
-                android:id="@+id/user_greeting"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="@string/default_user_greeting"
-                android:textSize="@dimen/dialog_heading_text_size"
-                />
-
-            <TextView
-                android:id="@+id/user_compliment_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="@string/user_compliment_message"
-                android:textSize="@dimen/min_text_size"
-                android:textColor="@color/colorBlack"
-                />
-
-        </LinearLayout>
+        app:layout_constraintHeight_percent="0.823"
+        app:layout_constraintTop_toBottomOf="@id/user_profile_page_header"
+        >
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/items_recycler"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:background="@color/colorWhite"
             android:padding="4dp"
             android:scrollbars="vertical"
-            app:layout_constraintTop_toBottomOf="@id/greeting_and_compliment_layout"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-
+            app:layout_constraintBottom_toBottomOf="parent"
             ></androidx.recyclerview.widget.RecyclerView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
