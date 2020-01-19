@@ -45,6 +45,9 @@
     <string name="sign_in_fail_massage">Filed to sign in.</string>
     <string name="google_sign_in_fail_massage">Filed to sign in with google.</string>
     <string name="user_relay">user</string>
+    <string name="add_item_heading_message">Please add a picture, title and choose from the categories below</string>
+    <string name="alert_dialog_delete_item_title">Item Deletion</string>
+    <string name="item_deleted_toast">Item deleted!</string>
     <string name="give">GIVE</string>
     <string name="search">Search</string>
     <string name="notifications">Notification</string>
