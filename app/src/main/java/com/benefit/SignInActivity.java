@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -86,13 +88,10 @@ public class SignInActivity extends AppCompatActivity implements OnMapReadyCallb
 
         setContentView(R.layout.activity_sign_in);
 
-        // Construct a FusedLocationProviderClient.
-        mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+        //initiate viewmodle
+        viewModel = ViewModelProviders.of(this).get(SignInViewModel.class);
 
-        // Build the map.
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.googleMapFragment);
-        mapFragment.getMapAsync(this);
+
 
         //set views objects
         /**
@@ -101,6 +100,16 @@ public class SignInActivity extends AppCompatActivity implements OnMapReadyCallb
         addressField = findViewById(R.id.address_text);
          */
 
+    }
+
+    private void initiateGoogleMap(){
+        // Construct a FusedLocationProviderClient.
+        mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+
+        // Build the map.
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.googleMapFragment);
+        mapFragment.getMapAsync(this);
     }
 
 
