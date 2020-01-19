@@ -3,6 +3,7 @@ package com.benefit.adapters;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -21,9 +22,11 @@ import java.util.ArrayList;
 public class ClothingRecyclerAdapter extends RecyclerView.Adapter<ClothingRecyclerAdapter.ClothingViewHolder> {
     private ArrayList<ClothingItem> mClothingItems;
     private OnItemClickListener mListener;
+    private RecyclerView mRecyclerView;
 
     public interface OnItemClickListener {
         void onItemClick(int position);
+        void onDeleteClick(int posotion, View view);
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {
@@ -37,13 +40,26 @@ public class ClothingRecyclerAdapter extends RecyclerView.Adapter<ClothingRecycl
     static class ClothingViewHolder extends RecyclerView.ViewHolder {
         ImageView mImageView;
         TextView mImageTitle;
+        Button mDeleteButton;
 
         ClothingViewHolder(@NonNull View itemView, final OnItemClickListener listener) {
             // itemView is the whole card
             super(itemView);
             mImageView = itemView.findViewById(R.id.item_image);
             mImageTitle = itemView.findViewById(R.id.item_title);
+            mDeleteButton = itemView.findViewById(R.id.delete_button);
 
+            mDeleteButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View deleteButtonView) {
+                    if (listener != null) {
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION) {
+                            listener.onDeleteClick(position, deleteButtonView);
+                        }
+                    }
+                }
+            });
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -68,7 +84,8 @@ public class ClothingRecyclerAdapter extends RecyclerView.Adapter<ClothingRecycl
                                                                          int viewType) {
         View clothingItemAsView = LayoutInflater.from(parent.getContext()).inflate(
                 R.layout.clothing_item, parent, false);
-        clothingItemAsView.findViewById(R.id.image_and_text_layout).setClipToOutline(true);
+        clothingItemAsView.findViewById(R.id.image_layout).setClipToOutline(true);
+        mRecyclerView = (RecyclerView) parent;
         return new ClothingViewHolder(clothingItemAsView, mListener);
     }
 
@@ -77,13 +94,14 @@ public class ClothingRecyclerAdapter extends RecyclerView.Adapter<ClothingRecycl
         ClothingItem clothingItem = mClothingItems.get(position);
         // no "if empty" because clothingItem always has the resource data member initialized
         Picasso.get()
-                .load(clothingItem.getmImageResource())
+                .load(clothingItem.getmImageUrl())
                 .error(R.drawable.ic_image_placeholder)
                 .placeholder(R.drawable.ic_image_placeholder)
                 .centerCrop()
                 .fit()
                 .into(holder.mImageView);
         holder.mImageTitle.setText(clothingItem.getmTitle());
+        holder.itemView.setTag(clothingItem); // cardview is holding its clothing item
     }
 
     @Override

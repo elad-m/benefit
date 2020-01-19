@@ -6,26 +6,28 @@ package com.benefit.ui.profile;
  */
 public class ClothingItem {
 
-    private int mImageResource;
+
+    private int mProductId;
+    private String mImageUrl;
     private String mTitle;
 
     public ClothingItem() {
     }
 
-    public ClothingItem(int imageResource, String title) {
-        mImageResource = imageResource;
+
+    public ClothingItem(String imageUrl, String title, int id) {
+        mImageUrl = imageUrl;
         mTitle = title;
+        mProductId = id;
     }
 
-
-    public int getmImageResource() {
-        return mImageResource;
+    public String getmImageUrl() {
+        return mImageUrl;
     }
 
-    public void setmImageResource(int mImageResource) {
-        this.mImageResource = mImageResource;
+    public void setmImageUrl(String imageUrl) {
+        this.mImageUrl = imageUrl;
     }
-
 
     public String getmTitle() {
         return mTitle;
@@ -33,5 +35,13 @@ public class ClothingItem {
 
     public void setmTitle(String mTitle) {
         this.mTitle = mTitle;
+    }
+
+    public int getmProductId() {
+        return mProductId;
+    }
+
+    public void setmProductId(int mProductId) {
+        this.mProductId = mProductId;
     }
 }

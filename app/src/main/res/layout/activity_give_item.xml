@@ -40,7 +40,8 @@
                 android:background="@color/colorWhite"
                 android:contentDescription="@string/description_of_image_of_item_upload"
                 android:onClick="openFileChooser"
-                android:src="@drawable/ic_add_black_24dp" />
+                android:src="@drawable/ic_add_image"
+                android:scaleType="fitCenter"/>
 
             <LinearLayout
                 android:layout_width="wrap_content"

@@ -4,33 +4,36 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/cardview_light_background"
-    tools:context=".activities.UserProfileActivity">
-
+    android:background="@color/colorWhite"
+    android:layoutDirection="ltr"
+    android:orientation="vertical"
+    tools:context=".UserProfileActivity">
 
     <include
-        layout="@layout/page_header"
-        android:id="@+id/page_header_root_layout"/>
+        android:id="@+id/user_profile_page_header"
+        layout="@layout/page_header" />
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/page_header_root_layout"
-        android:orientation="vertical">
+        android:layout_height="0dp"
+        app:layout_constraintHeight_percent="0.823"
+        app:layout_constraintTop_toBottomOf="@id/user_profile_page_header"
+        >
 
-        <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/items_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/colorWhite"
+            android:padding="4dp"
+            android:scrollbars="vertical"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            ></androidx.recyclerview.widget.RecyclerView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/items_recycler"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@android:color/darker_gray"
-        android:padding="4dp"
-        android:scrollbars="vertical"></androidx.recyclerview.widget.RecyclerView>
-
-    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

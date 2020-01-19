@@ -1,4 +1,4 @@
-package com.benefit.activities;
+package com.benefit;
 
 import android.app.Dialog;
 import android.content.Intent;
@@ -21,14 +21,11 @@ import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
-import com.benefit.R;
 import com.benefit.drivers.DatabaseDriver;
 import com.benefit.model.Category;
 import com.benefit.model.Product;
-import com.benefit.model.User;
 import com.benefit.services.CategoryService;
 import com.benefit.services.ProductService;
-import com.benefit.utilities.HeaderClickListener;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.squareup.picasso.Picasso;
@@ -41,6 +38,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * This activity is used when the user wants to give/upload/offer item to his profile.
@@ -57,6 +55,7 @@ public class GiveItemActivity extends AppCompatActivity {
     private LayoutInflater inflater;
     private List<String> conditions = Arrays.asList("New", "Used");
     private List<String> sizes = Arrays.asList("S", "M", "L", "XL");
+    private List<Integer> productIdsToAdd = Arrays.asList(411, 405, 420, 444, 404);
 
     private DatabaseDriver databaseDriver = new DatabaseDriver();
     private CategoryService categoryService;
@@ -71,7 +70,6 @@ public class GiveItemActivity extends AppCompatActivity {
     private int mCategory;
     private String mSize;
     private String mCondition;
-    private User user;
 
 
     @Override
@@ -186,7 +184,7 @@ public class GiveItemActivity extends AppCompatActivity {
                     chipGroup.addView(createChipAsView(category));
                 }
                 ((Chip) chipGroup.getChildAt(CHILD_INDEX_CHIP)).setChecked(true);
-                mMetaCategory = (int)metaCategories.get(0).getId();
+                mMetaCategory = metaCategories.get(0).getId();
             }
         };
         categoryService.getAllMetaCategories().observe(this, metaCategoriesObserver);
@@ -199,7 +197,7 @@ public class GiveItemActivity extends AppCompatActivity {
             public void onCheckedChanged(ChipGroup chipGroup, int i) {
                 Chip chip = chipGroup.findViewById(i);
                 if (chip != null) {
-                    mMetaCategory = (int)((Category) chip.getTag()).getId();
+                    mMetaCategory = ((Category) chip.getTag()).getId();
                     createCategoriesChipsFromMetaCategory();
                 }
             }
@@ -227,7 +225,7 @@ public class GiveItemActivity extends AppCompatActivity {
                     chipGroup.addView(createChipAsView(category));
                 }
                 ((Chip) chipGroup.getChildAt(CHILD_INDEX_CHIP)).setChecked(true);
-                mCategory = (int)categories.get(0).getId();
+                mCategory = categories.get(0).getId();
             }
         };
         categoryService.getChildrenByParentId(mMetaCategory).observe(this, categoriesObserver);
@@ -240,7 +238,7 @@ public class GiveItemActivity extends AppCompatActivity {
             public void onCheckedChanged(ChipGroup chipGroup, int i) {
                 Chip chip = chipGroup.findViewById(i);
                 if (chip != null) {
-                    mCategory = (int)((Category) chip.getTag()).getId();
+                    mCategory = ((Category) chip.getTag()).getId();
                 }
             }
         });
@@ -280,7 +278,6 @@ public class GiveItemActivity extends AppCompatActivity {
         mEdTextTitle = findViewById(R.id.item_title_text);
         activityRootLinearLayout = findViewById(R.id.activity_root_linear_layout);
         inflater = LayoutInflater.from(this);
-        user = (User) getIntent().getSerializableExtra(getString(R.string.user_relay));
     }
 
     private void createActionBar() {
@@ -288,6 +285,46 @@ public class GiveItemActivity extends AppCompatActivity {
         view.setVisibility(View.INVISIBLE);
         Button givePlusButton = findViewById(R.id.give_icon);
         givePlusButton.setBackground(getResources().getDrawable(R.drawable.ic_give_colored));
+        setActionBarOnClicks();
+    }
+
+    private void setActionBarOnClicks() {
+        Button giveItemButton = findViewById(R.id.give_icon);
+        Button searchButton = findViewById(R.id.search_icon);
+        Button chatButton = findViewById(R.id.message_icon);
+        Button userButton = findViewById(R.id.user_icon);
+
+        giveItemButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), GiveItemActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        chatButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), ChatActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        userButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), UserProfileActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        searchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
 
@@ -344,6 +381,14 @@ public class GiveItemActivity extends AppCompatActivity {
         return itemTitle;
     }
 
+    public int getProductId(){
+        if (productIdsToAdd.isEmpty()){
+            return ThreadLocalRandom.current().nextInt(500, 1000 + 1);
+        } else {
+            return productIdsToAdd.remove(productIdsToAdd.size() - 1);
+        }
+    }
+
 
     public void onClickGive(View view) {
         if (mImageUri == null) {
@@ -354,7 +399,8 @@ public class GiveItemActivity extends AppCompatActivity {
             Date date = Calendar.getInstance().getTime();
             Map<String, List<String>> properties = getProductProperties();
             List<String> imagesUrls = loadImagesUrls();
-            Product product = new Product(mCategory, user.getUid(),
+            int productId = getProductId();
+            Product product = new Product(productId, mCategory, "jHbxY9G5pdO7Qo5k58ulwPsY1fG2",
                     itemTitle, itemDescription, 0, 0, date, properties, imagesUrls);
             productService.addProduct(product);
             createThankYouDailog();
@@ -369,7 +415,7 @@ public class GiveItemActivity extends AppCompatActivity {
 
     private void createThankYouDailog() {
         thankYouDailog = new Dialog(this);
-        thankYouDailog.setContentView(R.layout.thank_you_dialog);
+        thankYouDailog.setContentView(R.layout.dialog_thank_you);
         thankYouDailog.show();
     }
 
@@ -387,24 +433,65 @@ public class GiveItemActivity extends AppCompatActivity {
 
     private void createNoPhotoDialog() {
         dialogReturnsToActivity = new Dialog(this);
-        dialogReturnsToActivity.setContentView((R.layout.no_photo_dialog));
+        dialogReturnsToActivity.setContentView((R.layout.dialog_no_photo));
         dialogReturnsToActivity.show();
     }
 
 
     public void popTipsDialog(View view) {
         dialogReturnsToActivity = new Dialog(this);
-        dialogReturnsToActivity.setContentView(R.layout.photoshooting_tips_dialog);
+        dialogReturnsToActivity.setContentView(R.layout.dialog_photoshooting_tips);
         dialogReturnsToActivity.show();
     }
 
     private void setHeaderListeners() {
-        HeaderClickListener.setHeaderListeners(this);
+        findViewById(R.id.give_icon).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startGiveActivity();
+            }
+        });
+
+        findViewById(R.id.user_icon).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startUserProfileActivity();
+            }
+        });
+
+        findViewById(R.id.search_icon).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startSearchActivity();
+            }
+        });
+
+        findViewById(R.id.message_icon).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startMessageActivity();
+            }
+        });
     }
 
-    @Override
-    public void startActivity(Intent intent) {
-        intent.putExtra(getString(R.string.user_relay), user);
-        super.startActivity(intent);
+    private void startMessageActivity() {
+        Intent intent = new Intent(this, ConversationActivity.class);
+        startActivity(intent);
     }
+
+    private void startSearchActivity() {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+    }
+
+    private void startUserProfileActivity() {
+        Intent intent = new Intent(this, UserProfileActivity.class);
+        startActivity(intent);
+    }
+
+    private void startGiveActivity() {
+        Intent intent = new Intent(this, GiveItemActivity.class);
+        startActivity(intent);
+    }
+
 }
