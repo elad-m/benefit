@@ -220,6 +220,7 @@ public class SignInActivity extends AppCompatActivity implements OnMapReadyCallb
             GoogleSignInClient mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
             //start google signin ui
             Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+            viewModel.setLoginState(LoginState.LOGGING_IN);
             startActivityForResult(signInIntent, RC_GOOGLE_SIGN_IN);
         }
     }
