@@ -5,6 +5,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
@@ -24,9 +26,11 @@ import android.widget.Toast;
 
 import com.benefit.viewmodel.SignInViewModel;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.SignInButton;
+import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -59,6 +63,7 @@ public class SignInActivity extends AppCompatActivity implements OnMapReadyCallb
     private GoogleMap mMap;
     private CameraPosition mCameraPosition;
     private SignInViewModel viewModel;
+    private Observer<Boolean> gettingNewUserSucceeded;
 
     //view elements
     private LinearLayout signInButtons, signUpForm;
@@ -101,6 +106,9 @@ public class SignInActivity extends AppCompatActivity implements OnMapReadyCallb
         //set views objects
         setUpViewElements();
 
+        //set getting user from database observer
+        setUpGettingNewUserSucceeded();
+
     }
 
     private void setUpViewElements(){
@@ -114,6 +122,25 @@ public class SignInActivity extends AppCompatActivity implements OnMapReadyCallb
         lastNameField = findViewById(R.id.last_name_input_text);
         addressField = findViewById(R.id.address_input_text);
 
+    }
+
+    private void setUpGettingNewUserSucceeded(){
+        gettingNewUserSucceeded = success -> {
+            if (success){
+                if (viewModel.getUser() != null){
+                    viewModel.setLoginState(LoginState.FINISH);
+                }
+                else {
+                    viewModel.createNewUser();
+                    viewModel.setLoginState(LoginState.NEW_USER_SIGN_UP);
+                }
+            }
+            else {
+                Toast.makeText(this, R.string.sign_in_fail_massage, Toast.LENGTH_LONG).show();
+                viewModel.setLoginState(LoginState.NOT_SIGN_IN);
+            }
+            updateAccordingToLoginState();
+        };
     }
 
     private void initiateGoogleMap(){
@@ -152,7 +179,10 @@ public class SignInActivity extends AppCompatActivity implements OnMapReadyCallb
                 initiateGoogleMap();
                 break;
             case FINISH:
-                //start main activity and end this activity.
+                Intent intent = new Intent(this, MainActivity.class);
+                intent.putExtra(getString(R.string.user_relay), viewModel.getUser());
+                startActivity(intent);
+                finish();
         }
 
     }
@@ -193,8 +223,30 @@ public class SignInActivity extends AppCompatActivity implements OnMapReadyCallb
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
+        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_GOOGLE_SIGN_IN){
-            //call viewmodel
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            try {
+                // Google Sign In was successful, authenticate with Firebase
+                LiveData<Boolean> success = viewModel.signInWithGoogle(task.getResult(ApiException.class));
+                success.observe(this, signInSucceeded -> {
+                    if(signInSucceeded){
+                        viewModel.setLoginState(LoginState.SIGN_IN_GET_USER);
+                        viewModel.getUserFromDatabase().observe(this, gettingNewUserSucceeded);
+                    }
+                    else {
+                        Toast.makeText(this, R.string.sign_in_fail_massage, Toast.LENGTH_LONG).show();
+                        viewModel.setLoginState(LoginState.NOT_SIGN_IN);
+                    }
+                });
+            } catch (ApiException e) {
+                // Google Sign In failed, update UI appropriately
+                Log.w(TAG, "Google sign in failed", e);
+                Toast.makeText(this, R.string.google_sign_in_fail_massage, Toast.LENGTH_LONG).show();
+                viewModel.setLoginState(LoginState.NOT_SIGN_IN);
+            }
+            updateAccordingToLoginState();
         }
     }
 

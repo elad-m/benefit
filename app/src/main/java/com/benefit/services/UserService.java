@@ -23,8 +23,8 @@ public class UserService extends ViewModel {
     private DatabaseDriver databaseDriver;
     private AuthenticationDriver authenticationDriver;
     private CollectionReference usersCollectionRef;
-    private static final String COLLECTION_USERS_NAME = "users";
-    private static final String UID = "uid";
+    public static final String COLLECTION_USERS_NAME = "users";
+    public static final String UID = "uid";
     private static final String TAG = UserService.class.getSimpleName();
 
     public UserService(DatabaseDriver databaseDriver, AuthenticationDriver authenticationDriver) {
