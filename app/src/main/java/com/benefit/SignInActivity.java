@@ -248,6 +248,8 @@ public class SignInActivity extends AppCompatActivity implements OnMapReadyCallb
             }
             updateAccordingToLoginState();
         }
+
+        //for the future - mail and phone signin
     }
 
     /**
