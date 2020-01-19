@@ -33,6 +33,9 @@
     <string name="dialog_thank_you_message">Great! This will become someone else\'s treasure!</string>
     <string name="dialog_thank_you_image_description">Chest of gold to convey message of treasure</string>
     <string name="dialog_done_button_text">Done</string>
+    <string name="add_item_heading_message">Please add a picture, title and choose from the categories below</string>
+    <string name="alert_dialog_delete_item_title">Item Deletion</string>
+    <string name="item_deleted_toast">Item deleted!</string>
     <string name="top_area_slogan">Look for your new clothes!</string>
     <string name="benefit_logo_description">benefit logo</string>
     <string name="sign_in_title">Please sign in</string>
@@ -43,9 +46,6 @@
     <string name="sign_in_fail_massage">Filed to sign in.</string>
     <string name="google_sign_in_fail_massage">Filed to sign in with google.</string>
     <string name="user_relay">user</string>
-    <string name="add_item_heading_message">Please add a picture, title and choose from the categories below</string>
-    <string name="alert_dialog_delete_item_title">Item Deletion</string>
-    <string name="item_deleted_toast">Item deleted!</string>
     <string name="give">GIVE</string>
     <string name="search">Search</string>
     <string name="notifications">Notification</string>

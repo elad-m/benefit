@@ -209,7 +209,7 @@ public class UserProfileActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         productService.deleteProduct(productId);
                         removeItem(position);
-                        makeToast("Item deleted!");
+                        makeToast(getString(R.string.item_deleted_toast));
                     }
                 })
                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -219,7 +219,7 @@ public class UserProfileActivity extends AppCompatActivity {
                     }
                 });
         AlertDialog alertDialog = builder.create();
-        alertDialog.setTitle("Item Deletion");
+        alertDialog.setTitle(this.getString(R.string.alert_dialog_delete_item_title));
         alertDialog.show();
     }
 

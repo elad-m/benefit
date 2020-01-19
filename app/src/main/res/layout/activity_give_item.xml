@@ -28,7 +28,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/give_item_margins"
                 android:gravity="center"
-                android:text="Please add a picture, title and choose from the categories below"
+                android:text="@string/add_item_heading_message"
                 android:textSize="@dimen/give_item_text_views_text_size" />
 
             <ImageButton
