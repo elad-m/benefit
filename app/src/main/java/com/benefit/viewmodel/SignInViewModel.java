@@ -29,6 +29,7 @@ public class SignInViewModel extends ViewModel {
     private AuthenticationDriver authenticationDriver;
     private SignInActivity.LoginState loginState;
 
+    private Boolean mAccessingDatabase;
     private UserService userService;
 
     public SignInViewModel() {
@@ -36,8 +37,10 @@ public class SignInViewModel extends ViewModel {
         authenticationDriver = new AuthenticationDriver();
         userService = new UserService(databaseDriver, authenticationDriver);
         if (authenticationDriver.isSignIn()) {
+            mAccessingDatabase = true;
             loginState = SignInActivity.LoginState.SIGN_IN_GET_USER;
         } else {
+            mAccessingDatabase = false;
             loginState = SignInActivity.LoginState.NOT_SIGN_IN;
         }
     }
@@ -48,6 +51,10 @@ public class SignInViewModel extends ViewModel {
 
     public void createNewUser(){
         user = new User(authenticationDriver.getUserUid());
+    }
+
+    public Boolean getmAccessingDatabase() {
+        return mAccessingDatabase;
     }
 
     public SignInActivity.LoginState getLoginState() {
@@ -82,6 +89,7 @@ public class SignInViewModel extends ViewModel {
     public LiveData<Boolean> getUserFromDatabase(){
         MutableLiveData<Boolean> success = new MutableLiveData<>();
         final List<User> documentsList = new LinkedList<>();
+        mAccessingDatabase = true;
         Query getUserQuery = databaseDriver.getCollectionReferenceByName(UserService.COLLECTION_USERS_NAME).whereEqualTo(UserService.UID, authenticationDriver.getUserUid());
         getUserQuery.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
@@ -99,8 +107,10 @@ public class SignInViewModel extends ViewModel {
                 Log.d(TAG, "Error getting users documents: ", task.getException());
                 success.setValue(false);
             }
+            mAccessingDatabase = false;
         });
 
         return success;
     }
+
 }

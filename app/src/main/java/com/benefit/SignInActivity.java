@@ -172,6 +172,9 @@ public class SignInActivity extends AppCompatActivity implements OnMapReadyCallb
                 signUpForm.setVisibility(LinearLayout.GONE);
                 //can add logging in animation
                 title.setText(R.string.sign_in_getting_user_title);
+                if (!viewModel.getmAccessingDatabase()) {
+                    viewModel.getUserFromDatabase().observe(this, gettingNewUserSucceeded);
+                }
                 break;
             case NEW_USER_SIGN_UP:
                 signInButtons.setVisibility(LinearLayout.GONE);
@@ -234,7 +237,6 @@ public class SignInActivity extends AppCompatActivity implements OnMapReadyCallb
                 success.observe(this, signInSucceeded -> {
                     if(signInSucceeded){
                         viewModel.setLoginState(LoginState.SIGN_IN_GET_USER);
-                        viewModel.getUserFromDatabase().observe(this, gettingNewUserSucceeded);
                     }
                     else {
                         Toast.makeText(this, R.string.sign_in_fail_massage, Toast.LENGTH_LONG).show();
@@ -390,34 +392,33 @@ public class SignInActivity extends AppCompatActivity implements OnMapReadyCallb
         }
     }
 
-    public void onDoneClicked(View view){
-        firstNameField.setError(null);
-        lastNameField.setError(null);
-        String firstName = firstNameField.getText().toString();
-        String lastName= lastNameField.getText().toString();
-        String address = addressField.getText().toString();
-        if (firstName.isEmpty()){
-            if(lastName.isEmpty()){
-                Toast.makeText(this, getString(R.string.enter_first_and_last_name), Toast.LENGTH_LONG).show();
-                firstNameField.setError(getString(R.string.error_field_massge));
-                lastNameField.setError(getString(R.string.error_field_massge));
-            }
-            else {
-                Toast.makeText(this, getString(R.string.enter_first_name), Toast.LENGTH_LONG).show();
-                firstNameField.setError(getString(R.string.error_field_massge));
-            }
-        }
-        else {
-            if(lastName.isEmpty()){
-                Toast.makeText(this, getString(R.string.enter_last_name), Toast.LENGTH_LONG).show();
-                firstNameField.setError(getString(R.string.error_field_massge));
-            }
-            else {
-                viewModel.getUser().setFirstName(firstName);
-                viewModel.getUser().setLastName(lastName);
-                viewModel.getUser().setAddress(address);
-                viewModel.setLoginState(LoginState.FINISH);
-                updateAccordingToLoginState();
+    public void onDoneClicked(View view) {
+        if (viewModel.getLoginState() == LoginState.NEW_USER_SIGN_UP) {
+            firstNameField.setError(null);
+            lastNameField.setError(null);
+            String firstName = firstNameField.getText().toString();
+            String lastName = lastNameField.getText().toString();
+            String address = addressField.getText().toString();
+            if (firstName.isEmpty()) {
+                if (lastName.isEmpty()) {
+                    Toast.makeText(this, getString(R.string.enter_first_and_last_name), Toast.LENGTH_LONG).show();
+                    firstNameField.setError(getString(R.string.error_field_massge));
+                    lastNameField.setError(getString(R.string.error_field_massge));
+                } else {
+                    Toast.makeText(this, getString(R.string.enter_first_name), Toast.LENGTH_LONG).show();
+                    firstNameField.setError(getString(R.string.error_field_massge));
+                }
+            } else {
+                if (lastName.isEmpty()) {
+                    Toast.makeText(this, getString(R.string.enter_last_name), Toast.LENGTH_LONG).show();
+                    firstNameField.setError(getString(R.string.error_field_massge));
+                } else {
+                    viewModel.getUser().setFirstName(firstName);
+                    viewModel.getUser().setLastName(lastName);
+                    viewModel.getUser().setAddress(address);
+                    viewModel.setLoginState(LoginState.FINISH);
+                    updateAccordingToLoginState();
+                }
             }
         }
     }
