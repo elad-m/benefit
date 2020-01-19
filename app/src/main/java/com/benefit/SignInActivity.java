@@ -1,6 +1,7 @@
 package com.benefit;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -22,6 +23,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.benefit.viewmodel.SignInViewModel;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -47,6 +51,7 @@ public class SignInActivity extends AppCompatActivity implements OnMapReadyCallb
 
     public enum LoginState{NOT_SIGN_IN, LOGGING_IN, SIGN_IN_GET_USER, NEW_USER_SIGN_UP, FINISH};
     private static final String TAG = SignInActivity.class.getSimpleName();
+    private static final int RC_GOOGLE_SIGN_IN = 9001;
     // Keys for storing activity state.
     private static final String KEY_CAMERA_POSITION = "camera_position";
     private static final String KEY_LOCATION = "location";
@@ -128,12 +133,26 @@ public class SignInActivity extends AppCompatActivity implements OnMapReadyCallb
                 signUpForm.setVisibility(LinearLayout.GONE);
                 title.setText(R.string.sign_in_title);
                 break;
+            case LOGGING_IN:
+                signInButtons.setVisibility(LinearLayout.GONE);
+                signUpForm.setVisibility(LinearLayout.GONE);
+                //can add logging in animation
+                title.setText(R.string.logging_in_title);
+                break;
+            case SIGN_IN_GET_USER:
+                signInButtons.setVisibility(LinearLayout.GONE);
+                signUpForm.setVisibility(LinearLayout.GONE);
+                //can add logging in animation
+                title.setText(R.string.sign_in_getting_user_title);
+                break;
             case NEW_USER_SIGN_UP:
                 signInButtons.setVisibility(LinearLayout.GONE);
                 signUpForm.setVisibility(LinearLayout.VISIBLE);
-                title.setText(getString(R.string.sign_up_title));
+                title.setText(R.string.sign_up_title);
                 initiateGoogleMap();
                 break;
+            case FINISH:
+                //start main activity and end this activity.
         }
 
     }
@@ -153,6 +172,29 @@ public class SignInActivity extends AppCompatActivity implements OnMapReadyCallb
             outState.putParcelable(KEY_CAMERA_POSITION, mMap.getCameraPosition());
             outState.putParcelable(KEY_LOCATION, mLastKnownLocation);
             super.onSaveInstanceState(outState);
+        }
+    }
+
+    public void onGoogleSignInClicked(View view){
+        if (viewModel.getLoginState() == LoginState.NOT_SIGN_IN){
+            // Configure Google Sign In
+            GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                    .requestIdToken(getString(R.string.default_web_client_id))
+                    .requestEmail()
+                    .build();
+            // Build a GoogleSignInClient with the options specified by gso.
+            GoogleSignInClient mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+            //start google signin ui
+            Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+            startActivityForResult(signInIntent, RC_GOOGLE_SIGN_IN);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == RC_GOOGLE_SIGN_IN){
+            //call viewmodel
         }
     }
 
@@ -294,20 +336,26 @@ public class SignInActivity extends AppCompatActivity implements OnMapReadyCallb
     }
 
     public void onDoneClicked(View view){
+        firstNameField.setError(null);
+        lastNameField.setError(null);
         String firstName = firstNameField.getText().toString();
         String lastName= lastNameField.getText().toString();
         String address = addressField.getText().toString();
         if (firstName.isEmpty()){
             if(lastName.isEmpty()){
                 Toast.makeText(this, getString(R.string.enter_first_and_last_name), Toast.LENGTH_LONG).show();
+                firstNameField.setError(getString(R.string.error_field_massge));
+                lastNameField.setError(getString(R.string.error_field_massge));
             }
             else {
                 Toast.makeText(this, getString(R.string.enter_first_name), Toast.LENGTH_LONG).show();
+                firstNameField.setError(getString(R.string.error_field_massge));
             }
         }
         else {
             if(lastName.isEmpty()){
                 Toast.makeText(this, getString(R.string.enter_last_name), Toast.LENGTH_LONG).show();
+                firstNameField.setError(getString(R.string.error_field_massge));
             }
             else {
                 viewModel.getUser().setFirstName(firstName);

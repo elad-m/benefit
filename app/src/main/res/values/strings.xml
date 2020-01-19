@@ -37,6 +37,9 @@
     <string name="sign_in_title">Please enter sign in</string>
     <string name="lets_start">Let\'s start</string>
     <string name="sign_up_title">Welcome new user! Please enter additional details.</string>
+    <string name="logging_in_title">Hang just a minute</string>
+    <string name="sign_in_getting_user_title">You are in! Just checking if you are a new user.</string>
+    <string name="error_field_massge">Required field</string>
 
     <string-array name="chat_sort_options">
         <item>your items</item>
