@@ -33,14 +33,13 @@ public class SignInViewModel extends ViewModel {
     private UserService userService;
 
     public SignInViewModel() {
+        mAccessingDatabase = false;
         databaseDriver = new DatabaseDriver();
         authenticationDriver = new AuthenticationDriver();
         userService = new UserService(databaseDriver, authenticationDriver);
         if (authenticationDriver.isSignIn()) {
-            mAccessingDatabase = true;
             loginState = SignInActivity.LoginState.SIGN_IN_GET_USER;
         } else {
-            mAccessingDatabase = false;
             loginState = SignInActivity.LoginState.NOT_SIGN_IN;
         }
     }
