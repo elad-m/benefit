@@ -16,6 +16,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.benefit.R;
+import com.benefit.model.User;
 import com.benefit.ui.Displayable;
 import com.benefit.ui.DisplayableRecycleAdapter;
 import com.benefit.ui.Items.ItemsDisplay;
@@ -41,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
     private int itemsDisplayed;
     private DatabaseDriver databaseDriver = new DatabaseDriver();
     private CategoryService categoryService;
+    private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void extractExtras() {
+        user = (User) getIntent().getSerializableExtra(getString(R.string.user_relay));
         Bundle bundle = getIntent().getExtras();
         if (bundle == null) {
             metaCategoryChosen = null;

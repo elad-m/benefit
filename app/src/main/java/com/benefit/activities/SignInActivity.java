@@ -122,7 +122,6 @@ public class SignInActivity extends AppCompatActivity implements OnMapReadyCallb
         firstNameField = findViewById(R.id.first_name_input_text);
         lastNameField = findViewById(R.id.last_name_input_text);
         addressField = findViewById(R.id.address_input_text);
-
     }
 
     private void setUpGettingNewUserSucceeded(){
