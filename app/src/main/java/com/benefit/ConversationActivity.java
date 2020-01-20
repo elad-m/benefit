@@ -61,10 +61,6 @@ public class ConversationActivity extends AppCompatActivity implements AdapterVi
     @Override
     protected void onStart() {
         super.onStart();
-        if (userService.shouldSignIn()) {
-            userService.startSignIn(this);
-            return;
-        }
 
         if(conversationAdapter != null){
             conversationAdapter.startListening();
@@ -126,7 +122,6 @@ public class ConversationActivity extends AppCompatActivity implements AdapterVi
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        userService.handleOnSignInResult(requestCode, resultCode, data, this);
     }
 
     private void setHeaderListeners() {
