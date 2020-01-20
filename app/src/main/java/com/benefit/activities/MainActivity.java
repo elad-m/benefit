@@ -15,6 +15,7 @@ import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.benefit.model.User;
 import com.benefit.R;
 import com.benefit.model.User;
 import com.benefit.ui.Displayable;
