@@ -1,7 +1,7 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar.Bridge">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorBenefitBlue</item>
         <item name="colorPrimaryDark">@color/colorBenefitBlue</item>
@@ -13,7 +13,7 @@
     <style name="instructionsText">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:textColor">@color/black</item>
+        <item name="android:textColor">@color/colorBlack</item>
         <item name="android:textStyle">normal</item>
         <item name="android:textSize">14sp</item>
     </style>
