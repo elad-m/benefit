@@ -15,13 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        <activity android:name=".MainActivity" />
         <activity android:name=".GiveItemActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -42,17 +36,16 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
-
-        <activity android:name=".SignUpActivity"></activity>
-        <activity android:name=".ItemsPageActivity" />
-
-        <activity android:name=".UserProfileActivity">
+      
+        <activity android:name=".SignInActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".ItemsPageActivity" />
+        <activity android:name=".UserProfileActivity" />
     </application>
 
 </manifest>

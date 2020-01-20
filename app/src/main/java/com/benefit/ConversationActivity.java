@@ -46,7 +46,7 @@ public class ConversationActivity extends AppCompatActivity implements AdapterVi
         userService.getCurrentUser().observe(this, user -> {
             currentUser = user;
             chatService.setUser(user);
-            Toast.makeText(this, "welcome user " + currentUser.getFirstName() + "!", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "welcome user " + currentUser.getFullName() + "!", Toast.LENGTH_LONG).show();
             //initiate conversation RecyclerView
             initiateConversationRecyclerView();
         });
