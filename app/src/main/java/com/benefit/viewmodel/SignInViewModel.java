@@ -52,6 +52,10 @@ public class SignInViewModel extends ViewModel {
         user = new User(authenticationDriver.getUserUid());
     }
 
+    public void addNewUserToDatabase(){
+        userService.addUserToDatabase(user);
+    }
+
     public Boolean getmAccessingDatabase() {
         return mAccessingDatabase;
     }
@@ -61,9 +65,6 @@ public class SignInViewModel extends ViewModel {
     }
 
     public void setLoginState(SignInActivity.LoginState loginState) {
-        if (loginState == SignInActivity.LoginState.FINISH){
-            userService.addUserToDatabase(user);
-        }
         this.loginState = loginState;
     }
 
