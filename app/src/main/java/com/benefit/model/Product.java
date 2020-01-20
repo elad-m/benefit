@@ -1,7 +1,9 @@
 package com.benefit.model;
 
+import com.benefit.UI.Displayable;
 import com.google.firebase.firestore.ServerTimestamp;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -9,7 +11,7 @@ import java.util.Map;
 /**
  * Model POJO for product
  */
-public class Product {
+public class Product implements Serializable,Displayable {
     private int id;
     private int categoryId;
     private String sellerId;
@@ -49,7 +51,8 @@ public class Product {
         return sellerId;
     }
 
-    public String getTitle() {
+    @Override
+    public String getName() {
         return title;
     }
 
@@ -75,5 +78,10 @@ public class Product {
 
     public List<String> getImagesUrls() {
         return imagesUrls;
+    }
+
+    @Override
+    public String getImageResource() {
+        return imagesUrls.get(0);
     }
 }

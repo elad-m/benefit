@@ -72,7 +72,7 @@ public class SearchService extends ViewModel {
 
     private Boolean isProductFitsKeywords(Product product, String[] keywords) {
         for (String keyword : keywords) {
-            if (!(product.getTitle().toLowerCase().contains(keyword) ||
+            if (!(product.getName().toLowerCase().contains(keyword) ||
                     product.getDescription().toLowerCase().contains(keyword))) {
                 return false;
             }

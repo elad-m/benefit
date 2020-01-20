@@ -13,6 +13,8 @@ public class PropertyName {
     private boolean isMandatory;
     private List<String> validValues;
 
+    public PropertyName(){}
+
     public PropertyName(int id, int categoryId, String name, int sortOrder, boolean isMandatory, List<String> validValues) {
         this.id = id;
         this.categoryId = categoryId;

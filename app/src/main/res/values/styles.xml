@@ -9,4 +9,16 @@
         <item name="android:fontFamily">sans-serif</item>
     </style>
 
+    <style name="BaseTheme" parent="Theme.MaterialComponents.Light.NoActionBar.Bridge">
+        <item name="CustomChipChoiceStyle">@style/ChipStyle</item>
+    </style>
+
+    <style name="ChipStyle" parent="Widget.MaterialComponents.Chip.Choice">
+        <item name="chipBackgroundColor">@color/white</item>
+        <item name="android:textAppearance">@style/TextAppearance.MaterialComponents.Body2</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="chipStrokeColor">@color/black</item>
+        <item name="chipStrokeWidth">1dp</item>
+    </style>
+
 </resources>

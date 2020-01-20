@@ -1,0 +1,27 @@
+{
+  "categories": [
+    {
+      "name": "Dresses",
+      "image": "Medium"
+    },
+    {
+      "name": "Pants",
+      "image": "Medium"
+    },{
+      "name": "Shirts",
+      "image": "Medium"
+    },{
+      "name": "Socks",
+      "image": "Medium"
+    },{
+      "name": "Swimwear",
+      "image": "Medium"
+    },{
+      "name": "Shoes",
+      "image": "Medium"
+    },{
+      "name": "Jackets",
+      "image": "Medium"
+    }
+  ]
+}

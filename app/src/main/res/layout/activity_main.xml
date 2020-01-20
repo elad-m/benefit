@@ -1,19 +1,81 @@
-<?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    android:background="@android:color/white"
+    android:orientation="vertical"
+    tools:context=".MainActivity"
+    android:layoutDirection="ltr">
 
-    <TextView
+
+    <include
+        android:id="@+id/first_page_header"
+        layout="@layout/page_header"/>
+
+
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/search_input"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintWidth_percent="0.81"
+        android:layout_marginLeft="45dp"
+        android:layout_marginRight="45dp"
+        android:background="@drawable/ic_search_bar"
+        android:ems="12"
+        app:queryHint="Search"
+        android:inputType="textPersonName"
+        app:layout_constraintHeight_percent="0.054"
+        app:layout_constraintTop_toBottomOf="@id/first_page_header"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintHorizontal_chainStyle="spread"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/meta_category_guide"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.199" />
+
+    <HorizontalScrollView
+        android:id="@+id/metaCategory_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintHeight_percent="0.029"
+        android:layout_marginTop="10dp"
+        app:layout_constraintTop_toBottomOf="@id/meta_category_guide">
+
+
+        <LinearLayout
+            android:id="@+id/filter_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+
+        </LinearLayout>
+
+    </HorizontalScrollView>
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/categories"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/body_guide"
+        android:scrollbars="vertical">
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/body_guide"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.30" />
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

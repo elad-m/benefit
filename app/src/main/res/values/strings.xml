@@ -38,6 +38,19 @@
     <string name="dialog_thank_you_message">Great! This will become someone else\'s treasure!</string>
     <string name="dialog_thank_you_image_description">Chest of gold to convey message of treasure</string>
     <string name="dialog_done_button_text">Done</string>
+    <string name="give">GIVE</string>
+    <string name="search">Search</string>
+    <string name="notifications">Notification</string>
+    <string name="my_page">My Page</string>
+    <string name="messages">Messages</string>
+    <string name="slogan">Look for your new clothes!</string>
+    <string name="filter_break">:  </string>
+    <string name="done">DONE</string>
+    <string name="reset">RESET</string>
+    <string name="filter_title">Select From:</string>
+    <string name="filter">FILTERS</string>
+    <string name="divider">|</string>
+    <string name="sort">SORT</string>
 
     <string-array name="chat_sort_options">
         <item>your items</item>

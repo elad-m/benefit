@@ -1,14 +1,19 @@
 package com.benefit.model;
 
+import com.benefit.UI.Displayable;
+
+import java.io.Serializable;
+
 /**
  * Model POJO for category of products.
  */
-public class Category {
+public class Category implements Serializable, Displayable {
     private int id;
     private String name;
     private int parentId;
     private int level;
     private boolean isLeaf;
+    private String imageResource;
 
     public Category() {
     }
@@ -25,6 +30,7 @@ public class Category {
         return id;
     }
 
+    @Override
     public String getName() {
         return name;
     }
@@ -39,5 +45,10 @@ public class Category {
 
     public boolean getIsLeaf() {
         return isLeaf;
+    }
+
+    @Override
+    public String getImageResource(){
+        return imageResource;
     }
 }
