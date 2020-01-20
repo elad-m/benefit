@@ -1,4 +1,4 @@
-package com.benefit.UI;
+package com.benefit.ui;
 
 import android.os.Build;
 import android.view.LayoutInflater;

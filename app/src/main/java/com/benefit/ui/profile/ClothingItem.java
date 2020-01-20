@@ -1,7 +1,7 @@
-package com.benefit.UI.profile;
+package com.benefit.ui.profile;
 
 /**
- * Represents a UI component of an item: the rounded rectangle with a photo and title.
+ * Represents a ui component of an item: the rounded rectangle with a photo and title.
  * Used in the RecyclerView as the object of the CardView.
  */
 public class ClothingItem {

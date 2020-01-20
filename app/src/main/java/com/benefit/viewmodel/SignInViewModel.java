@@ -73,7 +73,7 @@ public class SignInViewModel extends ViewModel {
         authenticationDriver.getAuth().signInWithCredential(credential)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        // Sign in success, update UI with the signed-in user's information
+                        // Sign in success, update ui with the signed-in user's information
                         Log.d(TAG, "signInWithCredential:success");
                         success.setValue(true);
                     } else {

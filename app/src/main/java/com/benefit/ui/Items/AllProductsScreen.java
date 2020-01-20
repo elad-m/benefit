@@ -1,4 +1,4 @@
-package com.benefit.UI.Items;
+package com.benefit.ui.Items;
 
 import android.content.Context;
 import android.view.Gravity;
@@ -12,8 +12,8 @@ import android.widget.TextView;
 
 import com.benefit.R;
 import com.benefit.StaticFunctions;
-import com.benefit.UI.Displayable;
-import com.benefit.UI.DisplayableRecycleAdapter;
+import com.benefit.ui.Displayable;
+import com.benefit.ui.DisplayableRecycleAdapter;
 import com.benefit.model.Category;
 import com.benefit.model.CategoryCluster;
 import com.benefit.model.Product;

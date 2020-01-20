@@ -25,8 +25,6 @@ public class DatabaseDriver {
 
     public DatabaseDriver() {
         this.db = FirebaseFirestore.getInstance();
-
-
     }
 
     public FirebaseFirestore getDb() {

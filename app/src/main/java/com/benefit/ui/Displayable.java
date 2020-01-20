@@ -1,7 +1,7 @@
-package com.benefit.UI;
+package com.benefit.ui;
 
 /**
- * Represents a UI component of an item: the rounded rectangle with a photo and title.
+ * Represents a ui component of an item: the rounded rectangle with a photo and title.
  * Used in the RecyclerView as the object of the CardView.
  */
 public interface Displayable {

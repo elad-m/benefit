@@ -1,4 +1,4 @@
-package com.benefit.UI.Items;
+package com.benefit.ui.Items;
 
 import android.view.View;
 
@@ -6,8 +6,8 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.benefit.R;
-import com.benefit.UI.Displayable;
-import com.benefit.UI.DisplayableRecycleAdapter;
+import com.benefit.ui.Displayable;
+import com.benefit.ui.DisplayableRecycleAdapter;
 
 import java.util.ArrayList;
 import java.util.List;

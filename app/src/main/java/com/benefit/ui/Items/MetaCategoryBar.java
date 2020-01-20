@@ -1,4 +1,4 @@
-package com.benefit.UI.Items;
+package com.benefit.ui.Items;
 
 import android.graphics.Color;
 import android.view.View;

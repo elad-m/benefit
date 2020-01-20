@@ -15,10 +15,10 @@ import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
-import com.benefit.UI.Displayable;
-import com.benefit.UI.DisplayableRecycleAdapter;
-import com.benefit.UI.Items.ItemsDisplay;
-import com.benefit.UI.Items.MetaCategoryBar;
+import com.benefit.ui.Displayable;
+import com.benefit.ui.DisplayableRecycleAdapter;
+import com.benefit.ui.Items.ItemsDisplay;
+import com.benefit.ui.Items.MetaCategoryBar;
 import com.benefit.drivers.DatabaseDriver;
 import com.benefit.model.Category;
 import com.benefit.model.CategoryCluster;

@@ -250,7 +250,7 @@ public class SignInActivity extends AppCompatActivity implements OnMapReadyCallb
                     updateAccordingToLoginState();
                 });
             } catch (ApiException e) {
-                // Google Sign In failed, update UI appropriately
+                // Google Sign In failed, update ui appropriately
                 Log.w(TAG, "Google sign in failed", e);
                 Toast.makeText(this, R.string.google_sign_in_fail_massage, Toast.LENGTH_LONG).show();
                 viewModel.setLoginState(LoginState.NOT_SIGN_IN);
@@ -302,7 +302,7 @@ public class SignInActivity extends AppCompatActivity implements OnMapReadyCallb
     }
 
     /**
-     * Updates the map's UI settings based on whether the user has granted location permission.
+     * Updates the map's ui settings based on whether the user has granted location permission.
      */
     private void updateLocationUI() {
         if (mMap == null) {

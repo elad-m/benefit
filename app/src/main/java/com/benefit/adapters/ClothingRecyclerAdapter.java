@@ -10,7 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.benefit.R;
-import com.benefit.UI.profile.ClothingItem;
+import com.benefit.ui.profile.ClothingItem;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;

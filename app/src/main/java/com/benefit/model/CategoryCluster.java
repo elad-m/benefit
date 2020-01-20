@@ -1,6 +1,6 @@
 package com.benefit.model;
 
-import com.benefit.UI.Displayable;
+import com.benefit.ui.Displayable;
 
 import java.io.Serializable;
 import java.util.List;
