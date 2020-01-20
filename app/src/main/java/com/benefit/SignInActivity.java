@@ -337,9 +337,10 @@ public class SignInActivity extends AppCompatActivity implements OnMapReadyCallb
                             // Set the map's camera position to the current location of the device
                             // and add a marker.
                             mLastKnownLocation = task.getResult();
-
                             LatLng currentLocation = new LatLng(mLastKnownLocation.getLatitude(),
                                             mLastKnownLocation.getLongitude());
+                            viewModel.getUser().setLocationLatitude(currentLocation.latitude);
+                            viewModel.getUser().setLocationLongitude(currentLocation.longitude);
                             mSelectedLocation = mMap.addMarker(new MarkerOptions()
                                                                 .position(currentLocation)
                                                                 .draggable(true));
