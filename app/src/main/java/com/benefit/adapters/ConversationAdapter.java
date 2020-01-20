@@ -54,7 +54,7 @@ public class ConversationAdapter extends FirestoreRecyclerAdapter<Match, Convers
 
         void setProduct(Product product) {
             this.product = product;
-            this.productTitle.setText(product.getTitle());
+            this.productTitle.setText(product.getName());
             //set picture
         }
 
