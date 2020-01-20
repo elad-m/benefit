@@ -25,7 +25,7 @@ import com.benefit.UI.profile.ClothingItem;
 import com.benefit.drivers.DatabaseDriver;
 import com.benefit.model.Product;
 import com.benefit.services.ProductService;
-import com.benefit.ui.profile.ClothingItem;
+import com.benefit.UI.profile.ClothingItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,7 +68,7 @@ public class UserProfileActivity extends AppCompatActivity {
                     if (product.getImagesUrls() != null) {
                         if (!product.getImagesUrls().isEmpty()) {
                             mClothingItems.add(new ClothingItem(product.getImagesUrls().get(0),
-                                    product.getTitle(),
+                                    product.getName(),
                                     product.getId()));
                         }
                     }
