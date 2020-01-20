@@ -428,6 +428,7 @@ public class SignInActivity extends AppCompatActivity implements OnMapReadyCallb
                     viewModel.getUser().setFirstName(firstName);
                     viewModel.getUser().setLastName(lastName);
                     viewModel.getUser().setAddress(address);
+                    viewModel.addNewUserToDatabase();
                     viewModel.setLoginState(LoginState.FINISH);
                     updateAccordingToLoginState();
                 }
