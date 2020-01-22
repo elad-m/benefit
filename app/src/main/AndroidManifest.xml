@@ -9,17 +9,24 @@
 
     <application
         android:name="androidx.multidex.MultiDexApplication"
-        tools:ignore="GoogleAppIndexingWarning"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity" />
-        <activity android:name=".GiveItemActivity" />
-        <activity android:name=".ChatActivity" />
-        <activity android:name=".ConversationActivity" />
+        android:theme="@style/AppTheme"
+        tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".activities.MainActivity">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".activities.GiveItemActivity" />
+        <activity android:name=".activities.ChatActivity" />
+        <activity android:name=".activities.ConversationActivity" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -32,16 +39,10 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <activity android:name=".SignInActivity" />
-        <activity android:name=".ProductPageActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity android:name=".ItemsPageActivity" />
-        <activity android:name=".UserProfileActivity" />
+        <activity android:name=".activities.SignInActivity" />
+        <activity android:name=".activities.ProductPageActivity" />
+        <activity android:name=".activities.ItemsPageActivity" />
+        <activity android:name=".activities.UserProfileActivity" />
     </application>
 
 </manifest>
