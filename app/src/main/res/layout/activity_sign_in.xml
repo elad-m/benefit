@@ -1,186 +1,204 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/sign_in_scrollview"
+    android:background="@color/colorWhite"
+    android:layoutDirection="ltr"
     tools:context=".SignInActivity">
 
-    <LinearLayout
+
+    <ImageView
+        android:id="@+id/Logo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#FFFFFF"
+        android:layout_marginLeft="80dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginRight="80dp"
+        android:contentDescription="@string/benefit_logo_description"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_benefit_logo_big" />
+
+    <TextView
+        android:id="@+id/sign_up_title_text_view"
+        style="@style/instructionsText"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/sign_in_title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Logo" />
+
+    <LinearLayout
+        android:id="@+id/sign_in_buttons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        android:gravity="center_horizontal"
         android:layoutDirection="ltr"
-        android:orientation="vertical">
+        android:orientation="horizontal"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
-            android:id="@+id/Logo"
+        <com.google.android.gms.common.SignInButton
+            android:id="@+id/google_sign_in_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:visibility="visible" />
+
+        <Button
+            android:id="@+id/mail_sign_in_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/fui_idp_button_background_email"
+            android:text="mail"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/phone_sign_in_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/fui_idp_button_background_phone"
+            android:text="phone"
+            android:visibility="gone" />
+
+
+    </LinearLayout>
+
+    <ScrollView
+        android:id="@+id/sign_up_form"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/sign_up_title_text_view">
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="80dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginRight="80dp"
-            android:contentDescription="@string/benefit_logo_description"
-            app:srcCompat="@drawable/ic_benefit_logo_big" />
-
-        <TextView
-            android:id="@+id/sign_up_title_text_view"
-            style="@style/instructionsText"
-            android:layout_gravity="center_horizontal"
-            android:text="@string/sign_in_title" />
-
-        <LinearLayout
-            android:visibility="visible"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
-            android:id="@+id/sign_in_buttons"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layoutDirection="ltr"
-            android:gravity="center_horizontal"
-            android:layout_height="wrap_content">
-
-            <com.google.android.gms.common.SignInButton
-                android:id="@+id/google_sign_in_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="visible"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"/>
-
-            <Button
-                android:id="@+id/mail_sign_in_button"
-                android:visibility="gone"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
-                android:background="@drawable/fui_idp_button_background_email"
-                android:text="mail" />
-
-            <Button
-                android:id="@+id/phone_sign_in_button"
-                android:visibility="gone"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
-                android:background="@drawable/fui_idp_button_background_phone"
-                android:text="phone" />
-
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/sign_up_form"
             android:orientation="vertical"
-            android:visibility="visible"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-        <TextView
-            android:layout_marginTop="8dp"
-            android:id="@+id/first_name_title_text"
-            android:text="@string/first_name_field"
-            style="@style/editFieldsTitle" />
+            android:visibility="visible">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="48dp"
-            android:layout_marginEnd="48dp"
-            app:boxStrokeWidth="2dp"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+            <TextView
+                android:id="@+id/first_name_title_text"
+                style="@style/editFieldsTitle"
+                android:layout_marginTop="8dp"
+                android:text="@string/first_name_field" />
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/first_name_input_text"
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textPersonName"/>
+                android:layout_marginStart="48dp"
+                android:layout_marginEnd="48dp"
+                app:boxStrokeWidth="2dp">
 
-        </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/first_name_input_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPersonName" />
 
-        <TextView
-            android:layout_marginTop="8dp"
-            android:id="@+id/last_name_title_text"
-            android:text="@string/last_name_field"
-            style="@style/editFieldsTitle" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="48dp"
-            android:layout_marginEnd="48dp"
-            app:boxStrokeWidth="2dp"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+            <TextView
+                android:id="@+id/last_name_title_text"
+                style="@style/editFieldsTitle"
+                android:layout_marginTop="8dp"
+                android:text="@string/last_name_field" />
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/last_name_input_text"
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textPersonName"/>
+                android:layout_marginStart="48dp"
+                android:layout_marginEnd="48dp"
+                app:boxStrokeWidth="2dp">
 
-        </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/last_name_input_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPersonName" />
 
-        <TextView
-            android:id="@+id/address_title_text"
-            android:text="@string/address_field"
-            android:layout_marginTop="8dp"
-            style="@style/editFieldsTitle" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="48dp"
-            android:layout_marginEnd="48dp"
-            app:boxStrokeWidth="2dp"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+            <TextView
+                android:id="@+id/address_title_text"
+                style="@style/editFieldsTitle"
+                android:layout_marginTop="8dp"
+                android:text="@string/address_field" />
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/address_input_text"
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textPersonName"/>
+                android:layout_marginStart="48dp"
+                android:layout_marginEnd="48dp"
+                app:boxStrokeWidth="2dp">
 
-        </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/address_input_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPersonName" />
 
-        <TextView
-            android:layout_marginTop="8dp"
-            android:id="@+id/map_title"
-            style="@style/instructionsText"
-            android:layout_marginStart="48dp"
-            android:layout_marginEnd="48dp"
-            android:text="@string/map_field_title" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-        <fragment
-            android:id="@+id/googleMapFragment"
-            class="com.benefit.ui.WorkaroundMapFragment"
-            android:layout_width="match_parent"
-            android:layout_height="250dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginStart="12dp"
-            android:layout_marginLeft="12dp"
-            android:layout_marginTop="12dp"
-            android:layout_marginEnd="12dp"
-            android:layout_marginRight="12dp"
-            tools:context="com.benefit.SignInActivity" />
+            <TextView
+                android:id="@+id/map_title"
+                style="@style/instructionsText"
+                android:layout_marginStart="48dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="48dp"
+                android:text="@string/map_field_title" />
+
+            <fragment
+                android:id="@+id/googleMapFragment"
+                class="com.benefit.ui.WorkaroundMapFragment"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginStart="12dp"
+                android:layout_marginLeft="12dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="12dp"
+                android:layout_marginRight="12dp"
+                tools:context="com.benefit.SignInActivity" />
 
 
-        <TextView
-            android:id="@+id/button_done"
-            android:background="@drawable/start_button"
-            android:layout_width="240dp"
-            android:layout_height="70dp"
-            android:gravity="center"
-            android:text="@string/lets_start"
-            android:fontFamily="sans-serif"
-            android:textColor="#ffffff"
-            android:textSize="24sp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="24dp"
-            android:layout_marginBottom="24dp"
-            android:onClick="onDoneClicked" />
+            <TextView
+                android:id="@+id/button_done"
+                android:layout_width="240dp"
+                android:layout_height="70dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="24dp"
+                android:background="@drawable/start_button"
+                android:fontFamily="sans-serif"
+                android:gravity="center"
+                android:onClick="onDoneClicked"
+                android:text="@string/lets_start"
+                android:textColor="#ffffff"
+                android:textSize="24sp" />
+
 
         </LinearLayout>
-        </LinearLayout>
-</ScrollView>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+

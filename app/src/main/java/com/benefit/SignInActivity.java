@@ -62,8 +62,8 @@ public class SignInActivity extends AppCompatActivity implements OnMapReadyCallb
     private Observer<Boolean> gettingNewUserSucceeded;
 
     //view elements
-    private ScrollView scrollView;
-    private LinearLayout signInButtons, signUpForm;
+    private LinearLayout signInButtons;
+    private ScrollView signUpForm;
     private SignInButton googleSignInButton;
     private Button mailSignInButton, phoneSignInButton;
     private TextView title;
@@ -110,7 +110,6 @@ public class SignInActivity extends AppCompatActivity implements OnMapReadyCallb
     }
 
     private void setUpViewElements(){
-        scrollView = findViewById(R.id.sign_in_scrollview);
         signInButtons = findViewById(R.id.sign_in_buttons);
         signUpForm = findViewById(R.id.sign_up_form);
         title = findViewById(R.id.sign_up_title_text_view);
@@ -383,7 +382,7 @@ public class SignInActivity extends AppCompatActivity implements OnMapReadyCallb
                     @Override
                     public void onTouch()
                     {
-                        scrollView.requestDisallowInterceptTouchEvent(true);
+                        signUpForm.requestDisallowInterceptTouchEvent(true);
                     }
                 });
     }
