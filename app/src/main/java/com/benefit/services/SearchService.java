@@ -71,6 +71,12 @@ public class SearchService extends ViewModel {
     }
 
     private Boolean isProductFitsKeywords(Product product, String[] keywords) {
+        if (product == null) {
+            return false;
+        }
+        if (product.getName() == null || product.getDescription() == null) {
+            return false;
+        }
         for (String keyword : keywords) {
             if (!(product.getName().toLowerCase().contains(keyword) ||
                     product.getDescription().toLowerCase().contains(keyword))) {
