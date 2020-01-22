@@ -292,4 +292,9 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    @Override
+    public void startActivity(Intent intent) {
+        intent.putExtra(getString(R.string.user_relay), user);
+        super.startActivity(intent);
+    }
 }
