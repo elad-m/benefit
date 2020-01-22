@@ -17,6 +17,7 @@
     <string name="size_property_name">Size</string>
     <string name="condition_property_name">Condition</string>
     <string name="no_title_value">No title written</string>
+    <string name="sign_up_title">Welcome new user! Please enter additional details.</string>
     <string name="no_description_value">No item Description</string>
     <string name="description_of_image_of_item_upload">Image of item will uploaded to here</string>
     <string name="description_of_image_for_photoshooting_tips">Lightbulb image for photoshooting tips</string>

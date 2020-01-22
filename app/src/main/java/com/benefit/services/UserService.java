@@ -68,12 +68,8 @@ public class UserService extends ViewModel {
         return getUserFromUid(authenticationDriver.getUserUid());
     }
 
-    public void addUserToDatabase(User user){
+    public void addUserToDatabase(User user) {
         usersCollectionRef.add(user);
-    }
-
-    public LiveData<User> getUserById(String userId) {
-        return databaseDriver.getSingleDocumentByField(COLLECTION_USERS_NAME, UID, userId, User.class);
     }
 
     public LiveData<User> getUserById(String userId) {

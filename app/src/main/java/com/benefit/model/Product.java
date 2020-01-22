@@ -11,7 +11,7 @@ import java.util.Map;
 /**
  * Model POJO for product
  */
-public class Product implements Serializable,Displayable {
+public class Product implements Serializable, Displayable {
     private int id;
     private int categoryId;
     private String sellerId;
@@ -19,11 +19,13 @@ public class Product implements Serializable,Displayable {
     private String description;
     private int views;
     private int likes;
-    private @ServerTimestamp Date auctionDate;
+    private @ServerTimestamp
+    Date auctionDate;
     private Map<String, List<String>> properties;
     private List<String> imagesUrls;
 
-    public Product(){}
+    public Product() {
+    }
 
     public Product(int id, int categoryId, String sellerId, String title, String description, int views, int likes, Date auctionDate, Map<String, List<String>> properties, List<String> imagesUrls) {
         this.id = id;
@@ -51,9 +53,13 @@ public class Product implements Serializable,Displayable {
         return sellerId;
     }
 
+    public String getTitle() {
+        return title;
+    }
+
     @Override
     public String getName() {
-        return title;
+        return getTitle();
     }
 
     public String getDescription() {
