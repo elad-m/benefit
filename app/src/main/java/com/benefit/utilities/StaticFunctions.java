@@ -1,4 +1,4 @@
-package com.benefit;
+package com.benefit.utilities;
 
 import android.content.res.Resources;
 
