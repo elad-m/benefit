@@ -259,7 +259,6 @@ public class MainActivity extends AppCompatActivity {
         HeaderClickListener.setHeaderListeners(findViewById(android.R.id.content).getRootView());
     }
 
-
     @Override
     public void startActivity(Intent intent) {
         intent.putExtra(getString(R.string.user_relay), user);
