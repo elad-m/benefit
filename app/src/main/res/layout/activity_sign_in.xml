@@ -138,6 +138,28 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
+                android:id="@+id/phone_number_title_text"
+                style="@style/editFieldsTitle"
+                android:layout_marginTop="8dp"
+                android:text="@string/phone_field" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="48dp"
+                android:layout_marginEnd="48dp"
+                app:boxStrokeWidth="2dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/phone_number_input_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="phone" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
                 android:id="@+id/address_title_text"
                 style="@style/editFieldsTitle"
                 android:layout_marginTop="8dp"

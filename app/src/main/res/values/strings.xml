@@ -57,10 +57,7 @@
     <string name="filter">FILTERS</string>
     <string name="divider">|</string>
     <string name="sort">SORT</string>
-    <string name="user_location_relay">location</string>
-    <string name="user_address_relay">address</string>
-    <string name="user_last_name_relay">lastName</string>
-    <string name="user_first_name_relay">firstName</string>
+    <string name="phone_field">Phone</string>
 
     <!-- Facebook application ID and custom URL scheme (app ID prefixed by 'fb'). -->
     <string name="facebook_application_id" translatable="false">2550633185150206</string>

@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
+import android.telephony.PhoneNumberFormattingTextWatcher;
+import android.telephony.PhoneNumberUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -68,7 +70,7 @@ public class SignInActivity extends AppCompatActivity implements OnMapReadyCallb
     private SignInButton googleSignInButton;
     private Button mailSignInButton, phoneSignInButton;
     private TextView title;
-    private TextInputEditText firstNameField, lastNameField, addressField;
+    private TextInputEditText firstNameField, lastNameField, phoneField, addressField;
 
     // The entry point to the Fused Location Provider.
     private FusedLocationProviderClient mFusedLocationProviderClient;
@@ -120,6 +122,8 @@ public class SignInActivity extends AppCompatActivity implements OnMapReadyCallb
         phoneSignInButton = findViewById(R.id.phone_sign_in_button);
         firstNameField = findViewById(R.id.first_name_input_text);
         lastNameField = findViewById(R.id.last_name_input_text);
+        phoneField = findViewById(R.id.phone_number_input_text);
+        phoneField.addTextChangedListener(new PhoneNumberFormattingTextWatcher("IL"));
         addressField = findViewById(R.id.address_input_text);
     }
 
@@ -410,6 +414,7 @@ public class SignInActivity extends AppCompatActivity implements OnMapReadyCallb
             lastNameField.setError(null);
             String firstName = firstNameField.getText().toString();
             String lastName = lastNameField.getText().toString();
+            String phoneNumber = phoneField.getText().toString();
             String address = addressField.getText().toString();
             if (firstName.isEmpty()) {
                 if (lastName.isEmpty()) {
@@ -427,6 +432,7 @@ public class SignInActivity extends AppCompatActivity implements OnMapReadyCallb
                 } else {
                     viewModel.getUser().setFirstName(firstName);
                     viewModel.getUser().setLastName(lastName);
+                    viewModel.getUser().setPhoneNumber(phoneNumber);
                     viewModel.getUser().setAddress(address);
                     viewModel.addNewUserToDatabase();
                     viewModel.setLoginState(LoginState.FINISH);
