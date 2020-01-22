@@ -36,6 +36,7 @@
     <dimen name="give_button_text_size">30sp</dimen>
     <dimen name="dialog_heading_text_size">30sp</dimen>
     <dimen name="chip_min_width">70dp</dimen>
+    <dimen name="min_text_size">12sp</dimen>
     <dimen name="productPageSeparatorSize">1dp</dimen>
     <dimen name="productPageBottomPartMargin">15dp</dimen>
     <dimen name="productPageDescriptionSize">24sp</dimen>

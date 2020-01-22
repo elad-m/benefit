@@ -40,6 +40,8 @@
             android:textAlignment="center"
             android:textSize="@dimen/clothing_item_title_text_size"
             android:textStyle="bold"
+            android:ellipsize="end"
+            android:maxLines="1"
             app:layout_constraintBottom_toTopOf="@id/edit_button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

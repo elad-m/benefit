@@ -69,6 +69,7 @@
     <string name="brand_text_view_value">Brand:</string>
     <string name="brand_property_name">Brand</string>
     <string name="phone_field">Phone</string>
+    <string name="user_compliment_message">Keep on doing good!</string>
 
     <!-- Facebook application ID and custom URL scheme (app ID prefixed by 'fb'). -->
     <string name="facebook_application_id" translatable="false">2550633185150206</string>
