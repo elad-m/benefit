@@ -52,7 +52,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
-            android:visibility="visible" />
+            app:buttonSize="wide" />
 
         <Button
             android:id="@+id/mail_sign_in_button"
