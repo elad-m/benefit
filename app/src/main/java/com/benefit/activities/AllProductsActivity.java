@@ -16,7 +16,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.benefit.R;
-import com.benefit.model.User
+import com.benefit.model.User;
 import com.benefit.adapters.DisplayableRecycleAdapter;
 import com.benefit.drivers.DatabaseDriver;
 import com.benefit.model.Category;
