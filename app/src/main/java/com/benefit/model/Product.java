@@ -12,7 +12,7 @@ import java.util.Map;
  * Model POJO for product
  */
 public class Product implements Serializable, Displayable {
-    private int id;
+    private long id;
     private int categoryId;
     private String sellerId;
     private String title;
@@ -27,8 +27,8 @@ public class Product implements Serializable, Displayable {
     public Product() {
     }
 
-    public Product(int id, int categoryId, String sellerId, String title, String description, int views, int likes, Date auctionDate, Map<String, List<String>> properties, List<String> imagesUrls) {
-        this.id = id;
+    public Product(int categoryId, String sellerId, String title, String description, int views, int likes, Date auctionDate, Map<String, List<String>> properties, List<String> imagesUrls) {
+        this.id = System.currentTimeMillis();
         this.categoryId = categoryId;
         this.sellerId = sellerId;
         this.title = title;
@@ -41,7 +41,7 @@ public class Product implements Serializable, Displayable {
     }
 
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
@@ -88,6 +88,9 @@ public class Product implements Serializable, Displayable {
 
     @Override
     public String getImageResource() {
+        if (imagesUrls == null || imagesUrls.isEmpty()) {
+            return "";
+        }
         return imagesUrls.get(0);
     }
 }
