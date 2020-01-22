@@ -16,6 +16,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.benefit.R;
+import com.benefit.model.User;
 import com.benefit.ui.Displayable;
 import com.benefit.ui.DisplayableRecycleAdapter;
 import com.benefit.ui.Items.AllProductsScreen;
@@ -55,6 +56,7 @@ public class ItemsPageActivity extends AppCompatActivity {
     private CategoryService categoryService;
     private ProductService productService;
     private SearchService searchService;
+    private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -400,4 +402,9 @@ public class ItemsPageActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    @Override
+    public void startActivity(Intent intent) {
+        intent.putExtra(getString(R.string.user_relay), user);
+        super.startActivity(intent);
+    }
 }
