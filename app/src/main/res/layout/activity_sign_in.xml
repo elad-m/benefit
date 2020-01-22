@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/sign_in_scrollview"
-    tools:context=".SignInActivity">
+    tools:context=".activities.SignInActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -163,7 +163,7 @@
             android:layout_marginTop="12dp"
             android:layout_marginEnd="12dp"
             android:layout_marginRight="12dp"
-            tools:context="com.benefit.SignInActivity" />
+            tools:context="com.benefit.activities.SignInActivity" />
 
 
         <TextView

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layoutDirection="ltr"
-    tools:context=".GiveItemActivity">
+    tools:context=".activities.GiveItemActivity">
 
     <include
         android:id="@+id/give_page_header"

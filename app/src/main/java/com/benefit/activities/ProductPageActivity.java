@@ -1,4 +1,4 @@
-package com.benefit;
+package com.benefit.activities;
 
 import android.location.Location;
 import android.location.LocationManager;
@@ -12,9 +12,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.benefit.R;
 import com.benefit.model.Product;
 import com.benefit.model.User;
-import com.benefit.services.Factory;
+import com.benefit.utilities.Factory;
 import com.benefit.services.ProductService;
 import com.benefit.services.UserService;
 import com.google.android.gms.maps.CameraUpdateFactory;

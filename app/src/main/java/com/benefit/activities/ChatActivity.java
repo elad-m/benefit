@@ -1,10 +1,11 @@
-package com.benefit;
+package com.benefit.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.benefit.R;
 import com.benefit.model.Match;
 import com.benefit.model.Product;
 

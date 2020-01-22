@@ -5,7 +5,7 @@
     android:id="@+id/product_page_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ProductPageActivity">
+    tools:context=".activities.ProductPageActivity">
 
     <include
         android:id="@+id/product_page_top_area"
@@ -159,7 +159,7 @@
                         android:layout_width="330dp"
                         android:layout_height="150dp"
                         android:gravity="center"
-                        tools:context="com.benefit.ProductPageActivity" />
+                        tools:context="com.benefit.activities.ProductPageActivity" />
                 </TableRow>
 
 

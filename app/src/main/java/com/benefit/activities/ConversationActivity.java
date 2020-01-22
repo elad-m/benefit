@@ -1,4 +1,4 @@
-package com.benefit;
+package com.benefit.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.benefit.R;
 import com.benefit.adapters.ConversationAdapter;
 import com.benefit.drivers.DatabaseDriver;
 import com.benefit.model.User;
