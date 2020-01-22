@@ -6,7 +6,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.benefit.SignInActivity;
+import com.benefit.activities.SignInActivity;
 import com.benefit.drivers.AuthenticationDriver;
 import com.benefit.drivers.DatabaseDriver;
 import com.benefit.model.User;

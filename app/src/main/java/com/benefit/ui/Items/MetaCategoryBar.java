@@ -6,7 +6,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 
 import com.benefit.R;
-import com.benefit.StaticFunctions;
+import com.benefit.utilities.StaticFunctions;
 import com.benefit.model.Category;
 
 import java.util.HashMap;

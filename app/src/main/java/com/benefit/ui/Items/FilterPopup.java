@@ -14,7 +14,7 @@ import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
 
 import com.benefit.R;
-import com.benefit.StaticFunctions;
+import com.benefit.utilities.StaticFunctions;
 import com.benefit.model.PropertyName;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
