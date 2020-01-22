@@ -26,7 +26,7 @@ public class Factory {
         };
     }
 
-    public static ViewModelProvider.Factory getCategoryService() {
+    public static ViewModelProvider.Factory getCategoryServiceFactory() {
         return new ViewModelProvider.Factory() {
             @NonNull
             @Override
@@ -36,7 +36,7 @@ public class Factory {
         };
     }
 
-    public static ViewModelProvider.Factory getSearchService() {
+    public static ViewModelProvider.Factory getSearchServiceFactory() {
         return new ViewModelProvider.Factory() {
             @NonNull
             @Override
@@ -46,7 +46,7 @@ public class Factory {
         };
     }
 
-    public static ViewModelProvider.Factory getStorageDriver() {
+    public static ViewModelProvider.Factory getStorageDriverFactory() {
         return new ViewModelProvider.Factory() {
             @NonNull
             @Override
