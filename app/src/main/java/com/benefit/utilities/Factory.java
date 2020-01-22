@@ -1,4 +1,4 @@
-package com.benefit.services;
+package com.benefit.utilities;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
@@ -6,6 +6,10 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.benefit.drivers.AuthenticationDriver;
 import com.benefit.drivers.DatabaseDriver;
+import com.benefit.services.CategoryService;
+import com.benefit.services.ProductService;
+import com.benefit.services.SearchService;
+import com.benefit.services.UserService;
 
 public class Factory {
     private final static DatabaseDriver databaseDriver = new DatabaseDriver();
@@ -17,6 +21,26 @@ public class Factory {
             @Override
             public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
                 return (T) new ProductService(databaseDriver);
+            }
+        };
+    }
+
+    public static ViewModelProvider.Factory getCategoryService() {
+        return new ViewModelProvider.Factory() {
+            @NonNull
+            @Override
+            public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
+                return (T) new CategoryService(databaseDriver);
+            }
+        };
+    }
+
+    public static ViewModelProvider.Factory getSearchService() {
+        return new ViewModelProvider.Factory() {
+            @NonNull
+            @Override
+            public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
+                return (T) new SearchService(databaseDriver);
             }
         };
     }
