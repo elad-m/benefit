@@ -2,147 +2,201 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/product_page_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ProductPageActivity">
+    tools:context=".activities.ProductPageActivity">
 
     <include
-        android:id="@+id/product_page_header"
-        layout="@layout/page_header"/>
+        android:id="@+id/product_page_top_area"
+        layout="@layout/page_header" />
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/image_guide"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.172" />
-
-    <HorizontalScrollView
+    <TableLayout
+        android:id="@+id/product_page_back_area"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintHeight_percent="0.22"
-        app:layout_constraintTop_toBottomOf="@id/image_guide">
+        android:layout_height="wrap_content"
+        android:background="@color/backgroundColor"
+        android:layoutDirection="ltr"
+        app:layout_constraintTop_toBottomOf="@id/product_page_top_area">
 
-        <LinearLayout
-            android:id="@+id/image_layout"
+        <TableRow
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
-            <FrameLayout
+            android:layout_height="wrap_content">
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/image1">
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingLeft="@dimen/productPageGeneralPaddingLeft">
 
-            </FrameLayout>
-        </LinearLayout>
+                <ImageView
+                    android:id="@+id/product_page_back_arrow"
+                    android:layout_width="24dp"
+                    android:layout_height="18dp"
+                    android:contentDescription="@string/backButtonCaption"
+                    app:srcCompat="@drawable/ic_back_arrow" />
 
-    </HorizontalScrollView>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif"
+                    android:paddingLeft="4dp"
+                    android:text="@string/backButtonCaption"
+                    android:textColor="@color/primaryBlue"
+                    android:textSize="@dimen/backButtonCaptionSize"
+                    android:textStyle="normal" />
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/product_name_guide"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.4" />
+            </LinearLayout>
+        </TableRow>
+    </TableLayout>
 
-    <TextView
-        android:id="@+id/name"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        app:layout_constraintHeight_percent="0.04"
-        android:text="hello"
-        android:textSize="18sp"
-        app:layout_constraintTop_toBottomOf="@id/product_name_guide"
-        app:layout_constraintLeft_toLeftOf="@id/product_info_left_guide"/>
-
-    <TextView
-        android:id="@+id/description"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="@+id/name"
-        app:layout_constraintLeft_toLeftOf="@id/product_info_left_guide"/>
-
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/product_info_guide"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.5" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/product_info_left_guide"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.04" />
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintTop_toBottomOf="@id/product_info_guide"
-        app:layout_constraintLeft_toLeftOf="@id/product_info_left_guide">
-
-        <TextView
-            android:id="@+id/gender"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/divider"
-            android:layout_marginRight="5dp"
-            android:layout_marginLeft="5dp"/>
-
-        <TextView
-            android:id="@+id/size"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/divider"
-            android:layout_marginRight="5dp"
-            android:layout_marginLeft="5dp"/>
-
-        <TextView
-            android:id="@+id/color"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/divider"
-            android:layout_marginRight="5dp"
-            android:layout_marginLeft="5dp"/>
-
-        <TextView
-            android:id="@+id/condition"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-
-    </LinearLayout>
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/horizontal_line_guide"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.88" />
-
-
-
-    <view
+    <TableLayout
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@android:color/black"
-        app:layout_constraintTop_toBottomOf="@id/horizontal_line_guide"/>
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/product_page_bottom_area"
+        app:layout_constraintTop_toBottomOf="@id/product_page_back_area">
+        <ScrollView
+            android:id="@+id/product_page_scrollview"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/backgroundColor"
+                android:layoutDirection="ltr"
+                android:orientation="vertical">
 
 
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:id="@+id/prpImagePlaceholder"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:adjustViewBounds="true"
+                        android:background="@null"
+                        android:gravity="center"
+                        android:paddingTop="@dimen/productPageSectionPaddingTop"
+                        android:scaleType="fitCenter" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/textviewProductPageTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif"
+                        android:paddingLeft="@dimen/productPageGeneralPaddingLeft"
+                        android:textColor="@color/productPageTextPrimaryColor"
+                        android:textSize="@dimen/productPageTitleSize"
+                        android:textStyle="normal" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/textviewProductPageDescription"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif"
+                        android:paddingLeft="@dimen/productPageGeneralPaddingLeft"
+                        android:textColor="@color/productPageTextSecondaryColor"
+                        android:textSize="@dimen/productPageGeneralTextSize"
+                        android:textStyle="normal" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/textviewProductPageProperties"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif"
+                        android:paddingLeft="@dimen/productPageGeneralPaddingLeft"
+                        android:paddingTop="@dimen/productPageSectionPaddingTop"
+                        android:textColor="@color/productPageTextPrimaryColor"
+                        android:textSize="@dimen/productPageGeneralTextSize"
+                        android:textStyle="normal" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/textviewProductPageLocationTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif"
+                        android:paddingLeft="@dimen/productPageGeneralPaddingLeft"
+                        android:paddingTop="@dimen/productPageSectionPaddingTop"
+                        android:text="@string/productPageLocationTitleCaption"
+                        android:textColor="@color/productPageTextPrimaryColor"
+                        android:textSize="@dimen/productPageGeneralTextSize"
+                        android:textStyle="normal" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center">
+
+                    <fragment
+                        android:id="@+id/productPageMapFragment"
+                        android:name="com.google.android.gms.maps.SupportMapFragment"
+                        android:layout_width="330dp"
+                        android:layout_height="150dp"
+                        android:gravity="center"
+                        tools:context="com.benefit.activities.ProductPageActivity" />
+                </TableRow>
+
+
+            </TableLayout>
+        </ScrollView>
+    </TableLayout>
+
+
+    <TableLayout
+        android:id="@+id/product_page_bottom_area"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/productPageSeparatorSize"
+            android:background="@color/productPageTextSecondaryColor" />
+
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/productPageBottomPartMargin"
+            android:layout_marginBottom="@dimen/productPageBottomPartMargin"
+            android:gravity="center">
+
+            <Button
+                android:layout_width="200dp"
+                android:layout_height="51dp"
+                android:background="@drawable/ic_contact_giver_button"
+                android:gravity="center"
+                android:text="Contact Giver"
+                android:textColor="@color/primaryBlue"
+                android:textSize="22sp" />
+        </TableRow>
+    </TableLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

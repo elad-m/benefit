@@ -1,4 +1,4 @@
-package com.benefit;
+package com.benefit.activities;
 
 import android.app.Dialog;
 import android.content.Intent;
@@ -21,6 +21,7 @@ import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.benefit.R;
 import com.benefit.drivers.DatabaseDriver;
 import com.benefit.model.Category;
 import com.benefit.model.Product;
@@ -349,7 +350,7 @@ public class GiveItemActivity extends AppCompatActivity {
             Date date = Calendar.getInstance().getTime();
             Map<String, List<String>> properties = getProductProperties();
             List<String> imagesUrls = loadImagesUrls();
-            Product product = new Product(411, mCategory, "jHbxY9G5pdO7Qo5k58ulwPsY1fG2",
+            Product product = new Product(mCategory, "jHbxY9G5pdO7Qo5k58ulwPsY1fG2",
                     itemTitle, itemDescription, 0, 0, date, properties, imagesUrls);
             productService.addProduct(product);
             createThankYouDailog();

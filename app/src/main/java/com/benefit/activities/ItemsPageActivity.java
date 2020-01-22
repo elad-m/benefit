@@ -1,4 +1,4 @@
-package com.benefit;
+package com.benefit.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,6 +15,7 @@ import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.benefit.R;
 import com.benefit.ui.Displayable;
 import com.benefit.ui.DisplayableRecycleAdapter;
 import com.benefit.ui.Items.AllProductsScreen;

@@ -1,4 +1,4 @@
-package com.benefit;
+package com.benefit.activities;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -21,6 +21,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.benefit.R;
 import com.benefit.ui.WorkaroundMapFragment;
 import com.benefit.viewmodel.SignInViewModel;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;

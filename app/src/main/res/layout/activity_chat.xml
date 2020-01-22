@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center_horizontal"
-    tools:context=".ChatActivity">
+    tools:context=".activities.ChatActivity">
 
     <ImageView
         android:id="@+id/chat_product_image"

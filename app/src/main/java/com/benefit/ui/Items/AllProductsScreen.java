@@ -11,7 +11,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.benefit.R;
-import com.benefit.StaticFunctions;
+import com.benefit.utilities.StaticFunctions;
 import com.benefit.ui.Displayable;
 import com.benefit.ui.DisplayableRecycleAdapter;
 import com.benefit.model.Category;

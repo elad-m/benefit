@@ -17,6 +17,7 @@
     <string name="size_property_name">Size</string>
     <string name="condition_property_name">Condition</string>
     <string name="no_title_value">No title written</string>
+    <string name="sign_up_title">Welcome new user! Please enter additional details.</string>
     <string name="no_description_value">No item Description</string>
     <string name="description_of_image_of_item_upload">Image of item will uploaded to here</string>
     <string name="description_of_image_for_photoshooting_tips">Lightbulb image for photoshooting tips</string>
@@ -33,10 +34,10 @@
     <string name="dialog_thank_you_message">Great! This will become someone else\'s treasure!</string>
     <string name="dialog_thank_you_image_description">Chest of gold to convey message of treasure</string>
     <string name="dialog_done_button_text">Done</string>
+    <string name="top_area_slogan">Look for your new clothes!</string>
     <string name="benefit_logo_description">benefit logo</string>
     <string name="sign_in_title">Please sign in</string>
     <string name="lets_start">Let\'s start</string>
-    <string name="sign_up_title">Welcome new user! Please enter additional details.</string>
     <string name="logging_in_title">Hang just a minute</string>
     <string name="sign_in_getting_user_title">You are in! Just checking if you are a new user.</string>
     <string name="error_field_massge">Required field</string>
@@ -56,7 +57,18 @@
     <string name="filter">FILTERS</string>
     <string name="divider">|</string>
     <string name="sort">SORT</string>
+    <string name="user_location_relay">location</string>
+    <string name="user_address_relay">address</string>
+    <string name="user_last_name_relay">lastName</string>
+    <string name="user_first_name_relay">firstName</string>
 
+    <!-- Facebook application ID and custom URL scheme (app ID prefixed by 'fb'). -->
+    <string name="facebook_application_id" translatable="false">2550633185150206</string>
+    <string name="facebook_login_protocol_scheme" translatable="false">fb2550633185150206</string>
+    <string name="backButtonCaption">Back</string>
+    <string name="productPageLocationTitleCaption">Location</string>
+    <string name="productPagePropertiesSeparator">|</string>
+    <string name="productPagePropertiesValuesSeparator">,</string>
     <string-array name="chat_sort_options">
         <item>your items</item>
         <item>wanted items</item>

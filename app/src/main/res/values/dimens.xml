@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <dimen name="backButtonCaptionSize">18sp</dimen>
+    <dimen name="productPageGeneralPaddingLeft">16dp</dimen>
+    <dimen name="productPageTitleSize">22sp</dimen>
+    <dimen name="productPageGeneralTextSize">16sp</dimen>
+    <dimen name="productPageSectionPaddingTop">20dp</dimen>
     <dimen name="chip_text_size">15sp</dimen>
     <dimen name="default_corner_radius">5dp</dimen>
     <dimen name="clothing_item_layout_margin">4dp</dimen>
@@ -29,4 +34,8 @@
     <dimen name="give_item_padding_top_and_bottom">10dp</dimen>
     <dimen name="give_button_width">200dp</dimen>
     <dimen name="give_button_text_size">30sp</dimen>
+    <dimen name="productPageSeparatorSize">1dp</dimen>
+    <dimen name="productPageBottomPartMargin">15dp</dimen>
+    <dimen name="productPageDescriptionSize">24sp</dimen>
+    <dimen name="productPagePropertiesSize">24sp</dimen>
 </resources>

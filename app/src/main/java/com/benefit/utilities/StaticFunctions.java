@@ -1,9 +1,12 @@
-package com.benefit;
+package com.benefit.utilities;
 
 import android.content.res.Resources;
 
 import java.util.Random;
 
+/**
+ * A general utilities class
+ */
 public class StaticFunctions {
     public static int convertDpToPx(double dp)
     {

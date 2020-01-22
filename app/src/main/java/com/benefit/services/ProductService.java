@@ -44,7 +44,7 @@ public class ProductService extends ViewModel {
         return this.databaseDriver.deleteDocumentsByField(COLLECTION_NAME, "id", productId);
     }
 
-    public LiveData<Product> getProductsById(int productId) {
+    public LiveData<Product> getProductById(int productId) {
         return this.databaseDriver.getSingleDocumentByField(COLLECTION_NAME, "id", productId, Product.class);
     }
 
@@ -97,18 +97,19 @@ public class ProductService extends ViewModel {
         if (product.getProperties() == null || product.getProperties().isEmpty()) {
             return false;
         }
-        boolean indicator = true;
         for (Map.Entry<String, List<String>> filter : propertiesMap.entrySet()) {
             if (product.getProperties() != null) {
                 if (product.getProperties().containsKey(filter.getKey())) {
-                    if (!product.getProperties().get(filter.getKey()).contains(filter.getValue())) {
-                        indicator = false;
+                    for (String value : filter.getValue()) {
+                        if (!product.getProperties().get(filter.getKey()).contains(value)) {
+                            return false;
+                        }
                     }
                 } else {
-                    indicator = false;
+                    return false;
                 }
             }
         }
-        return indicator;
+        return true;
     }
 }

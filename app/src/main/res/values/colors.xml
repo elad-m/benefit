@@ -5,7 +5,6 @@
     <color name="colorAccent">#D81B60</color>
     <color name="lightBlue">#1B5E91</color>
     <color name="white">#ffff</color>
-    <color name="black">#0000</color>
     <color name="colorBenefitBlue">#0188B2</color>
     <color name="colorGrayDark">#494949</color>
     <color name="colorGrayLight">#e3e3e3</color>
@@ -13,4 +12,9 @@
     <color name="colorBlack">#000000</color>
     <color name="colorWhite">#ffffff</color>
 
+    <color name="backgroundColor">#ffffff</color>
+    <color name="primaryBlue">#0188b2</color>
+    <color name="black">#000000</color>
+    <color name="productPageTextPrimaryColor">#000000</color>
+    <color name="productPageTextSecondaryColor">#c4c4c4</color>
 </resources>

@@ -1,4 +1,4 @@
-package com.benefit;
+package com.benefit.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,6 +11,7 @@ import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.benefit.R;
 import com.benefit.adapters.ClothingRecyclerAdapter;
 import com.benefit.ui.profile.ClothingItem;
 

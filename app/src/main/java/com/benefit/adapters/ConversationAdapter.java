@@ -2,25 +2,21 @@ package com.benefit.adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.LiveData;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.benefit.ChatActivity;
+import com.benefit.activities.ChatActivity;
 import com.benefit.R;
 import com.benefit.drivers.AuthenticationDriver;
 import com.benefit.drivers.DatabaseDriver;
-import com.benefit.model.Chat;
 import com.benefit.model.Match;
 import com.benefit.model.Product;
 import com.benefit.model.User;
-import com.benefit.services.ProductService;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -29,8 +25,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
-
-import io.opencensus.resource.Resource;
 
 /**
  * An adapter for conversation queries
