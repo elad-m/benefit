@@ -83,7 +83,7 @@ public class ClothingRecyclerAdapter extends RecyclerView.Adapter<ClothingRecycl
     public ClothingRecyclerAdapter.ClothingViewHolder onCreateViewHolder(@NonNull ViewGroup parent,
                                                                          int viewType) {
         View clothingItemAsView = LayoutInflater.from(parent.getContext()).inflate(
-                R.layout.clothing_item, parent, false);
+                R.layout.clothing_item_layout, parent, false);
         clothingItemAsView.findViewById(R.id.image_layout).setClipToOutline(true);
         mRecyclerView = (RecyclerView) parent;
         return new ClothingViewHolder(clothingItemAsView, mListener);

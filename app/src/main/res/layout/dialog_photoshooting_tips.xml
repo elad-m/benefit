@@ -6,7 +6,7 @@
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/massage_heading"
+        android:id="@+id/no_photo_or_title_message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/dialog_margins"
@@ -19,7 +19,7 @@
         android:layout_width="@dimen/dialog_image_width_and_height"
         android:layout_height="@dimen/dialog_image_width_and_height"
         android:layout_margin="@dimen/dialog_margins"
-        android:contentDescription="Chest of gold to convey message of treasure"
+        android:contentDescription="@string/chest_of_gold_description"
         android:src="@drawable/ic_tips_lightbulb" />
 
     <Button
@@ -27,6 +27,5 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/dialog_margins"
-        android:onClick="gotItButton"
         android:text="@string/dialog_got_it_button_text" />
 </LinearLayout>

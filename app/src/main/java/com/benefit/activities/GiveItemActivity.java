@@ -4,6 +4,8 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,13 +26,13 @@ import androidx.lifecycle.ViewModelProviders;
 import com.benefit.drivers.DatabaseDriver;
 import com.benefit.model.Category;
 import com.benefit.model.Product;
+import com.benefit.model.PropertyName;
 import com.benefit.services.CategoryService;
 import com.benefit.services.ProductService;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.squareup.picasso.Picasso;
 
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
@@ -38,6 +40,8 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.SortedMap;
+import java.util.TreeMap;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
@@ -47,95 +51,94 @@ public class GiveItemActivity extends AppCompatActivity {
 
     private static final int PICK_IMAGE = 1;
     private static final int SNAP_PHOTO = 2;
-    private static final int CHILD_INDEX_CHIP = 1;
+    private static final int FIRST_CHILD_INDEX_CHIP = 1;
 
     private Dialog thankYouDailog;
     private Dialog dialogReturnsToActivity;
     private LinearLayout activityRootLinearLayout;
     private LayoutInflater inflater;
-    private List<String> conditions = Arrays.asList("New", "Used");
-    private List<String> sizes = Arrays.asList("S", "M", "L", "XL");
-    private List<Integer> productIdsToAdd = Arrays.asList(411, 405, 420, 444, 404);
 
     private DatabaseDriver databaseDriver = new DatabaseDriver();
     private CategoryService categoryService;
     private ProductService productService;
 
-    private boolean categoriesInflatedOnce = false;
+    private boolean haveCategoriesBeenInflatedOnce = false;
 
     // the following group are fields for creating a Product
     private Uri mImageUri;
+    private ImageButton mImageButton;
     private EditText mEdTextTitle;
+    private EditText mEdTextBrand;
+    private LinearLayout mBrandLayout;
     private int mMetaCategory;
+    private int mCategoryGroupIndexInLayout;
     private int mCategory;
-    private String mSize;
-    private String mCondition;
+    private Map<String, List<String>> mProperties = new HashMap<>(); // to create a Product object
+    private SortedMap<String, ChipGroup> mPropertiesChipGroupsBuffer = new TreeMap<>(); // to create UI
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_give_item);
+
         createActionBar();
         instantiateDataMembers();
         createCategoryService();
         createProductService();
-        createPropertiesChips();
-        createMetaCategoriesChips();
-        setHeaderListeners();
+
+        createAttributeChips();
     }
 
-    private void createConditionChips() {
-        ChipGroup conditionGroup = createChipGroup(getString(R.string.condition_chip_group_heading));
-        for (String condition : conditions) {
-            View chipAsView = inflater.inflate(R.layout.chip_layout, null);
-            Chip chip = (Chip) chipAsView;
-            chip.setText(condition);
-            chip.setTag(condition);
-            conditionGroup.addView(chipAsView);
+
+    private void updatePropertyOnCheckedChanged(Chip chip) {
+        String chipPropertyName = ((PropertyName) chip.getTag()).getName();
+        mProperties.put(chipPropertyName,
+                Collections.singletonList(chip.getText().toString()));
+    }
+
+    private void createChipGroupForPropertyName(PropertyName propertyName) {
+
+        ChipGroup propertyGroup = createChipGroup(propertyName.getName());
+        if (propertyName.getValidValues() == null) {
+            return; // brand has free text input so we create it elsewhere
         }
-        ((Chip) conditionGroup.getChildAt(CHILD_INDEX_CHIP)).setChecked(true);
-        mCondition = conditions.get(0);
-        conditionGroup.setOnCheckedChangeListener(new ChipGroup.OnCheckedChangeListener() {
+        List<String> propertyValues = propertyName.getValidValues();
+        for (String value : propertyValues) {
+            propertyGroup.addView(createPropertyChipAsView(value, propertyName));
+        }
+
+        propertyGroup.setOnCheckedChangeListener(new ChipGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(ChipGroup chipGroup, int i) {
                 Chip chip = chipGroup.findViewById(i);
                 if (chip != null) {
-                    mCondition = chip.getText().toString();
+                    updatePropertyOnCheckedChanged(chip);
                 }
             }
         });
-        activityRootLinearLayout.addView(
-                conditionGroup, activityRootLinearLayout.getChildCount() - 1);
+
+        Chip firstChip = (Chip) propertyGroup.getChildAt(FIRST_CHILD_INDEX_CHIP);
+        firstChip.setChecked(true);
+        updatePropertyOnCheckedChanged(firstChip);
+
+        mPropertiesChipGroupsBuffer.put(propertyName.getName(), propertyGroup);
     }
 
-    private void createPropertiesChips() {
-        createConditionChips();
-        createSizeChips();
-    }
+    private void createPropertiesChips(int categoryId, ChipGroup chipGroup) {
 
-    private void createSizeChips() {
-        ChipGroup sizeGroup = createChipGroup(this.getString(R.string.size_chip_group_heading));
-        for (String size : sizes) {
-            View chipAsView = inflater.inflate(R.layout.chip_layout, null);
-            Chip chip = (Chip) chipAsView;
-            chip.setText(size);
-            chip.setTag(size);
-            sizeGroup.addView(chipAsView);
-        }
-        ((Chip) sizeGroup.getChildAt(CHILD_INDEX_CHIP)).setChecked(true);
-        mSize = sizes.get(0);
-        sizeGroup.setOnCheckedChangeListener(new ChipGroup.OnCheckedChangeListener() {
+        final List<PropertyName> observedPropertyNames = new LinkedList<>();
+        final Observer<List<PropertyName>> propertyNamesObserver = new Observer<List<PropertyName>>() {
             @Override
-            public void onCheckedChanged(ChipGroup chipGroup, int i) {
-                Chip chip = chipGroup.findViewById(i);
-                if (chip != null) {
-                    mSize = chip.getText().toString();
+            public void onChanged(List<PropertyName> propertyNames) {
+                observedPropertyNames.addAll(propertyNames);
+                for (PropertyName propertyName : observedPropertyNames) {
+                    createChipGroupForPropertyName(propertyName);
                 }
+                addCategoriesChipGroupToLayout(chipGroup);
             }
-        });
-        activityRootLinearLayout.addView(
-                sizeGroup, activityRootLinearLayout.getChildCount() - 1);
+        };
+        categoryService.getAllPropertiesByCategoryId(categoryId).observe(this, propertyNamesObserver);
     }
 
     private void createProductService() {
@@ -164,7 +167,7 @@ public class GiveItemActivity extends AppCompatActivity {
                 .get(CategoryService.class);
     }
 
-    private View createChipAsView(Category category) {
+    private View createCategoryChipAsView(Category category) {
         View chipAsView = inflater.inflate(R.layout.chip_layout, null);
         Chip chip = (Chip) chipAsView;
         chip.setText(category.getName());
@@ -172,8 +175,18 @@ public class GiveItemActivity extends AppCompatActivity {
         return chipAsView;
     }
 
+    private View createPropertyChipAsView(String propertyValue, PropertyName propertyName) {
+        View chipAsView = inflater.inflate(R.layout.chip_layout, null);
+        Chip chip = (Chip) chipAsView;
+        chip.setText(propertyValue);
+        chip.setTag(propertyName);
+        return chipAsView;
+    }
+
+
     private ChipGroup createMetaCategoriesObserver() {
         ChipGroup chipGroup = createChipGroup(this.getString(R.string.metacategory_chip_group_heading));
+        setOnCheckedChangeListenerForMetaCategories(chipGroup);
         final List<Category> metaCategories = new LinkedList<>();
         final Observer<List<Category>> metaCategoriesObserver = new Observer<List<Category>>() {
 
@@ -181,10 +194,9 @@ public class GiveItemActivity extends AppCompatActivity {
             public void onChanged(List<Category> categories) {
                 metaCategories.addAll(categories);
                 for (Category category : metaCategories) {
-                    chipGroup.addView(createChipAsView(category));
+                    chipGroup.addView(createCategoryChipAsView(category));
                 }
-                ((Chip) chipGroup.getChildAt(CHILD_INDEX_CHIP)).setChecked(true);
-                mMetaCategory = metaCategories.get(0).getId();
+                ((Chip) chipGroup.getChildAt(FIRST_CHILD_INDEX_CHIP)).setChecked(true);
             }
         };
         categoryService.getAllMetaCategories().observe(this, metaCategoriesObserver);
@@ -198,23 +210,23 @@ public class GiveItemActivity extends AppCompatActivity {
                 Chip chip = chipGroup.findViewById(i);
                 if (chip != null) {
                     mMetaCategory = ((Category) chip.getTag()).getId();
-                    createCategoriesChipsFromMetaCategory();
+                    createCategories();
                 }
             }
         });
-
     }
 
-    private void createMetaCategoriesChips() {
+    private void createAttributeChips() {
         ChipGroup chipGroup = createMetaCategoriesObserver();
-        setOnCheckedChangeListenerForMetaCategories(chipGroup);
-        activityRootLinearLayout.addView(
-                chipGroup, activityRootLinearLayout.getChildCount() - 1);
+        activityRootLinearLayout.addView(chipGroup);
+        mCategoryGroupIndexInLayout = activityRootLinearLayout.getChildCount();
     }
 
 
-    private ChipGroup createCategoriesObserver() {
+    private void createCategories() {
         ChipGroup chipGroup = createChipGroup(this.getString(R.string.categories_chip_group_heading));
+
+        setOnCheckedChangeListenerForCategories(chipGroup);
         final List<Category> categories = new LinkedList<>();
         final Observer<List<Category>> categoriesObserver = new Observer<List<Category>>() {
 
@@ -222,14 +234,12 @@ public class GiveItemActivity extends AppCompatActivity {
             public void onChanged(List<Category> inputCategories) {
                 categories.addAll(inputCategories);
                 for (Category category : categories) {
-                    chipGroup.addView(createChipAsView(category));
+                    chipGroup.addView(createCategoryChipAsView(category));
                 }
-                ((Chip) chipGroup.getChildAt(CHILD_INDEX_CHIP)).setChecked(true);
-                mCategory = categories.get(0).getId();
+                ((Chip) chipGroup.getChildAt(FIRST_CHILD_INDEX_CHIP)).setChecked(true);
             }
         };
         categoryService.getChildrenByParentId(mMetaCategory).observe(this, categoriesObserver);
-        return chipGroup;
     }
 
     private void setOnCheckedChangeListenerForCategories(ChipGroup chipGroup) {
@@ -238,30 +248,32 @@ public class GiveItemActivity extends AppCompatActivity {
             public void onCheckedChanged(ChipGroup chipGroup, int i) {
                 Chip chip = chipGroup.findViewById(i);
                 if (chip != null) {
-                    mCategory = ((Category) chip.getTag()).getId();
+                    Category checkedCategory = (Category) chip.getTag();
+                    mCategory = checkedCategory.getId();
+                    createPropertiesChips(checkedCategory.getId(), chipGroup);
                 }
             }
         });
     }
 
-    private void createCategoriesChipsFromMetaCategory() {
-        ChipGroup chipGroup = createCategoriesObserver();
-        setOnCheckedChangeListenerForCategories(chipGroup);
-        addCategoriesChipGroupToLayout(chipGroup);
-        categoriesInflatedOnce = true;
+    private void addPropertiesChipGroupsToLayout() {
+        for (Map.Entry<String, ChipGroup> entry: mPropertiesChipGroupsBuffer.entrySet()){
+            activityRootLinearLayout.addView(entry.getValue());
+        }
+        activityRootLinearLayout.addView(mBrandLayout);
+        mPropertiesChipGroupsBuffer.clear();
     }
 
     private void addCategoriesChipGroupToLayout(ChipGroup chipGroup) {
-        if (categoriesInflatedOnce) {
-            View chipGroupView = activityRootLinearLayout
-                    .getChildAt(activityRootLinearLayout.getChildCount() - 2);
-            activityRootLinearLayout.removeView(chipGroupView);
-            activityRootLinearLayout.addView(
-                    chipGroup, activityRootLinearLayout.getChildCount() - 1);
-
+        if (haveCategoriesBeenInflatedOnce) {
+            activityRootLinearLayout.removeViewsInLayout(mCategoryGroupIndexInLayout,
+                    activityRootLinearLayout.getChildCount() - mCategoryGroupIndexInLayout);
+            activityRootLinearLayout.addView(chipGroup, mCategoryGroupIndexInLayout);
+            addPropertiesChipGroupsToLayout();
         } else {
-            activityRootLinearLayout.addView(
-                    chipGroup, activityRootLinearLayout.getChildCount() - 1);
+            activityRootLinearLayout.addView(chipGroup, mCategoryGroupIndexInLayout);
+            addPropertiesChipGroupsToLayout();
+            haveCategoriesBeenInflatedOnce = true;
         }
     }
 
@@ -269,7 +281,7 @@ public class GiveItemActivity extends AppCompatActivity {
     private ChipGroup createChipGroup(String groupName) {
         View chipGroupAsView = inflater.inflate(R.layout.chip_group_layout, null);
         ChipGroup chipGroup = (ChipGroup) chipGroupAsView;
-        ((TextView) chipGroup.getChildAt(0)).setText(groupName);
+        ((TextView) chipGroup.getChildAt(0)).setText(groupName + ": ");
         return chipGroup;
     }
 
@@ -278,7 +290,147 @@ public class GiveItemActivity extends AppCompatActivity {
         mEdTextTitle = findViewById(R.id.item_title_text);
         activityRootLinearLayout = findViewById(R.id.activity_root_linear_layout);
         inflater = LayoutInflater.from(this);
+        View brandLayout  = inflater.inflate(R.layout.brand_text_input_layout, null);
+        mEdTextBrand = brandLayout.findViewById(R.id.item_brand);
+        mBrandLayout = (LinearLayout) brandLayout;
+        mImageButton = findViewById(R.id.image_button_choose_image);
     }
+
+
+
+    public void openFileChooser(View v) {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(intent, PICK_IMAGE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        // switch bellow will add a camera capture option in the future
+        switch (requestCode) {
+            case PICK_IMAGE:
+                loadImageFromGallery(resultCode, data);
+                break;
+            default:
+                Log.d("ImplicitIntents", "Can't handle this intent!");
+                break;
+        }
+    }
+
+    private void loadImageFromGallery(int resultCode, @Nullable Intent data) {
+        ImageButton mImageButtonUpload = findViewById(R.id.image_button_choose_image);
+
+        if (resultCode == RESULT_OK && data != null && data.getData() != null) {
+
+            mImageUri = data.getData();
+            Picasso.get()
+                    .load(mImageUri)
+                    .centerCrop()
+                    .fit().into(mImageButtonUpload);
+
+        }
+    }
+
+    public int getProductId() {
+        return ThreadLocalRandom.current().nextInt(500, 1000 + 1);
+    }
+
+    private boolean isThereNoTitle() {
+        return (mEdTextTitle.getText() == null || mEdTextTitle.getText().toString().equals(""));
+    }
+
+    public void onClickGive(View view) {
+        if (mImageUri == null || isThereNoTitle()) {
+            createNoPhotoOrTitleDialog();
+        } else {
+            int productId = getProductId();
+            String itemTitle = mEdTextTitle.getText().toString();
+            String itemDescription = this.getString(R.string.no_description_value);
+            Date date = Calendar.getInstance().getTime();
+            mProperties.put(this.getString(R.string.brand_property_name),
+                    Collections.singletonList(mEdTextBrand.getText().toString()));
+            List<String> imagesUrls = loadImagesUrls();
+            Product product = new Product(productId, mCategory, "jHbxY9G5pdO7Qo5k58ulwPsY1fG2",
+                    itemTitle, itemDescription, 0, 0, date, mProperties, imagesUrls);
+            productService.addProduct(product);
+            createThankYouDailog();
+        }
+    }
+
+    private List<String> loadImagesUrls() {
+        List<String> imagesUrls = new LinkedList<>();
+        imagesUrls.add(mImageUri.toString());
+        return imagesUrls;
+    }
+
+    private void createThankYouDailog() {
+        thankYouDailog = new Dialog(this);
+        thankYouDailog.setContentView(R.layout.dialog_thank_you);
+        thankYouDailog.show();
+    }
+
+
+    public void doneButton(View view) {
+        thankYouDailog.dismiss();
+        Intent intent = new Intent(this, UserProfileActivity.class);
+        startActivity(intent);
+    }
+
+    private void paintRedMissingFields() {
+        if (isThereNoTitle()) {
+            mEdTextTitle.setBackgroundResource(R.drawable.rounded_edittext_error);
+            mEdTextTitle.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    mEdTextTitle.setBackgroundResource(R.drawable.rounded_edittext);
+                }
+            });
+        } if (mImageUri == null){
+            mImageButton.setImageResource(R.drawable.ic_add_image_error);
+        }
+    }
+
+
+    private void createNoPhotoOrTitleDialog() {
+        dialogReturnsToActivity = new Dialog(this);
+        dialogReturnsToActivity.setContentView((R.layout.dialog_no_photo_or_title));
+        Button gotItButton = dialogReturnsToActivity.findViewById(R.id.got_it_button);
+        gotItButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                paintRedMissingFields();
+                dialogReturnsToActivity.dismiss();
+            }
+        });
+        dialogReturnsToActivity.show();
+    }
+
+
+    public void popTipsDialog(View view) {
+        dialogReturnsToActivity = new Dialog(this);
+        dialogReturnsToActivity.setContentView(R.layout.dialog_photoshooting_tips);
+        Button gotItButton = dialogReturnsToActivity.findViewById(R.id.got_it_button);
+        gotItButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogReturnsToActivity.dismiss();
+            }
+        });
+        dialogReturnsToActivity.show();
+    }
+
 
     private void createActionBar() {
         View view = findViewById(R.id.chosen_view);
@@ -323,153 +475,6 @@ public class GiveItemActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);
-            }
-        });
-    }
-
-
-    public void openFileChooser(View v) {
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(intent, PICK_IMAGE);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        // switch bellow will add a camera capture option in the future
-        switch (requestCode) {
-            case PICK_IMAGE:
-                loadImageFromGallery(resultCode, data);
-                break;
-            default:
-                Log.d("ImplicitIntents", "Can't handle this intent!");
-                break;
-        }
-    }
-
-    private void loadImageFromGallery(int resultCode, @Nullable Intent data) {
-        ImageButton mImageButtonUpload = findViewById(R.id.image_button_choose_image);
-
-        if (resultCode == RESULT_OK && data != null && data.getData() != null) {
-            mImageUri = data.getData();
-            Picasso.get()
-                    .load(mImageUri)
-                    .centerCrop().rotate(90).fit().into(mImageButtonUpload);
-
-        }
-    }
-
-
-    private Map<String, List<String>> getProductProperties() {
-        Map<String, List<String>> properties = new HashMap<>();
-        properties.put(this.getString(R.string.size_property_name),
-                Collections.singletonList(mSize));
-        properties.put(this.getString(R.string.condition_property_name),
-                Collections.singletonList(mCondition));
-        return properties;
-    }
-
-    private String getTitleText() {
-        String itemTitle;
-        if (mEdTextTitle != null) {
-            itemTitle = mEdTextTitle.getText().toString();
-        } else {
-            itemTitle = this.getString(R.string.no_title_value);
-        }
-        return itemTitle;
-    }
-
-    public int getProductId(){
-        if (productIdsToAdd.isEmpty()){
-            return ThreadLocalRandom.current().nextInt(500, 1000 + 1);
-        } else {
-            return productIdsToAdd.remove(productIdsToAdd.size() - 1);
-        }
-    }
-
-
-    public void onClickGive(View view) {
-        if (mImageUri == null) {
-            createNoPhotoDialog();
-        } else {
-            String itemTitle = getTitleText();
-            String itemDescription = this.getString(R.string.no_description_value);
-            Date date = Calendar.getInstance().getTime();
-            Map<String, List<String>> properties = getProductProperties();
-            List<String> imagesUrls = loadImagesUrls();
-            int productId = getProductId();
-            Product product = new Product(productId, mCategory, "jHbxY9G5pdO7Qo5k58ulwPsY1fG2",
-                    itemTitle, itemDescription, 0, 0, date, properties, imagesUrls);
-            productService.addProduct(product);
-            createThankYouDailog();
-        }
-    }
-
-    private List<String> loadImagesUrls() {
-        List<String> imagesUrls = new LinkedList<>();
-        imagesUrls.add(mImageUri.toString());
-        return imagesUrls;
-    }
-
-    private void createThankYouDailog() {
-        thankYouDailog = new Dialog(this);
-        thankYouDailog.setContentView(R.layout.dialog_thank_you);
-        thankYouDailog.show();
-    }
-
-
-    public void doneButton(View view) {
-        thankYouDailog.dismiss();
-        Intent intent = new Intent(this, UserProfileActivity.class);
-        startActivity(intent);
-    }
-
-
-    public void gotItButton(View view) {
-        dialogReturnsToActivity.dismiss();
-    }
-
-    private void createNoPhotoDialog() {
-        dialogReturnsToActivity = new Dialog(this);
-        dialogReturnsToActivity.setContentView((R.layout.dialog_no_photo));
-        dialogReturnsToActivity.show();
-    }
-
-
-    public void popTipsDialog(View view) {
-        dialogReturnsToActivity = new Dialog(this);
-        dialogReturnsToActivity.setContentView(R.layout.dialog_photoshooting_tips);
-        dialogReturnsToActivity.show();
-    }
-
-    private void setHeaderListeners() {
-        findViewById(R.id.give_icon).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startGiveActivity();
-            }
-        });
-
-        findViewById(R.id.user_icon).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startUserProfileActivity();
-            }
-        });
-
-        findViewById(R.id.search_icon).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startSearchActivity();
-            }
-        });
-
-        findViewById(R.id.message_icon).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startMessageActivity();
             }
         });
     }

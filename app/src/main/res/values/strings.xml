@@ -11,10 +11,8 @@
     <string name="enter_first_name">First name is required. Please enter your first name</string>
     <string name="enter_last_name">Last name is required. Please enter your last name</string>
     <string name="user_item">your item</string>
-    <string name="condition_chip_group_heading">Condition:</string>
-    <string name="size_chip_group_heading">Size:</string>
-    <string name="metacategory_chip_group_heading">For Whom:</string>
-    <string name="categories_chip_group_heading">Categories:</string>
+    <string name="metacategory_chip_group_heading">For Whom</string>
+    <string name="categories_chip_group_heading">Categories</string>
     <string name="size_property_name">Size</string>
     <string name="condition_property_name">Condition</string>
     <string name="no_title_value">No title written</string>
@@ -28,7 +26,7 @@
     <string name="clothing_item_image_description">Image of item</string>
     <string name="clothing_item_edit_button_text">Edit</string>
     <string name="clothing_item_delete_button">Delete</string>
-    <string name="no_photo_dialog_message">Please upload a photo!</string>
+    <string name="no_photo_dialog_message">It seems you forgot uploading a photo or writing a title.</string>
     <string name="dialog_got_it_button_text">Got it!</string>
     <string name="photoshooting_tips_heading">Tips!</string>
     <string name="dialog_thank_you_heading">Thank you!</string>
@@ -61,6 +59,15 @@
     <string name="filter">FILTERS</string>
     <string name="divider">|</string>
     <string name="sort">SORT</string>
+    <string name="user_location_relay">location</string>
+    <string name="user_address_relay">address</string>
+    <string name="user_last_name_relay">lastName</string>
+    <string name="user_first_name_relay">firstName</string>
+    <string name="dialog_no_photo_or_title_heading">Hold Up!</string>
+    <string name="default_and_hint_brand_name">Brand name...</string>
+    <string name="chest_of_gold_description">Chest of gold to convey message of treasure</string>
+    <string name="brand_text_view_value">Brand:</string>
+    <string name="brand_property_name">Brand</string>
     <string name="phone_field">Phone</string>
 
     <!-- Facebook application ID and custom URL scheme (app ID prefixed by 'fb'). -->

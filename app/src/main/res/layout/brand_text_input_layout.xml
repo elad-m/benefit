@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/give_item_margins"
+        android:layout_marginTop="@dimen/give_item_margins"
+        android:layout_marginEnd="@dimen/give_item_margins"
+        android:layout_marginBottom="@dimen/give_item_margins"
+        android:paddingStart="@dimen/give_item_default_padding"
+        android:paddingEnd="@dimen/give_item_default_padding"
+        android:text="@string/brand_text_view_value" />
+
+    <EditText
+        android:id="@+id/item_brand"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/give_item_margins"
+        android:layout_marginTop="@dimen/give_item_margins"
+        android:layout_marginEnd="@dimen/give_item_margins"
+        android:layout_marginBottom="@dimen/give_item_margins"
+        android:background="@drawable/rounded_edittext"
+        android:hint="@string/default_and_hint_brand_name"
+        android:inputType="text"
+        android:paddingStart="@dimen/give_item_default_padding"
+        android:paddingTop="@dimen/give_item_padding_top_and_bottom"
+        android:paddingEnd="@dimen/give_item_default_padding"
+        android:paddingBottom="@dimen/give_item_padding_top_and_bottom"
+        android:textSize="@dimen/give_item_text_views_text_size"
+        android:textStyle="bold" />
+</LinearLayout>
