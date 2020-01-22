@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.benefit.drivers.AuthenticationDriver;
 import com.benefit.drivers.DatabaseDriver;
+import com.benefit.drivers.StorageDriver;
 import com.benefit.services.CategoryService;
 import com.benefit.services.ProductService;
 import com.benefit.services.SearchService;
@@ -41,6 +42,16 @@ public class Factory {
             @Override
             public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
                 return (T) new SearchService(databaseDriver);
+            }
+        };
+    }
+
+    public static ViewModelProvider.Factory getStorageDriver() {
+        return new ViewModelProvider.Factory() {
+            @NonNull
+            @Override
+            public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
+                return (T) new StorageDriver();
             }
         };
     }
