@@ -24,6 +24,7 @@ import androidx.lifecycle.ViewModelProviders;
 import com.benefit.drivers.DatabaseDriver;
 import com.benefit.model.Category;
 import com.benefit.model.Product;
+import com.benefit.model.User;
 import com.benefit.services.CategoryService;
 import com.benefit.services.ProductService;
 import com.google.android.material.chip.Chip;
@@ -68,6 +69,7 @@ public class GiveItemActivity extends AppCompatActivity {
     private int mCategory;
     private String mSize;
     private String mCondition;
+    private User user;
 
 
     @Override
@@ -276,6 +278,7 @@ public class GiveItemActivity extends AppCompatActivity {
         mEdTextTitle = findViewById(R.id.item_title_text);
         activityRootLinearLayout = findViewById(R.id.activity_root_linear_layout);
         inflater = LayoutInflater.from(this);
+        user = (User) getIntent().getSerializableExtra(getString(R.string.user_relay));
     }
 
     private void createActionBar() {
@@ -349,7 +352,7 @@ public class GiveItemActivity extends AppCompatActivity {
             Date date = Calendar.getInstance().getTime();
             Map<String, List<String>> properties = getProductProperties();
             List<String> imagesUrls = loadImagesUrls();
-            Product product = new Product(411, mCategory, "jHbxY9G5pdO7Qo5k58ulwPsY1fG2",
+            Product product = new Product(411, mCategory, user.getUid(),
                     itemTitle, itemDescription, 0, 0, date, properties, imagesUrls);
             productService.addProduct(product);
             createThankYouDailog();
@@ -443,4 +446,9 @@ public class GiveItemActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    @Override
+    public void startActivity(Intent intent) {
+        intent.putExtra(getString(R.string.user_relay), user);
+        super.startActivity(intent);
+    }
 }
