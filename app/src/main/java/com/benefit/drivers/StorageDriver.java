@@ -12,6 +12,9 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+/**
+ * A Driver which is responsible for actions with Firebase Storage
+ */
 public class StorageDriver extends ViewModel {
     private FirebaseStorage storage;
     private StorageReference storageReference;

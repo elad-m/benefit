@@ -30,6 +30,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+/**
+ * An activity for the product page
+ */
 public class ProductPageActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private int productId = 111; // FIXME: should contain the productId that user asked

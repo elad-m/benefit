@@ -12,6 +12,9 @@ import com.benefit.services.ProductService;
 import com.benefit.services.SearchService;
 import com.benefit.services.UserService;
 
+/**
+ * A static class which generates factories for the different services
+ */
 public class Factory {
     private final static DatabaseDriver databaseDriver = new DatabaseDriver();
     private final static AuthenticationDriver authenticationDriver = new AuthenticationDriver();
