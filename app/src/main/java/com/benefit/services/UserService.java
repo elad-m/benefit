@@ -76,5 +76,9 @@ public class UserService extends ViewModel {
         return databaseDriver.getSingleDocumentByField(COLLECTION_USERS_NAME, UID, userId, User.class);
     }
 
+    public LiveData<User> getUserById(String userId) {
+        return databaseDriver.getSingleDocumentByField(COLLECTION_USERS_NAME, UID, userId, User.class);
+    }
+
 
 }
