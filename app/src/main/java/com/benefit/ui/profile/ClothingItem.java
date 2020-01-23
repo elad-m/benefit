@@ -7,7 +7,7 @@ package com.benefit.ui.profile;
 public class ClothingItem {
 
 
-    private int mProductId;
+    private long mProductId;
     private String mImageUrl;
     private String mTitle;
 
@@ -15,7 +15,7 @@ public class ClothingItem {
     }
 
 
-    public ClothingItem(String imageUrl, String title, int id) {
+    public ClothingItem(String imageUrl, String title, long id) {
         mImageUrl = imageUrl;
         mTitle = title;
         mProductId = id;
@@ -37,7 +37,7 @@ public class ClothingItem {
         this.mTitle = mTitle;
     }
 
-    public int getmProductId() {
+    public long getmProductId() {
         return mProductId;
     }
 

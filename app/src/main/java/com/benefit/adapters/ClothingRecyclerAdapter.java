@@ -25,7 +25,7 @@ public class ClothingRecyclerAdapter extends RecyclerView.Adapter<ClothingRecycl
     private RecyclerView mRecyclerView;
 
     public interface OnItemClickListener {
-        void onItemClick(int position);
+        void onItemClick(int position, View view);
         void onDeleteClick(int posotion, View view);
     }
 
@@ -62,11 +62,11 @@ public class ClothingRecyclerAdapter extends RecyclerView.Adapter<ClothingRecycl
             });
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v) {
+                public void onClick(View cardView) {
                     if (listener != null) {
                         int position = getAdapterPosition();
                         if (position != RecyclerView.NO_POSITION) {
-                            listener.onItemClick(position);
+                            listener.onItemClick(position, cardView);
                         }
                     }
                 }

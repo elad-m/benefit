@@ -1,4 +1,4 @@
-package com.benefit;
+package com.benefit.activities;
 
 import android.app.Dialog;
 import android.content.Intent;
@@ -15,20 +15,19 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModel;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
-import com.benefit.drivers.DatabaseDriver;
+import com.benefit.R;
+import com.benefit.drivers.StorageDriver;
 import com.benefit.model.Category;
 import com.benefit.model.Product;
 import com.benefit.model.PropertyName;
 import com.benefit.services.CategoryService;
 import com.benefit.services.ProductService;
+import com.benefit.utilities.Factory;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.squareup.picasso.Picasso;
@@ -58,7 +57,7 @@ public class GiveItemActivity extends AppCompatActivity {
     private LinearLayout activityRootLinearLayout;
     private LayoutInflater inflater;
 
-    private DatabaseDriver databaseDriver = new DatabaseDriver();
+    private StorageDriver storageDriver;
     private CategoryService categoryService;
     private ProductService productService;
 
@@ -66,6 +65,7 @@ public class GiveItemActivity extends AppCompatActivity {
 
     // the following group are fields for creating a Product
     private Uri mImageUri;
+    private String mImageUrl;
     private ImageButton mImageButton;
     private EditText mEdTextTitle;
     private EditText mEdTextBrand;
@@ -84,10 +84,19 @@ public class GiveItemActivity extends AppCompatActivity {
 
         createActionBar();
         instantiateDataMembers();
-        createCategoryService();
-        createProductService();
+        createServicesAndDrivers();
 
         createAttributeChips();
+    }
+
+    private void createServicesAndDrivers() {
+        this.productService = ViewModelProviders.of(this,
+                Factory.getProductServiceFactory()).get(ProductService.class);
+        this.categoryService = ViewModelProviders.of(this,
+                Factory.getCategoryServiceFactory()).get(CategoryService.class);
+        this.storageDriver = ViewModelProviders.of(this,
+                Factory.getStorageDriverFactory()).get(StorageDriver.class);
+
     }
 
 
@@ -141,31 +150,6 @@ public class GiveItemActivity extends AppCompatActivity {
         categoryService.getAllPropertiesByCategoryId(categoryId).observe(this, propertyNamesObserver);
     }
 
-    private void createProductService() {
-        ViewModelProvider.Factory productServiceFactory = new ViewModelProvider.Factory() {
-            @NonNull
-            @Override
-            public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-                return (T) new ProductService(databaseDriver);
-            }
-        };
-        this.productService = ViewModelProviders
-                .of(this, productServiceFactory)
-                .get(ProductService.class);
-    }
-
-    private void createCategoryService() {
-        ViewModelProvider.Factory categoryServiceFactory = new ViewModelProvider.Factory() {
-            @NonNull
-            @Override
-            public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-                return (T) new CategoryService(databaseDriver);
-            }
-        };
-        this.categoryService = ViewModelProviders
-                .of(this, categoryServiceFactory)
-                .get(CategoryService.class);
-    }
 
     private View createCategoryChipAsView(Category category) {
         View chipAsView = inflater.inflate(R.layout.chip_layout, null);
@@ -257,7 +241,7 @@ public class GiveItemActivity extends AppCompatActivity {
     }
 
     private void addPropertiesChipGroupsToLayout() {
-        for (Map.Entry<String, ChipGroup> entry: mPropertiesChipGroupsBuffer.entrySet()){
+        for (Map.Entry<String, ChipGroup> entry : mPropertiesChipGroupsBuffer.entrySet()) {
             activityRootLinearLayout.addView(entry.getValue());
         }
         activityRootLinearLayout.addView(mBrandLayout);
@@ -290,12 +274,11 @@ public class GiveItemActivity extends AppCompatActivity {
         mEdTextTitle = findViewById(R.id.item_title_text);
         activityRootLinearLayout = findViewById(R.id.activity_root_linear_layout);
         inflater = LayoutInflater.from(this);
-        View brandLayout  = inflater.inflate(R.layout.brand_text_input_layout, null);
+        View brandLayout = inflater.inflate(R.layout.brand_text_input_layout, null);
         mEdTextBrand = brandLayout.findViewById(R.id.item_brand);
         mBrandLayout = (LinearLayout) brandLayout;
         mImageButton = findViewById(R.id.image_button_choose_image);
     }
-
 
 
     public void openFileChooser(View v) {
@@ -323,14 +306,28 @@ public class GiveItemActivity extends AppCompatActivity {
         ImageButton mImageButtonUpload = findViewById(R.id.image_button_choose_image);
 
         if (resultCode == RESULT_OK && data != null && data.getData() != null) {
-
             mImageUri = data.getData();
+//            loadUriAsUrlToButton();
             Picasso.get()
                     .load(mImageUri)
                     .centerCrop()
                     .fit().into(mImageButtonUpload);
 
         }
+    }
+
+    private void loadUriAsUrlToButton() {
+        // todo: this doesn't work for now
+        final String retUrl = "";
+        final Observer<String> urlObserver = new Observer<String>() {
+
+            @Override
+            public void onChanged(String url) {
+                mImageUrl = url;
+
+            }
+        };
+        storageDriver.uploadImage(mImageUri).observe(this, urlObserver);
     }
 
     public int getProductId() {
@@ -345,14 +342,13 @@ public class GiveItemActivity extends AppCompatActivity {
         if (mImageUri == null || isThereNoTitle()) {
             createNoPhotoOrTitleDialog();
         } else {
-            int productId = getProductId();
             String itemTitle = mEdTextTitle.getText().toString();
             String itemDescription = this.getString(R.string.no_description_value);
             Date date = Calendar.getInstance().getTime();
             mProperties.put(this.getString(R.string.brand_property_name),
                     Collections.singletonList(mEdTextBrand.getText().toString()));
             List<String> imagesUrls = loadImagesUrls();
-            Product product = new Product(productId, mCategory, "jHbxY9G5pdO7Qo5k58ulwPsY1fG2",
+            Product product = new Product(mCategory, "jHbxY9G5pdO7Qo5k58ulwPsY1fG2",
                     itemTitle, itemDescription, 0, 0, date, mProperties, imagesUrls);
             productService.addProduct(product);
             createThankYouDailog();
@@ -361,7 +357,7 @@ public class GiveItemActivity extends AppCompatActivity {
 
     private List<String> loadImagesUrls() {
         List<String> imagesUrls = new LinkedList<>();
-        imagesUrls.add(mImageUri.toString());
+        imagesUrls.add(mImageUrl);
         return imagesUrls;
     }
 
@@ -397,7 +393,8 @@ public class GiveItemActivity extends AppCompatActivity {
                     mEdTextTitle.setBackgroundResource(R.drawable.rounded_edittext);
                 }
             });
-        } if (mImageUri == null){
+        }
+        if (mImageUri == null) {
             mImageButton.setImageResource(R.drawable.ic_add_image_error);
         }
     }
@@ -419,16 +416,6 @@ public class GiveItemActivity extends AppCompatActivity {
 
 
     public void popTipsDialog(View view) {
-//        dialogReturnsToActivity = new Dialog(this);
-//        dialogReturnsToActivity.setContentView(R.layout.dialog_photoshooting_tips);
-//        Button gotItButton = dialogReturnsToActivity.findViewById(R.id.got_it_button);
-//        gotItButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                dialogReturnsToActivity.dismiss();
-//            }
-//        });
-//        dialogReturnsToActivity.show();
         Intent intent = new Intent(getApplicationContext(), TipsActivity.class);
         startActivity(intent);
     }
@@ -467,7 +454,8 @@ public class GiveItemActivity extends AppCompatActivity {
         userButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), UserProfileActivity.class);
+                Intent intent = new Intent(getApplicationContext(),
+                        com.benefit.activities.UserProfileActivity.class);
                 startActivity(intent);
             }
         });

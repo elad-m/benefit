@@ -79,6 +79,7 @@
     <string name="productPagePropertiesSeparator">|</string>
     <string name="productPagePropertiesValuesSeparator">,</string>
     <string name="no_items_found">No items found</string>
+    <string name="default_user_greeting">Hello You!</string>
     <string-array name="chat_sort_options">
         <item>your items</item>
         <item>wanted items</item>

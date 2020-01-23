@@ -1,4 +1,4 @@
-package com.benefit;
+package com.benefit.activities;
 
 import android.os.Bundle;
 import android.text.Html;
@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
+import com.benefit.R;
 import com.benefit.adapters.TipSliderAdapter;
 
 /**

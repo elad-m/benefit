@@ -62,9 +62,6 @@ public class Product implements Serializable, Displayable {
         return getTitle();
     }
 
-    public String getTitle() {
-        return title;
-    }
 
     public String getDescription() {
         return description;

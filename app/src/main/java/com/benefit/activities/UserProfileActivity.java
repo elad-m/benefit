@@ -1,4 +1,4 @@
-package com.benefit;
+package com.benefit.activities;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -9,27 +9,23 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModel;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.benefit.R;
+import com.benefit.ui.profile.ClothingItem;
 import com.benefit.adapters.ClothingRecyclerAdapter;
-import com.benefit.UI.profile.ClothingItem;
-import com.benefit.drivers.AuthenticationDriver;
-import com.benefit.drivers.DatabaseDriver;
 import com.benefit.model.Product;
 import com.benefit.model.User;
 import com.benefit.services.ProductService;
 import com.benefit.services.UserService;
-
+import com.benefit.utilities.Factory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,8 +42,7 @@ public class UserProfileActivity extends AppCompatActivity {
     private RecyclerView.LayoutManager mLayoutManager;
     private ProductService productService;
     private UserService userService;
-    private DatabaseDriver databaseDriver = new DatabaseDriver();
-    private AuthenticationDriver authenticationDriver = new AuthenticationDriver();
+
 
     ArrayList<ClothingItem> mClothingItems = new ArrayList<>();
 
@@ -56,8 +51,7 @@ public class UserProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile);
 
-        createProductService();
-        createUserService();
+        createServices();
         createActionBar();
         getUserProducts();
 
@@ -90,7 +84,7 @@ public class UserProfileActivity extends AppCompatActivity {
 
     private void setGreeting() {
         TextView slogan = findViewById(R.id.slogan);
-        ((ViewManager)slogan.getParent()).removeView(slogan);
+        ((ViewManager) slogan.getParent()).removeView(slogan);
         TextView userGreeting = findViewById(R.id.user_greeting);
         userGreeting.setText("Hello You!");
         final Observer<User> userObserver = new Observer<User>() {
@@ -103,33 +97,6 @@ public class UserProfileActivity extends AppCompatActivity {
         };
 
     }
-
-    private void createProductService() {
-        ViewModelProvider.Factory productServiceFactory = new ViewModelProvider.Factory() {
-            @NonNull
-            @Override
-            public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-                return (T) new ProductService(databaseDriver);
-            }
-        };
-        this.productService = ViewModelProviders
-                .of(this, productServiceFactory)
-                .get(ProductService.class);
-    }
-
-    private void createUserService() {
-        ViewModelProvider.Factory userServiceFactory = new ViewModelProvider.Factory() {
-            @NonNull
-            @Override
-            public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-                return (T) new UserService(databaseDriver, authenticationDriver);
-            }
-        };
-        this.userService = ViewModelProviders
-                .of(this, userServiceFactory)
-                .get(UserService.class);
-    }
-
 
     private void createActionBar() {
         ConstraintLayout constraintLayout = findViewById(R.id.user_profile_page_header);
@@ -206,9 +173,12 @@ public class UserProfileActivity extends AppCompatActivity {
 
         mAdapter.setOnItemClickListener(new ClothingRecyclerAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(int position) {
-                String message = mClothingItems.get(position).getmTitle() + " was pressed";
-                makeToast(message);
+            public void onItemClick(int position, View view) {
+                long productId = ((ClothingItem) view.getTag()).getmProductId();
+                Intent intent = new Intent(getApplicationContext(), ProductPageActivity.class);
+                intent.putExtra("productId", productId);
+                startActivity(intent);
+
             }
 
             @Override
@@ -233,7 +203,7 @@ public class UserProfileActivity extends AppCompatActivity {
     }
 
     private void openDeleteDialog(ClothingItem clothingItem, int position) {
-        int productId = clothingItem.getmProductId();
+        long productId = clothingItem.getmProductId();
         String productTitle = clothingItem.getmTitle();
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("Are you sure you want to delete \"" + productTitle + "\" ?")
@@ -255,5 +225,13 @@ public class UserProfileActivity extends AppCompatActivity {
         AlertDialog alertDialog = builder.create();
         alertDialog.setTitle(this.getString(R.string.alert_dialog_delete_item_title));
         alertDialog.show();
+    }
+
+    private void createServices() {
+        this.productService = ViewModelProviders.of(this,
+                Factory.getProductServiceFactory()).get(ProductService.class);
+        this.userService = ViewModelProviders.of(this,
+                Factory.getUserServiceFactory()).get(UserService.class);
+
     }
 }
