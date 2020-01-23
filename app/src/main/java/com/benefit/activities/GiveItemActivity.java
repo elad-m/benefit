@@ -419,16 +419,18 @@ public class GiveItemActivity extends AppCompatActivity {
 
 
     public void popTipsDialog(View view) {
-        dialogReturnsToActivity = new Dialog(this);
-        dialogReturnsToActivity.setContentView(R.layout.dialog_photoshooting_tips);
-        Button gotItButton = dialogReturnsToActivity.findViewById(R.id.got_it_button);
-        gotItButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialogReturnsToActivity.dismiss();
-            }
-        });
-        dialogReturnsToActivity.show();
+//        dialogReturnsToActivity = new Dialog(this);
+//        dialogReturnsToActivity.setContentView(R.layout.dialog_photoshooting_tips);
+//        Button gotItButton = dialogReturnsToActivity.findViewById(R.id.got_it_button);
+//        gotItButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                dialogReturnsToActivity.dismiss();
+//            }
+//        });
+//        dialogReturnsToActivity.show();
+        Intent intent = new Intent(getApplicationContext(), TipsActivity.class);
+        startActivity(intent);
     }
 
 
