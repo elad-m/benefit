@@ -33,7 +33,7 @@ public class TipsActivity extends AppCompatActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_test);
+        setContentView(R.layout.activity_tips_layout);
 
         mSlideViewPager = findViewById(R.id.tip_view_pager);
         mDotLayout = findViewById(R.id.dots);
