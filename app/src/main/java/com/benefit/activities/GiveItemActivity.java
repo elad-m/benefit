@@ -307,7 +307,7 @@ public class GiveItemActivity extends AppCompatActivity {
 
         if (resultCode == RESULT_OK && data != null && data.getData() != null) {
             mImageUri = data.getData();
-//            loadUriAsUrlToButton();
+            loadUriAsUrlToButton();
             Picasso.get()
                     .load(mImageUri)
                     .centerCrop()
