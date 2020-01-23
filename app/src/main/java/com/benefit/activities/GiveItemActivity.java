@@ -354,7 +354,7 @@ public class GiveItemActivity extends AppCompatActivity {
             Date date = Calendar.getInstance().getTime();
             Map<String, List<String>> properties = getProductProperties();
             List<String> imagesUrls = loadImagesUrls();
-            Product product = new Product(411, mCategory, user.getUid(),
+            Product product = new Product(mCategory, user.getUid(),
                     itemTitle, itemDescription, 0, 0, date, properties, imagesUrls);
             productService.addProduct(product);
             createThankYouDailog();
