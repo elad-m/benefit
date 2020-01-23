@@ -16,16 +16,16 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".MainActivity"
+        <activity android:name=".activities.MainActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"/>
-        <activity android:name=".GiveItemActivity"
+        <activity android:name=".activities.GiveItemActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"/>
-        <activity android:name=".ChatActivity"
+        <activity android:name=".activities.ChatActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"/>
-        <activity android:name=".ConversationActivity"
+        <activity android:name=".activities.ConversationActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"/>
         <!--
@@ -39,8 +39,8 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
-
-        <activity android:name=".SignInActivity"
+      
+        <activity android:name=".activities.SignInActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -49,13 +49,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ProductPageActivity"
+        <activity android:name=".activities.ProductPageActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"/>
-        <activity android:name=".AllProductsActivity"
+        <activity android:name=".activities.AllProductsActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"/>
-        <activity android:name=".UserProfileActivity"
+        <activity android:name=".activities.UserProfileActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"/>
     </application>
