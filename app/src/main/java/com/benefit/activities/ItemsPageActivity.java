@@ -275,12 +275,23 @@ public class ItemsPageActivity extends AppCompatActivity {
             @Override
             public void onChanged(List<PropertyName> properties) {
                 for (PropertyName propertyName: properties) {
-                    if (propertyName.getValidValues() != null && propertyName.getValidValues().size() == 0 || !allFilters.contains(propertyName))
-                    allFilters.add(propertyName);
+                    if (propertyName.getValidValues() != null &&
+                            propertyNameNotInAllFilters(propertyName)){
+                        allFilters.add(propertyName);
+                    }
                 }
             }
         };
         categoryService.getAllPropertiesByCategoryId(categoryId).observe(this, propertiesObserver);
+    }
+
+    private boolean propertyNameNotInAllFilters(PropertyName propertyName) {
+        for (PropertyName filter:allFilters){
+            if (filter.getName().equals(propertyName.getName())){
+                return false;
+            }
+        }
+        return true;
     }
 
     private void getAllCategoryFilters() {

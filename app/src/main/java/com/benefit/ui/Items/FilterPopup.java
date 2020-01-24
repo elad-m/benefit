@@ -1,20 +1,14 @@
 package com.benefit.ui.Items;
 
-import android.content.res.ColorStateList;
-import android.graphics.Color;
-import android.os.Build;
+import android.graphics.Paint;
+import android.graphics.Typeface;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import androidx.annotation.RequiresApi;
-import androidx.core.content.ContextCompat;
-
 import com.benefit.R;
-import com.benefit.utilities.StaticFunctions;
 import com.benefit.model.PropertyName;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
@@ -27,93 +21,85 @@ import java.util.Map;
 public class FilterPopup {
 
     private View view;
+    private LinearLayout layout;
     private List<PropertyName> filters;
     private Map<String, List<String>> currentFilters;
 
-    public FilterPopup(View view, List<PropertyName> filters) {
+    FilterPopup(View view, List<PropertyName> filters) {
+
         this.view = view;
         currentFilters = new HashMap<>();
         this.filters = filters;
     }
 
-    public void populateFilter(Map<String, List<String>> currentFilters) {
-        LinearLayout body = view.findViewById(R.id.filter_body);
-
+    void populateFilter(Map<String, List<String>> currentFilters) {
+        layout = view.findViewById(R.id.filter_body);
+        inflater = LayoutInflater.from(view.getContext());
         this.currentFilters = currentFilters;
 
         for (PropertyName filter : filters) {
             if (filter.getValidValues() != null && filter.getValidValues().size() > 0) {
-                addFilter(filter, body);
+                createChips(filter);
             }
         }
     }
 
-    private void addFilter(PropertyName filter, LinearLayout body) {
-        RelativeLayout line = new RelativeLayout(view.getContext());
-        defineLineAttributes(line);
-        int titleId = addLineTitle(filter, line);
 
-
-        addAttributes(filter, line, titleId);
-        body.addView(line);
+    public Map<String, List<String>> getCurrentFilters() {
+        return currentFilters;
     }
 
-    private void defineLineAttributes(RelativeLayout line) {
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        layoutParams.height = 0;
-        layoutParams.weight = (float) 0.3;
-        line.setLayoutParams(layoutParams);
+    public void refreshFilter() {
+        LinearLayout body = view.findViewById(R.id.filter_body);
+        body.removeAllViews();
+        currentFilters.clear();
+        populateFilter(currentFilters);
     }
 
-    private void addAttributes(PropertyName filter, RelativeLayout line, int titleId) {
-        HorizontalScrollView scrollView = new HorizontalScrollView(view.getContext());
-        setScrollViewToRightOfText(scrollView, titleId);
-        ChipGroup chipGroup = new ChipGroup(view.getContext());
-        chipGroup.setChipSpacing(StaticFunctions.convertDpToPx(10));
 
-        setChipGroupLayoutParams(chipGroup);
-        if (filter.getValidValues() != null) {
-            for (final String propertyName : filter.getValidValues()) {
+    private LayoutInflater inflater;
 
-                Chip chip = new Chip(view.getContext(), null, R.attr.CustomChipChoiceStyle);
-                chip.setText(propertyName);
 
-                if (currentFilterContainsKeyAndValue(filter.getName(), propertyName)) {
-                    chip.setChipBackgroundColor(ColorStateList.valueOf(ContextCompat.getColor(view.getContext(), R.color.lightBlue)));
-                    chip.setTextColor(Color.WHITE);
+    private void createChips(PropertyName propertyName) {
+        ChipGroup chipGroup = createChipGroup(propertyName.getName());
+        for (String property : propertyName.getValidValues()) {
+            View chipAsView = inflater.inflate(R.layout.chip_layout, null);
+            Chip chip = (Chip) chipAsView;
+            chip.setText(property);
+            chip.setTag(property);
+            setCheckOnChip(propertyName, property, chip);
+            chip.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (chip.isChecked()) {
+                        addAttributeToCurrentFilters(propertyName.getName(), property);
+                    } else {
+                        removeAttributeFromCurrentFilters(propertyName.getName(), property);
+                    }
                 }
-
-                addClickListener(chip, filter, propertyName);
-                chipGroup.addView(chip);
-
-            }
-            scrollView.addView(chipGroup);
-
-            line.addView(scrollView);
+            });
+            chipGroup.addView(chipAsView);
         }
-
+        layout.addView(
+                chipGroup, layout.getChildCount() - 1);
     }
 
-    private void addClickListener(Chip chip, PropertyName filter, String propertyName) {
-        chip.setOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.N)
-            @Override
-            public void onClick(View view) {
-                if (currentFilterContainsKeyAndValue(filter.getName(), propertyName)) {
-                    chip.setChipBackgroundColor(ColorStateList.valueOf(ContextCompat.getColor(view.getContext(), R.color.browser_actions_bg_grey)));
-                    chip.setTextColor(Color.BLACK);
-                    removeAttributeToCurrentFilters(filter.getName(), propertyName);
-                } else {
-                    chip.setChipBackgroundColor(ColorStateList.valueOf(ContextCompat.getColor(view.getContext(), R.color.lightBlue)));
-                    chip.setTextColor(Color.WHITE);
-                    addAttributeToCurrentFilters(filter.getName(), propertyName);
-                }
+    private void setCheckOnChip(PropertyName propertyName, String property, Chip chip) {
+        if (currentFilters.size() > 0){
+            if (currentFilterContainsKeyAndValue(propertyName.getName(), property)){
+                chip.setChecked(true);
             }
-        });
+        }
+        chip.setChecked(false);
     }
 
-    private void removeAttributeToCurrentFilters(String name, String property) {
+    private boolean currentFilterContainsKeyAndValue(String filter, String attribute) {
+        return (currentFilters.containsKey(filter) &&
+                currentFilters.get(filter).contains(attribute));
+
+    }
+
+    private void removeAttributeFromCurrentFilters(String name, String property) {
         if (currentFilters.get(name).size() > 1) {
             currentFilters.get(name).remove(property);
         } else {
@@ -131,70 +117,14 @@ public class FilterPopup {
         }
     }
 
-    private void setScrollViewToRightOfText(HorizontalScrollView scrollView, int titleId) {
-        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,
-                RelativeLayout.LayoutParams.WRAP_CONTENT);
-        layoutParams.addRule(RelativeLayout.RIGHT_OF, titleId);
-        scrollView.setLayoutParams(layoutParams);
-
-    }
-
-    private void setChipGroupLayoutParams(ChipGroup chipGroup) {
-        HorizontalScrollView.LayoutParams layoutParams = new HorizontalScrollView.LayoutParams(
-                HorizontalScrollView.LayoutParams.WRAP_CONTENT,
-                HorizontalScrollView.LayoutParams.MATCH_PARENT);
-        layoutParams.gravity = Gravity.CENTER_VERTICAL;
-        int margin = StaticFunctions.convertDpToPx(5);
-        layoutParams.setMargins(margin, margin, margin, margin);
-        chipGroup.setLayoutParams(layoutParams);
-
-
-    }
-
-    private boolean currentFilterContainsKeyAndValue(String filter, String attribute) {
-        if (currentFilters.containsKey(filter)) {
-            for (String currentFilterAttribute : currentFilters.get(filter)) {
-                if (currentFilterAttribute.equals(attribute)) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    private int addLineTitle(PropertyName filter, RelativeLayout line) {
-        TextView filterName = new TextView(view.getContext());
-        setTextAttributes(filterName, filter);
-        setLayoutAttributes(filterName);
-        line.addView(filterName);
-        filterName.setId(View.generateViewId());
-        return filterName.getId();
-    }
-
-    private void setLayoutAttributes(TextView filterName) {
-        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,
-                RelativeLayout.LayoutParams.WRAP_CONTENT);
-        layoutParams.addRule(RelativeLayout.CENTER_VERTICAL);
-        layoutParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-        filterName.setLayoutParams(layoutParams);
-        int padding = StaticFunctions.convertDpToPx(6);
-        filterName.setPadding(padding, padding, padding, padding);
-    }
-
-    private void setTextAttributes(TextView filterName, PropertyName filter) {
-        String name = filter.getName() + view.getResources().getString(R.string.filter_break);
-        filterName.setText(name);
-        filterName.setTextSize(StaticFunctions.convertDpToSp(15));
-    }
-
-    public Map<String, List<String>> getCurrentFilters() {
-        return currentFilters;
-    }
-
-    public void refreshFilter() {
-        LinearLayout body = view.findViewById(R.id.filter_body);
-        body.removeAllViews();
-        currentFilters.clear();
-        populateFilter(currentFilters);
+    private ChipGroup createChipGroup(String groupName) {
+        View chipGroupAsView = inflater.inflate(R.layout.chip_group_layout, null);
+        ChipGroup chipGroup = (ChipGroup) chipGroupAsView;
+        TextView filterName = ((TextView) chipGroup.getChildAt(0));
+        String text = groupName + ": ";
+        filterName.setText(text);
+        filterName.setTypeface(filterName.getTypeface(), Typeface.BOLD);
+        filterName.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
+        return chipGroup;
     }
 }
