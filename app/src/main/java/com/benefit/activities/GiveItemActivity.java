@@ -28,6 +28,7 @@ import com.benefit.model.PropertyName;
 import com.benefit.services.CategoryService;
 import com.benefit.services.ProductService;
 import com.benefit.utilities.Factory;
+import com.benefit.utilities.StaticFunctions;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.squareup.picasso.Picasso;
@@ -41,7 +42,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
-import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * This activity is used when the user wants to give/upload/offer item to his profile.
@@ -50,13 +50,13 @@ public class GiveItemActivity extends AppCompatActivity {
 
     private static final int PICK_IMAGE = 1;
     private static final int SNAP_PHOTO = 2;
-    private static final int FIRST_CHILD_INDEX_CHIP = 1;
+    private static final int FIRST_CHILD_INDEX = 0;
 
     private Dialog thankYouDailog;
     private Dialog dialogReturnsToActivity;
     private LinearLayout activityRootLinearLayout;
     private LayoutInflater inflater;
-
+    private Button mGiveOrDoneButton;
     private StorageDriver storageDriver;
     private CategoryService categoryService;
     private ProductService productService;
@@ -64,11 +64,14 @@ public class GiveItemActivity extends AppCompatActivity {
     private boolean haveCategoriesBeenInflatedOnce = false;
 
     // the following group are fields for creating a Product
+    long mProductToEditId;
+    private boolean isInEditMode = false;
+    private String mSellerId = "jHbxY9G5pdO7Qo5k58ulwPsY1fG2";
     private Uri mImageUri;
     private String mImageUrl;
-    private ImageButton mImageButton;
     private EditText mEdTextTitle;
     private EditText mEdTextBrand;
+    private ImageButton mImageButtonUpload;
     private LinearLayout mBrandLayout;
     private int mMetaCategory;
     private int mCategoryGroupIndexInLayout;
@@ -80,14 +83,51 @@ public class GiveItemActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_give_item);
+        Bundle bundle = getIntent().getExtras();
+        if (bundle == null)
+            setContentView(R.layout.activity_give_item);
+        else
+            setContentView(R.layout.activity_edit_item);
 
-        createActionBar();
         instantiateDataMembers();
         createServicesAndDrivers();
-
-        createAttributeChips();
+        createActivityByMode(bundle);
     }
+
+    private void createActivityByMode(Bundle bundle) {
+        if (bundle != null){
+            // edit mode
+            mProductToEditId = bundle.getLong(getResources()
+                    .getString(R.string.product_id_extras_key));
+            isInEditMode = true;
+            mGiveOrDoneButton.setText("Done");
+            loadProductFromExtras(mProductToEditId );
+        } else {
+            // give mode
+            createActionBar();
+            createAttributeChips();
+        }
+    }
+
+    private void loadProductFromExtras(long productToEditId){
+        final Observer<Product> productObserver = new Observer<Product>() {
+            @Override
+            public void onChanged(Product observedProduct) {
+                mImageUrl = observedProduct.getImageResource();
+                mImageUri = Uri.parse(mImageUrl);
+                loadImageIntoButtonImage();
+                mEdTextTitle.setText(observedProduct.getTitle());
+                mCategory = observedProduct.getCategoryId();
+                mMetaCategory = StaticFunctions.getMetaCategoryFromCategoryId(mCategory);
+                mProperties = observedProduct.getProperties();
+                createAttributeChips();
+            }
+        };
+        productService.getProductById(productToEditId).observe(this, productObserver);
+    }
+
+
+
 
     private void createServicesAndDrivers() {
         this.productService = ViewModelProviders.of(this,
@@ -110,11 +150,15 @@ public class GiveItemActivity extends AppCompatActivity {
 
         ChipGroup propertyGroup = createChipGroup(propertyName.getName());
         if (propertyName.getValidValues() == null) {
-            return; // brand has free text input so we create it elsewhere
+            return; // brand, for example, has free text input so we create it in instantiation
         }
         List<String> propertyValues = propertyName.getValidValues();
+        int chipIndexToCheck = FIRST_CHILD_INDEX;
         for (String value : propertyValues) {
-            propertyGroup.addView(createPropertyChipAsView(value, propertyName));
+            addPropertyAsChipToChipGroup(value, propertyName, propertyGroup);
+            if (checkCreatedChipIfInEdit(propertyName, value)){
+                chipIndexToCheck = propertyValues.indexOf(value);
+            }
         }
 
         propertyGroup.setOnCheckedChangeListener(new ChipGroup.OnCheckedChangeListener() {
@@ -126,11 +170,7 @@ public class GiveItemActivity extends AppCompatActivity {
                 }
             }
         });
-
-        Chip firstChip = (Chip) propertyGroup.getChildAt(FIRST_CHILD_INDEX_CHIP);
-        firstChip.setChecked(true);
-        updatePropertyOnCheckedChanged(firstChip);
-
+        checkChipOfIndex(propertyGroup, chipIndexToCheck);
         mPropertiesChipGroupsBuffer.put(propertyName.getName(), propertyGroup);
     }
 
@@ -151,20 +191,41 @@ public class GiveItemActivity extends AppCompatActivity {
     }
 
 
-    private View createCategoryChipAsView(Category category) {
+    private void addCategoryAsChipToChipGroup(Category category, ChipGroup chipGroup) {
         View chipAsView = inflater.inflate(R.layout.chip_layout, null);
         Chip chip = (Chip) chipAsView;
         chip.setText(category.getName());
         chip.setTag(category);
-        return chipAsView;
+        chipGroup.addView(chip);
     }
 
-    private View createPropertyChipAsView(String propertyValue, PropertyName propertyName) {
+    private boolean checkCreatedChipIfInEdit(PropertyName propertyName, String propertyValue){
+        String propertyNameBeingCreated = propertyName.getName();
+        if (isInEditMode && !propertyNameBeingCreated.isEmpty() && !mProperties.isEmpty()){
+            List<String> propertyValues = mProperties.get(propertyNameBeingCreated);
+            if (propertyValues != null){
+                // for now assuming single property
+                String propertyToLoad = propertyValues.get(0);
+                return (propertyToLoad != null && propertyToLoad.equals(propertyValue));
+            }
+        }
+        return false;
+    }
+
+    private boolean isChipMatchingProductToEdit(int level, int categoryId){
+        // if it is a meta category and match or a category and match
+        return ((level == 0 && categoryId == mMetaCategory)||
+                (level == 1 && categoryId == mCategory));
+    }
+
+    private void addPropertyAsChipToChipGroup(String propertyValue, PropertyName propertyName,
+                                          ChipGroup propertyGroup) {
         View chipAsView = inflater.inflate(R.layout.chip_layout, null);
         Chip chip = (Chip) chipAsView;
         chip.setText(propertyValue);
         chip.setTag(propertyName);
-        return chipAsView;
+        propertyGroup.addView(chip);
+
     }
 
 
@@ -177,10 +238,14 @@ public class GiveItemActivity extends AppCompatActivity {
             @Override
             public void onChanged(List<Category> categories) {
                 metaCategories.addAll(categories);
+                int chipIndexToCheck = FIRST_CHILD_INDEX;
                 for (Category category : metaCategories) {
-                    chipGroup.addView(createCategoryChipAsView(category));
+                    addCategoryAsChipToChipGroup(category, chipGroup);
+                    if (isChipMatchingProductToEdit(category.getLevel(), category.getId())){
+                        chipIndexToCheck = metaCategories.indexOf(category);
+                    }
                 }
-                ((Chip) chipGroup.getChildAt(FIRST_CHILD_INDEX_CHIP)).setChecked(true);
+                checkChipOfIndex(chipGroup, chipIndexToCheck);
             }
         };
         categoryService.getAllMetaCategories().observe(this, metaCategoriesObserver);
@@ -206,10 +271,14 @@ public class GiveItemActivity extends AppCompatActivity {
         mCategoryGroupIndexInLayout = activityRootLinearLayout.getChildCount();
     }
 
+    private void checkChipOfIndex(ChipGroup chipGroup, int chipIndexToCheck){
+        // +1 because of chipgroup holding textView first
+        ((Chip) chipGroup.getChildAt(chipIndexToCheck + 1)).setChecked(true);
+    }
+
 
     private void createCategories() {
         ChipGroup chipGroup = createChipGroup(this.getString(R.string.categories_chip_group_heading));
-
         setOnCheckedChangeListenerForCategories(chipGroup);
         final List<Category> categories = new LinkedList<>();
         final Observer<List<Category>> categoriesObserver = new Observer<List<Category>>() {
@@ -217,10 +286,14 @@ public class GiveItemActivity extends AppCompatActivity {
             @Override
             public void onChanged(List<Category> inputCategories) {
                 categories.addAll(inputCategories);
+                int chipIndexToCheck = FIRST_CHILD_INDEX;
                 for (Category category : categories) {
-                    chipGroup.addView(createCategoryChipAsView(category));
+                    addCategoryAsChipToChipGroup(category, chipGroup);
+                    if (isChipMatchingProductToEdit(category.getLevel(), category.getId())){
+                            chipIndexToCheck = categories.indexOf(category);
+                    }
                 }
-                ((Chip) chipGroup.getChildAt(FIRST_CHILD_INDEX_CHIP)).setChecked(true);
+                checkChipOfIndex(chipGroup, chipIndexToCheck);
             }
         };
         categoryService.getChildrenByParentId(mMetaCategory).observe(this, categoriesObserver);
@@ -272,12 +345,14 @@ public class GiveItemActivity extends AppCompatActivity {
 
     private void instantiateDataMembers() {
         mEdTextTitle = findViewById(R.id.item_title_text);
+        mImageButtonUpload = findViewById(R.id.image_button_choose_image);
         activityRootLinearLayout = findViewById(R.id.activity_root_linear_layout);
         inflater = LayoutInflater.from(this);
         View brandLayout = inflater.inflate(R.layout.brand_text_input_layout, null);
         mEdTextBrand = brandLayout.findViewById(R.id.item_brand);
         mBrandLayout = (LinearLayout) brandLayout;
-        mImageButton = findViewById(R.id.image_button_choose_image);
+        mGiveOrDoneButton = findViewById(R.id.give_button);
+
     }
 
 
@@ -303,22 +378,22 @@ public class GiveItemActivity extends AppCompatActivity {
     }
 
     private void loadImageFromGallery(int resultCode, @Nullable Intent data) {
-        ImageButton mImageButtonUpload = findViewById(R.id.image_button_choose_image);
-
         if (resultCode == RESULT_OK && data != null && data.getData() != null) {
             mImageUri = data.getData();
             loadUriAsUrlToButton();
-            Picasso.get()
-                    .load(mImageUri)
-                    .centerCrop()
-                    .fit().into(mImageButtonUpload);
+            loadImageIntoButtonImage();
 
         }
     }
 
+    private void loadImageIntoButtonImage(){
+        Picasso.get()
+                .load(mImageUri)
+                .centerCrop()
+                .fit().into(mImageButtonUpload);
+    }
+
     private void loadUriAsUrlToButton() {
-        // todo: this doesn't work for now
-        final String retUrl = "";
         final Observer<String> urlObserver = new Observer<String>() {
 
             @Override
@@ -328,10 +403,6 @@ public class GiveItemActivity extends AppCompatActivity {
             }
         };
         storageDriver.uploadImage(mImageUri).observe(this, urlObserver);
-    }
-
-    public int getProductId() {
-        return ThreadLocalRandom.current().nextInt(500, 1000 + 1);
     }
 
     private boolean isThereNoTitle() {
@@ -348,9 +419,12 @@ public class GiveItemActivity extends AppCompatActivity {
             mProperties.put(this.getString(R.string.brand_property_name),
                     Collections.singletonList(mEdTextBrand.getText().toString()));
             List<String> imagesUrls = loadImagesUrls();
-            Product product = new Product(mCategory, "jHbxY9G5pdO7Qo5k58ulwPsY1fG2",
+            Product product = new Product(mCategory, mSellerId,
                     itemTitle, itemDescription, 0, 0, date, mProperties, imagesUrls);
             productService.addProduct(product);
+            if (isInEditMode){
+                productService.deleteProduct(mProductToEditId);
+            }
             createThankYouDailog();
         }
     }
@@ -395,7 +469,7 @@ public class GiveItemActivity extends AppCompatActivity {
             });
         }
         if (mImageUri == null) {
-            mImageButton.setImageResource(R.drawable.ic_add_image_error);
+            mImageButtonUpload.setImageResource(R.drawable.ic_add_image_error);
         }
     }
 
@@ -489,4 +563,7 @@ public class GiveItemActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void onClickBack(View view) {
+        finish();
+    }
 }

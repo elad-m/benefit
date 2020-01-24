@@ -27,6 +27,7 @@ public class ClothingRecyclerAdapter extends RecyclerView.Adapter<ClothingRecycl
     public interface OnItemClickListener {
         void onItemClick(int position);
         void onDeleteClick(int posotion, View view);
+        void onEditClick(int position, View view);
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {
@@ -41,6 +42,7 @@ public class ClothingRecyclerAdapter extends RecyclerView.Adapter<ClothingRecycl
         ImageView mImageView;
         TextView mImageTitle;
         Button mDeleteButton;
+        Button mEditButton;
 
         ClothingViewHolder(@NonNull View itemView, final OnItemClickListener listener) {
             // itemView is the whole card
@@ -48,6 +50,7 @@ public class ClothingRecyclerAdapter extends RecyclerView.Adapter<ClothingRecycl
             mImageView = itemView.findViewById(R.id.item_image);
             mImageTitle = itemView.findViewById(R.id.item_title);
             mDeleteButton = itemView.findViewById(R.id.delete_button);
+            mEditButton = itemView.findViewById(R.id.edit_button);
 
             mDeleteButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -56,6 +59,17 @@ public class ClothingRecyclerAdapter extends RecyclerView.Adapter<ClothingRecycl
                         int position = getAdapterPosition();
                         if (position != RecyclerView.NO_POSITION) {
                             listener.onDeleteClick(position, deleteButtonView);
+                        }
+                    }
+                }
+            });
+            mEditButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View editButtonView) {
+                    if (listener != null) {
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION) {
+                            listener.onEditClick(position, editButtonView);
                         }
                     }
                 }

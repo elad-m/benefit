@@ -44,6 +44,7 @@
     <string name="google_sign_in_fail_massage">Filed to sign in with google.</string>
     <string name="user_relay">user</string>
     <string name="add_item_heading_message">Please add a picture, title and choose from the categories below</string>
+    <string name="edit_item_heading_message">You can replace the picture, title and change the categories below</string>
     <string name="alert_dialog_delete_item_title">Item Deletion</string>
     <string name="item_deleted_toast">Item deleted!</string>
     <string name="give">GIVE</string>
@@ -80,6 +81,7 @@
     <string name="productPagePropertiesValuesSeparator">,</string>
     <string name="no_items_found">No items found</string>
     <string name="default_user_greeting">Hello You!</string>
+    <string name="product_id_extras_key">productId</string>
     <string-array name="chat_sort_options">
         <item>your items</item>
         <item>wanted items</item>

@@ -157,9 +157,6 @@ public class UserProfileActivity extends AppCompatActivity {
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
 
-    public void onEditClick(View view) {
-        Toast.makeText(this, "Edit button was pressed", Toast.LENGTH_SHORT).show();
-    }
 
     private void buildRecyclerView() {
         // recycler itself
@@ -185,6 +182,14 @@ public class UserProfileActivity extends AppCompatActivity {
             public void onDeleteClick(int position, View deleteButtonView) {
                 ClothingItem itemToDelete = getClothingItemFromButtonView(deleteButtonView);
                 openDeleteDialog(itemToDelete, position);
+            }
+
+            @Override
+            public void onEditClick(int position, View editButtonView) {
+                long productId = getClothingItemFromButtonView(editButtonView).getmProductId();
+                Intent intent = new Intent(getApplicationContext(), GiveItemActivity.class);
+                intent.putExtra(getApplicationContext().getString(R.string.product_id_extras_key), productId);
+                startActivity(intent);
             }
         });
 
