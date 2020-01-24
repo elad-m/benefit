@@ -6,10 +6,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
@@ -20,10 +22,12 @@ import com.benefit.ui.Displayable;
 import com.benefit.ui.DisplayableRecycleAdapter;
 import com.benefit.ui.Items.ItemsDisplay;
 import com.benefit.ui.Items.MetaCategoryBar;
+import com.benefit.activities.ItemsPageActivity;
 import com.benefit.drivers.DatabaseDriver;
 import com.benefit.model.Category;
 import com.benefit.model.CategoryCluster;
 import com.benefit.services.CategoryService;
+import com.benefit.ui.HeaderClickListener;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -64,12 +68,14 @@ public class MainActivity extends AppCompatActivity {
         itemsDisplay.getmAdapter().setOnItemClickListener(new DisplayableRecycleAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                Displayable itemClicked = itemsDisplay.getDisplayableItems().get(position);
-                if (itemsDisplayed == CLUSTERS_DISPLAYED || ((Category) itemClicked).getIsLeaf()) {
-                    openProductsPage(itemClicked);
-                } else {
-                    itemsDisplay.refreshDisplay();
-                    showChildrenOfParent(((Category) itemClicked).getId());
+                if (position < itemsDisplay.getDisplayableItems().size()) {
+                    Displayable itemClicked = itemsDisplay.getDisplayableItems().get(position);
+                    if (itemsDisplayed == CLUSTERS_DISPLAYED || ((Category) itemClicked).getIsLeaf()) {
+                        openProductsPage(itemClicked);
+                    } else {
+                        itemsDisplay.refreshDisplay();
+                        showChildrenOfParent((int)((Category) itemClicked).getId());
+                    }
                 }
             }
         });
@@ -103,14 +109,14 @@ public class MainActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     if (metaCategoryChosen == null) {
                         instantiateAndColor(metaCategory);
-                        showChildrenOfParent(metaCategoryChosen.getId());
+                        showChildrenOfParent((int)metaCategoryChosen.getId());
                         itemsDisplayed = CATEGORIES_DISPLAYED;
                     } else {
                         if (!metaCategoryChosen.getName().equals(metaCategory.getKey().getName())) {
                             metaButtonChosen.setBackground(getResources().getDrawable(R.drawable.oval));
                             metaButtonChosen.setTextColor(Color.BLACK);
                             instantiateAndColor(metaCategory);
-                            showChildrenOfParent(metaCategoryChosen.getId());
+                            showChildrenOfParent((int)metaCategoryChosen.getId());
                             itemsDisplayed = CATEGORIES_DISPLAYED;
                         } else {
                             metaButtonChosen = metaCategory.getValue();
@@ -148,11 +154,12 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.search_icon).setBackground(getResources().getDrawable(R.drawable.ic_search_icon_color));
         getWindow().setSoftInputMode(
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
     }
 
     private void showItemsOnScreen() {
         if (metaCategoryChosen != null) {
-            showChildrenOfParent(metaCategoryChosen.getId());
+            showChildrenOfParent((int)metaCategoryChosen.getId());
             itemsDisplayed = CATEGORIES_DISPLAYED;
         } else {
             showCategoryClusters();
@@ -178,7 +185,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onChanged(List<Category> categories) {
                 metaCategories.addAll(categories);
-                metaCategoryBar.createCategoryBar(metaCategories, metaCategoryChosen);
+                if (metaCategoryChosen == null){
+                    metaCategoryBar.createCategoryBar(metaCategories);
+                } else {
+                    metaButtonChosen = metaCategoryBar.createCategoryBar(metaCategories, metaCategoryChosen);
+                }
                 addMetaCategoryListeners();
             }
         };
@@ -187,6 +198,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showCategoryClusters() {
+        itemsDisplay.refreshDisplay();
         final List<CategoryCluster> categoryClusters = new LinkedList<>();
         final Observer<List<CategoryCluster>> categoryObserver = new Observer<List<CategoryCluster>>() {
 
@@ -240,53 +252,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setHeaderListeners() {
-        findViewById(R.id.give_icon).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startGiveActivity();
-            }
-        });
-
-        findViewById(R.id.user_icon).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startUserProfileActivity();
-            }
-        });
-
-        findViewById(R.id.search_icon).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startSearchActivity();
-            }
-        });
-
-        findViewById(R.id.message_icon).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startMessageActivity();
-            }
-        });
+        HeaderClickListener.setHeaderListeners(findViewById(android.R.id.content).getRootView());
     }
 
-    private void startMessageActivity() {
-        Intent intent = new Intent(this, ConversationActivity.class);
-        startActivity(intent);
-    }
-
-    private void startSearchActivity() {
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
-    }
-
-    private void startUserProfileActivity() {
-        Intent intent = new Intent(this, UserProfileActivity.class);
-        startActivity(intent);
-    }
-
-    private void startGiveActivity() {
-        Intent intent = new Intent(this, GiveItemActivity.class);
-        startActivity(intent);
-    }
 
 }

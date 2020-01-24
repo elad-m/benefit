@@ -11,6 +11,7 @@
     <color name="colorRed">#d60000</color>
     <color name="colorBlack">#000000</color>
     <color name="colorWhite">#ffffff</color>
+    <color name="offWhite">#faebd7</color>
 
     <color name="backgroundColor">#ffffff</color>
     <color name="primaryBlue">#0188b2</color>

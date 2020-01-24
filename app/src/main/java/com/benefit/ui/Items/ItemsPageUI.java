@@ -1,14 +1,23 @@
 package com.benefit.ui.Items;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewGroupOverlay;
+import android.view.ViewOverlay;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.view.WindowManager;
+
+import androidx.annotation.NonNull;
 
 import com.benefit.R;
 import com.benefit.utilities.StaticFunctions;
@@ -22,7 +31,7 @@ import com.benefit.model.PropertyName;
 import java.util.List;
 import java.util.Map;
 
-public class AllProductsScreen {
+public class ItemsPageUI {
 
     private static final int PRODUCTS = 2;
 
@@ -36,16 +45,26 @@ public class AllProductsScreen {
     private ItemsDisplay itemsDisplay;
 
 
-    public AllProductsScreen(View view, Category currentCategory, CategoryCluster categoryCluster) {
+    public ItemsPageUI(View view, Category currentCategory, CategoryCluster categoryCluster) {
         this.view = view;
         this.currentCategory = currentCategory;
         this.categoryCluster = categoryCluster;
+        colorIcon();
         itemsDisplay = new ItemsDisplay(view.findViewById(android.R.id.content).getRootView(), PRODUCTS);
+    }
+
+    private void colorIcon() {
+        view.findViewById(R.id.search_icon).setBackground(view.getContext().getResources().getDrawable(R.drawable.ic_search_icon_color));
     }
 
     public void addMetaCategoryBar(List<Category> categories, Category metaCategoryChosen) {
         metaCategoryBar = new MetaCategoryBar(view.findViewById(android.R.id.content).getRootView());
         metaCategoryBar.createCategoryBar(categories, metaCategoryChosen);
+    }
+
+    public void addMetaCategoryBar(List<Category> categories) {
+        metaCategoryBar = new MetaCategoryBar(view.findViewById(android.R.id.content).getRootView());
+        metaCategoryBar.createCategoryBar(categories);
     }
 
     public void addDisplayTable(List<Product> products) {
@@ -61,7 +80,7 @@ public class AllProductsScreen {
      *
      * @param currentFilters the current filters of the items
      */
-    public void writeFiltersOnScreen(Map<String, List<String>> currentFilters) {
+    public void openFilterPopup(Map<String, List<String>> currentFilters) {
         LinearLayout currentFilterLayout = view.findViewById(R.id.current_filters);
         currentFilterLayout.removeAllViews();
         writeCategoryInFilterBar(currentFilterLayout);
@@ -110,6 +129,11 @@ public class AllProductsScreen {
         filterText.setLayoutParams(layoutParams);
     }
 
+    public void undimBackground(){
+        ViewOverlay overlay = view.getOverlay();
+        overlay.clear();
+    }
+
     /**
      * opens the filter popup
      *
@@ -122,6 +146,15 @@ public class AllProductsScreen {
         popupView = layoutInflater.inflate(R.layout.filter, viewGroup);
         placePopupOnScreen();
         populatePopup(filters, currentFilters);
+        applyDim( 0.8f);
+    }
+
+    private void applyDim(float dimAmount){
+        Drawable dim = new ColorDrawable(Color.BLACK);
+        dim.setBounds(0, 0, view.getWidth(), view.getHeight());
+        dim.setAlpha((int) (255 * dimAmount));
+        ViewOverlay overlay = view.getOverlay();
+        overlay.add(dim);
     }
 
     private void populatePopup(List<PropertyName> filters, Map<String, List<String>> currentFilters) {

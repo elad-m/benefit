@@ -27,6 +27,7 @@ import com.benefit.model.Category;
 import com.benefit.model.Product;
 import com.benefit.services.CategoryService;
 import com.benefit.services.ProductService;
+import com.benefit.ui.HeaderClickListener;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.squareup.picasso.Picasso;
@@ -183,7 +184,7 @@ public class GiveItemActivity extends AppCompatActivity {
                     chipGroup.addView(createChipAsView(category));
                 }
                 ((Chip) chipGroup.getChildAt(CHILD_INDEX_CHIP)).setChecked(true);
-                mMetaCategory = metaCategories.get(0).getId();
+                mMetaCategory = (int)metaCategories.get(0).getId();
             }
         };
         categoryService.getAllMetaCategories().observe(this, metaCategoriesObserver);
@@ -196,7 +197,7 @@ public class GiveItemActivity extends AppCompatActivity {
             public void onCheckedChanged(ChipGroup chipGroup, int i) {
                 Chip chip = chipGroup.findViewById(i);
                 if (chip != null) {
-                    mMetaCategory = ((Category) chip.getTag()).getId();
+                    mMetaCategory = (int)((Category) chip.getTag()).getId();
                     createCategoriesChipsFromMetaCategory();
                 }
             }
@@ -224,7 +225,7 @@ public class GiveItemActivity extends AppCompatActivity {
                     chipGroup.addView(createChipAsView(category));
                 }
                 ((Chip) chipGroup.getChildAt(CHILD_INDEX_CHIP)).setChecked(true);
-                mCategory = categories.get(0).getId();
+                mCategory = (int)categories.get(0).getId();
             }
         };
         categoryService.getChildrenByParentId(mMetaCategory).observe(this, categoriesObserver);
@@ -237,7 +238,7 @@ public class GiveItemActivity extends AppCompatActivity {
             public void onCheckedChanged(ChipGroup chipGroup, int i) {
                 Chip chip = chipGroup.findViewById(i);
                 if (chip != null) {
-                    mCategory = ((Category) chip.getTag()).getId();
+                    mCategory = (int)((Category) chip.getTag()).getId();
                 }
             }
         });
@@ -395,53 +396,6 @@ public class GiveItemActivity extends AppCompatActivity {
     }
 
     private void setHeaderListeners() {
-        findViewById(R.id.give_icon).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startGiveActivity();
-            }
-        });
-
-        findViewById(R.id.user_icon).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startUserProfileActivity();
-            }
-        });
-
-        findViewById(R.id.search_icon).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startSearchActivity();
-            }
-        });
-
-        findViewById(R.id.message_icon).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startMessageActivity();
-            }
-        });
+        HeaderClickListener.setHeaderListeners(findViewById(android.R.id.content).getRootView());
     }
-
-    private void startMessageActivity() {
-        Intent intent = new Intent(this, ConversationActivity.class);
-        startActivity(intent);
-    }
-
-    private void startSearchActivity() {
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
-    }
-
-    private void startUserProfileActivity() {
-        Intent intent = new Intent(this, UserProfileActivity.class);
-        startActivity(intent);
-    }
-
-    private void startGiveActivity() {
-        Intent intent = new Intent(this, GiveItemActivity.class);
-        startActivity(intent);
-    }
-
 }

@@ -42,7 +42,9 @@ public class FilterPopup {
         this.currentFilters = currentFilters;
 
         for (PropertyName filter : filters) {
-            addFilter(filter, body);
+            if (filter.getValidValues() != null && filter.getValidValues().size() > 0) {
+                addFilter(filter, body);
+            }
         }
     }
 
@@ -72,34 +74,17 @@ public class FilterPopup {
 
         setChipGroupLayoutParams(chipGroup);
         if (filter.getValidValues() != null) {
-            for (final String property : filter.getValidValues()) {
+            for (final String propertyName : filter.getValidValues()) {
 
                 Chip chip = new Chip(view.getContext(), null, R.attr.CustomChipChoiceStyle);
-                chip.setText(property);
-                chip.setChipStrokeColor(ColorStateList.valueOf(ContextCompat.getColor(view.getContext(), R.color.black)));
-                chip.setChipStrokeColorResource(R.color.black);
-                chip.setChipStrokeWidth(StaticFunctions.convertDpToPx(1));
+                chip.setText(propertyName);
 
-                if (currentFilterContainsKeyAndValue(filter.getName(), property)) {
+                if (currentFilterContainsKeyAndValue(filter.getName(), propertyName)) {
                     chip.setChipBackgroundColor(ColorStateList.valueOf(ContextCompat.getColor(view.getContext(), R.color.lightBlue)));
                     chip.setTextColor(Color.WHITE);
                 }
 
-                chip.setOnClickListener(new View.OnClickListener() {
-                    @RequiresApi(api = Build.VERSION_CODES.N)
-                    @Override
-                    public void onClick(View view) {
-                        if (currentFilterContainsKeyAndValue(filter.getName(), property)) {
-                            chip.setChipBackgroundColor(ColorStateList.valueOf(ContextCompat.getColor(view.getContext(), R.color.browser_actions_bg_grey)));
-                            chip.setTextColor(Color.BLACK);
-                            removeAttributeToCurrentFilters(filter.getName(), property);
-                        } else {
-                            chip.setChipBackgroundColor(ColorStateList.valueOf(ContextCompat.getColor(view.getContext(), R.color.lightBlue)));
-                            chip.setTextColor(Color.WHITE);
-                            addAttributeToCurrentFilters(filter.getName(), property);
-                        }
-                    }
-                });
+                addClickListener(chip, filter, propertyName);
                 chipGroup.addView(chip);
 
             }
@@ -108,6 +93,24 @@ public class FilterPopup {
             line.addView(scrollView);
         }
 
+    }
+
+    private void addClickListener(Chip chip, PropertyName filter, String propertyName) {
+        chip.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onClick(View view) {
+                if (currentFilterContainsKeyAndValue(filter.getName(), propertyName)) {
+                    chip.setChipBackgroundColor(ColorStateList.valueOf(ContextCompat.getColor(view.getContext(), R.color.browser_actions_bg_grey)));
+                    chip.setTextColor(Color.BLACK);
+                    removeAttributeToCurrentFilters(filter.getName(), propertyName);
+                } else {
+                    chip.setChipBackgroundColor(ColorStateList.valueOf(ContextCompat.getColor(view.getContext(), R.color.lightBlue)));
+                    chip.setTextColor(Color.WHITE);
+                    addAttributeToCurrentFilters(filter.getName(), propertyName);
+                }
+            }
+        });
     }
 
     private void removeAttributeToCurrentFilters(String name, String property) {

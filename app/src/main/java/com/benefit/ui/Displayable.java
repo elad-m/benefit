@@ -10,4 +10,5 @@ public interface Displayable {
 
     String getName();
 
+    long getId();
 }

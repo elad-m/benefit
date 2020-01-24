@@ -33,7 +33,9 @@
         app:layout_constraintRight_toRightOf="@id/give_right_guideline"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintVertical_chainStyle="spread"/>
+        app:layout_constraintVertical_chainStyle="spread"
+        android:elevation="0dp"
+        />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/give_right_guideline"
@@ -53,7 +55,9 @@
         app:layout_constraintLeft_toRightOf="@id/sandwich_icon"
         app:layout_constraintRight_toLeftOf="@id/user_icon"
         app:layout_constraintBottom_toBottomOf="@id/icon_guideline"
-        app:layout_constraintWidth_percent="0.081" />
+        app:layout_constraintWidth_percent="0.081"
+        android:elevation="0dp"
+        />
 
     <View
         android:id="@+id/chosen_view"
@@ -99,7 +103,9 @@
         app:layout_constraintLeft_toRightOf="@id/search_icon"
         app:layout_constraintRight_toLeftOf="@id/message_icon"
         app:layout_constraintBottom_toBottomOf="@id/icon_guideline"
-        app:layout_constraintWidth_percent="0.083" />
+        app:layout_constraintWidth_percent="0.083"
+        android:elevation="0dp"
+        />
 
     <Button
         android:id="@+id/message_icon"
@@ -110,7 +116,9 @@
         app:layout_constraintHorizontal_chainStyle="spread"
         app:layout_constraintRight_toLeftOf="@id/icon_right_guideline"
         app:layout_constraintBottom_toBottomOf="@id/icon_guideline"
-        app:layout_constraintWidth_percent="0.083" />
+        app:layout_constraintWidth_percent="0.083"
+        android:elevation="0dp"
+        />
 
 
     <androidx.constraintlayout.widget.Guideline

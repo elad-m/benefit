@@ -13,12 +13,10 @@
         android:layout_gravity="center">
 
         <LinearLayout
-            android:id="@+id/image_and_text_layout"
-            android:layout_width="match_parent"
+            android:id="@+id/item_image_layout"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
-            android:orientation="vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:background="@drawable/ic_item_layout"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -26,28 +24,26 @@
 
             <ImageView
                 android:id="@+id/item_image"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
-                android:contentDescription="Image of item"
-                android:background="@drawable/ic_item_layout"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/item_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="4dp"
-                android:textAlignment="center"
-                android:textSize="16sp"
-                android:textColor="#0188b2"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/item_image" />
-
+                android:layout_width="140dp"
+                android:layout_height="140dp"
+                android:contentDescription="Image of category"
+                />
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/item_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="4dp"
+            android:textAlignment="center"
+            android:textSize="16sp"
+            android:textColor="#0188b2"
+            android:ellipsize="end"
+            android:maxLines="1"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/item_image_layout" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
