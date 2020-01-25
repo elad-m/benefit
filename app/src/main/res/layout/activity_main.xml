@@ -4,35 +4,35 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white"
+    android:layoutDirection="ltr"
     android:orientation="vertical"
-    tools:context=".activities.MainActivity"
-    android:layoutDirection="ltr">
+    tools:context=".activities.MainActivity">
 
 
     <include
         android:id="@+id/first_page_header"
-        layout="@layout/page_header"/>
+        layout="@layout/page_header" />
 
 
     <androidx.appcompat.widget.SearchView
         android:id="@+id/search_input"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintWidth_percent="0.81"
         android:layout_marginLeft="45dp"
         android:layout_marginRight="45dp"
         android:background="@drawable/ic_search_bar"
         android:ems="12"
-        app:queryHint="Search"
-        android:inputType="textPersonName"
-        app:layout_constraintHeight_percent="0.054"
-        app:layout_constraintTop_toBottomOf="@id/first_page_header"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintHorizontal_chainStyle="spread"
-        app:searchIcon="@drawable/ic_search_bar_icon"
         android:focusable="false"
-        app:iconifiedByDefault="false"/>
+        android:inputType="textPersonName"
+        app:iconifiedByDefault="false"
+        app:layout_constraintHeight_percent="0.054"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/first_page_header"
+        app:layout_constraintWidth_percent="0.81"
+        app:queryHint="Search"
+        app:searchIcon="@drawable/ic_search_bar_icon" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/meta_category_guide"
@@ -45,8 +45,8 @@
         android:id="@+id/metaCategory_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintHeight_percent="0.029"
         android:layout_marginTop="10dp"
+        app:layout_constraintHeight_percent="0.029"
         app:layout_constraintTop_toBottomOf="@id/meta_category_guide">
 
 
@@ -66,9 +66,13 @@
         android:id="@+id/categories"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintHeight_percent="0.95"
-        app:layout_constraintTop_toBottomOf="@id/body_guide"
-        android:scrollbars="vertical">
+        android:padding="15dp"
+        android:scrollbars="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHeight_percent="0.7"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/body_guide">
 
     </androidx.recyclerview.widget.RecyclerView>
 
@@ -79,7 +83,6 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.30" />
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

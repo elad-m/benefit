@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * UI for the metaCateogry bar
+ * UI for the metaCateogry bar that is on the pages
  */
 public class MetaCategoryBar {
 

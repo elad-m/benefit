@@ -2,7 +2,6 @@ package com.benefit.ui.Items;
 
 import android.graphics.Paint;
 import android.graphics.Typeface;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -18,47 +17,34 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * UI for the filter that pops up with the filter options
+ */
 public class FilterPopup {
 
     private View view;
     private LinearLayout layout;
     private List<PropertyName> filters;
     private Map<String, List<String>> currentFilters;
+    private LayoutInflater inflater;
 
     FilterPopup(View view, List<PropertyName> filters) {
 
         this.view = view;
         currentFilters = new HashMap<>();
         this.filters = filters;
+        layout = view.findViewById(R.id.filter_body);
+        inflater = LayoutInflater.from(view.getContext());
     }
 
     void populateFilter(Map<String, List<String>> currentFilters) {
-        layout = view.findViewById(R.id.filter_body);
-        inflater = LayoutInflater.from(view.getContext());
         this.currentFilters = currentFilters;
-
         for (PropertyName filter : filters) {
             if (filter.getValidValues() != null && filter.getValidValues().size() > 0) {
                 createChips(filter);
             }
         }
     }
-
-
-    public Map<String, List<String>> getCurrentFilters() {
-        return currentFilters;
-    }
-
-    public void refreshFilter() {
-        LinearLayout body = view.findViewById(R.id.filter_body);
-        body.removeAllViews();
-        currentFilters.clear();
-        populateFilter(currentFilters);
-    }
-
-
-    private LayoutInflater inflater;
-
 
     private void createChips(PropertyName propertyName) {
         ChipGroup chipGroup = createChipGroup(propertyName.getName());
@@ -67,7 +53,6 @@ public class FilterPopup {
             Chip chip = (Chip) chipAsView;
             chip.setText(property);
             chip.setTag(property);
-//            setCheckOnChip(propertyName, property, chip);
             chip.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -85,26 +70,17 @@ public class FilterPopup {
                 chipGroup, layout.getChildCount() - 1);
     }
 
-    private void setCheckOnChip(PropertyName propertyName, String property, Chip chip) {
-        if (currentFilters.size() > 0){
-            if (currentFilterContainsKeyAndValue(propertyName.getName(), property)){
-                chip.setChecked(true);
-            }
-        }
-        chip.setChecked(false);
-    }
-
-    private void checkCurrentProperties(ChipGroup chipGroup, PropertyName propertyName){
+    private void checkCurrentProperties(ChipGroup chipGroup, PropertyName propertyName) {
         // +1 because of chipgroup holding textView first
-        for (int i=0; i<propertyName.getValidValues().size();i++){
-            if (currentFilters.keySet().contains(propertyName.getName()) && currentFilters.get(propertyName.getName()).contains(propertyName.getValidValues().get(i))){
+        for (int i = 0; i < propertyName.getValidValues().size(); i++) {
+            if (currentFilterContainsKeyAndValue(propertyName.getName(), propertyName.getValidValues().get(i))) {
                 ((Chip) chipGroup.getChildAt(i + 1)).setChecked(true);
             }
         }
     }
 
     private boolean currentFilterContainsKeyAndValue(String filter, String attribute) {
-        return (currentFilters.containsKey(filter) &&
+        return (currentFilters.keySet().contains(filter) &&
                 currentFilters.get(filter).contains(attribute));
 
     }
@@ -138,5 +114,16 @@ public class FilterPopup {
         chipGroup.setSelectionRequired(false);
         chipGroup.setSingleSelection(false);
         return chipGroup;
+    }
+
+    public Map<String, List<String>> getCurrentFilters() {
+        return currentFilters;
+    }
+
+    public void refreshFilter() {
+        LinearLayout body = view.findViewById(R.id.filter_body);
+        body.removeAllViews();
+        currentFilters.clear();
+        populateFilter(currentFilters);
     }
 }

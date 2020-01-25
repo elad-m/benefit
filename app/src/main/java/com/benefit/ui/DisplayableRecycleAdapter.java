@@ -97,12 +97,14 @@ public class DisplayableRecycleAdapter extends RecyclerView.Adapter<DisplayableR
     @Override
     public void onBindViewHolder(@NonNull DisplayViewHolder holder, int position) {
         Displayable displayableItem = displayableItems.get(position);
-        // no "if empty" because clothingItem always has the resource data member initialized
         String resource = displayableItem.getImageResource();
         if (resource != null && URLUtil.isValidUrl(resource)) {
             Picasso.get()
-                    .load(displayableItem.getImageResource()).centerCrop()
-                    .fit().placeholder(R.drawable.oval).error(R.drawable.oval)
+                    .load(displayableItem.getImageResource())
+                    .placeholder(R.drawable.ic_image_placeholder)
+                    .error(R.drawable.ic_image_placeholder)
+                    .centerCrop()
+                    .fit()
                     .into(holder.mImageView);
         }
         holder.mImageTitle.setText(displayableItem.getName());

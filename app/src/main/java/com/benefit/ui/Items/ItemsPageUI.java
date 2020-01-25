@@ -31,6 +31,9 @@ import com.benefit.model.PropertyName;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * The UI for the page that displays all of the items
+ */
 public class ItemsPageUI {
 
     private static final int PRODUCTS = 2;

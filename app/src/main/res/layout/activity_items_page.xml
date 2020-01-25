@@ -114,11 +114,13 @@
         android:id="@+id/categories"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintHeight_percent="1"
-        android:layout_marginTop="15dp"
-        app:layout_constrainedHeight="true"
+        app:layout_constraintHeight_percent="0.62"
+        android:padding="15dp"
         android:scrollbars="vertical"
-        app:layout_constraintTop_toBottomOf="@id/current_filters_guide">
+        app:layout_constraintTop_toBottomOf="@id/current_filters_guide"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
 
     </androidx.recyclerview.widget.RecyclerView>
 
