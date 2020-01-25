@@ -17,7 +17,7 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.benefit.R;
 import com.benefit.ui.Displayable;
-import com.benefit.ui.DisplayableRecycleAdapter;
+import com.benefit.adapters.DisplayableRecycleAdapter;
 import com.benefit.ui.items.ItemsDisplay;
 import com.benefit.ui.items.MetaCategoryBar;
 import com.benefit.drivers.DatabaseDriver;

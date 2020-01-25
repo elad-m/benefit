@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.benefit.R;
 import com.benefit.ui.Displayable;
-import com.benefit.ui.DisplayableRecycleAdapter;
+import com.benefit.adapters.DisplayableRecycleAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,6 +74,5 @@ public class ItemsDisplay {
         mRecyclerView = view.findViewById(R.id.categories);
         mRecyclerView.removeAllViews();
         this.displayableItems.clear();
-//        populateDisplayTable(displayableItems);
     }
 }

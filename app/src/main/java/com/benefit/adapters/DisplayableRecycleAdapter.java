@@ -1,4 +1,4 @@
-package com.benefit.ui;
+package com.benefit.adapters;
 
 import android.os.Build;
 import android.view.LayoutInflater;
@@ -13,6 +13,7 @@ import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.benefit.R;
+import com.benefit.ui.Displayable;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;

@@ -25,7 +25,7 @@ import com.benefit.services.CategoryService;
 import com.benefit.services.ProductService;
 import com.benefit.services.SearchService;
 import com.benefit.ui.Displayable;
-import com.benefit.ui.DisplayableRecycleAdapter;
+import com.benefit.adapters.DisplayableRecycleAdapter;
 import com.benefit.ui.items.FilterPopup;
 import com.benefit.ui.items.ItemsPageUI;
 import com.benefit.utilities.staticClasses.HeaderClickListener;
@@ -54,7 +54,7 @@ public class ItemsPageActivity extends AppCompatActivity {
     private CategoryCluster categoryCluster;
     private List<PropertyName> allFilters;
     private Map<String, List<String>> currentFilters;
-    private ItemsPageUI activityScreen;
+    private ItemsPageUI pageUI;
     private DatabaseDriver databaseDriver = new DatabaseDriver();
     private CategoryService categoryService;
     private ProductService productService;
@@ -103,7 +103,7 @@ public class ItemsPageActivity extends AppCompatActivity {
         final Observer<List<Product>> searchObserver = new Observer<List<Product>>() {
             @Override
             public void onChanged(List<Product> products) {
-                activityScreen.addDisplayTable(products);
+                pageUI.addDisplayTable(products);
                 addProductListeners();
             }
         };
@@ -168,7 +168,7 @@ public class ItemsPageActivity extends AppCompatActivity {
 
     private void initiateWindow() {
         addScreenSettings();
-        activityScreen = new ItemsPageUI(findViewById(android.R.id.content).getRootView(), currentCategory, categoryCluster);
+        pageUI = new ItemsPageUI(findViewById(android.R.id.content).getRootView(), currentCategory, categoryCluster);
         getAllMetaCategories();
         if (!are_products_displayed) {
             addProductsToScreen();
@@ -177,7 +177,7 @@ public class ItemsPageActivity extends AppCompatActivity {
             } else {
                 getAllCategoryFilters();
             }
-            activityScreen.openFilterPopup(currentFilters);
+            pageUI.openFilterPopup(currentFilters);
         }
     }
 
@@ -195,9 +195,9 @@ public class ItemsPageActivity extends AppCompatActivity {
             @Override
             public void onChanged(List<Category> categories) {
                 if (metaCategoryChosen == null) {
-                    activityScreen.addMetaCategoryBar(categories);
+                    pageUI.addMetaCategoryBar(categories);
                 } else {
-                    activityScreen.addMetaCategoryBar(categories, metaCategoryChosen);
+                    pageUI.addMetaCategoryBar(categories, metaCategoryChosen);
                 }
                 addMetaCategoryListeners();
             }
@@ -207,7 +207,7 @@ public class ItemsPageActivity extends AppCompatActivity {
     }
 
     private void addMetaCategoryListeners() {
-        for (final Map.Entry<Category, Button> metaCategory : activityScreen.getMetaCategoryButtonMap().entrySet()) {
+        for (final Map.Entry<Category, Button> metaCategory : pageUI.getMetaCategoryButtonMap().entrySet()) {
             metaCategory.getValue().setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -239,7 +239,7 @@ public class ItemsPageActivity extends AppCompatActivity {
 
             @Override
             public void onChanged(List<Product> products) {
-                activityScreen.addDisplayTable(products);
+                pageUI.addDisplayTable(products);
                 addProductListeners();
             }
         };
@@ -253,10 +253,10 @@ public class ItemsPageActivity extends AppCompatActivity {
     }
 
     private void addProductListeners() {
-        activityScreen.getmAdapter().setOnItemClickListener(new DisplayableRecycleAdapter.OnItemClickListener() {
+        pageUI.getmAdapter().setOnItemClickListener(new DisplayableRecycleAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                Displayable itemClicked = activityScreen.getDisplayableItems().get(position);
+                Displayable itemClicked = pageUI.getDisplayableItems().get(position);
                 displayProductInNewWindow((Product) itemClicked);
             }
         });
@@ -300,8 +300,8 @@ public class ItemsPageActivity extends AppCompatActivity {
     }
 
     public void openFilter(View view) {
-        activityScreen.openFilter(view, allFilters, currentFilters);
-        setFilterOnClickListeners(activityScreen.getPopupView(), activityScreen.getPopup(), activityScreen.getFilterPopup());
+        pageUI.openFilter(view, allFilters, currentFilters);
+        setFilterOnClickListeners(pageUI.getPopupView(), pageUI.getPopup(), pageUI.getFilterPopup());
     }
 
     private void setFilterOnClickListeners(View layout, final PopupWindow popup, final FilterPopup filterPopup) {
@@ -319,9 +319,9 @@ public class ItemsPageActivity extends AppCompatActivity {
             public void onClick(View v) {
                 currentFilters = filterPopup.getCurrentFilters();
                 popup.dismiss();
-                activityScreen.undimBackground();
-                activityScreen.openFilterPopup(currentFilters);
-                activityScreen.refreshTable();
+                pageUI.undimBackground();
+                pageUI.openFilterPopup(currentFilters);
+                pageUI.refreshTable();
                 if (currentFilters.size() == 0) {
                     addProductsToScreen();
                 } else {
@@ -350,6 +350,7 @@ public class ItemsPageActivity extends AppCompatActivity {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 if (query.length() >= 1) {
+                    pageUI.refreshTable();
                     search(SPECIFIC_CATEGORY_SEARCH, query);
                 }
                 return false;

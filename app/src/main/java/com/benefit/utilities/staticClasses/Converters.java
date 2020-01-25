@@ -35,9 +35,4 @@ public class Converters {
         }
         return false;
     }
-
-    public static int generateRandomNumber() {
-        Random random = new Random();
-        return random.nextInt() * random.nextInt();
-    }
 }
