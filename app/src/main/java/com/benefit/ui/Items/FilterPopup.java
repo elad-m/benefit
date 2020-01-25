@@ -67,7 +67,7 @@ public class FilterPopup {
             Chip chip = (Chip) chipAsView;
             chip.setText(property);
             chip.setTag(property);
-            setCheckOnChip(propertyName, property, chip);
+//            setCheckOnChip(propertyName, property, chip);
             chip.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -80,6 +80,7 @@ public class FilterPopup {
             });
             chipGroup.addView(chipAsView);
         }
+        checkCurrentProperties(chipGroup, propertyName);
         layout.addView(
                 chipGroup, layout.getChildCount() - 1);
     }
@@ -91,6 +92,15 @@ public class FilterPopup {
             }
         }
         chip.setChecked(false);
+    }
+
+    private void checkCurrentProperties(ChipGroup chipGroup, PropertyName propertyName){
+        // +1 because of chipgroup holding textView first
+        for (int i=0; i<propertyName.getValidValues().size();i++){
+            if (currentFilters.keySet().contains(propertyName.getName()) && currentFilters.get(propertyName.getName()).contains(propertyName.getValidValues().get(i))){
+                ((Chip) chipGroup.getChildAt(i + 1)).setChecked(true);
+            }
+        }
     }
 
     private boolean currentFilterContainsKeyAndValue(String filter, String attribute) {
@@ -125,6 +135,8 @@ public class FilterPopup {
         filterName.setText(text);
         filterName.setTypeface(filterName.getTypeface(), Typeface.BOLD);
         filterName.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
+        chipGroup.setSelectionRequired(false);
+        chipGroup.setSingleSelection(false);
         return chipGroup;
     }
 }
