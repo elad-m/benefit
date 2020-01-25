@@ -19,7 +19,7 @@ import com.benefit.drivers.DatabaseDriver;
 import com.benefit.model.User;
 import com.benefit.services.ChatService;
 import com.benefit.services.UserService;
-import com.benefit.ui.HeaderClickListener;
+import com.benefit.utilities.staticClasses.HeaderClickListener;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 
 public class ConversationActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {

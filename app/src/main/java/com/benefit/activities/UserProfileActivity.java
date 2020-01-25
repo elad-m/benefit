@@ -1,6 +1,5 @@
 package com.benefit.activities;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
@@ -13,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.benefit.R;
 import com.benefit.adapters.ClothingRecyclerAdapter;
-import com.benefit.ui.HeaderClickListener;
+import com.benefit.utilities.staticClasses.HeaderClickListener;
 import com.benefit.ui.profile.ClothingItem;
 
 import java.util.ArrayList;

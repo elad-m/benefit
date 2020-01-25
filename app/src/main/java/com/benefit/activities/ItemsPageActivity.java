@@ -16,11 +16,6 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.benefit.R;
-import com.benefit.ui.Displayable;
-import com.benefit.ui.DisplayableRecycleAdapter;
-import com.benefit.ui.HeaderClickListener;
-import com.benefit.ui.Items.ItemsPageUI;
-import com.benefit.ui.Items.FilterPopup;
 import com.benefit.drivers.DatabaseDriver;
 import com.benefit.model.Category;
 import com.benefit.model.CategoryCluster;
@@ -29,6 +24,11 @@ import com.benefit.model.PropertyName;
 import com.benefit.services.CategoryService;
 import com.benefit.services.ProductService;
 import com.benefit.services.SearchService;
+import com.benefit.ui.Displayable;
+import com.benefit.ui.DisplayableRecycleAdapter;
+import com.benefit.ui.items.FilterPopup;
+import com.benefit.ui.items.ItemsPageUI;
+import com.benefit.utilities.staticClasses.HeaderClickListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -120,7 +120,7 @@ public class ItemsPageActivity extends AppCompatActivity {
                         }
                         break;
                     case ONE_CATEGORY_DISPLAYED:
-                        searchService.getProductsBySearchString(searchResult, (int)currentCategory.getId()).
+                        searchService.getProductsBySearchString(searchResult, (int) currentCategory.getId()).
                                 observe(this, searchObserver);
                         break;
                 }
@@ -173,7 +173,7 @@ public class ItemsPageActivity extends AppCompatActivity {
         if (!are_products_displayed) {
             addProductsToScreen();
             if (whichProductsDisplayed == ONE_CATEGORY_DISPLAYED) {
-                getFilters((int)currentCategory.getId());
+                getFilters((int) currentCategory.getId());
             } else {
                 getAllCategoryFilters();
             }
@@ -194,7 +194,7 @@ public class ItemsPageActivity extends AppCompatActivity {
 
             @Override
             public void onChanged(List<Category> categories) {
-                if (metaCategoryChosen == null){
+                if (metaCategoryChosen == null) {
                     activityScreen.addMetaCategoryBar(categories);
                 } else {
                     activityScreen.addMetaCategoryBar(categories, metaCategoryChosen);
@@ -229,7 +229,7 @@ public class ItemsPageActivity extends AppCompatActivity {
                 }
                 break;
             case ONE_CATEGORY_DISPLAYED:
-                showProducts(CATEGORY_PRODUCTS, (int)currentCategory.getId());
+                showProducts(CATEGORY_PRODUCTS, (int) currentCategory.getId());
                 break;
         }
     }
@@ -263,10 +263,9 @@ public class ItemsPageActivity extends AppCompatActivity {
     }
 
     private void displayProductInNewWindow(Product productClicked) {
-        //todo undelete this when the page is added
-//        Intent intent = new Intent(this, ProductPageActivity.class);
-//        intent.putExtra("product", productClicked);
-//        startActivity(intent);
+        Intent intent = new Intent(this, ProductPageActivity.class);
+        intent.putExtra("product", productClicked);
+        startActivity(intent);
     }
 
     private void getFilters(int categoryId) {
@@ -274,9 +273,9 @@ public class ItemsPageActivity extends AppCompatActivity {
 
             @Override
             public void onChanged(List<PropertyName> properties) {
-                for (PropertyName propertyName: properties) {
+                for (PropertyName propertyName : properties) {
                     if (propertyName.getValidValues() != null &&
-                            propertyNameNotInAllFilters(propertyName)){
+                            propertyNameNotInAllFilters(propertyName)) {
                         allFilters.add(propertyName);
                     }
                 }
@@ -286,8 +285,8 @@ public class ItemsPageActivity extends AppCompatActivity {
     }
 
     private boolean propertyNameNotInAllFilters(PropertyName propertyName) {
-        for (PropertyName filter:allFilters){
-            if (filter.getName().equals(propertyName.getName())){
+        for (PropertyName filter : allFilters) {
+            if (filter.getName().equals(propertyName.getName())) {
                 return false;
             }
         }
@@ -340,7 +339,7 @@ public class ItemsPageActivity extends AppCompatActivity {
                 }
                 break;
             case ONE_CATEGORY_DISPLAYED:
-                showProducts(FILTERED_PRODUCTS, (int)currentCategory.getId());
+                showProducts(FILTERED_PRODUCTS, (int) currentCategory.getId());
                 break;
         }
     }
@@ -366,6 +365,7 @@ public class ItemsPageActivity extends AppCompatActivity {
     private void setHeaderListeners() {
         HeaderClickListener.setHeaderListeners(findViewById(android.R.id.content).getRootView());
     }
+
     private void startSearchActivity() {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);

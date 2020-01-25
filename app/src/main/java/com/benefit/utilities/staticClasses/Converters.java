@@ -1,4 +1,4 @@
-package com.benefit.utilities;
+package com.benefit.utilities.staticClasses;
 
 import android.content.res.Resources;
 
@@ -7,7 +7,7 @@ import java.util.Random;
 /**
  * A general utilities class
  */
-public class StaticFunctions {
+public class Converters {
     public static int convertDpToPx(double dp)
     {
         return (int) (dp * Resources.getSystem().getDisplayMetrics().density);

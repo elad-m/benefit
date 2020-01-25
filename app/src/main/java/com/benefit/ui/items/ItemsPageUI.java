@@ -1,4 +1,4 @@
-package com.benefit.ui.Items;
+package com.benefit.ui.items;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -7,26 +7,21 @@ import android.graphics.drawable.Drawable;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewGroupOverlay;
 import android.view.ViewOverlay;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.view.WindowManager;
-
-import androidx.annotation.NonNull;
 
 import com.benefit.R;
-import com.benefit.utilities.StaticFunctions;
-import com.benefit.ui.Displayable;
-import com.benefit.ui.DisplayableRecycleAdapter;
 import com.benefit.model.Category;
 import com.benefit.model.CategoryCluster;
 import com.benefit.model.Product;
 import com.benefit.model.PropertyName;
+import com.benefit.ui.Displayable;
+import com.benefit.ui.DisplayableRecycleAdapter;
+import com.benefit.utilities.staticClasses.Converters;
 
 import java.util.List;
 import java.util.Map;
@@ -127,8 +122,8 @@ public class ItemsPageUI {
         LinearLayout.LayoutParams layoutParams = new
                 LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
-        layoutParams.setMargins(StaticFunctions.convertDpToPx(5), 0,
-                StaticFunctions.convertDpToPx(5), 0);
+        layoutParams.setMargins(Converters.convertDpToPx(5), 0,
+                Converters.convertDpToPx(5), 0);
         filterText.setLayoutParams(layoutParams);
     }
 

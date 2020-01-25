@@ -1,4 +1,4 @@
-package com.benefit.ui.Items;
+package com.benefit.ui.items;
 
 import android.graphics.Color;
 import android.view.View;
@@ -6,7 +6,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 
 import com.benefit.R;
-import com.benefit.utilities.StaticFunctions;
+import com.benefit.utilities.staticClasses.Converters;
 import com.benefit.model.Category;
 
 import java.util.HashMap;
@@ -33,7 +33,7 @@ public class MetaCategoryBar {
         LinearLayout.LayoutParams linearLayoutParams = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
-        int marginToSet = StaticFunctions.convertDpToPx(4);
+        int marginToSet = Converters.convertDpToPx(4);
         linearLayoutParams.setMargins(marginToSet, marginToSet, marginToSet, marginToSet);
         metaCategoryButton.setLayoutParams(linearLayoutParams);
     }
@@ -51,8 +51,8 @@ public class MetaCategoryBar {
                 existingCategoryButton = metaCategoryButton;
             }
             setBarLayoutParams(metaCategoryButton);
-            metaCategoryButton.setMinimumHeight(StaticFunctions.convertDpToPx(20));
-            metaCategoryButton.setMinHeight(StaticFunctions.convertDpToPx(20));
+            metaCategoryButton.setMinimumHeight(Converters.convertDpToPx(20));
+            metaCategoryButton.setMinHeight(Converters.convertDpToPx(20));
             bar.addView(metaCategoryButton);
             metaCategoryButtonMap.put(category.get(i), metaCategoryButton);
         }
@@ -67,8 +67,8 @@ public class MetaCategoryBar {
             metaCategoryButton.setText(category.get(i).getName());
             metaCategoryButton.setBackground(view.getResources().getDrawable(R.drawable.oval));
             setBarLayoutParams(metaCategoryButton);
-            metaCategoryButton.setMinimumHeight(StaticFunctions.convertDpToPx(20));
-            metaCategoryButton.setMinHeight(StaticFunctions.convertDpToPx(20));
+            metaCategoryButton.setMinimumHeight(Converters.convertDpToPx(20));
+            metaCategoryButton.setMinHeight(Converters.convertDpToPx(20));
             bar.addView(metaCategoryButton);
             metaCategoryButtonMap.put(category.get(i), metaCategoryButton);
         }

@@ -6,12 +6,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
-import androidx.core.content.ContextCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
@@ -20,19 +18,21 @@ import androidx.lifecycle.ViewModelProviders;
 import com.benefit.R;
 import com.benefit.ui.Displayable;
 import com.benefit.ui.DisplayableRecycleAdapter;
-import com.benefit.ui.Items.ItemsDisplay;
-import com.benefit.ui.Items.MetaCategoryBar;
-import com.benefit.activities.ItemsPageActivity;
+import com.benefit.ui.items.ItemsDisplay;
+import com.benefit.ui.items.MetaCategoryBar;
 import com.benefit.drivers.DatabaseDriver;
 import com.benefit.model.Category;
 import com.benefit.model.CategoryCluster;
 import com.benefit.services.CategoryService;
-import com.benefit.ui.HeaderClickListener;
+import com.benefit.utilities.staticClasses.HeaderClickListener;
 
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * The activity for the page that shows the categories
+ */
 public class MainActivity extends AppCompatActivity {
 
     private static final int CATEGORIES = 1;

@@ -1,4 +1,4 @@
-package com.benefit.ui.Items;
+package com.benefit.ui.items;
 
 import android.graphics.Paint;
 import android.graphics.Typeface;
