@@ -11,8 +11,8 @@
     <View
         android:id="@+id/horizontal_line"
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#adadad"
+        android:layout_height="@dimen/horizontal_line_height"
+        android:background="@color/horizontal_line_color"
         app:layout_constraintTop_toBottomOf="@id/horizontal_line_guide" />
 
     <androidx.constraintlayout.widget.Guideline
@@ -86,7 +86,7 @@
         <Button
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="3dp"
+            android:layout_margin="@dimen/sandwich_icon_margin"
             android:background="@drawable/ic_sandwich_icon" />
 
     </FrameLayout>
@@ -96,7 +96,7 @@
         android:layout_width="@dimen/no_hardcode_dimension"
         android:layout_height="@dimen/no_hardcode_dimension"
         android:background="@drawable/ic_user_icon"
-        android:elevation="0dp"
+        android:elevation="@dimen/no_elevation"
         app:layout_constraintBottom_toBottomOf="@id/icon_guideline"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintHorizontal_chainStyle="spread"

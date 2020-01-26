@@ -50,4 +50,14 @@
     <dimen name="no_items_found_text_size">35sp</dimen>
     <dimen name="no_elevation">0dp</dimen>
     <dimen name="sandwich_icon_padding">2dp</dimen>
+    <dimen name="filters_word_text_size">20sp</dimen>
+    <dimen name="card_margin">4dp</dimen>
+    <dimen name="category_card_width">140dp</dimen>
+    <dimen name="category_card_height">175dp</dimen>
+    <dimen name="card_text_padding">4dp</dimen>
+    <dimen name="card_text_size">16sp</dimen>
+    <dimen name="product_card_width">140dp</dimen>
+    <dimen name="product_card_height">140dp</dimen>
+    <dimen name="sandwich_icon_margin">3dp</dimen>
+    <dimen name="horizontal_line_height">1dp</dimen>
 </resources>
