@@ -6,19 +6,21 @@ import java.io.Serializable;
 /**
  * Model POJO for user with location and rating.
  */
-public class User implements Serializable{
+public class User implements Serializable {
 
     private String uid;
     private String firstName;
     private String lastName;
     private String address;
+    private String phoneNumber;
     private double locationLatitude;
     private double locationLongitude;
     private double rating;
 
-    public User(){}
+    public User() {
+    }
 
-    public User(String uid){
+    public User(String uid) {
         this.uid = uid;
     }
 
@@ -34,7 +36,7 @@ public class User implements Serializable{
         return lastName;
     }
 
-    public String getFullName(){
+    public String getFullName() {
         return firstName + " " + lastName;
     }
 
@@ -80,5 +82,13 @@ public class User implements Serializable{
 
     public void setLocationLongitude(double locationLongitude) {
         this.locationLongitude = locationLongitude;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 }
