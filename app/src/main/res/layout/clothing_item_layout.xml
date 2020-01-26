@@ -29,7 +29,8 @@
                 android:id="@+id/item_image"
                 android:layout_width="@dimen/clothing_item_image_width"
                 android:layout_height="@dimen/clothing_item_image_height"
-                android:contentDescription="@string/clothing_item_image_description" />
+                android:contentDescription="@string/clothing_item_image_description"
+                android:background="@color/colorGrayLight"/>
         </LinearLayout>
 
         <TextView

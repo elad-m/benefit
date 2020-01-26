@@ -71,6 +71,14 @@
     <string name="brand_property_name">Brand</string>
     <string name="phone_field">Phone</string>
     <string name="user_compliment_message">Keep on doing good!</string>
+    <string name="tip_background_title">Background</string>
+    <string name="tip_background_description">It is always better to shoot on a white or grey background.
+        Avoid taking pictures in the background of the room, especially when it\'s not orginized.</string>
+    <string name="tip_wear_it_title">Wear it!</string>
+    <string name="tip_wear_it_description">Shoot the item on you or a friend, making it easier to understand proportions and clipping</string>
+    <string name="tip_lighting_title">Lighting</string>
+    <string name="tip_lighting_description">Daylight photography or bright lighting will best highlight the color of the item.
+        Clean the camera lens before each photo for a higher quality image.</string>
 
     <!-- Facebook application ID and custom URL scheme (app ID prefixed by 'fb'). -->
     <string name="facebook_application_id" translatable="false">2550633185150206</string>
@@ -82,6 +90,8 @@
     <string name="no_items_found">No items found</string>
     <string name="default_user_greeting">Hello You!</string>
     <string name="product_id_extras_key">productId</string>
+    <string name="view_pager_finish_button_text">Finish</string>
+    <string name="view_pager_next_button_text">Next</string>
     <string-array name="chat_sort_options">
         <item>your items</item>
         <item>wanted items</item>

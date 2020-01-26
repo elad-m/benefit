@@ -3,6 +3,7 @@ package com.benefit.activities;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewManager;
 import android.widget.Button;
@@ -35,7 +36,7 @@ import java.util.List;
  */
 public class UserProfileActivity extends AppCompatActivity {
 
-    private String userIdTesting = "jHbxY9G5pdO7Qo5k58ulwPsY1fG2";
+    private String mUserIdTesting = "DECRB7JJBdcjGGB0aTqJvNksilT2";
 
     private RecyclerView mRecyclerView;
     private ClothingRecyclerAdapter mAdapter;
@@ -55,6 +56,12 @@ public class UserProfileActivity extends AppCompatActivity {
         createActionBar();
         getUserProducts();
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        Log.d("CDA", "onBackPressed Called");
+        this.finishAffinity();
     }
 
 
@@ -77,7 +84,7 @@ public class UserProfileActivity extends AppCompatActivity {
                 buildRecyclerView();
             }
         };
-        productService.getProductsBySellerId(userIdTesting)
+        productService.getProductsBySellerId(mUserIdTesting)
                 .observe(this, userProductsObserver);
 
     }
@@ -95,6 +102,7 @@ public class UserProfileActivity extends AppCompatActivity {
                 userGreeting.setVisibility(View.VISIBLE);
             }
         };
+        userService.getUserById(mUserIdTesting).observe(this, userObserver);
 
     }
 

@@ -109,8 +109,6 @@ public class ClothingRecyclerAdapter extends RecyclerView.Adapter<ClothingRecycl
         // no "if empty" because clothingItem always has the resource data member initialized
         Picasso.get()
                 .load(clothingItem.getmImageUrl())
-                .error(R.drawable.ic_image_placeholder)
-                .placeholder(R.drawable.ic_image_placeholder)
                 .centerCrop()
                 .fit()
                 .into(holder.mImageView);

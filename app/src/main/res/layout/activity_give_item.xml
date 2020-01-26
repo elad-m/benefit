@@ -5,16 +5,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layoutDirection="ltr"
-    tools:context=".GiveItemActivity">
+    android:background="@color/colorWhite"
+    tools:context=".activities.GiveItemActivity">
 
     <include
         android:id="@+id/give_page_header"
         layout="@layout/page_header" />
 
     <ScrollView
+        android:id="@+id/scroll_give"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintHeight_percent="0.823"
+        app:layout_constraintHeight_percent="0.73"
         app:layout_constraintTop_toBottomOf="@id/give_page_header">
 
         <LinearLayout
@@ -24,6 +26,7 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/give_item_instruction_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/give_item_margins"
@@ -40,10 +43,12 @@
                 android:background="@color/colorWhite"
                 android:contentDescription="@string/description_of_image_of_item_upload"
                 android:onClick="openFileChooser"
-                android:src="@drawable/ic_add_image"
-                android:scaleType="fitCenter"/>
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_add_image" />
+
 
             <LinearLayout
+                android:id="@+id/give_item_tips_layout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -74,13 +79,14 @@
                 android:id="@+id/item_title_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/give_item_margins"
+                android:layout_marginStart="@dimen/give_item_title_start_end_margin"
                 android:layout_marginTop="@dimen/give_item_margins"
-                android:layout_marginEnd="@dimen/give_item_title_end_margin"
+                android:layout_marginEnd="@dimen/give_item_title_start_end_margin"
                 android:layout_marginBottom="@dimen/give_item_margins"
                 android:background="@drawable/rounded_edittext"
                 android:hint="@string/hint_item_title"
                 android:inputType="text"
+                android:imeOptions="actionDone"
                 android:paddingStart="@dimen/give_item_title_padding_start_and_end"
                 android:paddingTop="@dimen/give_item_padding_top_and_bottom"
                 android:paddingEnd="@dimen/give_item_title_padding_start_and_end"
@@ -88,18 +94,43 @@
                 android:textSize="@dimen/give_item_text_views_text_size"
                 android:textStyle="bold" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/give_button"
-                android:layout_width="@dimen/give_button_width"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_margin="@dimen/give_item_margins"
-                android:onClick="onClickGive"
-                android:text="@string/give_button"
-                android:textSize="@dimen/give_button_text_size"
-                app:cornerRadius="@dimen/default_corner_radius" />
+
         </LinearLayout>
     </ScrollView>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintHeight_percent="0.130"
+        app:layout_constraintTop_toBottomOf="@id/scroll_give"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorGrayLight"/>
+
+        <TextView
+            android:id="@+id/give_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:onClick="onClickGive"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="20dp"
+            android:text="@string/give_button"
+            android:textAllCaps="false"
+            android:textColor="@color/colorBenefitBlue"
+            android:textSize="@dimen/give_button_text_size"
+            android:textAlignment="center"
+            app:backgroundTint="@color/colorWhite" />
+
+    </LinearLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

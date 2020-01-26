@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -56,7 +57,7 @@ public class GiveItemActivity extends AppCompatActivity {
     private Dialog dialogReturnsToActivity;
     private LinearLayout activityRootLinearLayout;
     private LayoutInflater inflater;
-    private Button mGiveOrDoneButton;
+    private TextView mGiveOrDoneButton;
     private StorageDriver storageDriver;
     private CategoryService categoryService;
     private ProductService productService;
@@ -66,7 +67,7 @@ public class GiveItemActivity extends AppCompatActivity {
     // the following group are fields for creating a Product
     long mProductToEditId;
     private boolean isInEditMode = false;
-    private String mSellerId = "jHbxY9G5pdO7Qo5k58ulwPsY1fG2";
+    private String mSellerId = "DECRB7JJBdcjGGB0aTqJvNksilT2";
     private Uri mImageUri;
     private String mImageUrl;
     private EditText mEdTextTitle;
@@ -95,13 +96,13 @@ public class GiveItemActivity extends AppCompatActivity {
     }
 
     private void createActivityByMode(Bundle bundle) {
-        if (bundle != null){
+        if (bundle != null) {
             // edit mode
             mProductToEditId = bundle.getLong(getResources()
                     .getString(R.string.product_id_extras_key));
             isInEditMode = true;
             mGiveOrDoneButton.setText("Done");
-            loadProductFromExtras(mProductToEditId );
+            loadProductFromExtras(mProductToEditId);
         } else {
             // give mode
             createActionBar();
@@ -109,7 +110,7 @@ public class GiveItemActivity extends AppCompatActivity {
         }
     }
 
-    private void loadProductFromExtras(long productToEditId){
+    private void loadProductFromExtras(long productToEditId) {
         final Observer<Product> productObserver = new Observer<Product>() {
             @Override
             public void onChanged(Product observedProduct) {
@@ -125,8 +126,6 @@ public class GiveItemActivity extends AppCompatActivity {
         };
         productService.getProductById(productToEditId).observe(this, productObserver);
     }
-
-
 
 
     private void createServicesAndDrivers() {
@@ -156,7 +155,7 @@ public class GiveItemActivity extends AppCompatActivity {
         int chipIndexToCheck = FIRST_CHILD_INDEX;
         for (String value : propertyValues) {
             addPropertyAsChipToChipGroup(value, propertyName, propertyGroup);
-            if (checkCreatedChipIfInEdit(propertyName, value)){
+            if (checkCreatedChipIfInEdit(propertyName, value)) {
                 chipIndexToCheck = propertyValues.indexOf(value);
             }
         }
@@ -199,11 +198,11 @@ public class GiveItemActivity extends AppCompatActivity {
         chipGroup.addView(chip);
     }
 
-    private boolean checkCreatedChipIfInEdit(PropertyName propertyName, String propertyValue){
+    private boolean checkCreatedChipIfInEdit(PropertyName propertyName, String propertyValue) {
         String propertyNameBeingCreated = propertyName.getName();
-        if (isInEditMode && !propertyNameBeingCreated.isEmpty() && !mProperties.isEmpty()){
+        if (isInEditMode && !propertyNameBeingCreated.isEmpty() && !mProperties.isEmpty()) {
             List<String> propertyValues = mProperties.get(propertyNameBeingCreated);
-            if (propertyValues != null){
+            if (propertyValues != null) {
                 // for now assuming single property
                 String propertyToLoad = propertyValues.get(0);
                 return (propertyToLoad != null && propertyToLoad.equals(propertyValue));
@@ -212,14 +211,14 @@ public class GiveItemActivity extends AppCompatActivity {
         return false;
     }
 
-    private boolean isChipMatchingProductToEdit(int level, int categoryId){
+    private boolean isChipMatchingProductToEdit(int level, int categoryId) {
         // if it is a meta category and match or a category and match
-        return ((level == 0 && categoryId == mMetaCategory)||
+        return ((level == 0 && categoryId == mMetaCategory) ||
                 (level == 1 && categoryId == mCategory));
     }
 
     private void addPropertyAsChipToChipGroup(String propertyValue, PropertyName propertyName,
-                                          ChipGroup propertyGroup) {
+                                              ChipGroup propertyGroup) {
         View chipAsView = inflater.inflate(R.layout.chip_layout, null);
         Chip chip = (Chip) chipAsView;
         chip.setText(propertyValue);
@@ -241,7 +240,7 @@ public class GiveItemActivity extends AppCompatActivity {
                 int chipIndexToCheck = FIRST_CHILD_INDEX;
                 for (Category category : metaCategories) {
                     addCategoryAsChipToChipGroup(category, chipGroup);
-                    if (isChipMatchingProductToEdit(category.getLevel(), category.getId())){
+                    if (isChipMatchingProductToEdit(category.getLevel(), category.getId())) {
                         chipIndexToCheck = metaCategories.indexOf(category);
                     }
                 }
@@ -271,7 +270,7 @@ public class GiveItemActivity extends AppCompatActivity {
         mCategoryGroupIndexInLayout = activityRootLinearLayout.getChildCount();
     }
 
-    private void checkChipOfIndex(ChipGroup chipGroup, int chipIndexToCheck){
+    private void checkChipOfIndex(ChipGroup chipGroup, int chipIndexToCheck) {
         // +1 because of chipgroup holding textView first
         ((Chip) chipGroup.getChildAt(chipIndexToCheck + 1)).setChecked(true);
     }
@@ -289,8 +288,8 @@ public class GiveItemActivity extends AppCompatActivity {
                 int chipIndexToCheck = FIRST_CHILD_INDEX;
                 for (Category category : categories) {
                     addCategoryAsChipToChipGroup(category, chipGroup);
-                    if (isChipMatchingProductToEdit(category.getLevel(), category.getId())){
-                            chipIndexToCheck = categories.indexOf(category);
+                    if (isChipMatchingProductToEdit(category.getLevel(), category.getId())) {
+                        chipIndexToCheck = categories.indexOf(category);
                     }
                 }
                 checkChipOfIndex(chipGroup, chipIndexToCheck);
@@ -386,16 +385,16 @@ public class GiveItemActivity extends AppCompatActivity {
         }
     }
 
-    private void loadImageIntoButtonImage(){
+    private void loadImageIntoButtonImage() {
         Picasso.get()
                 .load(mImageUri)
                 .centerCrop()
-                .fit().into(mImageButtonUpload);
+                .fit()
+                .into(mImageButtonUpload);
     }
 
     private void loadUriAsUrlToButton() {
         final Observer<String> urlObserver = new Observer<String>() {
-
             @Override
             public void onChanged(String url) {
                 mImageUrl = url;
@@ -419,13 +418,18 @@ public class GiveItemActivity extends AppCompatActivity {
             mProperties.put(this.getString(R.string.brand_property_name),
                     Collections.singletonList(mEdTextBrand.getText().toString()));
             List<String> imagesUrls = loadImagesUrls();
-            Product product = new Product(mCategory, mSellerId,
+            Product productToAdd = new Product(mCategory, mSellerId,
                     itemTitle, itemDescription, 0, 0, date, mProperties, imagesUrls);
-            productService.addProduct(product);
-            if (isInEditMode){
+
+            productService.addProduct(productToAdd);
+            if (isInEditMode) {
                 productService.deleteProduct(mProductToEditId);
+                Toast.makeText(this, "Changes Saved!", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(this, UserProfileActivity.class);
+                startActivity(intent);
+            } else {
+                createThankYouDailog();
             }
-            createThankYouDailog();
         }
     }
 
@@ -454,7 +458,6 @@ public class GiveItemActivity extends AppCompatActivity {
             mEdTextTitle.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
                 }
 
                 @Override
