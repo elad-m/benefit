@@ -101,10 +101,11 @@ public class ProductService extends ViewModel {
             if (product.getProperties() != null) {
                 if (product.getProperties().containsKey(filter.getKey())) {
                     for (String value : filter.getValue()) {
-                        if (!product.getProperties().get(filter.getKey()).contains(value)) {
-                            return false;
+                        if (product.getProperties().get(filter.getKey()).contains(value)) {
+                            return true;
                         }
                     }
+                    return false;
                 } else {
                     return false;
                 }
