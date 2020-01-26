@@ -6,7 +6,7 @@ import java.io.Serializable;
 /**
  * Model POJO for user with location and rating.
  */
-public class User implements Serializable{
+public class User implements Serializable {
 
     private String uid;
     private String firstName;
@@ -17,9 +17,10 @@ public class User implements Serializable{
     private double locationLongitude;
     private double rating;
 
-    public User(){}
+    public User() {
+    }
 
-    public User(String uid){
+    public User(String uid) {
         this.uid = uid;
     }
 
@@ -35,7 +36,7 @@ public class User implements Serializable{
         return lastName;
     }
 
-    public String getFullName(){
+    public String getFullName() {
         return firstName + " " + lastName;
     }
 
