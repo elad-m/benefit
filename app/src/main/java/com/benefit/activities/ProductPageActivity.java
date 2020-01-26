@@ -71,7 +71,6 @@ public class ProductPageActivity extends AppCompatActivity implements OnMapReady
         }
     }
 
-
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void displayProductOnPage(Product product) {
         TextView textViewTitle = findViewById(R.id.textviewProductPageTitle);
