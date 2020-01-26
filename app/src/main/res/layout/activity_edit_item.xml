@@ -118,8 +118,8 @@
         <TextView
             android:id="@+id/give_button"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
+            android:layout_height="match_parent"
+            android:gravity="center"
             android:onClick="onClickGive"
             android:padding="20dp"
             android:text="@string/done_button"
@@ -128,11 +128,6 @@
             android:textColor="@color/colorBenefitBlue"
             android:textSize="@dimen/give_button_text_size"
             app:backgroundTint="@color/colorWhite" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/colorGrayLight" />
 
     </LinearLayout>
 

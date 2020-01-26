@@ -61,7 +61,7 @@
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_weight="2"
+                    android:layout_weight="1"
                     android:contentDescription="@string/description_of_image_for_photoshooting_tips"
                     android:src="@drawable/ic_tips_lightbulb" />
 
@@ -133,8 +133,8 @@
         <TextView
             android:id="@+id/give_button"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
+            android:layout_height="match_parent"
+            android:gravity="center"
             android:clickable="true"
             android:focusable="true"
             android:onClick="onClickGive"
@@ -145,11 +145,6 @@
             android:textColor="@color/colorBenefitBlue"
             android:textSize="@dimen/give_button_text_size"
             app:backgroundTint="@color/colorWhite" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/colorGrayLight" />
 
     </LinearLayout>
 
