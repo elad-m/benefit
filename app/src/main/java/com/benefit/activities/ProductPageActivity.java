@@ -60,6 +60,8 @@ public class ProductPageActivity extends AppCompatActivity implements OnMapReady
         this.userService = ViewModelProviders.of(this, Factory.getUserServiceFactory()).get(UserService.class);
         displayProductOnPage(product);
         setHeaderListeners();
+        ImageView backButton = findViewById(R.id.product_page_back_arrow);
+        backButton.setOnClickListener(v -> onBackPressed());
     }
 
     private void extractExtras() {
