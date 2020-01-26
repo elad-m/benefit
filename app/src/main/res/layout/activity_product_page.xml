@@ -5,6 +5,7 @@
     android:id="@+id/product_page_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/backgroundColor"
     tools:context=".activities.ProductPageActivity">
 
     <include
@@ -26,8 +27,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
                 android:gravity="center_vertical"
+                android:orientation="horizontal"
                 android:paddingLeft="@dimen/productPageGeneralPaddingLeft">
 
                 <ImageView
@@ -36,16 +37,6 @@
                     android:layout_height="18dp"
                     android:contentDescription="@string/backButtonCaption"
                     app:srcCompat="@drawable/ic_back_arrow" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif"
-                    android:paddingLeft="4dp"
-                    android:text="@string/backButtonCaption"
-                    android:textColor="@color/primaryBlue"
-                    android:textSize="@dimen/backButtonCaptionSize"
-                    android:textStyle="normal" />
 
             </LinearLayout>
         </TableRow>
@@ -56,6 +47,7 @@
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@id/product_page_bottom_area"
         app:layout_constraintTop_toBottomOf="@id/product_page_back_area">
+
         <ScrollView
             android:id="@+id/product_page_scrollview"
             android:layout_width="fill_parent"
@@ -189,6 +181,7 @@
             android:gravity="center">
 
             <Button
+                android:id="@+id/contact_giver_button"
                 android:layout_width="200dp"
                 android:layout_height="51dp"
                 android:background="@drawable/ic_contact_giver_button"
