@@ -21,7 +21,7 @@ import com.benefit.model.Product;
 import com.benefit.model.PropertyName;
 import com.benefit.ui.Displayable;
 import com.benefit.adapters.DisplayableRecycleAdapter;
-import com.benefit.utilities.staticclasses.Converters;
+import com.benefit.utilities.staticClasses.Converters;
 
 import java.util.List;
 import java.util.Map;
@@ -42,7 +42,12 @@ public class ItemsPageUI {
     private MetaCategoryBar metaCategoryBar;
     private ItemsDisplay itemsDisplay;
 
-
+    /**
+     * Class Constrctor
+     * @param view the view if the item activity
+     * @param currentCategory the current category being displayed
+     * @param categoryCluster the cluster displayed, may be null
+     */
     public ItemsPageUI(View view, Category currentCategory, CategoryCluster categoryCluster) {
         this.view = view;
         this.currentCategory = currentCategory;
@@ -55,20 +60,36 @@ public class ItemsPageUI {
         view.findViewById(R.id.search_icon).setBackground(view.getContext().getResources().getDrawable(R.drawable.ic_search_icon_color));
     }
 
-    public void addMetaCategoryBar(List<Category> categories, Category metaCategoryChosen) {
+    /**
+     * adds the metacategory bar on page
+     * @param metaCategories the metaCategories to display
+     * @param metaCategoryChosen the metaCategory previously chosen
+     */
+    public void addMetaCategoryBar(List<Category> metaCategories, Category metaCategoryChosen) {
         metaCategoryBar = new MetaCategoryBar(view.findViewById(android.R.id.content).getRootView());
-        metaCategoryBar.createCategoryBar(categories, metaCategoryChosen);
+        metaCategoryBar.createCategoryBar(metaCategories, metaCategoryChosen);
     }
 
-    public void addMetaCategoryBar(List<Category> categories) {
+    /**
+     * adds the metacategory bar on page
+     * @param metaCategories the metaCategories to display
+     */
+    public void addMetaCategoryBar(List<Category> metaCategories) {
         metaCategoryBar = new MetaCategoryBar(view.findViewById(android.R.id.content).getRootView());
-        metaCategoryBar.createCategoryBar(categories);
+        metaCategoryBar.createCategoryBar(metaCategories);
     }
 
+    /**
+     * Creates the table that displays the items
+     * @param products the products to display
+     */
     public void addDisplayTable(List<Product> products) {
         itemsDisplay.populateDisplayTable(products);
     }
 
+    /**
+     * Refreshes the table of items
+     */
     public void refreshTable() {
         itemsDisplay.refreshDisplay();
     }
@@ -205,14 +226,26 @@ public class ItemsPageUI {
         return popup;
     }
 
+    /**
+     * Gets the metaCategory button map
+     * @return the map
+     */
     public Map<Category, Button> getMetaCategoryButtonMap() {
         return metaCategoryBar.getMetaCategoryButtonMap();
     }
 
+    /**
+     * Gets the recycleView adapter
+     * @return the adapter
+     */
     public DisplayableRecycleAdapter getDisplayableAdapter() {
         return itemsDisplay.getDisplayableRecycleAdapter();
     }
 
+    /**
+     * Gets the displayed items
+     * @return the displayed items
+     */
     public List<? extends Displayable> getDisplayableItems() {
         return itemsDisplay.getDisplayableItems();
     }

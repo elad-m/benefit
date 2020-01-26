@@ -1,4 +1,4 @@
-package com.benefit.utilities.staticclasses;
+package com.benefit.utilities.staticClasses;
 
 import android.content.res.Resources;
 
