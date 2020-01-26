@@ -10,6 +10,7 @@ import java.util.List;
  */
 public class CategoryCluster implements Serializable, Displayable {
 
+    private long id;
     private String name;
     private String type;
     private List<Integer> categoryIdList;
@@ -26,6 +27,10 @@ public class CategoryCluster implements Serializable, Displayable {
     @Override
     public String getName() {
         return name;
+    }
+
+    public long getId(){
+        return id;
     }
 
     public List<Integer> getCategoryIdList() {

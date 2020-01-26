@@ -38,4 +38,26 @@
     <dimen name="productPageBottomPartMargin">15dp</dimen>
     <dimen name="productPageDescriptionSize">24sp</dimen>
     <dimen name="productPagePropertiesSize">24sp</dimen>
+    <dimen name="filter_left_margin">15dp</dimen>
+    <dimen name="filter_top_margin">10dp</dimen>
+    <dimen name="filter_text_size">25sp</dimen>
+    <dimen name="filter_bottom_padding">15dp</dimen>
+    <dimen name="filter_button_height">60dp</dimen>
+    <dimen name="no_hardcode_dimension">0dp</dimen>
+    <dimen name="search_bar_side_margin">45dp</dimen>
+    <dimen name="meta_category_bar_top_margin">10dp</dimen>
+    <dimen name="recycler_padding">15dp</dimen>
+    <dimen name="no_items_found_text_size">35sp</dimen>
+    <dimen name="no_elevation">0dp</dimen>
+    <dimen name="sandwich_icon_padding">2dp</dimen>
+    <dimen name="filters_word_text_size">20sp</dimen>
+    <dimen name="card_margin">4dp</dimen>
+    <dimen name="category_card_width">140dp</dimen>
+    <dimen name="category_card_height">175dp</dimen>
+    <dimen name="card_text_padding">4dp</dimen>
+    <dimen name="card_text_size">16sp</dimen>
+    <dimen name="product_card_width">140dp</dimen>
+    <dimen name="product_card_height">140dp</dimen>
+    <dimen name="sandwich_icon_margin">3dp</dimen>
+    <dimen name="horizontal_line_height">1dp</dimen>
 </resources>

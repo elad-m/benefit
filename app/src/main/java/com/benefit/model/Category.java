@@ -8,7 +8,7 @@ import java.io.Serializable;
  * Model POJO for category of products.
  */
 public class Category implements Serializable, Displayable {
-    private int id;
+    private long id;
     private String name;
     private int parentId;
     private int level;
@@ -26,7 +26,7 @@ public class Category implements Serializable, Displayable {
         this.isLeaf = isLeaf;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 

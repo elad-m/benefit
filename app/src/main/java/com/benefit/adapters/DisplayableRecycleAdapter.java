@@ -1,9 +1,10 @@
-package com.benefit.ui;
+package com.benefit.adapters;
 
 import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.URLUtil;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -12,6 +13,7 @@ import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.benefit.R;
+import com.benefit.ui.Displayable;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -81,25 +83,31 @@ public class DisplayableRecycleAdapter extends RecyclerView.Adapter<DisplayableR
             case CATEGORIES:
                 v = LayoutInflater.from(parent.getContext()).inflate(
                         R.layout.category_item, parent, false);
+                v.setElevation(0);
                 break;
             case PRODUCTS:
                 v = LayoutInflater.from(parent.getContext()).inflate(
                         R.layout.product_item, parent, false);
+                v.setElevation(0);
                 break;
         }
-//        v.findViewById(R.id.image_and_text_layout).setClipToOutline(true);
-        DisplayViewHolder evh = new DisplayViewHolder(v, mListener);
-        return evh;
+        v.findViewById(R.id.item_image_layout).setClipToOutline(true);
+        return new DisplayViewHolder(v, mListener);
     }
 
     @Override
     public void onBindViewHolder(@NonNull DisplayViewHolder holder, int position) {
         Displayable displayableItem = displayableItems.get(position);
-        // no "if empty" because clothingItem always has the resource data member initialized
-        Picasso.get()
-                .load(displayableItem.getImageResource()).centerCrop()
-                .fit()
-                .into(holder.mImageView);
+        String resource = displayableItem.getImageResource();
+        if (resource != null && URLUtil.isValidUrl(resource)) {
+            Picasso.get()
+                    .load(displayableItem.getImageResource())
+                    .placeholder(R.drawable.ic_image_placeholder)
+                    .error(R.drawable.ic_image_placeholder)
+                    .centerCrop()
+                    .fit()
+                    .into(holder.mImageView);
+        }
         holder.mImageTitle.setText(displayableItem.getName());
     }
 

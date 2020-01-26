@@ -1,13 +1,11 @@
-package com.benefit.utilities;
+package com.benefit.utilities.staticClasses;
 
 import android.content.res.Resources;
-
-import java.util.Random;
 
 /**
  * A general utilities class
  */
-public class StaticFunctions {
+public class Converters {
     public static int convertDpToPx(double dp)
     {
         return (int) (dp * Resources.getSystem().getDisplayMetrics().density);
@@ -34,10 +32,5 @@ public class StaticFunctions {
             }
         }
         return false;
-    }
-
-    public static int generateRandomNumber() {
-        Random random = new Random();
-        return random.nextInt() * random.nextInt();
     }
 }

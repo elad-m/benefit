@@ -1,9 +1,13 @@
-package com.benefit.ui.Items;
+package com.benefit.ui.products;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewOverlay;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -11,18 +15,21 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.benefit.R;
-import com.benefit.utilities.StaticFunctions;
-import com.benefit.ui.Displayable;
-import com.benefit.ui.DisplayableRecycleAdapter;
+import com.benefit.adapters.DisplayableRecycleAdapter;
 import com.benefit.model.Category;
 import com.benefit.model.CategoryCluster;
 import com.benefit.model.Product;
 import com.benefit.model.PropertyName;
+import com.benefit.ui.Displayable;
+import com.benefit.utilities.staticClasses.Converters;
 
 import java.util.List;
 import java.util.Map;
 
-public class AllProductsScreen {
+/**
+ * The UI for the page that displays all of the products
+ */
+public class ProductsPageUI {
 
     private static final int PRODUCTS = 2;
 
@@ -33,35 +40,40 @@ public class AllProductsScreen {
     private FilterPopup filterPopup;
     private PopupWindow popup;
     private MetaCategoryBar metaCategoryBar;
-    private ItemsDisplay itemsDisplay;
+    private ProductsDisplay productsDisplay;
 
 
-    public AllProductsScreen(View view, Category currentCategory, CategoryCluster categoryCluster) {
+    public ProductsPageUI(View view, Category currentCategory, CategoryCluster categoryCluster) {
         this.view = view;
         this.currentCategory = currentCategory;
         this.categoryCluster = categoryCluster;
-        itemsDisplay = new ItemsDisplay(view.findViewById(android.R.id.content).getRootView(), PRODUCTS);
+        colorIcon();
+        productsDisplay = new ProductsDisplay(view.findViewById(android.R.id.content).getRootView(), PRODUCTS);
     }
 
-    public void addMetaCategoryBar(List<Category> categories, Category metaCategoryChosen) {
+    private void colorIcon() {
+        view.findViewById(R.id.search_icon).setBackground(view.getContext().getResources().getDrawable(R.drawable.ic_search_icon_color));
+    }
+
+    public void addMetaCategoryBar(List<Category> metaCategories, Category metaCategoryChosen) {
         metaCategoryBar = new MetaCategoryBar(view.findViewById(android.R.id.content).getRootView());
-        metaCategoryBar.createCategoryBar(categories, metaCategoryChosen);
+        metaCategoryBar.createCategoryBar(metaCategories, metaCategoryChosen);
+    }
+
+    public void addMetaCategoryBar(List<Category> metaCategories) {
+        metaCategoryBar = new MetaCategoryBar(view.findViewById(android.R.id.content).getRootView());
+        metaCategoryBar.createCategoryBar(metaCategories);
     }
 
     public void addDisplayTable(List<Product> products) {
-        itemsDisplay.populateDisplayTable(products);
+        productsDisplay.populateDisplayTable(products);
     }
 
     public void refreshTable() {
-        itemsDisplay.refreshDisplay();
+        productsDisplay.refreshDisplay();
     }
 
-    /**
-     * writes the filter bar on the screen
-     *
-     * @param currentFilters the current filters of the items
-     */
-    public void writeFiltersOnScreen(Map<String, List<String>> currentFilters) {
+    public void openFilterPopup(Map<String, List<String>> currentFilters) {
         LinearLayout currentFilterLayout = view.findViewById(R.id.current_filters);
         currentFilterLayout.removeAllViews();
         writeCategoryInFilterBar(currentFilterLayout);
@@ -105,16 +117,16 @@ public class AllProductsScreen {
         LinearLayout.LayoutParams layoutParams = new
                 LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
-        layoutParams.setMargins(StaticFunctions.convertDpToPx(5), 0,
-                StaticFunctions.convertDpToPx(5), 0);
+        layoutParams.setMargins(Converters.convertDpToPx(5), 0,
+                Converters.convertDpToPx(5), 0);
         filterText.setLayoutParams(layoutParams);
     }
 
-    /**
-     * opens the filter popup
-     *
-     * @param currentFilters the current filters wanted
-     */
+    public void undimBackground() {
+        ViewOverlay overlay = view.getOverlay();
+        overlay.clear();
+    }
+
     public void openFilter(View view, List<PropertyName> filters, Map<String, List<String>> currentFilters) {
 
         RelativeLayout viewGroup = view.findViewById(R.id.filter_popup);
@@ -122,6 +134,15 @@ public class AllProductsScreen {
         popupView = layoutInflater.inflate(R.layout.filter, viewGroup);
         placePopupOnScreen();
         populatePopup(filters, currentFilters);
+        applyDim(0.8f);
+    }
+
+    private void applyDim(float dimAmount) {
+        Drawable dim = new ColorDrawable(Color.BLACK);
+        dim.setBounds(0, 0, view.getWidth(), view.getHeight());
+        dim.setAlpha((int) (255 * dimAmount));
+        ViewOverlay overlay = view.getOverlay();
+        overlay.add(dim);
     }
 
     private void populatePopup(List<PropertyName> filters, Map<String, List<String>> currentFilters) {
@@ -144,29 +165,14 @@ public class AllProductsScreen {
         popup.setFocusable(true);
     }
 
-    /**
-     * gets the popup view
-     *
-     * @return popup view
-     */
     public View getPopupView() {
         return popupView;
     }
 
-    /**
-     * gets the filter popup
-     *
-     * @return filterPopup
-     */
     public FilterPopup getFilterPopup() {
         return filterPopup;
     }
 
-    /**
-     * get the popup window
-     *
-     * @return popup
-     */
     public PopupWindow getPopup() {
         return popup;
     }
@@ -175,11 +181,12 @@ public class AllProductsScreen {
         return metaCategoryBar.getMetaCategoryButtonMap();
     }
 
-    public DisplayableRecycleAdapter getmAdapter() {
-        return itemsDisplay.getmAdapter();
+    public DisplayableRecycleAdapter getDisplayableAdapter() {
+        return productsDisplay.getDisplayableRecycleAdapter();
     }
 
-    public List<? extends Displayable> getDisplayableItems() {
-        return itemsDisplay.getDisplayableItems();
+
+    public List<? extends Displayable> getDisplayableProducts() {
+        return productsDisplay.getDisplayableProducts();
     }
 }

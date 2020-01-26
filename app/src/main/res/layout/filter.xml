@@ -1,22 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/filter_popup"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white"
-    android:orientation="vertical"
-    android:layoutDirection="ltr">
+    android:layoutDirection="ltr"
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/top_of_filter"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="15dp"
-        android:paddingTop="10dp"
+        android:layout_marginLeft="@dimen/filter_left_margin"
+        android:paddingTop="@dimen/filter_top_margin"
         android:text="@string/filter_title"
-        android:textSize="25sp" />
+        android:textSize="@dimen/filter_text_size" />
 
     <ScrollView
         android:id="@+id/filter_scroll"
@@ -24,14 +23,13 @@
         android:layout_height="match_parent"
         android:layout_above="@id/buttons"
         android:layout_below="@id/top_of_filter"
-        android:layout_marginStart="15dp">
+        android:layout_marginLeft="@dimen/filter_left_margin">
 
         <LinearLayout
             android:id="@+id/filter_body"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-        </LinearLayout>
+            android:orientation="vertical"></LinearLayout>
     </ScrollView>
 
 
@@ -42,27 +40,27 @@
         android:layout_alignParentBottom="true"
         android:layout_gravity="bottom"
         android:orientation="horizontal"
-        android:paddingBottom="15dp">
+        android:paddingBottom="@dimen/filter_bottom_padding">
 
         <Button
             android:id="@+id/reset_button"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/filter_button_height"
             android:layout_weight="0.5"
+            android:background="@color/filter_reset_color"
             android:text="@string/reset"
-            android:background="#6d6d6d"
-            android:textColor="#ffff"
-            android:textSize="25sp" />
+            android:textColor="@color/white"
+            android:textSize="@dimen/filter_text_size" />
 
         <Button
             android:id="@+id/done_button"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/filter_button_height"
             android:layout_weight="0.5"
+            android:background="@color/colorBenefitBlue"
             android:text="@string/done"
-            android:background="#0188b2"
-            android:textColor="#ffff"
-            android:textSize="25sp" />
+            android:textColor="@color/white"
+            android:textSize="@dimen/filter_text_size" />
 
     </LinearLayout>
 </RelativeLayout>

@@ -3,6 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center_vertical"
+    android:layout_centerVertical="true"
+    android:gravity="center_vertical"
     android:layout_margin="@dimen/chip_group_margin"
     app:selectionRequired="true"
     app:singleSelection="true">

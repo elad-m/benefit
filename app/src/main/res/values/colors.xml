@@ -11,10 +11,13 @@
     <color name="colorRed">#d60000</color>
     <color name="colorBlack">#000000</color>
     <color name="colorWhite">#ffffff</color>
+    <color name="offWhite">#faebd7</color>
 
     <color name="backgroundColor">#ffffff</color>
     <color name="primaryBlue">#0188b2</color>
     <color name="black">#000000</color>
     <color name="productPageTextPrimaryColor">#000000</color>
     <color name="productPageTextSecondaryColor">#c4c4c4</color>
+    <color name="filter_reset_color">#6d6d6d</color>
+    <color name="horizontal_line_color">#adadad</color>
 </resources>
