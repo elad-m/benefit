@@ -15,10 +15,9 @@ import androidx.lifecycle.ViewModelProviders;
 import com.benefit.R;
 import com.benefit.model.Product;
 import com.benefit.model.User;
-import com.benefit.utilities.HeaderClickListener;
-import com.benefit.utilities.Factory;
-import com.benefit.services.ProductService;
 import com.benefit.services.UserService;
+import com.benefit.utilities.Factory;
+import com.benefit.utilities.HeaderClickListener;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -37,7 +36,6 @@ import java.util.Objects;
 public class ProductPageActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private Product product;
-    private ProductService productService;
     private UserService userService;
 
     private GoogleMap mMap;
@@ -51,17 +49,14 @@ public class ProductPageActivity extends AppCompatActivity implements OnMapReady
         extractExtras();
         setContentView(R.layout.activity_product_page);
         findViewById(R.id.search_icon).setBackground(getResources().getDrawable(R.drawable.ic_search_icon_color));
-        this.productService = ViewModelProviders.of(this, Factory.getProductServiceFactory()).get(ProductService.class);
         this.userService = ViewModelProviders.of(this, Factory.getUserServiceFactory()).get(UserService.class);
-//        final Observer<Product> productObserver = this::displayProductOnPage;
-//        productService.getProductById(this.productId).observe(this, productObserver);
         displayProductOnPage(product);
         setHeaderListeners();
     }
 
     private void extractExtras() {
         Bundle bundle = getIntent().getExtras();
-        if (bundle != null){
+        if (bundle != null) {
             product = (Product) bundle.getSerializable("product");
         } else {
             product = null;
