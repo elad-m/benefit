@@ -1,8 +1,6 @@
-package com.benefit.utilities.staticClasses;
+package com.benefit.utilities.staticclasses;
 
 import android.content.res.Resources;
-
-import java.util.Random;
 
 /**
  * A general utilities class

@@ -1,4 +1,4 @@
-package com.benefit.utilities.staticClasses;
+package com.benefit.utilities;
 
 import android.content.Intent;
 import android.view.View;

@@ -84,5 +84,19 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.30" />
 
+    <TextView
+        android:id="@+id/no_item_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintTop_toBottomOf="@id/body_guide"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_chainStyle="spread"
+        android:text="No items found"
+        android:textSize="35sp"
+        android:visibility="invisible"/>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

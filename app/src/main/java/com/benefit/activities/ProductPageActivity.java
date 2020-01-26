@@ -15,7 +15,7 @@ import androidx.lifecycle.ViewModelProviders;
 import com.benefit.R;
 import com.benefit.model.Product;
 import com.benefit.model.User;
-import com.benefit.utilities.staticClasses.HeaderClickListener;
+import com.benefit.utilities.HeaderClickListener;
 import com.benefit.utilities.Factory;
 import com.benefit.services.ProductService;
 import com.benefit.services.UserService;

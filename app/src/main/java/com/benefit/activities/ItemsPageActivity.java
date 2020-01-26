@@ -16,6 +16,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.benefit.R;
+import com.benefit.adapters.DisplayableRecycleAdapter;
 import com.benefit.drivers.DatabaseDriver;
 import com.benefit.model.Category;
 import com.benefit.model.CategoryCluster;
@@ -25,10 +26,9 @@ import com.benefit.services.CategoryService;
 import com.benefit.services.ProductService;
 import com.benefit.services.SearchService;
 import com.benefit.ui.Displayable;
-import com.benefit.adapters.DisplayableRecycleAdapter;
 import com.benefit.ui.items.FilterPopup;
 import com.benefit.ui.items.ItemsPageUI;
-import com.benefit.utilities.staticClasses.HeaderClickListener;
+import com.benefit.utilities.HeaderClickListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -66,40 +66,48 @@ public class ItemsPageActivity extends AppCompatActivity {
         currentFilters = new HashMap<>();
         allFilters = new ArrayList<>();
         createServices();
-        Bundle bundle = getIntent().getExtras();
-        extractExtras(bundle);
+
+        extractExtras();
         initiateWindow();
         addSearchListener();
         setHeaderListeners();
     }
 
-    private void extractExtras(Bundle bundle) {
-        if (bundle.getBoolean("searchReceived")) {
-            search(ALL_CATEGORY_SEARCH, bundle.getString("searchResult"));
-            are_products_displayed = true;
-        } else {
-            switch (bundle.getInt("displayed")) {
-                case MULTIPLE_CATEGORIES_DISPLAYED:
-                    whichProductsDisplayed = MULTIPLE_CATEGORIES_DISPLAYED;
-                    currentCategory = null;
-                    categoryCluster = (CategoryCluster) bundle.getSerializable("cluster");
-                    metaCategoryChosen = null;
-                    break;
-                case ONE_CATEGORY_DISPLAYED:
-                    whichProductsDisplayed = ONE_CATEGORY_DISPLAYED;
-                    currentCategory = (Category) bundle.getSerializable("category");
-                    if (bundle.getBoolean("metaExists")) {
-                        metaCategoryChosen = (Category) bundle.get("metaCategory");
-                    } else {
-                        metaCategoryChosen = null;
-                    }
-                    categoryCluster = null;
-                    break;
+    private void extractExtras() {
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            if (bundle.getBoolean("searchReceived")) {
+                search(ALL_CATEGORY_SEARCH, bundle.getString("searchResult"));
+                are_products_displayed = true;
+            } else {
+                extractProductsFromCategories(bundle);
+
             }
         }
     }
 
-    private void search(int whatSearched, String searchResult) {
+    private void extractProductsFromCategories(Bundle bundle) {
+        switch (bundle.getInt("displayed")) {
+            case MULTIPLE_CATEGORIES_DISPLAYED:
+                whichProductsDisplayed = MULTIPLE_CATEGORIES_DISPLAYED;
+                currentCategory = null;
+                categoryCluster = (CategoryCluster) bundle.getSerializable("cluster");
+                metaCategoryChosen = null;
+                break;
+            case ONE_CATEGORY_DISPLAYED:
+                whichProductsDisplayed = ONE_CATEGORY_DISPLAYED;
+                currentCategory = (Category) bundle.getSerializable("category");
+                if (bundle.getBoolean("metaExists")) {
+                    metaCategoryChosen = (Category) bundle.get("metaCategory");
+                } else {
+                    metaCategoryChosen = null;
+                }
+                categoryCluster = null;
+                break;
+        }
+    }
+
+    private void search(int whatSearched, String searchText) {
         final Observer<List<Product>> searchObserver = new Observer<List<Product>>() {
             @Override
             public void onChanged(List<Product> products) {
@@ -107,20 +115,24 @@ public class ItemsPageActivity extends AppCompatActivity {
                 addProductListeners();
             }
         };
+        searchInCategory(whatSearched, searchText, searchObserver);
+    }
+
+    private void searchInCategory(int whatSearched, String searchText, Observer<List<Product>> searchObserver) {
         switch (whatSearched) {
             case ALL_CATEGORY_SEARCH:
-                searchService.getProductsBySearchString(searchResult).observe(this, searchObserver);
+                searchService.getProductsBySearchString(searchText).observe(this, searchObserver);
                 break;
             case SPECIFIC_CATEGORY_SEARCH:
                 switch (whichProductsDisplayed) {
                     case MULTIPLE_CATEGORIES_DISPLAYED:
                         for (int categoryId : categoryCluster.getCategoryIdList()) {
-                            searchService.getProductsBySearchString(searchResult, categoryId).
+                            searchService.getProductsBySearchString(searchText, categoryId).
                                     observe(this, searchObserver);
                         }
                         break;
                     case ONE_CATEGORY_DISPLAYED:
-                        searchService.getProductsBySearchString(searchResult, (int) currentCategory.getId()).
+                        searchService.getProductsBySearchString(searchText, (int) currentCategory.getId()).
                                 observe(this, searchObserver);
                         break;
                 }
@@ -212,9 +224,9 @@ public class ItemsPageActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     if (metaCategoryChosen != null && metaCategoryChosen.getName().equals(metaCategory.getKey().getName())) {
-                        startSearchActivity();
+                        returnToHomePage();
                     } else {
-                        startSearchActivity(metaCategory.getKey());
+                        returnToHomePage(metaCategory.getKey());
                     }
                 }
             });
@@ -246,14 +258,16 @@ public class ItemsPageActivity extends AppCompatActivity {
         switch (productsToShow) {
             case CATEGORY_PRODUCTS:
                 productService.getProductsByCategoryId(categoryId).observe(this, productObserver);
+                break;
             case FILTERED_PRODUCTS:
                 productService.getProductsByProperties(categoryId, currentFilters).observe(this, productObserver);
+                break;
 
         }
     }
 
     private void addProductListeners() {
-        pageUI.getmAdapter().setOnItemClickListener(new DisplayableRecycleAdapter.OnItemClickListener() {
+        pageUI.getDisplayableAdapter().setOnItemClickListener(new DisplayableRecycleAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
                 Displayable itemClicked = pageUI.getDisplayableItems().get(position);
@@ -299,7 +313,7 @@ public class ItemsPageActivity extends AppCompatActivity {
         }
     }
 
-    public void openFilter(View view) {
+    public void openFilterPopup(View view) {
         pageUI.openFilter(view, allFilters, currentFilters);
         setFilterOnClickListeners(pageUI.getPopupView(), pageUI.getPopup(), pageUI.getFilterPopup());
     }
@@ -367,12 +381,12 @@ public class ItemsPageActivity extends AppCompatActivity {
         HeaderClickListener.setHeaderListeners(findViewById(android.R.id.content).getRootView());
     }
 
-    private void startSearchActivity() {
+    private void returnToHomePage() {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
 
-    private void startSearchActivity(Category key) {
+    private void returnToHomePage(Category key) {
         Intent intent = new Intent(this, MainActivity.class);
         intent.putExtra("metaCategory", key);
         startActivity(intent);

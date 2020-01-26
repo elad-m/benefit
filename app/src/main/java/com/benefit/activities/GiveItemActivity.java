@@ -27,7 +27,7 @@ import com.benefit.model.Category;
 import com.benefit.model.Product;
 import com.benefit.services.CategoryService;
 import com.benefit.services.ProductService;
-import com.benefit.utilities.staticClasses.HeaderClickListener;
+import com.benefit.utilities.HeaderClickListener;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.squareup.picasso.Picasso;

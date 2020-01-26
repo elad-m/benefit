@@ -24,7 +24,7 @@ import com.benefit.drivers.DatabaseDriver;
 import com.benefit.model.Category;
 import com.benefit.model.CategoryCluster;
 import com.benefit.services.CategoryService;
-import com.benefit.utilities.staticClasses.HeaderClickListener;
+import com.benefit.utilities.HeaderClickListener;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void addCategoryListeners() {
-        itemsDisplay.getmAdapter().setOnItemClickListener(new DisplayableRecycleAdapter.OnItemClickListener() {
+        itemsDisplay.getDisplayableRecycleAdapter().setOnItemClickListener(new DisplayableRecycleAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
                 if (position < itemsDisplay.getDisplayableItems().size()) {

@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.benefit.R;
 import com.benefit.adapters.ClothingRecyclerAdapter;
-import com.benefit.utilities.staticClasses.HeaderClickListener;
+import com.benefit.utilities.HeaderClickListener;
 import com.benefit.ui.profile.ClothingItem;
 
 import java.util.ArrayList;

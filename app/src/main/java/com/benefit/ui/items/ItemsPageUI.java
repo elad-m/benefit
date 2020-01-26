@@ -21,7 +21,7 @@ import com.benefit.model.Product;
 import com.benefit.model.PropertyName;
 import com.benefit.ui.Displayable;
 import com.benefit.adapters.DisplayableRecycleAdapter;
-import com.benefit.utilities.staticClasses.Converters;
+import com.benefit.utilities.staticclasses.Converters;
 
 import java.util.List;
 import java.util.Map;
@@ -127,6 +127,9 @@ public class ItemsPageUI {
         filterText.setLayoutParams(layoutParams);
     }
 
+    /**
+     * Undims the background
+     */
     public void undimBackground(){
         ViewOverlay overlay = view.getOverlay();
         overlay.clear();
@@ -206,8 +209,8 @@ public class ItemsPageUI {
         return metaCategoryBar.getMetaCategoryButtonMap();
     }
 
-    public DisplayableRecycleAdapter getmAdapter() {
-        return itemsDisplay.getmAdapter();
+    public DisplayableRecycleAdapter getDisplayableAdapter() {
+        return itemsDisplay.getDisplayableRecycleAdapter();
     }
 
     public List<? extends Displayable> getDisplayableItems() {

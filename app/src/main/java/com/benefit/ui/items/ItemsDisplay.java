@@ -6,8 +6,8 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.benefit.R;
-import com.benefit.ui.Displayable;
 import com.benefit.adapters.DisplayableRecycleAdapter;
+import com.benefit.ui.Displayable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,9 +21,9 @@ public class ItemsDisplay {
 
     private List<Displayable> displayableItems;
 
-    private RecyclerView mRecyclerView;
-    private DisplayableRecycleAdapter mAdapter;
-    private RecyclerView.LayoutManager mLayoutManager;
+    private RecyclerView recyclerView;
+    private DisplayableRecycleAdapter displayableRecycleAdapter;
+    private RecyclerView.LayoutManager layoutManager;
     private int typeOfDisplay;
 
 
@@ -34,36 +34,41 @@ public class ItemsDisplay {
     }
 
     public <T extends Displayable> void populateDisplayTable(List<T> displayableItems) {
-//        this.displayableItems.addAll(displayableItems);
         addItemsToDisplayableItems(displayableItems);
-        mRecyclerView = view.findViewById(R.id.categories);
-        mRecyclerView.setHasFixedSize(true);
-        mLayoutManager = new GridLayoutManager(view.getContext(), 2);
-        mAdapter = new DisplayableRecycleAdapter(this.displayableItems, typeOfDisplay);
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        mRecyclerView.setAdapter(mAdapter);
+        if (this.displayableItems.size() > 0) {
+            view.findViewById(R.id.no_item_text).setVisibility(View.INVISIBLE);
+        } else {
+            view.findViewById(R.id.no_item_text).setVisibility(View.VISIBLE);
+        }
+        recyclerView = view.findViewById(R.id.categories);
+        recyclerView.setHasFixedSize(true);
+        layoutManager = new GridLayoutManager(view.getContext(), 2);
+        displayableRecycleAdapter = new DisplayableRecycleAdapter(this.displayableItems, typeOfDisplay);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(displayableRecycleAdapter);
+
     }
 
     private <T extends Displayable> void addItemsToDisplayableItems(List<T> displayableItems) {
-        for (Displayable item:displayableItems){
-            if (!itemInList(item)){
+        for (Displayable item : displayableItems) {
+            if (!itemInList(item)) {
                 this.displayableItems.add(item);
             }
         }
     }
 
     private boolean itemInList(Displayable item) {
-        for (Displayable displayable:this.displayableItems){
+        for (Displayable displayable : this.displayableItems) {
             if (item.getName().equals(displayable.getName()) &&
-                    item.getImageResource().equals(displayable.getImageResource())){
+                    item.getImageResource().equals(displayable.getImageResource())) {
                 return true;
             }
         }
         return false;
     }
 
-    public DisplayableRecycleAdapter getmAdapter() {
-        return mAdapter;
+    public DisplayableRecycleAdapter getDisplayableRecycleAdapter() {
+        return displayableRecycleAdapter;
     }
 
     public List<? extends Displayable> getDisplayableItems() {
@@ -71,8 +76,8 @@ public class ItemsDisplay {
     }
 
     public <T extends Displayable> void refreshDisplay() {
-        mRecyclerView = view.findViewById(R.id.categories);
-        mRecyclerView.removeAllViews();
+        recyclerView = view.findViewById(R.id.categories);
+        recyclerView.removeAllViews();
         this.displayableItems.clear();
     }
 }
