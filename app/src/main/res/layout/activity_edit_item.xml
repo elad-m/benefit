@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorWhite"
     android:layoutDirection="ltr"
     tools:context=".activities.GiveItemActivity">
 
@@ -43,9 +44,8 @@
                 android:layout_margin="@dimen/give_item_margins"
                 android:gravity="center"
                 android:text="@string/edit_item_heading_message"
-                android:textStyle="bold"
-                android:textSize="@dimen/give_item_text_views_text_size" />
-
+                android:textSize="@dimen/give_item_text_views_text_size"
+                android:textStyle="bold" />
 
 
             <ImageButton
@@ -65,24 +65,29 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-<!--                <TextView-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:text="Add Title:"-->
-<!--                    android:textColor="@color/colorBlack"/>-->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/give_title_margin_start"
+                    android:layout_marginTop="@dimen/give_title_margin_top"
+                    android:paddingTop="@dimen/give_item_padding_top_and_bottom"
+                    android:paddingBottom="@dimen/give_item_padding_top_and_bottom"
+                    android:text="Add Title:"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorBlack" />
 
                 <EditText
                     android:id="@+id/item_title_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/give_item_title_start_end_margin"
+                    android:layout_marginStart="30dp"
                     android:layout_marginTop="@dimen/give_item_margins"
                     android:layout_marginEnd="@dimen/give_item_title_start_end_margin"
                     android:layout_marginBottom="@dimen/give_item_margins"
                     android:background="@drawable/rounded_edittext"
                     android:hint="@string/hint_item_title"
-                    android:inputType="text"
                     android:imeOptions="actionDone"
+                    android:inputType="text"
                     android:paddingStart="@dimen/give_item_title_padding_start_and_end"
                     android:paddingTop="@dimen/give_item_padding_top_and_bottom"
                     android:paddingEnd="@dimen/give_item_title_padding_start_and_end"
@@ -92,8 +97,6 @@
 
             </LinearLayout>
 
-
-
         </LinearLayout>
     </ScrollView>
 
@@ -101,16 +104,16 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:orientation="vertical"
-        app:layout_constraintHeight_percent="0.130"
-        app:layout_constraintTop_toBottomOf="@id/scroll_edit"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintHeight_percent="0.130"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/scroll_edit">
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/colorGrayLight"/>
+            android:background="@color/colorGrayLight" />
 
         <TextView
             android:id="@+id/give_button"
@@ -120,11 +123,16 @@
             android:onClick="onClickGive"
             android:padding="20dp"
             android:text="@string/done_button"
+            android:textAlignment="center"
             android:textAllCaps="false"
             android:textColor="@color/colorBenefitBlue"
             android:textSize="@dimen/give_button_text_size"
-            android:textAlignment="center"
             app:backgroundTint="@color/colorWhite" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorGrayLight" />
 
     </LinearLayout>
 

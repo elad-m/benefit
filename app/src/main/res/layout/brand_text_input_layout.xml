@@ -7,29 +7,31 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/give_item_margins"
-        android:layout_marginTop="@dimen/give_item_margins"
-        android:layout_marginEnd="@dimen/give_item_margins"
+        android:layout_marginStart="@dimen/give_title_margin_start"
+        android:layout_marginTop="@dimen/give_title_margin_top"
         android:layout_marginBottom="@dimen/give_item_margins"
-        android:paddingStart="@dimen/give_item_default_padding"
-        android:paddingEnd="@dimen/give_item_default_padding"
-        android:text="@string/brand_text_view_value" />
+        android:paddingTop="@dimen/give_item_padding_top_and_bottom"
+        android:paddingBottom="@dimen/give_item_padding_top_and_bottom"
+        android:text="@string/brand_text_view_value"
+        android:textColor="@color/colorBlack"
+        android:textAlignment="center"
+        android:textSize="@dimen/give_item_text_views_text_size"/>
 
     <EditText
         android:id="@+id/item_brand"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/give_item_margins"
+        android:layout_marginStart="@dimen/give_edittext_start_margin"
         android:layout_marginTop="@dimen/give_item_margins"
-        android:layout_marginEnd="@dimen/give_item_margins"
+        android:layout_marginEnd="@dimen/give_item_title_start_end_margin"
         android:layout_marginBottom="@dimen/give_item_margins"
         android:background="@drawable/rounded_edittext"
         android:hint="@string/default_and_hint_brand_name"
         android:inputType="text"
-        android:paddingStart="@dimen/give_item_default_padding"
+        android:paddingStart="@dimen/give_item_title_padding_start_and_end"
         android:paddingTop="@dimen/give_item_padding_top_and_bottom"
-        android:paddingEnd="@dimen/give_item_default_padding"
+        android:paddingEnd="@dimen/give_item_title_padding_start_and_end"
         android:paddingBottom="@dimen/give_item_padding_top_and_bottom"
         android:textSize="@dimen/give_item_text_views_text_size"
-        android:textStyle="bold" />
+        android:textStyle="normal" />
 </LinearLayout>

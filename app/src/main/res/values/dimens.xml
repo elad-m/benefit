@@ -29,7 +29,7 @@
     <dimen name="give_item_text_views_text_size">15sp</dimen>
     <dimen name="give_item_image_width_and_height">250dp</dimen>
     <dimen name="give_item_margins">5dp</dimen>
-    <dimen name="give_item_title_start_end_margin">50dp</dimen>
+    <dimen name="give_item_title_start_end_margin">30dp</dimen>
     <dimen name="give_item_title_padding_start_and_end">20dp</dimen>
     <dimen name="give_item_padding_top_and_bottom">10dp</dimen>
     <dimen name="give_item_default_padding">10dp</dimen>
@@ -63,4 +63,7 @@
     <dimen name="product_card_height">140dp</dimen>
     <dimen name="sandwich_icon_margin">3dp</dimen>
     <dimen name="horizontal_line_height">1dp</dimen>
+    <dimen name="give_title_margin_start">15dp</dimen>
+    <dimen name="give_title_margin_top">5dp</dimen>
+    <dimen name="give_edittext_start_margin">30dp</dimen>
 </resources>
