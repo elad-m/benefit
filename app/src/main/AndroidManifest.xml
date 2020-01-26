@@ -41,7 +41,7 @@
 
         <activity android:name=".activities.SignInActivity" />
         <activity android:name=".activities.ProductPageActivity" />
-        <activity android:name=".activities.ItemsPageActivity" />
+        <activity android:name=".activities.ProductsPageActivity" />
         <activity android:name=".activities.UserProfileActivity" />
     </application>
 

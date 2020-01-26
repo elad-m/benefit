@@ -18,8 +18,8 @@ import androidx.lifecycle.ViewModelProviders;
 import com.benefit.R;
 import com.benefit.ui.Displayable;
 import com.benefit.adapters.DisplayableRecycleAdapter;
-import com.benefit.ui.items.ItemsDisplay;
-import com.benefit.ui.items.MetaCategoryBar;
+import com.benefit.ui.products.ProductsDisplay;
+import com.benefit.ui.products.MetaCategoryBar;
 import com.benefit.drivers.DatabaseDriver;
 import com.benefit.model.Category;
 import com.benefit.model.CategoryCluster;
@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
     private static final int CATEGORIES = 1;
     private static final int CATEGORIES_DISPLAYED = 1;
     private static final int CLUSTERS_DISPLAYED = 2;
-    private ItemsDisplay itemsDisplay;
+    private ProductsDisplay productsDisplay;
     private MetaCategoryBar metaCategoryBar;
     private Category metaCategoryChosen;
     private Button metaButtonChosen;
@@ -65,16 +65,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void addCategoryListeners() {
-        itemsDisplay.getDisplayableRecycleAdapter().setOnItemClickListener(new DisplayableRecycleAdapter.OnItemClickListener() {
+        productsDisplay.getDisplayableRecycleAdapter().setOnItemClickListener(new DisplayableRecycleAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                if (position < itemsDisplay.getDisplayableItems().size()) {
-                    Displayable itemClicked = itemsDisplay.getDisplayableItems().get(position);
-                    if (itemsDisplayed == CLUSTERS_DISPLAYED || ((Category) itemClicked).getIsLeaf()) {
-                        openProductsPage(itemClicked);
+                if (position < productsDisplay.getDisplayableProducts().size()) {
+                    Displayable productClicked = productsDisplay.getDisplayableProducts().get(position);
+                    if (itemsDisplayed == CLUSTERS_DISPLAYED || ((Category) productClicked).getIsLeaf()) {
+                        openProductsPage(productClicked);
                     } else {
-                        itemsDisplay.refreshDisplay();
-                        showChildrenOfParent((int)((Category) itemClicked).getId());
+                        productsDisplay.refreshDisplay();
+                        showChildrenOfParent((int)((Category) productClicked).getId());
                     }
                 }
             }
@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void openProductsPage(Displayable displayable) {
-        Intent intent = new Intent(this, ItemsPageActivity.class);
+        Intent intent = new Intent(this, ProductsPageActivity.class);
         switch (itemsDisplayed) {
             case CLUSTERS_DISPLAYED:
                 intent.putExtra("displayed", CLUSTERS_DISPLAYED);
@@ -143,7 +143,7 @@ public class MainActivity extends AppCompatActivity {
     private void initiateWindow() {
         addScreenSettings();
         metaCategoryBar = new MetaCategoryBar(findViewById(android.R.id.content).getRootView());
-        itemsDisplay = new ItemsDisplay(findViewById(android.R.id.content).getRootView(), CATEGORIES);
+        productsDisplay = new ProductsDisplay(findViewById(android.R.id.content).getRootView(), CATEGORIES);
         createCategoryService();
         showMetaCategories();
         showItemsOnScreen();
@@ -198,14 +198,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showCategoryClusters() {
-        itemsDisplay.refreshDisplay();
+        productsDisplay.refreshDisplay();
         final List<CategoryCluster> categoryClusters = new LinkedList<>();
         final Observer<List<CategoryCluster>> categoryObserver = new Observer<List<CategoryCluster>>() {
 
             @Override
             public void onChanged(List<CategoryCluster> clusters) {
                 categoryClusters.addAll(clusters);
-                itemsDisplay.populateDisplayTable(categoryClusters);
+                productsDisplay.populateDisplayTable(categoryClusters);
                 addCategoryListeners();
             }
         };
@@ -213,12 +213,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showChildrenOfParent(int parentId) {
-        itemsDisplay.refreshDisplay();
+        productsDisplay.refreshDisplay();
         final Observer<List<Category>> childCategoryObserver = new Observer<List<Category>>() {
 
             @Override
             public void onChanged(List<Category> categories) {
-                itemsDisplay.populateDisplayTable(categories);
+                productsDisplay.populateDisplayTable(categories);
                 addCategoryListeners();
             }
         };
@@ -232,7 +232,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 if (query.length() >= 1) {
-                    startItemActivityWithSearch(query);
+                    startProductActivityWithSearch(query);
                 }
                 return false;
             }
@@ -244,8 +244,8 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void startItemActivityWithSearch(String newText) {
-        Intent intent = new Intent(this, ItemsPageActivity.class);
+    private void startProductActivityWithSearch(String newText) {
+        Intent intent = new Intent(this, ProductsPageActivity.class);
         intent.putExtra("searchReceived", true);
         intent.putExtra("searchResult", newText);
         startActivity(intent);

@@ -26,8 +26,8 @@ import com.benefit.services.CategoryService;
 import com.benefit.services.ProductService;
 import com.benefit.services.SearchService;
 import com.benefit.ui.Displayable;
-import com.benefit.ui.items.FilterPopup;
-import com.benefit.ui.items.ItemsPageUI;
+import com.benefit.ui.products.FilterPopup;
+import com.benefit.ui.products.ProductsPageUI;
 import com.benefit.utilities.HeaderClickListener;
 
 import java.util.ArrayList;
@@ -36,9 +36,9 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * The activity the screen where the items are shown
+ * The activity the screen where the products are shown
  */
-public class ItemsPageActivity extends AppCompatActivity {
+public class ProductsPageActivity extends AppCompatActivity {
 
     private static final int ONE_CATEGORY_DISPLAYED = 1;
     private static final int MULTIPLE_CATEGORIES_DISPLAYED = 2;
@@ -54,7 +54,7 @@ public class ItemsPageActivity extends AppCompatActivity {
     private CategoryCluster categoryCluster;
     private List<PropertyName> allFilters;
     private Map<String, List<String>> currentFilters;
-    private ItemsPageUI pageUI;
+    private ProductsPageUI pageUI;
     private DatabaseDriver databaseDriver = new DatabaseDriver();
     private CategoryService categoryService;
     private ProductService productService;
@@ -180,7 +180,7 @@ public class ItemsPageActivity extends AppCompatActivity {
 
     private void initiateWindow() {
         addScreenSettings();
-        pageUI = new ItemsPageUI(findViewById(android.R.id.content).getRootView(), currentCategory, categoryCluster);
+        pageUI = new ProductsPageUI(findViewById(android.R.id.content).getRootView(), currentCategory, categoryCluster);
         getAllMetaCategories();
         if (!are_products_displayed) {
             addProductsToScreen();
@@ -194,7 +194,7 @@ public class ItemsPageActivity extends AppCompatActivity {
     }
 
     private void addScreenSettings() {
-        setContentView(R.layout.activity_items_page);
+        setContentView(R.layout.activity_products_page);
         getWindow().setSoftInputMode(
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         getWindow().setSoftInputMode(
@@ -270,8 +270,8 @@ public class ItemsPageActivity extends AppCompatActivity {
         pageUI.getDisplayableAdapter().setOnItemClickListener(new DisplayableRecycleAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                Displayable itemClicked = pageUI.getDisplayableItems().get(position);
-                displayProductInNewWindow((Product) itemClicked);
+                Displayable productClicked = pageUI.getDisplayableProducts().get(position);
+                displayProductInNewWindow((Product) productClicked);
             }
         });
     }
@@ -339,13 +339,13 @@ public class ItemsPageActivity extends AppCompatActivity {
                 if (currentFilters.size() == 0) {
                     addProductsToScreen();
                 } else {
-                    showAllFilteredItems();
+                    showAllFilteredProducts();
                 }
             }
         });
     }
 
-    private void showAllFilteredItems() {
+    private void showAllFilteredProducts() {
         switch (whichProductsDisplayed) {
             case MULTIPLE_CATEGORIES_DISPLAYED:
                 for (int id : categoryCluster.getCategoryIdList()) {
