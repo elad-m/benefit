@@ -1,10 +1,15 @@
 package com.benefit.activities;
 
+import android.content.ComponentName;
+import android.content.Intent;
 import android.content.Intent;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.telephony.PhoneNumberUtils;
+import android.util.Log;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -36,6 +41,7 @@ import java.util.Objects;
  */
 public class ProductPageActivity extends AppCompatActivity implements OnMapReadyCallback {
 
+    private static final String TAG = "ProductPageActivity";
     private Product product;
     private User user;
     private UserService userService;
@@ -77,7 +83,7 @@ public class ProductPageActivity extends AppCompatActivity implements OnMapReady
         textViewDescription.setText(product.getDescription());
         textViewProperties.setText(getPropertiesString(product.getProperties()));
         Picasso.get().load(product.getImagesUrls().get(0)).into(imageView);
-        final Observer<User> userObserver = this::displayMap;
+        final Observer<User> userObserver = this::userActions;
         userService.getUserById(product.getSellerId()).observe(this, userObserver);
     }
 
@@ -98,13 +104,15 @@ public class ProductPageActivity extends AppCompatActivity implements OnMapReady
         return propertiesString.toString();
     }
 
-    private void displayMap(User user) {
+    private void userActions(User user) {
         this.mapLocation = new Location(LocationManager.GPS_PROVIDER);
         this.mapLocation.setLongitude(user.getLocationLongitude());
         this.mapLocation.setLatitude(user.getLocationLatitude());
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.productPageMapFragment);
         Objects.requireNonNull(mapFragment).getMapAsync(this);
+        final Button contactGiverButton = findViewById(R.id.contact_giver_button);
+        contactGiverButton.setOnClickListener(v -> openWhatsApp(user.getPhoneNumber()));
 
     }
 
@@ -126,5 +134,19 @@ public class ProductPageActivity extends AppCompatActivity implements OnMapReady
     public void startActivity(Intent intent) {
         intent.putExtra(getString(R.string.user_relay), user);
         super.startActivity(intent);
+    }
+
+    private void openWhatsApp(String number) {
+        try {
+            number = number.replace(" ", "").replace("+", "");
+
+            Intent sendIntent = new Intent("android.intent.action.MAIN");
+            sendIntent.setComponent(new ComponentName("com.whatsapp", "com.whatsapp.Conversation"));
+            sendIntent.putExtra("jid", PhoneNumberUtils.stripSeparators(number) + "@s.whatsapp.net");
+            this.startActivity(sendIntent);
+
+        } catch (Exception e) {
+            Log.e(TAG, "ERROR_OPEN_MESSANGER" + e.toString());
+        }
     }
 }
