@@ -38,7 +38,7 @@ import java.util.Map;
 /**
  * The activity the screen where the products are shown
  */
-public class ProductsPageActivity extends AppCompatActivity {
+public class AllProductsActivity extends AppCompatActivity {
 
     private static final int ONE_CATEGORY_DISPLAYED = 1;
     private static final int MULTIPLE_CATEGORIES_DISPLAYED = 2;
@@ -145,6 +145,7 @@ public class ProductsPageActivity extends AppCompatActivity {
         createSearchService();
     }
 
+
     private void createSearchService() {
         ViewModelProvider.Factory searchServiceFactory = new ViewModelProvider.Factory() {
             @NonNull
@@ -194,7 +195,7 @@ public class ProductsPageActivity extends AppCompatActivity {
     }
 
     private void addScreenSettings() {
-        setContentView(R.layout.activity_products_page);
+        setContentView(R.layout.activity_all_products_);
         getWindow().setSoftInputMode(
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         getWindow().setSoftInputMode(

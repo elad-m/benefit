@@ -18,4 +18,5 @@
     <color name="black">#000000</color>
     <color name="productPageTextPrimaryColor">#000000</color>
     <color name="productPageTextSecondaryColor">#c4c4c4</color>
+    <color name="filter_reset_color">#6d6d6d</color>
 </resources>

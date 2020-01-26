@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void openProductsPage(Displayable displayable) {
-        Intent intent = new Intent(this, ProductsPageActivity.class);
+        Intent intent = new Intent(this, AllProductsActivity.class);
         switch (itemsDisplayed) {
             case CLUSTERS_DISPLAYED:
                 intent.putExtra("displayed", CLUSTERS_DISPLAYED);
@@ -245,7 +245,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void startProductActivityWithSearch(String newText) {
-        Intent intent = new Intent(this, ProductsPageActivity.class);
+        Intent intent = new Intent(this, AllProductsActivity.class);
         intent.putExtra("searchReceived", true);
         intent.putExtra("searchResult", newText);
         startActivity(intent);

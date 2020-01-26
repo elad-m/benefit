@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@android:color/white"
     android:orientation="vertical"
-    tools:context=".activities.ProductsPageActivity"
+    tools:context=".activities.AllProductsActivity"
     android:layoutDirection="ltr">
 
     <include
@@ -17,11 +17,8 @@
         android:id="@+id/search_input"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginLeft="45dp"
-        android:layout_marginRight="45dp"
         android:background="@drawable/ic_search_bar"
-        android:ems="12"
-        app:queryHint="Search"
+        app:queryHint="@string/search"
         android:inputType="textPersonName"
         app:layout_constraintHeight_percent="0.054"
         app:layout_constraintTop_toBottomOf="@id/first_page_header"
@@ -134,8 +131,8 @@
         app:layout_constraintTop_toBottomOf="@id/current_filters_guide"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintVertical_chainStyle="spread"
-        android:text="No items found"
-        android:textSize="35sp"
+        android:text="@string/no_items_found"
+        android:textSize="@dimen/no_items_found_text_size"
         android:visibility="invisible"/>
 
 
