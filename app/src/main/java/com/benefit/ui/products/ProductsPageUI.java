@@ -15,12 +15,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.benefit.R;
+import com.benefit.adapters.DisplayableRecycleAdapter;
 import com.benefit.model.Category;
 import com.benefit.model.CategoryCluster;
 import com.benefit.model.Product;
 import com.benefit.model.PropertyName;
 import com.benefit.ui.Displayable;
-import com.benefit.adapters.DisplayableRecycleAdapter;
 import com.benefit.utilities.staticClasses.Converters;
 
 import java.util.List;
@@ -42,12 +42,7 @@ public class ProductsPageUI {
     private MetaCategoryBar metaCategoryBar;
     private ProductsDisplay productsDisplay;
 
-    /**
-     * Class Constrctor
-     * @param view the view if the product activity
-     * @param currentCategory the current category being displayed
-     * @param categoryCluster the cluster displayed, may be null
-     */
+
     public ProductsPageUI(View view, Category currentCategory, CategoryCluster categoryCluster) {
         this.view = view;
         this.currentCategory = currentCategory;
@@ -60,45 +55,24 @@ public class ProductsPageUI {
         view.findViewById(R.id.search_icon).setBackground(view.getContext().getResources().getDrawable(R.drawable.ic_search_icon_color));
     }
 
-    /**
-     * adds the metacategory bar on page
-     * @param metaCategories the metaCategories to display
-     * @param metaCategoryChosen the metaCategory previously chosen
-     */
     public void addMetaCategoryBar(List<Category> metaCategories, Category metaCategoryChosen) {
         metaCategoryBar = new MetaCategoryBar(view.findViewById(android.R.id.content).getRootView());
         metaCategoryBar.createCategoryBar(metaCategories, metaCategoryChosen);
     }
 
-    /**
-     * adds the metacategory bar on page
-     * @param metaCategories the metaCategories to display
-     */
     public void addMetaCategoryBar(List<Category> metaCategories) {
         metaCategoryBar = new MetaCategoryBar(view.findViewById(android.R.id.content).getRootView());
         metaCategoryBar.createCategoryBar(metaCategories);
     }
 
-    /**
-     * Creates the table that displays the products
-     * @param products the products to display
-     */
     public void addDisplayTable(List<Product> products) {
         productsDisplay.populateDisplayTable(products);
     }
 
-    /**
-     * Refreshes the table of products
-     */
     public void refreshTable() {
         productsDisplay.refreshDisplay();
     }
 
-    /**
-     * writes the filter bar on the screen
-     *
-     * @param currentFilters the current filters of the products
-     */
     public void openFilterPopup(Map<String, List<String>> currentFilters) {
         LinearLayout currentFilterLayout = view.findViewById(R.id.current_filters);
         currentFilterLayout.removeAllViews();
@@ -148,19 +122,11 @@ public class ProductsPageUI {
         filterText.setLayoutParams(layoutParams);
     }
 
-    /**
-     * Undims the background
-     */
-    public void undimBackground(){
+    public void undimBackground() {
         ViewOverlay overlay = view.getOverlay();
         overlay.clear();
     }
 
-    /**
-     * opens the filter popup
-     *
-     * @param currentFilters the current filters wanted
-     */
     public void openFilter(View view, List<PropertyName> filters, Map<String, List<String>> currentFilters) {
 
         RelativeLayout viewGroup = view.findViewById(R.id.filter_popup);
@@ -168,10 +134,10 @@ public class ProductsPageUI {
         popupView = layoutInflater.inflate(R.layout.filter, viewGroup);
         placePopupOnScreen();
         populatePopup(filters, currentFilters);
-        applyDim( 0.8f);
+        applyDim(0.8f);
     }
 
-    private void applyDim(float dimAmount){
+    private void applyDim(float dimAmount) {
         Drawable dim = new ColorDrawable(Color.BLACK);
         dim.setBounds(0, 0, view.getWidth(), view.getHeight());
         dim.setAlpha((int) (255 * dimAmount));
@@ -199,53 +165,27 @@ public class ProductsPageUI {
         popup.setFocusable(true);
     }
 
-    /**
-     * gets the popup view
-     *
-     * @return popup view
-     */
     public View getPopupView() {
         return popupView;
     }
 
-    /**
-     * gets the filter popup
-     *
-     * @return filterPopup
-     */
     public FilterPopup getFilterPopup() {
         return filterPopup;
     }
 
-    /**
-     * get the popup window
-     *
-     * @return popup
-     */
     public PopupWindow getPopup() {
         return popup;
     }
 
-    /**
-     * Gets the metaCategory button map
-     * @return the map
-     */
     public Map<Category, Button> getMetaCategoryButtonMap() {
         return metaCategoryBar.getMetaCategoryButtonMap();
     }
 
-    /**
-     * Gets the recycleView adapter
-     * @return the adapter
-     */
     public DisplayableRecycleAdapter getDisplayableAdapter() {
         return productsDisplay.getDisplayableRecycleAdapter();
     }
 
-    /**
-     * Gets the displayed products
-     * @return the displayed products
-     */
+
     public List<? extends Displayable> getDisplayableProducts() {
         return productsDisplay.getDisplayableProducts();
     }

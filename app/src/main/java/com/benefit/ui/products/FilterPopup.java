@@ -22,6 +22,7 @@ import java.util.Map;
  */
 public class FilterPopup {
 
+    private final static int TITLE_CHILD = 1;
     private View view;
     private LinearLayout layout;
     private List<PropertyName> filters;
@@ -71,10 +72,9 @@ public class FilterPopup {
     }
 
     private void checkCurrentProperties(ChipGroup chipGroup, PropertyName propertyName) {
-        // +1 because of chipgroup holding textView first
         for (int i = 0; i < propertyName.getValidValues().size(); i++) {
             if (currentFilterContainsKeyAndValue(propertyName.getName(), propertyName.getValidValues().get(i))) {
-                ((Chip) chipGroup.getChildAt(i + 1)).setChecked(true);
+                ((Chip) chipGroup.getChildAt(i + TITLE_CHILD)).setChecked(true);
             }
         }
     }
