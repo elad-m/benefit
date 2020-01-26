@@ -25,9 +25,9 @@ public class TipSliderAdapter extends PagerAdapter {
     }
 
     public int[] slide_images = {
-            R.drawable.tip_background,
-            R.drawable.tip_wear_it,
-            R.drawable.tip_lighting,
+            R.drawable.tip_background_im,
+            R.drawable.tip_wear_it_im,
+            R.drawable.tip_lighting_im,
     };
 
     private int[] slide_icons = {
