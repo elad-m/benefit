@@ -16,6 +16,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.benefit.R;
+import com.benefit.model.User;
 import com.benefit.adapters.DisplayableRecycleAdapter;
 import com.benefit.drivers.DatabaseDriver;
 import com.benefit.model.Category;
@@ -59,6 +60,7 @@ public class AllProductsActivity extends AppCompatActivity {
     private CategoryService categoryService;
     private ProductService productService;
     private SearchService searchService;
+    private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +76,7 @@ public class AllProductsActivity extends AppCompatActivity {
     }
 
     private void extractExtras() {
+        user = (User) getIntent().getSerializableExtra(getString(R.string.user_relay));
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             if (bundle.getBoolean("searchReceived")) {
@@ -379,7 +382,7 @@ public class AllProductsActivity extends AppCompatActivity {
     }
 
     private void setHeaderListeners() {
-        HeaderClickListener.setHeaderListeners(findViewById(android.R.id.content).getRootView());
+        HeaderClickListener.setHeaderListeners(this);
     }
 
     private void returnToHomePage() {
@@ -391,5 +394,11 @@ public class AllProductsActivity extends AppCompatActivity {
         Intent intent = new Intent(this, MainActivity.class);
         intent.putExtra("metaCategory", key);
         startActivity(intent);
+    }
+
+    @Override
+    public void startActivity(Intent intent) {
+        intent.putExtra(getString(R.string.user_relay), user);
+        super.startActivity(intent);
     }
 }

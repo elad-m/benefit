@@ -19,13 +19,13 @@ import com.benefit.drivers.DatabaseDriver;
 import com.benefit.model.User;
 import com.benefit.services.ChatService;
 import com.benefit.services.UserService;
+import com.benefit.utilities.Factory;
 import com.benefit.utilities.HeaderClickListener;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 
 public class ConversationActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     private DatabaseDriver databaseDriver;
-    private UserService userService;
     private ChatService chatService;
     private User currentUser;
     private Spinner sortMassagesSpinner;
@@ -44,19 +44,16 @@ public class ConversationActivity extends AppCompatActivity implements AdapterVi
 
 
         // initiate user
-        userService = ViewModelProviders.of(this).get(UserService.class);
-        userService.getCurrentUser().observe(this, user -> {
-            currentUser = user;
-            chatService.setUser(user);
-            Toast.makeText(this, "welcome user " + currentUser.getFullName() + "!", Toast.LENGTH_LONG).show();
-            //initiate conversation RecyclerView
-            initiateConversationRecyclerView();
-        });
+        currentUser = (User) getIntent().getSerializableExtra(getString(R.string.user_relay));
 
         //initiate sort spinner
         initiateSortSpinner();
 
         chatService = ViewModelProviders.of(this).get(ChatService.class);
+        chatService.setUser(currentUser);
+
+        //initiate conversation RecyclerView
+        initiateConversationRecyclerView();
 
     }
 
@@ -87,7 +84,7 @@ public class ConversationActivity extends AppCompatActivity implements AdapterVi
     }
 
     private void initiateConversationRecyclerView() {
-        conversationAdapter = (ConversationAdapter) chatService.getConversationRecyclerViewAdaptor(true, true, true);
+        conversationAdapter = chatService.getConversationRecyclerViewAdaptor(true, true, true);
         conversationRecyclerView = findViewById(R.id.conversation_recyclerView);
         conversationRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         conversationRecyclerView.setAdapter(conversationAdapter);
@@ -99,16 +96,16 @@ public class ConversationActivity extends AppCompatActivity implements AdapterVi
         if (conversationRecyclerView != null) {
             switch (position) {
                 case 0:
-                    conversationAdapter = (ConversationAdapter) chatService.getConversationRecyclerViewAdaptor(false, true, true);
+                   conversationAdapter = chatService.getConversationRecyclerViewAdaptor(false, true, true);
                     break;
                 case 1:
-                    conversationAdapter = (ConversationAdapter) chatService.getConversationRecyclerViewAdaptor(true, false, true);
+                    conversationAdapter = chatService.getConversationRecyclerViewAdaptor(true, false, true);
                     break;
                 case 2:
-                    conversationAdapter = (ConversationAdapter) chatService.getConversationRecyclerViewAdaptor(true, true, true);
+                    conversationAdapter = chatService.getConversationRecyclerViewAdaptor(true, true, true);
                     break;
                 case 3:
-                    conversationAdapter = (ConversationAdapter) chatService.getConversationRecyclerViewAdaptor(true, true, false);
+                    conversationAdapter = chatService.getConversationRecyclerViewAdaptor(true, true, false);
             }
             conversationRecyclerView.setAdapter(conversationAdapter);
             conversationAdapter.startListening();
@@ -127,6 +124,6 @@ public class ConversationActivity extends AppCompatActivity implements AdapterVi
     }
 
     private void setHeaderListeners() {
-        HeaderClickListener.setHeaderListeners(findViewById(android.R.id.content).getRootView());
+        HeaderClickListener.setHeaderListeners(this);
     }
 }

@@ -1,5 +1,6 @@
 package com.benefit.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.benefit.R;
 import com.benefit.adapters.ClothingRecyclerAdapter;
+import com.benefit.model.User;
 import com.benefit.utilities.HeaderClickListener;
 import com.benefit.ui.profile.ClothingItem;
 
@@ -25,6 +27,7 @@ public class UserProfileActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private ClothingRecyclerAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
+    private User user;
     ArrayList<ClothingItem> mClothingItems = new ArrayList<>();
 
     @Override
@@ -60,6 +63,8 @@ public class UserProfileActivity extends AppCompatActivity {
                 makeToast(message);
             }
         });
+
+        user = (User) getIntent().getSerializableExtra(getString(R.string.user_relay));
     }
 
     private void makeToast(String msg) {
@@ -75,6 +80,12 @@ public class UserProfileActivity extends AppCompatActivity {
     }
 
     private void setHeaderListeners() {
-        HeaderClickListener.setHeaderListeners(findViewById(android.R.id.content).getRootView());
+        HeaderClickListener.setHeaderListeners(this);
+    }
+
+    @Override
+    public void startActivity(Intent intent) {
+        intent.putExtra(getString(R.string.user_relay), user);
+        super.startActivity(intent);
     }
 }

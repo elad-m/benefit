@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
+import android.telephony.PhoneNumberFormattingTextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -22,6 +23,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.benefit.R;
+import com.benefit.model.enums.LoginState;
 import com.benefit.ui.WorkaroundMapFragment;
 import com.benefit.viewmodel.SignInViewModel;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -50,7 +52,6 @@ import com.google.android.material.textfield.TextInputEditText;
  */
 public class SignInActivity extends AppCompatActivity implements OnMapReadyCallback, OnMarkerDragListener {
 
-    public enum LoginState{NOT_SIGN_IN, LOGGING_IN, SIGN_IN_GET_USER, NEW_USER_SIGN_UP, FINISH};
     private static final String TAG = SignInActivity.class.getSimpleName();
     private static final int RC_GOOGLE_SIGN_IN = 9001;
     // Keys for storing activity state.
@@ -63,12 +64,12 @@ public class SignInActivity extends AppCompatActivity implements OnMapReadyCallb
     private Observer<Boolean> gettingNewUserSucceeded;
 
     //view elements
-    private ScrollView scrollView;
-    private LinearLayout signInButtons, signUpForm;
+    private LinearLayout signInButtons;
+    private ScrollView signUpForm;
     private SignInButton googleSignInButton;
     private Button mailSignInButton, phoneSignInButton;
     private TextView title;
-    private TextInputEditText firstNameField, lastNameField, addressField;
+    private TextInputEditText firstNameField, lastNameField, phoneField, addressField;
 
     // The entry point to the Fused Location Provider.
     private FusedLocationProviderClient mFusedLocationProviderClient;
@@ -110,8 +111,7 @@ public class SignInActivity extends AppCompatActivity implements OnMapReadyCallb
 
     }
 
-    private void setUpViewElements(){
-        scrollView = findViewById(R.id.sign_in_scrollview);
+    private void setUpViewElements() {
         signInButtons = findViewById(R.id.sign_in_buttons);
         signUpForm = findViewById(R.id.sign_up_form);
         title = findViewById(R.id.sign_up_title_text_view);
@@ -121,22 +121,21 @@ public class SignInActivity extends AppCompatActivity implements OnMapReadyCallb
         phoneSignInButton = findViewById(R.id.phone_sign_in_button);
         firstNameField = findViewById(R.id.first_name_input_text);
         lastNameField = findViewById(R.id.last_name_input_text);
+        phoneField = findViewById(R.id.phone_number_input_text);
+        phoneField.addTextChangedListener(new PhoneNumberFormattingTextWatcher("IL"));
         addressField = findViewById(R.id.address_input_text);
-
     }
 
-    private void setUpGettingNewUserSucceeded(){
+    private void setUpGettingNewUserSucceeded() {
         gettingNewUserSucceeded = success -> {
-            if (success){
-                if (viewModel.getUser() != null){
+            if (success) {
+                if (viewModel.getUser() != null) {
                     viewModel.setLoginState(LoginState.FINISH);
-                }
-                else {
+                } else {
                     viewModel.createNewUser();
                     viewModel.setLoginState(LoginState.NEW_USER_SIGN_UP);
                 }
-            }
-            else {
+            } else {
                 Toast.makeText(this, R.string.sign_in_fail_massage, Toast.LENGTH_LONG).show();
                 viewModel.setLoginState(LoginState.NOT_SIGN_IN);
             }
@@ -144,7 +143,7 @@ public class SignInActivity extends AppCompatActivity implements OnMapReadyCallb
         };
     }
 
-    private void initiateGoogleMap(){
+    private void initiateGoogleMap() {
         // Construct a FusedLocationProviderClient.
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 
@@ -154,8 +153,8 @@ public class SignInActivity extends AppCompatActivity implements OnMapReadyCallb
         mapFragment.getMapAsync(this);
     }
 
-    private void updateAccordingToLoginState(){
-        switch (viewModel.getLoginState()){
+    private void updateAccordingToLoginState() {
+        switch (viewModel.getLoginState()) {
             case NOT_SIGN_IN:
                 signInButtons.setVisibility(LinearLayout.VISIBLE);
                 signUpForm.setVisibility(LinearLayout.GONE);
@@ -209,8 +208,8 @@ public class SignInActivity extends AppCompatActivity implements OnMapReadyCallb
         }
     }
 
-    public void onGoogleSignInClicked(View view){
-        if (viewModel.getLoginState() == LoginState.NOT_SIGN_IN){
+    public void onGoogleSignInClicked(View view) {
+        if (viewModel.getLoginState() == LoginState.NOT_SIGN_IN) {
             // Configure Google Sign In
             GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                     .requestIdToken(getString(R.string.default_web_client_id))
@@ -230,16 +229,15 @@ public class SignInActivity extends AppCompatActivity implements OnMapReadyCallb
         super.onActivityResult(requestCode, resultCode, data);
 
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
-        if (requestCode == RC_GOOGLE_SIGN_IN){
+        if (requestCode == RC_GOOGLE_SIGN_IN) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
                 // Google Sign In was successful, authenticate with Firebase
                 LiveData<Boolean> success = viewModel.signInWithGoogle(task.getResult(ApiException.class));
                 success.observe(this, signInSucceeded -> {
-                    if(signInSucceeded){
+                    if (signInSucceeded) {
                         viewModel.setLoginState(LoginState.SIGN_IN_GET_USER);
-                    }
-                    else {
+                    } else {
                         Toast.makeText(this, R.string.sign_in_fail_massage, Toast.LENGTH_LONG).show();
                         viewModel.setLoginState(LoginState.NOT_SIGN_IN);
                     }
@@ -315,7 +313,7 @@ public class SignInActivity extends AppCompatActivity implements OnMapReadyCallb
                 mLastKnownLocation = null;
                 getLocationPermission();
             }
-        } catch (SecurityException e)  {
+        } catch (SecurityException e) {
             Log.e("Exception: %s", e.getMessage());
         }
     }
@@ -338,12 +336,13 @@ public class SignInActivity extends AppCompatActivity implements OnMapReadyCallb
                             // Set the map's camera position to the current location of the device
                             // and add a marker.
                             mLastKnownLocation = task.getResult();
-
                             LatLng currentLocation = new LatLng(mLastKnownLocation.getLatitude(),
-                                            mLastKnownLocation.getLongitude());
+                                    mLastKnownLocation.getLongitude());
+                            viewModel.getUser().setLocationLatitude(currentLocation.latitude);
+                            viewModel.getUser().setLocationLongitude(currentLocation.longitude);
                             mSelectedLocation = mMap.addMarker(new MarkerOptions()
-                                                                .position(currentLocation)
-                                                                .draggable(true));
+                                    .position(currentLocation)
+                                    .draggable(true));
                             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, DEFAULT_ZOOM));
                         } else {
                             Log.d(TAG, "Current location is null. Using defaults.");
@@ -355,7 +354,7 @@ public class SignInActivity extends AppCompatActivity implements OnMapReadyCallb
                     }
                 });
             }
-        } catch (SecurityException e)  {
+        } catch (SecurityException e) {
             Log.e("Exception: %s", e.getMessage());
         }
     }
@@ -382,9 +381,8 @@ public class SignInActivity extends AppCompatActivity implements OnMapReadyCallb
         ((WorkaroundMapFragment) getSupportFragmentManager().findFragmentById(R.id.googleMapFragment))
                 .setListener(new WorkaroundMapFragment.OnTouchListener() {
                     @Override
-                    public void onTouch()
-                    {
-                        scrollView.requestDisallowInterceptTouchEvent(true);
+                    public void onTouch() {
+                        signUpForm.requestDisallowInterceptTouchEvent(true);
                     }
                 });
     }
@@ -399,7 +397,7 @@ public class SignInActivity extends AppCompatActivity implements OnMapReadyCallb
 
     @Override
     public void onMarkerDragEnd(Marker marker) {
-        if (marker == mSelectedLocation){
+        if (marker == mSelectedLocation) {
             viewModel.getUser().setLocationLatitude(marker.getPosition().latitude);
             viewModel.getUser().setLocationLongitude(marker.getPosition().longitude);
         }
@@ -411,27 +409,27 @@ public class SignInActivity extends AppCompatActivity implements OnMapReadyCallb
             lastNameField.setError(null);
             String firstName = firstNameField.getText().toString();
             String lastName = lastNameField.getText().toString();
+            String phoneNumber = phoneField.getText().toString();
             String address = addressField.getText().toString();
-            if (firstName.isEmpty()) {
+            if (firstName.isEmpty() || lastName.isEmpty() || phoneNumber.isEmpty()) {
+                Toast.makeText(this, getString(R.string.required_fields_missing), Toast.LENGTH_LONG).show();
+                if (firstName.isEmpty()) {
+                    firstNameField.setError(getString(R.string.error_field_massge));
+                }
                 if (lastName.isEmpty()) {
-                    Toast.makeText(this, getString(R.string.enter_first_and_last_name), Toast.LENGTH_LONG).show();
-                    firstNameField.setError(getString(R.string.error_field_massge));
                     lastNameField.setError(getString(R.string.error_field_massge));
-                } else {
-                    Toast.makeText(this, getString(R.string.enter_first_name), Toast.LENGTH_LONG).show();
-                    firstNameField.setError(getString(R.string.error_field_massge));
+                }
+                if (phoneNumber.isEmpty()) {
+                    phoneField.setError(getString(R.string.error_field_massge));
                 }
             } else {
-                if (lastName.isEmpty()) {
-                    Toast.makeText(this, getString(R.string.enter_last_name), Toast.LENGTH_LONG).show();
-                    firstNameField.setError(getString(R.string.error_field_massge));
-                } else {
-                    viewModel.getUser().setFirstName(firstName);
-                    viewModel.getUser().setLastName(lastName);
-                    viewModel.getUser().setAddress(address);
-                    viewModel.setLoginState(LoginState.FINISH);
-                    updateAccordingToLoginState();
-                }
+                viewModel.getUser().setFirstName(firstName);
+                viewModel.getUser().setLastName(lastName);
+                viewModel.getUser().setPhoneNumber(phoneNumber);
+                viewModel.getUser().setAddress(address);
+                viewModel.addNewUserToDatabase();
+                viewModel.setLoginState(LoginState.FINISH);
+                updateAccordingToLoginState();
             }
         }
     }

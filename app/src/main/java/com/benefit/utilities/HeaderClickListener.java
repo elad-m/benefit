@@ -3,6 +3,8 @@ package com.benefit.utilities;
 import android.content.Intent;
 import android.view.View;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.benefit.R;
 import com.benefit.activities.ConversationActivity;
 import com.benefit.activities.GiveItemActivity;
@@ -17,53 +19,53 @@ public class HeaderClickListener {
     /**
      * sets the on click listeners for the header
      */
-    public static void setHeaderListeners(View view) {
-        view.findViewById(R.id.give_icon).setOnClickListener(new View.OnClickListener() {
+    public static void setHeaderListeners(AppCompatActivity activity) {
+        activity.findViewById(R.id.give_icon).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startGiveActivity(view);
+                startGiveActivity(activity);
             }
         });
 
-        view.findViewById(R.id.user_icon).setOnClickListener(new View.OnClickListener() {
+        activity.findViewById(R.id.user_icon).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startUserProfileActivity(view);
+                startUserProfileActivity(activity);
             }
         });
 
-        view.findViewById(R.id.search_icon).setOnClickListener(new View.OnClickListener() {
+        activity.findViewById(R.id.search_icon).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startSearchActivity(view);
+                startSearchActivity(activity);
             }
         });
 
-        view.findViewById(R.id.message_icon).setOnClickListener(new View.OnClickListener() {
+        activity.findViewById(R.id.message_icon).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startMessageActivity(view);
+                startMessageActivity(activity);
             }
         });
     }
 
-    private static void startMessageActivity(View view) {
-        Intent intent = new Intent(view.getContext(), ConversationActivity.class);
-        view.getContext().startActivity(intent);
+    private static void startMessageActivity(AppCompatActivity activity) {
+        Intent intent = new Intent(activity, ConversationActivity.class);
+        activity.startActivity(intent);
     }
 
-    private static void startSearchActivity(View view) {
-        Intent intent = new Intent(view.getContext(), MainActivity.class);
-        view.getContext().startActivity(intent);
+    private static void startSearchActivity(AppCompatActivity activity) {
+        Intent intent = new Intent(activity, MainActivity.class);
+        activity.startActivity(intent);
     }
 
-    private static void startUserProfileActivity(View view) {
-        Intent intent = new Intent(view.getContext(), UserProfileActivity.class);
-        view.getContext().startActivity(intent);
+    private static void startUserProfileActivity(AppCompatActivity activity) {
+        Intent intent = new Intent(activity, UserProfileActivity.class);
+        activity.startActivity(intent);
     }
 
-    private static void startGiveActivity(View view) {
-        Intent intent = new Intent(view.getContext(), GiveItemActivity.class);
-        view.getContext().startActivity(intent);
+    private static void startGiveActivity(AppCompatActivity activity) {
+        Intent intent = new Intent(activity, GiveItemActivity.class);
+        activity.startActivity(intent);
     }
 }

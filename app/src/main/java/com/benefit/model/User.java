@@ -12,6 +12,7 @@ public class User implements Serializable{
     private String firstName;
     private String lastName;
     private String address;
+    private String phoneNumber;
     private double locationLatitude;
     private double locationLongitude;
     private double rating;
@@ -80,5 +81,13 @@ public class User implements Serializable{
 
     public void setLocationLongitude(double locationLongitude) {
         this.locationLongitude = locationLongitude;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 }

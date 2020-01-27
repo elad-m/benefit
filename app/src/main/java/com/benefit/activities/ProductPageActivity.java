@@ -1,5 +1,6 @@
 package com.benefit.activities;
 
+import android.content.Intent;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Build;
@@ -37,6 +38,7 @@ import java.util.Objects;
 public class ProductPageActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private Product product;
+    private User user;
     private ProductService productService;
     private UserService userService;
 
@@ -60,6 +62,7 @@ public class ProductPageActivity extends AppCompatActivity implements OnMapReady
     }
 
     private void extractExtras() {
+        user = (User) getIntent().getSerializableExtra(getString(R.string.user_relay));
         Bundle bundle = getIntent().getExtras();
         if (bundle != null){
             product = (Product) bundle.getSerializable("product");
@@ -121,6 +124,12 @@ public class ProductPageActivity extends AppCompatActivity implements OnMapReady
     }
 
     private void setHeaderListeners() {
-        HeaderClickListener.setHeaderListeners(findViewById(android.R.id.content).getRootView());
+        HeaderClickListener.setHeaderListeners(this);
+    }
+
+    @Override
+    public void startActivity(Intent intent) {
+        intent.putExtra(getString(R.string.user_relay), user);
+        super.startActivity(intent);
     }
 }
