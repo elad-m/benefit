@@ -101,9 +101,9 @@ public class DisplayableRecycleAdapter extends RecyclerView.Adapter<DisplayableR
         String resource = displayableItem.getImageResource();
         if (resource != null && URLUtil.isValidUrl(resource)) {
             Picasso.get()
-                    .load(displayableItem.getImageResource())
+                    .load(resource)
                     .placeholder(R.drawable.ic_image_placeholder)
-                    .error(R.drawable.ic_image_placeholder)
+                    .error(R.drawable.oval)
                     .centerCrop()
                     .fit()
                     .into(holder.mImageView);

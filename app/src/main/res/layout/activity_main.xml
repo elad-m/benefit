@@ -22,6 +22,7 @@
         android:inputType="textPersonName"
         app:iconifiedByDefault="false"
         android:focusable="false"
+        android:layoutDirection="ltr"
         app:layout_constraintHeight_percent="0.054"
         app:layout_constraintHorizontal_chainStyle="spread"
         app:layout_constraintLeft_toLeftOf="parent"
