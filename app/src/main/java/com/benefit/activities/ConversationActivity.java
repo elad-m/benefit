@@ -19,13 +19,13 @@ import com.benefit.drivers.DatabaseDriver;
 import com.benefit.model.User;
 import com.benefit.services.ChatService;
 import com.benefit.services.UserService;
+import com.benefit.utilities.Factory;
 import com.benefit.utilities.HeaderClickListener;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 
 public class ConversationActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     private DatabaseDriver databaseDriver;
-    private UserService userService;
     private ChatService chatService;
     private User currentUser;
     private Spinner sortMassagesSpinner;
@@ -44,19 +44,16 @@ public class ConversationActivity extends AppCompatActivity implements AdapterVi
 
 
         // initiate user
-        userService = ViewModelProviders.of(this).get(UserService.class);
-        userService.getCurrentUser().observe(this, user -> {
-            currentUser = user;
-            chatService.setUser(user);
-            Toast.makeText(this, "welcome user " + currentUser.getFullName() + "!", Toast.LENGTH_LONG).show();
-            //initiate conversation RecyclerView
-            initiateConversationRecyclerView();
-        });
+        currentUser = (User) getIntent().getSerializableExtra(getString(R.string.user_relay));
 
         //initiate sort spinner
         initiateSortSpinner();
 
         chatService = ViewModelProviders.of(this).get(ChatService.class);
+        chatService.setUser(currentUser);
+
+        //initiate conversation RecyclerView
+        initiateConversationRecyclerView();
 
     }
 
