@@ -76,6 +76,7 @@ public class AllProductsActivity extends AppCompatActivity {
     }
 
     private void extractExtras() {
+        user = (User) getIntent().getSerializableExtra(getString(R.string.user_relay));
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             if (bundle.getBoolean("searchReceived")) {
