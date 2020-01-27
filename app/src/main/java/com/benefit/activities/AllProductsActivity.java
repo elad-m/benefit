@@ -190,7 +190,7 @@ public class AllProductsActivity extends AppCompatActivity {
             } else {
                 getAllCategoryFilters();
             }
-            pageUI.openFilterPopup(currentFilters);
+            pageUI.writeFiltersOnScreen(currentFilters);
         }
     }
 
@@ -334,8 +334,7 @@ public class AllProductsActivity extends AppCompatActivity {
             public void onClick(View v) {
                 currentFilters = filterPopup.getCurrentFilters();
                 popup.dismiss();
-                pageUI.undimBackground();
-                pageUI.openFilterPopup(currentFilters);
+                pageUI.writeFiltersOnScreen(currentFilters);
                 pageUI.refreshTable();
                 if (currentFilters.size() == 0) {
                     addProductsToScreen();
