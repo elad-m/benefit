@@ -10,6 +10,7 @@ import com.benefit.activities.SignInActivity;
 import com.benefit.drivers.AuthenticationDriver;
 import com.benefit.drivers.DatabaseDriver;
 import com.benefit.model.User;
+import com.benefit.model.enums.LoginState;
 import com.benefit.services.UserService;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.firebase.auth.AuthCredential;
@@ -27,7 +28,7 @@ public class SignInViewModel extends ViewModel {
     private User user;
     private DatabaseDriver databaseDriver;
     private AuthenticationDriver authenticationDriver;
-    private SignInActivity.LoginState loginState;
+    private LoginState loginState;
 
     private Boolean mAccessingDatabase;
     private UserService userService;
@@ -38,9 +39,9 @@ public class SignInViewModel extends ViewModel {
         authenticationDriver = new AuthenticationDriver();
         userService = new UserService(databaseDriver, authenticationDriver);
         if (authenticationDriver.isSignIn()) {
-            loginState = SignInActivity.LoginState.SIGN_IN_GET_USER;
+            loginState = LoginState.SIGN_IN_GET_USER;
         } else {
-            loginState = SignInActivity.LoginState.NOT_SIGN_IN;
+            loginState = LoginState.NOT_SIGN_IN;
         }
     }
 
@@ -60,11 +61,11 @@ public class SignInViewModel extends ViewModel {
         return mAccessingDatabase;
     }
 
-    public SignInActivity.LoginState getLoginState() {
+    public LoginState getLoginState() {
         return loginState;
     }
 
-    public void setLoginState(SignInActivity.LoginState loginState) {
+    public void setLoginState(LoginState loginState) {
         this.loginState = loginState;
     }
 

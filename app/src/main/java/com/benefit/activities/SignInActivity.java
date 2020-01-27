@@ -23,6 +23,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.benefit.R;
+import com.benefit.model.enums.LoginState;
 import com.benefit.ui.WorkaroundMapFragment;
 import com.benefit.viewmodel.SignInViewModel;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -51,9 +52,6 @@ import com.google.android.material.textfield.TextInputEditText;
  */
 public class SignInActivity extends AppCompatActivity implements OnMapReadyCallback, OnMarkerDragListener {
 
-    public enum LoginState {NOT_SIGN_IN, LOGGING_IN, SIGN_IN_GET_USER, NEW_USER_SIGN_UP, FINISH}
-
-    ;
     private static final String TAG = SignInActivity.class.getSimpleName();
     private static final int RC_GOOGLE_SIGN_IN = 9001;
     // Keys for storing activity state.
