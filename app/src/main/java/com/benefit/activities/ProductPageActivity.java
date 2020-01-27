@@ -124,7 +124,7 @@ public class ProductPageActivity extends AppCompatActivity implements OnMapReady
     }
 
     private void setHeaderListeners() {
-        HeaderClickListener.setHeaderListeners(findViewById(android.R.id.content).getRootView());
+        HeaderClickListener.setHeaderListeners(this);
     }
 
     @Override

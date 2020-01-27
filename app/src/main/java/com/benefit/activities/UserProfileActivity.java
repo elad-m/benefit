@@ -76,6 +76,6 @@ public class UserProfileActivity extends AppCompatActivity {
     }
 
     private void setHeaderListeners() {
-        HeaderClickListener.setHeaderListeners(findViewById(android.R.id.content).getRootView());
+        HeaderClickListener.setHeaderListeners(this);
     }
 }

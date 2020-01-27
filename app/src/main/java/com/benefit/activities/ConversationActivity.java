@@ -124,6 +124,6 @@ public class ConversationActivity extends AppCompatActivity implements AdapterVi
     }
 
     private void setHeaderListeners() {
-        HeaderClickListener.setHeaderListeners(findViewById(android.R.id.content).getRootView());
+        HeaderClickListener.setHeaderListeners(this);
     }
 }

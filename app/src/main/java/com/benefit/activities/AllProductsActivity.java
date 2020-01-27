@@ -381,7 +381,7 @@ public class AllProductsActivity extends AppCompatActivity {
     }
 
     private void setHeaderListeners() {
-        HeaderClickListener.setHeaderListeners(findViewById(android.R.id.content).getRootView());
+        HeaderClickListener.setHeaderListeners(this);
     }
 
     private void returnToHomePage() {

@@ -399,12 +399,7 @@ public class GiveItemActivity extends AppCompatActivity {
     }
 
     private void setHeaderListeners() {
-        HeaderClickListener.setHeaderListeners(findViewById(android.R.id.content).getRootView());
-    }
-
-    private void startGiveActivity() {
-        Intent intent = new Intent(this, GiveItemActivity.class);
-        startActivity(intent);
+        HeaderClickListener.setHeaderListeners(this);
     }
 
     @Override
