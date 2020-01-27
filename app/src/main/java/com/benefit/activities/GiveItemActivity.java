@@ -52,6 +52,7 @@ public class GiveItemActivity extends AppCompatActivity {
     private static final int PICK_IMAGE = 1;
     private static final int SNAP_PHOTO = 2;
     private static final int FIRST_CHILD_INDEX = 0;
+    private  String brandAsString;
 
     private Dialog thankYouDailog;
     private Dialog dialogReturnsToActivity;
@@ -65,7 +66,8 @@ public class GiveItemActivity extends AppCompatActivity {
     private boolean haveCategoriesBeenInflatedOnce = false;
 
     // the following group are fields for creating a Product
-    long mProductToEditId;
+    private long mProductToEditId;
+    private Product mProductToEdit;
     private boolean isInEditMode = false;
     private String mSellerId = "DECRB7JJBdcjGGB0aTqJvNksilT2";
     private Uri mImageUri;
@@ -114,10 +116,14 @@ public class GiveItemActivity extends AppCompatActivity {
         final Observer<Product> productObserver = new Observer<Product>() {
             @Override
             public void onChanged(Product observedProduct) {
+                mProductToEdit = observedProduct;
                 mImageUrl = observedProduct.getImageResource();
                 mImageUri = Uri.parse(mImageUrl);
                 loadImageIntoButtonImage();
                 mEdTextTitle.setText(observedProduct.getTitle());
+                String brand = mProductToEdit.getProperties().get(brandAsString).get(0);
+                if (brand != null)
+                    mEdTextBrand.setText(brand);
                 mCategory = observedProduct.getCategoryId();
                 mMetaCategory = StaticFunctions.getMetaCategoryFromCategoryId(mCategory);
                 mProperties = observedProduct.getProperties();
@@ -145,11 +151,16 @@ public class GiveItemActivity extends AppCompatActivity {
                 Collections.singletonList(chip.getText().toString()));
     }
 
+    private void handleFreeTextProperty(){
+
+    }
+
     private void createChipGroupForPropertyName(PropertyName propertyName) {
 
         ChipGroup propertyGroup = createChipGroup(propertyName.getName());
         if (propertyName.getValidValues() == null) {
             return; // brand, for example, has free text input so we create it in instantiation
+
         }
         List<String> propertyValues = propertyName.getValidValues();
         int chipIndexToCheck = FIRST_CHILD_INDEX;
@@ -344,6 +355,7 @@ public class GiveItemActivity extends AppCompatActivity {
 
     private void instantiateDataMembers() {
         mEdTextTitle = findViewById(R.id.item_title_text);
+        brandAsString = getResources().getString(R.string.brand_property_name);
         mImageButtonUpload = findViewById(R.id.image_button_choose_image);
         activityRootLinearLayout = findViewById(R.id.activity_root_linear_layout);
         inflater = LayoutInflater.from(this);
