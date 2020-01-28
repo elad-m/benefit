@@ -102,7 +102,7 @@ public class DisplayableRecycleAdapter extends RecyclerView.Adapter<DisplayableR
         if (resource != null && URLUtil.isValidUrl(resource)) {
             Picasso.get()
                     .load(resource)
-                    .placeholder(R.drawable.ic_image_placeholder)
+                    .placeholder(R.drawable.oval)
                     .error(R.drawable.oval)
                     .centerCrop()
                     .fit()
