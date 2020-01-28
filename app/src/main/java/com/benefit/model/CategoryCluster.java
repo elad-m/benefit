@@ -33,6 +33,10 @@ public class CategoryCluster implements Serializable, Displayable {
         return id;
     }
 
+    public int getIdAsInt() {
+        return (int) id;
+    }
+
     public List<Integer> getCategoryIdList() {
         return categoryIdList;
     }
