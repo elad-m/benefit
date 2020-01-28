@@ -16,14 +16,14 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.benefit.R;
-import com.benefit.ui.Displayable;
 import com.benefit.adapters.DisplayableRecycleAdapter;
-import com.benefit.ui.products.ProductsDisplay;
-import com.benefit.ui.products.MetaCategoryBar;
 import com.benefit.drivers.DatabaseDriver;
 import com.benefit.model.Category;
 import com.benefit.model.CategoryCluster;
 import com.benefit.services.CategoryService;
+import com.benefit.ui.Displayable;
+import com.benefit.ui.products.MetaCategoryBar;
+import com.benefit.ui.products.ProductsDisplay;
 import com.benefit.utilities.HeaderClickListener;
 
 import java.util.LinkedList;
@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
                         openProductsPage(productClicked);
                     } else {
                         productsDisplay.refreshDisplay();
-                        showChildrenOfParent((int)((Category) productClicked).getId());
+                        showChildrenOfParent(((Category) productClicked).getIdAsInt());
                     }
                 }
             }
@@ -109,14 +109,14 @@ public class MainActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     if (metaCategoryChosen == null) {
                         instantiateAndColor(metaCategory);
-                        showChildrenOfParent((int)metaCategoryChosen.getId());
+                        showChildrenOfParent(metaCategoryChosen.getIdAsInt());
                         itemsDisplayed = CATEGORIES_DISPLAYED;
                     } else {
                         if (!metaCategoryChosen.getName().equals(metaCategory.getKey().getName())) {
                             metaButtonChosen.setBackground(getResources().getDrawable(R.drawable.oval));
                             metaButtonChosen.setTextColor(Color.BLACK);
                             instantiateAndColor(metaCategory);
-                            showChildrenOfParent((int)metaCategoryChosen.getId());
+                            showChildrenOfParent(metaCategoryChosen.getIdAsInt());
                             itemsDisplayed = CATEGORIES_DISPLAYED;
                         } else {
                             metaButtonChosen = metaCategory.getValue();
@@ -159,7 +159,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void showItemsOnScreen() {
         if (metaCategoryChosen != null) {
-            showChildrenOfParent((int)metaCategoryChosen.getId());
+            showChildrenOfParent(metaCategoryChosen.getIdAsInt());
             itemsDisplayed = CATEGORIES_DISPLAYED;
         } else {
             showCategoryClusters();
@@ -185,7 +185,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onChanged(List<Category> categories) {
                 metaCategories.addAll(categories);
-                if (metaCategoryChosen == null){
+                if (metaCategoryChosen == null) {
                     metaCategoryBar.createCategoryBar(metaCategories);
                 } else {
                     metaButtonChosen = metaCategoryBar.createCategoryBar(metaCategories, metaCategoryChosen);

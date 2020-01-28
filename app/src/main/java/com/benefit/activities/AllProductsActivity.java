@@ -132,7 +132,7 @@ public class AllProductsActivity extends AppCompatActivity {
                         }
                         break;
                     case ONE_CATEGORY_DISPLAYED:
-                        searchService.getProductsBySearchString(searchText, (int) currentCategory.getId()).
+                        searchService.getProductsBySearchString(searchText, currentCategory.getIdAsInt()).
                                 observe(this, searchObserver);
                         break;
                 }
@@ -186,7 +186,7 @@ public class AllProductsActivity extends AppCompatActivity {
         if (!are_products_displayed) {
             addProductsToScreen();
             if (whichProductsDisplayed == ONE_CATEGORY_DISPLAYED) {
-                getFilters((int) currentCategory.getId());
+                getFilters(currentCategory.getIdAsInt());
             } else {
                 getAllCategoryFilters();
             }
@@ -242,7 +242,7 @@ public class AllProductsActivity extends AppCompatActivity {
                 }
                 break;
             case ONE_CATEGORY_DISPLAYED:
-                showProducts(CATEGORY_PRODUCTS, (int) currentCategory.getId());
+                showProducts(CATEGORY_PRODUCTS, currentCategory.getIdAsInt());
                 break;
         }
     }
@@ -353,7 +353,7 @@ public class AllProductsActivity extends AppCompatActivity {
                 }
                 break;
             case ONE_CATEGORY_DISPLAYED:
-                showProducts(FILTERED_PRODUCTS, (int) currentCategory.getId());
+                showProducts(FILTERED_PRODUCTS, currentCategory.getIdAsInt());
                 break;
         }
     }
