@@ -21,7 +21,8 @@
             android:screenOrientation="portrait"/>
         <activity android:name=".activities.GiveItemActivity"
             android:configChanges="orientation"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:launchMode="singleTop"/>
         <activity android:name=".activities.ChatActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"/>
@@ -57,7 +58,15 @@
             android:screenOrientation="portrait"/>
         <activity android:name=".activities.UserProfileActivity"
             android:configChanges="orientation"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".activities.TipsActivity"
+            android:parentActivityName=".activities.GiveItemActivity"/>
     </application>
 
 </manifest>

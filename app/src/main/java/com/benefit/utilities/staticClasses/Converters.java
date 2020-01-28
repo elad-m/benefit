@@ -34,7 +34,7 @@ public class Converters {
         return false;
     }
 
-    public static int getMetaCategoryFromCategoryId(int categoryId) {
+    public static int getMetaCategoryFromCategoryId(long categoryId) {
         if (categoryId == 2 || categoryId == 3) {
             return 1;
         } else if (categoryId == 5 || categoryId == 6){

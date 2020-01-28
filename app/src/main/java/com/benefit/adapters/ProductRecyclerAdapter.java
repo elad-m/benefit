@@ -11,21 +11,21 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.benefit.R;
-import com.benefit.ui.profile.ClothingItem;
+import com.benefit.model.Product;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
 /**
- * Adapter for the user's items RecyclerView.
+ * Adapter for the user's products RecyclerView.
  */
-public class ClothingRecyclerAdapter extends RecyclerView.Adapter<ClothingRecyclerAdapter.ClothingViewHolder> {
-    private ArrayList<ClothingItem> mClothingItems;
+public class ProductRecyclerAdapter extends RecyclerView.Adapter<ProductRecyclerAdapter.ProductViewHolder> {
+    private ArrayList<Product> mProducts;
     private OnItemClickListener mListener;
     private RecyclerView mRecyclerView;
 
     public interface OnItemClickListener {
-        void onItemClick(int position);
+        void onItemClick(int position, View view);
         void onDeleteClick(int posotion, View view);
         void onEditClick(int position, View view);
     }
@@ -38,13 +38,13 @@ public class ClothingRecyclerAdapter extends RecyclerView.Adapter<ClothingRecycl
         return mListener;
     }
 
-    static class ClothingViewHolder extends RecyclerView.ViewHolder {
+    static class ProductViewHolder extends RecyclerView.ViewHolder {
         ImageView mImageView;
         TextView mImageTitle;
         Button mDeleteButton;
         Button mEditButton;
 
-        ClothingViewHolder(@NonNull View itemView, final OnItemClickListener listener) {
+        ProductViewHolder(@NonNull View itemView, final OnItemClickListener listener) {
             // itemView is the whole card
             super(itemView);
             mImageView = itemView.findViewById(R.id.item_image);
@@ -76,11 +76,11 @@ public class ClothingRecyclerAdapter extends RecyclerView.Adapter<ClothingRecycl
             });
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v) {
+                public void onClick(View cardViewClicked) {
                     if (listener != null) {
                         int position = getAdapterPosition();
                         if (position != RecyclerView.NO_POSITION) {
-                            listener.onItemClick(position);
+                            listener.onItemClick(position, cardViewClicked);
                         }
                     }
                 }
@@ -88,37 +88,37 @@ public class ClothingRecyclerAdapter extends RecyclerView.Adapter<ClothingRecycl
         }
     }
 
-    public ClothingRecyclerAdapter(ArrayList<ClothingItem> itemList) {
-        mClothingItems = itemList;
+    public ProductRecyclerAdapter(ArrayList<Product> itemList) {
+        mProducts = itemList;
     }
 
     @NonNull
     @Override
-    public ClothingRecyclerAdapter.ClothingViewHolder onCreateViewHolder(@NonNull ViewGroup parent,
-                                                                         int viewType) {
+    public ProductViewHolder onCreateViewHolder(@NonNull ViewGroup parent,
+                                                int viewType) {
         View clothingItemAsView = LayoutInflater.from(parent.getContext()).inflate(
-                R.layout.clothing_item, parent, false);
+                R.layout.product_view_holder_layout, parent, false);  // TODO OOOOOOOOOOOO
         clothingItemAsView.findViewById(R.id.image_layout).setClipToOutline(true);
         mRecyclerView = (RecyclerView) parent;
-        return new ClothingViewHolder(clothingItemAsView, mListener);
+        return new ProductViewHolder(clothingItemAsView, mListener);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ClothingRecyclerAdapter.ClothingViewHolder holder, int position) {
-        ClothingItem clothingItem = mClothingItems.get(position);
+    public void onBindViewHolder(@NonNull ProductViewHolder holder, int position) {
+        Product product = mProducts.get(position);
         // no "if empty" because clothingItem always has the resource data member initialized
         Picasso.get()
-                .load(clothingItem.getmImageUrl())
+                .load(product.getImagesUrls().get(0))
                 .centerCrop()
                 .fit()
                 .into(holder.mImageView);
-        holder.mImageTitle.setText(clothingItem.getmTitle());
-        holder.itemView.setTag(clothingItem); // cardview is holding its clothing item
+        holder.mImageTitle.setText(product.getTitle());
+        holder.itemView.setTag(product); // cardview is holding its clothing item
     }
 
     @Override
     public int getItemCount() {
-        return mClothingItems.size();
+        return mProducts.size();
     }
 
 

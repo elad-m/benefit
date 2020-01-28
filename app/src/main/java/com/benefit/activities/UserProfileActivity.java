@@ -3,7 +3,6 @@ package com.benefit.activities;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewManager;
 import android.widget.Button;
@@ -20,32 +19,34 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.benefit.R;
-import com.benefit.ui.profile.ClothingItem;
-import com.benefit.adapters.ClothingRecyclerAdapter;
+import com.benefit.adapters.ProductRecyclerAdapter;
 import com.benefit.model.Product;
 import com.benefit.model.User;
 import com.benefit.services.ProductService;
 import com.benefit.services.UserService;
 import com.benefit.utilities.Factory;
+import com.benefit.utilities.HeaderClickListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Present to the user its items (i.e. products). User can add, remove, open chat and edit its items.
  */
 public class UserProfileActivity extends AppCompatActivity {
 
-    private String mUserIdTesting = "DECRB7JJBdcjGGB0aTqJvNksilT2";
+    private String userIdTesting = "DECRB7JJBdcjGGB0aTqJvNksilT2";
 
-    private RecyclerView mRecyclerView;
-    private ClothingRecyclerAdapter mAdapter;
-    private RecyclerView.LayoutManager mLayoutManager;
+    private RecyclerView recyclerView;
+    private ProductRecyclerAdapter adapter;
+    private RecyclerView.LayoutManager layoutManager;
     private ProductService productService;
     private UserService userService;
+    private User user;
 
 
-    ArrayList<ClothingItem> mClothingItems = new ArrayList<>();
+    ArrayList<Product> products = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,58 +54,53 @@ public class UserProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_user_profile);
 
         createServices();
+        extractExtras();
         createActionBar();
         getUserProducts();
 
     }
 
-    @Override
-    public void onBackPressed() {
-        Log.d("CDA", "onBackPressed Called");
-        this.finishAffinity();
-    }
-
-
-    private void getUserProducts() {
-        final List<Product> userProducts = new ArrayList<>();
-        final Observer<List<Product>> userProductsObserver = new Observer<List<Product>>() {
-
-            @Override
-            public void onChanged(List<Product> products) {
-                userProducts.addAll(products);
-                for (Product product : products) {
-                    if (product.getImagesUrls() != null) {
-                        if (!product.getImagesUrls().isEmpty()) {
-                            mClothingItems.add(new ClothingItem(product.getImagesUrls().get(0),
-                                    product.getName(),
-                                    product.getId()));
-                        }
-                    }
-                }
-                buildRecyclerView();
-            }
-        };
-        productService.getProductsBySellerId(mUserIdTesting)
-                .observe(this, userProductsObserver);
-
-    }
-
-    private void setGreeting() {
-        TextView slogan = findViewById(R.id.slogan);
-        ((ViewManager) slogan.getParent()).removeView(slogan);
-        TextView userGreeting = findViewById(R.id.user_greeting);
-        userGreeting.setText("Hello You!");
+    private void setDefaultUser() {
         final Observer<User> userObserver = new Observer<User>() {
             @Override
-            public void onChanged(User user) {
-                String username = user.getFirstName();
-                userGreeting.setText("Hello " + username + "!");
-                userGreeting.setVisibility(View.VISIBLE);
+            public void onChanged(User observedUser) {
+                user = observedUser;
             }
         };
-        userService.getUserById(mUserIdTesting).observe(this, userObserver);
+        userService.getUserById(userIdTesting).observe(this, userObserver);
+    }
+
+    private void extractExtras() {
+        Bundle bundle = getIntent().getExtras();
+        String userKey = getString(R.string.user_relay);
+        if (bundle != null) {
+            Set<String> bundleKeySet = bundle.keySet();
+            if (bundleKeySet.contains(userKey)) {
+                user = (User) bundle.getSerializable(userKey);
+                if (user == null){
+                    setDefaultUser();
+                } else {
+                    setDefaultUser();
+                }
+            } else {
+                setDefaultUser();
+            }
+        } else {
+            setDefaultUser();
+        }
+    }
+
+    private void createServices() {
+        this.productService = ViewModelProviders.of(this,
+                Factory.getProductServiceFactory()).get(ProductService.class);
+        this.userService = ViewModelProviders.of(this,
+                Factory.getUserServiceFactory()).get(UserService.class);
 
     }
+
+
+
+
 
     private void createActionBar() {
         ConstraintLayout constraintLayout = findViewById(R.id.user_profile_page_header);
@@ -118,48 +114,59 @@ public class UserProfileActivity extends AppCompatActivity {
         userIcon.setBackground(getResources().getDrawable(R.drawable.ic_user_colored));
 
         setGreeting();
-        setActionBarOnClicks();
+        setHeaderListeners();
+    }
+
+    private void setHeaderListeners() {
+        HeaderClickListener.setHeaderListeners(this);
+    }
+
+    @Override
+    public void startActivity(Intent intent) {
+        intent.putExtra(getString(R.string.user_relay), user);
+        super.startActivity(intent);
+    }
+
+    @Override
+    public void onBackPressed() {
+        this.finishAffinity();
     }
 
 
-    private void setActionBarOnClicks() {
-        Button giveItemButton = findViewById(R.id.give_icon);
-        Button searchButton = findViewById(R.id.search_icon);
-        Button chatButton = findViewById(R.id.message_icon);
-        Button userButton = findViewById(R.id.user_icon);
+    private void getUserProducts() {
+        final List<Product> userProducts = new ArrayList<>();
+        final Observer<List<Product>> userProductsObserver = new Observer<List<Product>>() {
 
-        giveItemButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), GiveItemActivity.class);
-                startActivity(intent);
+            public void onChanged(List<Product> observedProducts) {
+                userProducts.addAll(observedProducts);
+                products.addAll(userProducts);  // is this redundant?
+                buildRecyclerView();
             }
-        });
+        };
+        productService.getProductsBySellerId(userIdTesting)
+                .observe(this, userProductsObserver);
 
-        chatButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), ChatActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        userButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), UserProfileActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        searchButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                startActivity(intent);
-            }
-        });
     }
+
+    private void setGreeting() {
+        TextView slogan = findViewById(R.id.slogan);
+        ((ViewManager) slogan.getParent()).removeView(slogan);
+        TextView userGreeting = findViewById(R.id.user_greeting);
+        userGreeting.setText("Hello You!");
+        final Observer<User> userObserver = new Observer<User>() {
+            @Override
+            public void onChanged(User user) {
+                UserProfileActivity.this.user = user;
+                String username = user.getFirstName();
+                userGreeting.setText("Hello " + username + "!");
+                userGreeting.setVisibility(View.VISIBLE);
+            }
+        };
+        userService.getUserById(userIdTesting).observe(this, userObserver);
+
+    }
+
 
     private void makeToast(String msg) {
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
@@ -168,56 +175,55 @@ public class UserProfileActivity extends AppCompatActivity {
 
     private void buildRecyclerView() {
         // recycler itself
-        mRecyclerView = findViewById(R.id.items_recycler);
-        mRecyclerView.setHasFixedSize(true);
-        mLayoutManager = new GridLayoutManager(this, 2);
-        mAdapter = new ClothingRecyclerAdapter(mClothingItems);
+        recyclerView = findViewById(R.id.items_recycler);
+        recyclerView.setHasFixedSize(true);
+        layoutManager = new GridLayoutManager(this, 2);
+        adapter = new ProductRecyclerAdapter(products);
 
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        mRecyclerView.setAdapter(mAdapter);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(adapter);
 
-        mAdapter.setOnItemClickListener(new ClothingRecyclerAdapter.OnItemClickListener() {
+        adapter.setOnItemClickListener(new ProductRecyclerAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position, View view) {
-                long productId = ((ClothingItem) view.getTag()).getmProductId();
+                Product clickedProduct = (Product) view.getTag();
                 Intent intent = new Intent(getApplicationContext(), ProductPageActivity.class);
-                intent.putExtra("productId", productId);
+                intent.putExtra("product", clickedProduct);
                 startActivity(intent);
-
             }
 
             @Override
             public void onDeleteClick(int position, View deleteButtonView) {
-                ClothingItem itemToDelete = getClothingItemFromButtonView(deleteButtonView);
-                openDeleteDialog(itemToDelete, position);
+                Product productToDelete = getProductFromButtonView(deleteButtonView);
+                openDeleteDialog(productToDelete, position);
             }
 
             @Override
             public void onEditClick(int position, View editButtonView) {
-                long productId = getClothingItemFromButtonView(editButtonView).getmProductId();
+                Product productToEdit = getProductFromButtonView(editButtonView);
                 Intent intent = new Intent(getApplicationContext(), GiveItemActivity.class);
-                intent.putExtra(getApplicationContext().getString(R.string.product_id_extras_key), productId);
+                intent.putExtra(getApplicationContext().getString(R.string.product_relay),
+                        productToEdit);
                 startActivity(intent);
             }
         });
-
     }
 
 
-    private ClothingItem getClothingItemFromButtonView(View view) {
+    private Product getProductFromButtonView(View view) {
         View constraintLayout = (View) view.getParent();
         View cardview = (View) constraintLayout.getParent();
-        return (ClothingItem) cardview.getTag();
+        return (Product) cardview.getTag();
     }
 
     public void removeItem(int position) {
-        mClothingItems.remove(position);
-        mAdapter.notifyItemRemoved(position);
+        products.remove(position);
+        adapter.notifyItemRemoved(position);
     }
 
-    private void openDeleteDialog(ClothingItem clothingItem, int position) {
-        long productId = clothingItem.getmProductId();
-        String productTitle = clothingItem.getmTitle();
+    private void openDeleteDialog(Product productToDelete, int position) {
+        long productId = productToDelete.getId();
+        String productTitle = productToDelete.getTitle();
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("Are you sure you want to delete \"" + productTitle + "\" ?")
                 .setCancelable(false)
@@ -240,11 +246,5 @@ public class UserProfileActivity extends AppCompatActivity {
         alertDialog.show();
     }
 
-    private void createServices() {
-        this.productService = ViewModelProviders.of(this,
-                Factory.getProductServiceFactory()).get(ProductService.class);
-        this.userService = ViewModelProviders.of(this,
-                Factory.getUserServiceFactory()).get(UserService.class);
 
-    }
 }

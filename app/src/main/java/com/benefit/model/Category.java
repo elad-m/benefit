@@ -34,6 +34,10 @@ public class Category implements Serializable, Displayable {
         return id;
     }
 
+    public int getIdAsInt() {
+        return (int) id;
+    }
+
     @Override
     public String getName() {
         return name;
