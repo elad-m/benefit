@@ -21,6 +21,7 @@
         android:focusable="false"
         android:inputType="textPersonName"
         app:iconifiedByDefault="false"
+        android:layoutDirection="ltr"
         app:layout_constraintHeight_percent="0.054"
         app:layout_constraintHorizontal_chainStyle="spread"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -63,7 +64,7 @@
         app:layout_constraintGuide_percent="0.28" />
 
 
-    <Button
+    <TextView
         android:id="@+id/filter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

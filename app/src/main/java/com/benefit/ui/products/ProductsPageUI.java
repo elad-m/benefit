@@ -73,7 +73,7 @@ public class ProductsPageUI {
         productsDisplay.refreshDisplay();
     }
 
-    public void openFilterPopup(Map<String, List<String>> currentFilters) {
+    public void writeFiltersOnScreen(Map<String, List<String>> currentFilters) {
         LinearLayout currentFilterLayout = view.findViewById(R.id.current_filters);
         currentFilterLayout.removeAllViews();
         writeCategoryInFilterBar(currentFilterLayout);
@@ -133,6 +133,12 @@ public class ProductsPageUI {
         LayoutInflater layoutInflater = (LayoutInflater) view.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         popupView = layoutInflater.inflate(R.layout.filter, viewGroup);
         placePopupOnScreen();
+        popup.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                undimBackground();
+            }
+        });
         populatePopup(filters, currentFilters);
         applyDim(0.8f);
     }

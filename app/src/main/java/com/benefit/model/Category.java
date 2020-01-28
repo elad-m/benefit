@@ -26,6 +26,10 @@ public class Category implements Serializable, Displayable {
         this.isLeaf = isLeaf;
     }
 
+    public int getIdAsInt() {
+        return (int) id;
+    }
+
     public long getId() {
         return id;
     }
@@ -48,7 +52,7 @@ public class Category implements Serializable, Displayable {
     }
 
     @Override
-    public String getImageResource(){
+    public String getImageResource() {
         return imageResource;
     }
 }

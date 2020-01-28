@@ -135,7 +135,7 @@ public class AllProductsActivity extends AppCompatActivity {
                         }
                         break;
                     case ONE_CATEGORY_DISPLAYED:
-                        searchService.getProductsBySearchString(searchText, (int) currentCategory.getId()).
+                        searchService.getProductsBySearchString(searchText, currentCategory.getIdAsInt()).
                                 observe(this, searchObserver);
                         break;
                 }
@@ -189,11 +189,11 @@ public class AllProductsActivity extends AppCompatActivity {
         if (!are_products_displayed) {
             addProductsToScreen();
             if (whichProductsDisplayed == ONE_CATEGORY_DISPLAYED) {
-                getFilters((int) currentCategory.getId());
+                getFilters(currentCategory.getIdAsInt());
             } else {
                 getAllCategoryFilters();
             }
-            pageUI.openFilterPopup(currentFilters);
+            pageUI.writeFiltersOnScreen(currentFilters);
         }
     }
 
@@ -245,7 +245,7 @@ public class AllProductsActivity extends AppCompatActivity {
                 }
                 break;
             case ONE_CATEGORY_DISPLAYED:
-                showProducts(CATEGORY_PRODUCTS, (int) currentCategory.getId());
+                showProducts(CATEGORY_PRODUCTS, currentCategory.getIdAsInt());
                 break;
         }
     }
@@ -337,8 +337,7 @@ public class AllProductsActivity extends AppCompatActivity {
             public void onClick(View v) {
                 currentFilters = filterPopup.getCurrentFilters();
                 popup.dismiss();
-                pageUI.undimBackground();
-                pageUI.openFilterPopup(currentFilters);
+                pageUI.writeFiltersOnScreen(currentFilters);
                 pageUI.refreshTable();
                 if (currentFilters.size() == 0) {
                     addProductsToScreen();
@@ -357,7 +356,7 @@ public class AllProductsActivity extends AppCompatActivity {
                 }
                 break;
             case ONE_CATEGORY_DISPLAYED:
-                showProducts(FILTERED_PRODUCTS, (int) currentCategory.getId());
+                showProducts(FILTERED_PRODUCTS, currentCategory.getIdAsInt());
                 break;
         }
     }
