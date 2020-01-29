@@ -20,26 +20,26 @@
         android:layoutDirection="ltr"
         app:layout_constraintTop_toBottomOf="@id/product_page_top_area">
 
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+        <!--        <TableRow-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content">-->
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingLeft="@dimen/productPageGeneralPaddingLeft">
+        <!--            <LinearLayout-->
+        <!--                android:layout_width="match_parent"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:gravity="center_vertical"-->
+        <!--                android:orientation="horizontal"-->
+        <!--                android:paddingLeft="@dimen/productPageGeneralPaddingLeft">-->
 
-                <ImageView
-                    android:id="@+id/product_page_back_arrow"
-                    android:layout_width="@dimen/back_button_width"
-                    android:layout_height="@dimen/back_button_height"
-                    android:contentDescription="@string/backButtonCaption"
-                    app:srcCompat="@drawable/ic_back_arrow" />
+        <!--                <ImageView-->
+        <!--                    android:id="@+id/product_page_back_arrow"-->
+        <!--                    android:layout_width="@dimen/back_button_width"-->
+        <!--                    android:layout_height="@dimen/back_button_height"-->
+        <!--                    android:contentDescription="@string/backButtonCaption"-->
+        <!--                    app:srcCompat="@drawable/ic_back_arrow" />-->
 
-            </LinearLayout>
-        </TableRow>
+        <!--            </LinearLayout>-->
+        <!--        </TableRow>-->
     </TableLayout>
 
     <TableLayout
@@ -66,15 +66,34 @@
                     android:layout_height="wrap_content"
                     android:gravity="center">
 
-                    <ImageView
-                        android:id="@+id/prpImagePlaceholder"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:adjustViewBounds="true"
-                        android:background="@null"
-                        android:gravity="center"
-                        android:paddingTop="@dimen/productPageSectionPaddingTop"
-                        android:scaleType="fitCenter" />
+                    <FrameLayout
+                        android:id="@+id/topLeftFrame"
+                        android:layout_width="300dp"
+                        android:layout_height="250dp">
+
+                        <ImageView
+                            android:id="@+id/prpImagePlaceholder"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="bottom|end"
+                            android:adjustViewBounds="true"
+                            android:background="@null"
+                            android:gravity="center"
+                            android:paddingTop="@dimen/productPageSectionPaddingTop"
+                            android:scaleType="fitCenter" />
+
+                        <ImageView
+                            android:id="@+id/product_page_back_arrow"
+                            android:layout_width="@dimen/back_button_width"
+                            android:layout_height="@dimen/back_button_height"
+                            android:layout_gravity="start|top"
+                            android:layout_marginEnd="36.5dp"
+                            android:layout_marginRight="36.5dp"
+                            android:layout_marginBottom="40.1dp"
+                            android:contentDescription="@string/backButtonCaption"
+                            app:srcCompat="@drawable/ic_back_arrow" />
+
+                    </FrameLayout>
                 </TableRow>
 
                 <TableRow
