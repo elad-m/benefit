@@ -36,7 +36,6 @@ import java.util.Set;
  */
 public class UserProfileActivity extends AppCompatActivity {
 
-    private String userIdTesting = "DECRB7JJBdcjGGB0aTqJvNksilT2";
 
     private RecyclerView recyclerView;
     private ProductRecyclerAdapter adapter;
@@ -60,15 +59,6 @@ public class UserProfileActivity extends AppCompatActivity {
 
     }
 
-    private void setDefaultUser() {
-        final Observer<User> userObserver = new Observer<User>() {
-            @Override
-            public void onChanged(User observedUser) {
-                user = observedUser;
-            }
-        };
-        userService.getUserById(userIdTesting).observe(this, userObserver);
-    }
 
     private void extractExtras() {
         Bundle bundle = getIntent().getExtras();
@@ -76,17 +66,17 @@ public class UserProfileActivity extends AppCompatActivity {
         if (bundle != null) {
             Set<String> bundleKeySet = bundle.keySet();
             if (bundleKeySet.contains(userKey)) {
-                user = (User) bundle.getSerializable(userKey);
-                if (user == null){
-                    setDefaultUser();
+                User userFromExtra = (User) bundle.getSerializable(userKey);
+                if (userFromExtra != null) {
+                    user = userFromExtra;
                 } else {
-                    setDefaultUser();
+                    makeToast(this.getString(R.string.intent_extra_null_user_toast));
                 }
             } else {
-                setDefaultUser();
+                makeToast(this.getString(R.string.intent_extra_no_user_key_toast));
             }
         } else {
-            setDefaultUser();
+            makeToast(this.getString(R.string.intent_extra_no_bundle_toast));
         }
     }
 
@@ -97,10 +87,6 @@ public class UserProfileActivity extends AppCompatActivity {
                 Factory.getUserServiceFactory()).get(UserService.class);
 
     }
-
-
-
-
 
     private void createActionBar() {
         ConstraintLayout constraintLayout = findViewById(R.id.user_profile_page_header);
@@ -140,11 +126,11 @@ public class UserProfileActivity extends AppCompatActivity {
             @Override
             public void onChanged(List<Product> observedProducts) {
                 userProducts.addAll(observedProducts);
-                products.addAll(userProducts);  // is this redundant?
+                products.addAll(userProducts);
                 buildRecyclerView();
             }
         };
-        productService.getProductsBySellerId(userIdTesting)
+        productService.getProductsBySellerId(user.getUid())
                 .observe(this, userProductsObserver);
 
     }
@@ -153,7 +139,6 @@ public class UserProfileActivity extends AppCompatActivity {
         TextView slogan = findViewById(R.id.slogan);
         ((ViewManager) slogan.getParent()).removeView(slogan);
         TextView userGreeting = findViewById(R.id.user_greeting);
-        userGreeting.setText("Hello You!");
         final Observer<User> userObserver = new Observer<User>() {
             @Override
             public void onChanged(User user) {
@@ -163,7 +148,7 @@ public class UserProfileActivity extends AppCompatActivity {
                 userGreeting.setVisibility(View.VISIBLE);
             }
         };
-        userService.getUserById(userIdTesting).observe(this, userObserver);
+        userService.getUserById(user.getUid()).observe(this, userObserver);
 
     }
 

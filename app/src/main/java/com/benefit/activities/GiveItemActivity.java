@@ -29,7 +29,6 @@ import com.benefit.model.PropertyName;
 import com.benefit.model.User;
 import com.benefit.services.CategoryService;
 import com.benefit.services.ProductService;
-import com.benefit.services.UserService;
 import com.benefit.utilities.Factory;
 import com.benefit.utilities.HeaderClickListener;
 import com.benefit.utilities.staticClasses.Converters;
@@ -60,7 +59,6 @@ public class GiveItemActivity extends AppCompatActivity {
     private StorageDriver storageDriver;
     private CategoryService categoryService;
     private ProductService productService;
-    private UserService userService;
     private LayoutInflater inflater;
 
     private Dialog mThankYouDailog;
@@ -73,7 +71,6 @@ public class GiveItemActivity extends AppCompatActivity {
     // the following group are fields for creating a Product
     private Product mProductToEdit;
     private boolean mIsInEditMode = false;
-    private String mSellerId = "DECRB7JJBdcjGGB0aTqJvNksilT2";
     private User mUser;
     private Uri mImageUri;
     private String mImageUrl;
@@ -103,16 +100,6 @@ public class GiveItemActivity extends AppCompatActivity {
      */
 
 
-    private void setDefaultUser() {
-        final Observer<User> userObserver = new Observer<User>() {
-            @Override
-            public void onChanged(User observedUser) {
-                mUser = observedUser;
-            }
-        };
-        userService.getUserById(mSellerId).observe(this, userObserver);
-    }
-
     private void extractExtras() {
         Bundle bundle = getIntent().getExtras();
         String userKey = getString(R.string.user_relay);
@@ -120,22 +107,26 @@ public class GiveItemActivity extends AppCompatActivity {
         if (bundle != null) {
             Set<String> bundleKeySet = bundle.keySet();
             if (bundleKeySet.contains(userKey)) {
-                mUser = (User) bundle.getSerializable(userKey);
-                if (mUser != null) {
-                    mSellerId = mUser.getUid();
+                User userFromExtra = (User) bundle.getSerializable(userKey);
+                if (userFromExtra != null) {
+                    mUser = userFromExtra;
                 } else {
-                    setDefaultUser();
+                    makeToast(this.getString(R.string.intent_extra_null_user_toast));
                 }
+            } else {
+                makeToast(this.getString(R.string.intent_extra_no_user_key_toast));
             }
             if (bundleKeySet.contains(productKey)) {
                 mProductToEdit = (Product) bundle.getSerializable(productKey);
                 mIsInEditMode = true;
                 setContentView(R.layout.activity_edit_item);
             } else {
+                // todo: is this really the best way to do this? run the activity as upload when
+                // todo: it doesn't get a product in the extras?
                 setContentView(R.layout.activity_give_item);
             }
         } else {
-            setContentView(R.layout.activity_give_item);
+            makeToast(this.getString(R.string.intent_extra_no_bundle_toast));
         }
     }
 
@@ -147,8 +138,6 @@ public class GiveItemActivity extends AppCompatActivity {
                 Factory.getCategoryServiceFactory()).get(CategoryService.class);
         this.storageDriver = ViewModelProviders.of(this,
                 Factory.getStorageDriverFactory()).get(StorageDriver.class);
-        this.userService = ViewModelProviders.of(this,
-                Factory.getUserServiceFactory()).get(UserService.class);
     }
 
 
@@ -480,7 +469,7 @@ public class GiveItemActivity extends AppCompatActivity {
             mProperties.put(this.getString(R.string.brand_property_name),
                     Collections.singletonList(mEdTextBrand.getText().toString()));
             List<String> imagesUrls = loadImagesUrls();
-            Product productToAdd = new Product(mCategory, mSellerId,
+            Product productToAdd = new Product(mCategory, mUser.getUid(),
                     itemTitle, itemDescription, 0, 0, date, mProperties, imagesUrls);
 
             productService.addProduct(productToAdd);
@@ -586,6 +575,10 @@ public class GiveItemActivity extends AppCompatActivity {
     public void startActivity(Intent intent) {
         intent.putExtra(getString(R.string.user_relay), mUser);
         super.startActivity(intent);
+    }
+
+    private void makeToast(String msg) {
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
 
 }
