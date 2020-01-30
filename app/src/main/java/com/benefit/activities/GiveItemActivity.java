@@ -2,6 +2,8 @@ package com.benefit.activities;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
@@ -62,7 +64,7 @@ public class GiveItemActivity extends AppCompatActivity {
     private LayoutInflater inflater;
 
     private Dialog mThankYouDailog;
-    private Dialog mDialogReturnsToActivity;
+    private Dialog mNoPhotoOrTitleAlertrDialog;
     private LinearLayout mActivityRootLinearLayout;
     private String brandAsString;
 
@@ -499,6 +501,7 @@ public class GiveItemActivity extends AppCompatActivity {
     private void createThankYouDailog() {
         mThankYouDailog = new Dialog(this);
         mThankYouDailog.setContentView(R.layout.dialog_thank_you);
+        mThankYouDailog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         mThankYouDailog.show();
     }
 
@@ -534,17 +537,18 @@ public class GiveItemActivity extends AppCompatActivity {
     }
 
     private void createNoPhotoOrTitleDialog() {
-        mDialogReturnsToActivity = new Dialog(this);
-        mDialogReturnsToActivity.setContentView((R.layout.dialog_no_photo_or_title));
-        Button gotItButton = mDialogReturnsToActivity.findViewById(R.id.got_it_button);
+        mNoPhotoOrTitleAlertrDialog = new Dialog(this);
+        mNoPhotoOrTitleAlertrDialog.setContentView((R.layout.dialog_no_photo_or_title));
+        mNoPhotoOrTitleAlertrDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        Button gotItButton = mNoPhotoOrTitleAlertrDialog.findViewById(R.id.got_it_button);
         gotItButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 paintRedMissingFields();
-                mDialogReturnsToActivity.dismiss();
+                mNoPhotoOrTitleAlertrDialog.dismiss();
             }
         });
-        mDialogReturnsToActivity.show();
+        mNoPhotoOrTitleAlertrDialog.show();
     }
 
 
