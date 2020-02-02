@@ -1,0 +1,23 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:layoutDirection="ltr">
+
+    <include
+        android:id="@+id/header"
+        layout="@layout/page_header" />
+
+    <fragment
+        android:name="com.benefit.activities.ui.mainactivity2.MainActivity2Fragment"
+        android:id="@+id/activity_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/no_hardcode_dimension"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/header"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
