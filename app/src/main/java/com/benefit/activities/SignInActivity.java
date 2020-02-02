@@ -423,10 +423,10 @@ public class SignInActivity extends AppCompatActivity implements OnMapReadyCallb
                     phoneField.setError(getString(R.string.error_field_massge));
                 }
             } else {
-                viewModel.getUser().setFirstName(firstName);
+                viewModel.getUser().setNickname(firstName);
                 viewModel.getUser().setLastName(lastName);
                 viewModel.getUser().setPhoneNumber(phoneNumber);
-                viewModel.getUser().setAddress(address);
+                viewModel.getUser().setCity(address);
                 viewModel.addNewUserToDatabase();
                 viewModel.setLoginState(LoginState.FINISH);
                 updateAccordingToLoginState();
