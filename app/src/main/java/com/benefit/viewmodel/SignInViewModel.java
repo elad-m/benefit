@@ -38,6 +38,8 @@ public class SignInViewModel extends ViewModel {
         databaseDriver = new DatabaseDriver();
         authenticationDriver = new AuthenticationDriver();
         userService = new UserService(databaseDriver, authenticationDriver);
+
+        loginState = LoginState.NEW_USER_SIGN_UP;
         if (authenticationDriver.isSignIn()) {
             loginState = LoginState.SIGN_IN_GET_USER;
         } else {
