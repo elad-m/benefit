@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:background="@drawable/dialog_bg"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/no_photo_or_title_heading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dialog_margins"
+        android:text="@string/dialog_no_photo_or_title_heading"
+        android:textAlignment="center"
+        android:textSize="@dimen/dialog_heading_text_size"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/no_photo_or_title_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dialog_margins"
+        android:text="@string/no_photo_dialog_message"
+        android:textAlignment="center"
+        android:textSize="@dimen/dialog_text_size"
+        android:textStyle="bold" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/got_it_button"
+        style="@style/Widget.MaterialComponents.Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dialog_margins"
+        android:text="@string/dialog_got_it_button_text"
+        android:textColor="@color/colorWhite"
+        app:backgroundTint="@color/colorBenefitBlue"
+        app:cornerRadius="@dimen/default_corner_radius"/>
+</LinearLayout>

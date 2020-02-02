@@ -2,11 +2,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:gravity="center"
+    android:background="@drawable/dialog_bg"
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/massage_heading"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/dialog_margins"
@@ -31,11 +32,14 @@
         android:contentDescription="@string/dialog_thank_you_image_description"
         android:src="@drawable/ic_treasure_chest" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/doneButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        app:backgroundTint="@color/colorBenefitBlue"
         android:layout_margin="@dimen/dialog_margins"
         android:onClick="doneButton"
-        android:text="@string/dialog_done_button_text" />
+        android:text="@string/dialog_done_button_text"
+        android:textColor="@color/colorWhite"
+        app:cornerRadius="@dimen/default_corner_radius"/>
 </LinearLayout>

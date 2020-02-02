@@ -33,9 +33,9 @@ public class StorageDriver extends ViewModel {
             ref.putFile(imageUri)
                     .addOnSuccessListener((UploadTask.TaskSnapshot taskSnapshot) -> {
                         Task<Uri> downloadUri = taskSnapshot.getStorage().getDownloadUrl();
-                        if (downloadUri.isSuccessful()) {
-                            resultsLiveData.setValue(downloadUri.getResult().toString());
+                        while (!downloadUri.isSuccessful()) {
                         }
+                        resultsLiveData.setValue(downloadUri.getResult().toString());
                     })
                     .addOnFailureListener(e -> Log.w(TAG, "Error on uploadImage", e));
         }

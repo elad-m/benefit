@@ -26,12 +26,13 @@ public class Category implements Serializable, Displayable {
         this.isLeaf = isLeaf;
     }
 
-    public int getIdAsInt() {
-        return (int) id;
-    }
 
     public long getId() {
         return id;
+    }
+
+    public int getIdAsInt() {
+        return (int) id;
     }
 
     @Override

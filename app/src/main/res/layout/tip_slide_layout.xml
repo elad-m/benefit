@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+
+    <ImageView
+        android:id="@+id/tip_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_gravity="center"
+        android:layout_marginStart="@dimen/dialog_margins"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="@dimen/dialog_margins"
+        android:layout_marginBottom="@dimen/dialog_margins"
+        android:layout_weight="0.3"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_tip_background" />
+
+    <ImageView
+        android:id="@+id/tip_slide_image"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_gravity="center"
+        android:layout_margin="@dimen/dialog_margins"
+        android:layout_weight="1"
+        android:adjustViewBounds="true"
+        android:cropToPadding="false"
+        android:scaleType="fitXY"
+        android:src="@drawable/tip_background_im" />
+
+    <TextView
+        android:id="@+id/tip_heading"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.2"
+        android:gravity="center"
+        android:text="@string/tip_background_title"
+        android:textAlignment="center"
+        android:textColor="@color/colorBlack"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/tip_description"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="60dp"
+        android:layout_weight="1"
+        android:gravity="center_horizontal"
+        android:text="@string/tip_background_description"
+        android:textAlignment="center"
+        android:textColor="@color/tips_text_color" />
+
+</LinearLayout>

@@ -5,5 +5,7 @@
     android:layout_height="wrap_content"
     android:textSize="@dimen/chip_text_size"
     android:textColor="@color/chip_text_state_list"
+    android:textAlignment="center"
+    android:minWidth="@dimen/chip_min_width"
     app:chipCornerRadius="@dimen/default_corner_radius"
     app:chipBackgroundColor="@color/bg_chip_state_list"/>

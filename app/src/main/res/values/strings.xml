@@ -11,10 +11,8 @@
     <string name="enter_first_name">First name is required. Please enter your first name</string>
     <string name="enter_last_name">Last name is required. Please enter your last name</string>
     <string name="user_item">your item</string>
-    <string name="condition_chip_group_heading">Condition:</string>
-    <string name="size_chip_group_heading">Size:</string>
-    <string name="metacategory_chip_group_heading">For Whom:</string>
-    <string name="categories_chip_group_heading">Categories:</string>
+    <string name="metacategory_chip_group_heading">For Whom</string>
+    <string name="categories_chip_group_heading">Categories</string>
     <string name="size_property_name">Size</string>
     <string name="condition_property_name">Condition</string>
     <string name="no_title_value">No title written</string>
@@ -28,7 +26,10 @@
     <string name="clothing_item_image_description">Image of item</string>
     <string name="clothing_item_edit_button_text">Edit</string>
     <string name="clothing_item_delete_button">Delete</string>
-    <string name="no_photo_dialog_message">Please upload a photo!</string>
+    <string name="deletion_message">Are you sure you want to delete \"%s\"?</string>
+    <string name="deletion_yes_option">Yes, I am sure</string>
+    <string name="deletion_no_option">No</string>
+    <string name="no_photo_dialog_message">It seems you forgot uploading a photo or writing a title.</string>
     <string name="dialog_got_it_button_text">Got it!</string>
     <string name="photoshooting_tips_heading">Tips!</string>
     <string name="dialog_thank_you_heading">Thank you!</string>
@@ -42,9 +43,13 @@
     <string name="logging_in_title">Hang just a minute</string>
     <string name="sign_in_getting_user_title">You are in! Just checking if you are a new user.</string>
     <string name="error_field_massge">Required field</string>
-    <string name="sign_in_fail_massage">Filed to sign in.</string>
-    <string name="google_sign_in_fail_massage">Filed to sign in with google.</string>
+    <string name="sign_in_fail_massage">Failed to sign in.</string>
+    <string name="google_sign_in_fail_massage">Failed to sign in with google.</string>
     <string name="user_relay">user</string>
+    <string name="add_item_heading_message">Please add a picture, title and choose from the categories below</string>
+    <string name="edit_item_heading_message">You can replace the picture, title and change the categories below</string>
+    <string name="alert_dialog_delete_item_title">Item Deletion</string>
+    <string name="item_deleted_toast">Item deleted!</string>
     <string name="give">GIVE</string>
     <string name="search">Search</string>
     <string name="notifications">Notification</string>
@@ -58,7 +63,25 @@
     <string name="filter">FILTERS</string>
     <string name="divider">|</string>
     <string name="sort">SORT</string>
+    <string name="user_location_relay">location</string>
+    <string name="user_address_relay">address</string>
+    <string name="user_last_name_relay">lastName</string>
+    <string name="user_first_name_relay">firstName</string>
+    <string name="dialog_no_photo_or_title_heading">Hold Up!</string>
+    <string name="default_and_hint_brand_name">Brand name...</string>
+    <string name="chest_of_gold_description">Chest of gold to convey message of treasure</string>
+    <string name="brand_text_view_value">Brand:</string>
+    <string name="brand_property_name">Brand</string>
     <string name="phone_field">Phone</string>
+    <string name="user_compliment_message">Keep on doing good!</string>
+    <string name="tip_background_title">Background</string>
+    <string name="tip_background_description">It is always better to shoot on a white or grey background.
+        Avoid taking pictures in the background of the room, especially when it\'s not orginized.</string>
+    <string name="tip_wear_it_title">Wear it!</string>
+    <string name="tip_wear_it_description">Shoot the item on you or a friend, making it easier to understand proportions and clipping</string>
+    <string name="tip_lighting_title">Lighting</string>
+    <string name="tip_lighting_description">Daylight photography or bright lighting will best highlight the color of the item.
+        Clean the camera lens before each photo for a higher quality image.</string>
 
     <!-- Facebook application ID and custom URL scheme (app ID prefixed by 'fb'). -->
     <string name="facebook_application_id" translatable="false">2550633185150206</string>
@@ -68,6 +91,13 @@
     <string name="productPagePropertiesSeparator">|</string>
     <string name="productPagePropertiesValuesSeparator">,</string>
     <string name="no_items_found">No items found</string>
+    <string name="default_user_greeting">Hello You!</string>
+    <string name="view_pager_finish_button_text">Finish</string>
+    <string name="view_pager_next_button_text">Next</string>
+    <string name="product_relay">product</string>
+    <string name="intent_extra_null_user_toast">NULL USER</string>
+    <string name="intent_extra_no_user_key_toast">NO USER KEY</string>
+    <string name="intent_extra_no_bundle_toast">NULL BUNDLE</string>
     <string-array name="chat_sort_options">
         <item>your items</item>
         <item>wanted items</item>
