@@ -26,6 +26,9 @@
     <string name="clothing_item_image_description">Image of item</string>
     <string name="clothing_item_edit_button_text">Edit</string>
     <string name="clothing_item_delete_button">Delete</string>
+    <string name="deletion_message">Are you sure you want to delete \"%s\"?</string>
+    <string name="deletion_yes_option">Yes, I am sure</string>
+    <string name="deletion_no_option">No</string>
     <string name="no_photo_dialog_message">It seems you forgot uploading a photo or writing a title.</string>
     <string name="dialog_got_it_button_text">Got it!</string>
     <string name="photoshooting_tips_heading">Tips!</string>

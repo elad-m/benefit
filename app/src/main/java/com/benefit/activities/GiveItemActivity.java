@@ -33,7 +33,6 @@ import com.benefit.services.CategoryService;
 import com.benefit.services.ProductService;
 import com.benefit.utilities.Factory;
 import com.benefit.utilities.HeaderClickListener;
-import com.benefit.utilities.staticClasses.Converters;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.squareup.picasso.Picasso;
@@ -158,7 +157,8 @@ public class GiveItemActivity extends AppCompatActivity {
     private void createActivityByMode() {
         if (mIsInEditMode) {
             loadProductFromExtras();
-            createAttributeChips();
+            setMetaCategoryId(); // contains createAttributeChips
+
         } else {
             createActionBar();
             createAttributeChips();
@@ -178,15 +178,26 @@ public class GiveItemActivity extends AppCompatActivity {
         loadImageIntoButtonImage();
     }
 
+    private void setMetaCategoryId() {
+        final Observer<Category> categoryObserver = new Observer<Category>() {
+            @Override
+            public void onChanged(Category observedCategory) {
+                mMetaCategory = observedCategory.getParentId();
+                createAttributeChips();
+            }
+        };
+        categoryService.getCategoryById(mCategory).observe(this, categoryObserver);
+    }
+
 
     private void loadProductFromExtras() {
         mEdTextTitle.setText(mProductToEdit.getTitle());
-        mMetaCategory = Converters.getMetaCategoryFromCategoryId(mCategory);
         mCategory = mProductToEdit.getCategoryId();
         mProperties = mProductToEdit.getProperties();
         loadBrandOnEdit();
         loadImageOnEdit();
     }
+
 
     /**
      * =========================== Creating All Chip Groups ======================================

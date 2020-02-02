@@ -210,9 +210,10 @@ public class UserProfileActivity extends AppCompatActivity {
         long productId = productToDelete.getId();
         String productTitle = productToDelete.getTitle();
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Are you sure you want to delete \"" + productTitle + "\" ?")
+        builder.setMessage(String.format(getString(R.string.deletion_message), productTitle))
                 .setCancelable(false)
-                .setPositiveButton("Yes, I am sure", new DialogInterface.OnClickListener() {
+                .setPositiveButton(getString(R.string.deletion_yes_option),
+                        new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         productService.deleteProduct(productId);
@@ -220,7 +221,7 @@ public class UserProfileActivity extends AppCompatActivity {
                         makeToast(getString(R.string.item_deleted_toast));
                     }
                 })
-                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                .setNegativeButton(getString(R.string.deletion_no_option), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();
