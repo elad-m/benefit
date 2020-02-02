@@ -1,9 +1,8 @@
 <resources>
     <string name="app_name">Benefit</string>
     <string name="chat_title">Your Chatbox</string>
-    <string name="first_name_field">First name</string>
-    <string name="last_name_field">Last name</string>
-    <string name="address_field">City</string>
+    <string name="nickname_field">Nickname</string>
+    <string name="city_field">City</string>
     <string name="map_field_title">Move to your location</string>
     <string name="done_button">Done</string>
     <string name="required_fields_missing">Required fields are empty. Please enter additional details.</string>
@@ -42,9 +41,9 @@
     <string name="lets_start">Let\'s start</string>
     <string name="logging_in_title">Hang just a minute</string>
     <string name="sign_in_getting_user_title">You are in! Just checking if you are a new user.</string>
-    <string name="error_field_massge">Required field</string>
-    <string name="sign_in_fail_massage">Failed to sign in.</string>
-    <string name="google_sign_in_fail_massage">Failed to sign in with google.</string>
+    <string name="error_field_message">Required field</string>
+    <string name="sign_in_fail_massage">Filed to sign in.</string>
+    <string name="google_sign_in_fail_massage">Filed to sign in with google.</string>
     <string name="user_relay">user</string>
     <string name="add_item_heading_message">Please add a picture, title and choose from the categories below</string>
     <string name="edit_item_heading_message">You can replace the picture, title and change the categories below</string>
@@ -91,6 +90,7 @@
     <string name="productPagePropertiesSeparator">|</string>
     <string name="productPagePropertiesValuesSeparator">,</string>
     <string name="no_items_found">No items found</string>
+    <string name="invalid_phone_number">Invalid phone number</string>
     <string name="default_user_greeting">Hello You!</string>
     <string name="view_pager_finish_button_text">Finish</string>
     <string name="view_pager_next_button_text">Next</string>
