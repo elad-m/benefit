@@ -3,15 +3,14 @@ package com.benefit.activities;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
+import androidx.fragment.app.Fragment;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 
 import com.benefit.R;
-import com.benefit.activities.ui.mainactivity2.MainActivity2Fragment;
 import com.benefit.model.User;
 
 public class MainActivity2 extends AppCompatActivity {
@@ -19,6 +18,7 @@ public class MainActivity2 extends AppCompatActivity {
     private View chosenView;
     private FrameLayout settingButton;
     private Button searchButton, userProfileButton, giveButton;
+    private Fragment activityFragment;
     private User user;
 
     @Override
@@ -40,6 +40,7 @@ public class MainActivity2 extends AppCompatActivity {
         searchButton = findViewById(R.id.search_icon);
         userProfileButton = findViewById(R.id.user_icon);
         giveButton = findViewById(R.id.give_icon);
+        activityFragment = getSupportFragmentManager().findFragmentById(R.id.activity_fragment);
     }
 
     public void startSearchFragment(View view) {

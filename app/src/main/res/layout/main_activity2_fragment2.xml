@@ -2,12 +2,12 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/mainactivity2"
+    android:id="@+id/mainactivity2fragment2"
     android:background="@android:color/white"
     android:layoutDirection="ltr"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.ui.mainactivity2.MainActivity2Fragment">
+    tools:context=".activities.ui.mainactivity2.MainActivity2Fragment2">
 
     <androidx.appcompat.widget.SearchView
         android:id="@+id/search_input"

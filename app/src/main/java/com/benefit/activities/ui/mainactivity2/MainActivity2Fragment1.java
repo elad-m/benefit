@@ -13,17 +13,17 @@ import android.view.ViewGroup;
 
 import com.benefit.R;
 
-public class MainActivity2Fragment extends Fragment {
+public class MainActivity2Fragment1 extends Fragment {
 
-    public static MainActivity2Fragment newInstance() {
-        return new MainActivity2Fragment();
+    public static MainActivity2Fragment1 newInstance() {
+        return new MainActivity2Fragment1();
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.main_activity2_fragment, container, false);
+        return inflater.inflate(R.layout.main_activity2_fragment1, container, false);
     }
 
     @Override
