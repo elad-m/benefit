@@ -165,7 +165,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <fragment
-        android:name="com.benefit.activities.ui.mainactivity2.MainActivity2Fragment1"
+        android:name="com.benefit.ui.MainFragment"
         android:id="@+id/activity_fragment"
         android:layout_width="match_parent"
         android:layout_height="@dimen/no_hardcode_dimension"
