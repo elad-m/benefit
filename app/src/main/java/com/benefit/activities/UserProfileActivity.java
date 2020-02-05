@@ -143,7 +143,7 @@ public class UserProfileActivity extends AppCompatActivity {
             @Override
             public void onChanged(User user) {
                 UserProfileActivity.this.user = user;
-                String username = user.getFirstName();
+                String username = user.getNickname();
                 userGreeting.setText("Hello " + username + "!");
                 userGreeting.setVisibility(View.VISIBLE);
             }

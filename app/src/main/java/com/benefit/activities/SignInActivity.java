@@ -56,6 +56,8 @@ import java.util.regex.Pattern;
  */
 public class SignInActivity extends AppCompatActivity implements OnMapReadyCallback, OnMarkerDragListener {
 
+    private static final Boolean DEBUGGING = true;
+
     private static final String TAG = SignInActivity.class.getSimpleName();
     private static final int RC_GOOGLE_SIGN_IN = 9001;
     // Keys for storing activity state.
@@ -190,6 +192,9 @@ public class SignInActivity extends AppCompatActivity implements OnMapReadyCallb
                 break;
             case FINISH:
                 Intent intent = new Intent(this, MainActivity.class);
+                if (DEBUGGING){
+                    intent = new Intent(this, MainActivity2.class);
+                }
                 intent.putExtra(getString(R.string.user_relay), viewModel.getUser());
                 startActivity(intent);
                 finish();
