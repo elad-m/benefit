@@ -16,6 +16,7 @@ import com.benefit.model.User;
 
 public class MainActivity2 extends AppCompatActivity {
 
+    private View chosenView;
     private FrameLayout settingButton;
     private Button searchButton, userProfileButton, giveButton;
     private User user;
@@ -34,6 +35,7 @@ public class MainActivity2 extends AppCompatActivity {
     }
 
     private void initiateViewElements(){
+        chosenView = findViewById(R.id.chosen_view);
         settingButton = findViewById(R.id.sandwich_icon);
         searchButton = findViewById(R.id.search_icon);
         userProfileButton = findViewById(R.id.user_icon);
@@ -48,6 +50,7 @@ public class MainActivity2 extends AppCompatActivity {
         constraintSet.connect(R.id.chosen_view, ConstraintSet.LEFT, R.id.search_icon, ConstraintSet.LEFT);
         constraintSet.applyTo(constraintLayout);
 
+        chosenView.setVisibility(View.VISIBLE);
         giveButton.setBackground(getDrawable(R.drawable.ic_give_icon));
         userProfileButton.setBackground(getDrawable(R.drawable.ic_user_icon));
         searchButton.setBackground(getDrawable(R.drawable.ic_search_icon_color));
@@ -62,13 +65,14 @@ public class MainActivity2 extends AppCompatActivity {
         constraintSet.connect(R.id.chosen_view, ConstraintSet.LEFT, R.id.user_icon, ConstraintSet.LEFT);
         constraintSet.applyTo(constraintLayout);
 
+        chosenView.setVisibility(View.VISIBLE);
         giveButton.setBackground(getDrawable(R.drawable.ic_give_icon));
         userProfileButton.setBackground(getDrawable(R.drawable.ic_user_colored));
         searchButton.setBackground(getDrawable(R.drawable.ic_search_icon));
     }
 
     public void startGiveFragment(View view) {
-        findViewById(R.id.chosen_view).setVisibility(View.INVISIBLE);
+        chosenView.setVisibility(View.INVISIBLE);
         giveButton.setBackground(getDrawable(R.drawable.ic_give_colored));
         userProfileButton.setBackground(getDrawable(R.drawable.ic_user_icon));
         searchButton.setBackground(getDrawable(R.drawable.ic_search_icon));
