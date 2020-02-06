@@ -6,6 +6,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +21,7 @@ import com.benefit.services.CategoryService;
 import com.benefit.services.ProductService;
 import com.benefit.services.SearchService;
 import com.benefit.ui.products.ProductsPageUI;
+import com.benefit.utilities.Factory;
 
 import java.util.List;
 import java.util.Map;
@@ -78,7 +81,27 @@ public class AllProductsFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        initiateServices();
+        if(savedInstanceState != null){
+            extractBundle(savedInstanceState);
+        }
+        //initiateWindow();
+        //addSearchListener();
+    }
 
+    private void initiateServices(){
+        categoryService = ViewModelProviders.of(this, Factory.getCategoryServiceFactory()).get(CategoryService.class);
+        productService = ViewModelProviders.of(this, Factory.getProductServiceFactory()).get(ProductService.class);
+        searchService = ViewModelProviders.of(this, Factory.getSearchServiceFactory()).get(SearchService.class);
+    }
+
+    private void extractBundle(Bundle savedInstanceState){
+        are_products_displayed = savedInstanceState.getBoolean(getResources().getString(R.string.received_search));
+        whichProductsDisplayed = savedInstanceState.getInt(getResources().getString(R.string.displayed));
+        currentCategory = (Category) savedInstanceState.getSerializable(getResources().getString(R.string.category));
+        categoryCluster = (CategoryCluster) savedInstanceState.getSerializable(getResources().getString(R.string.cluster));
+        metaCategoryChosen = (Category) savedInstanceState.getSerializable(getResources().getString(R.string.meta_category));
+        searchText = savedInstanceState.getString(getResources().getString(R.string.search));
     }
 
 
@@ -90,6 +113,6 @@ public class AllProductsFragment extends Fragment {
         outState.putSerializable(getResources().getString(R.string.category), currentCategory);
         outState.putSerializable(getResources().getString(R.string.cluster), categoryCluster);
         outState.putSerializable(getResources().getString(R.string.meta_category), metaCategoryChosen);
-        outState.putSerializable(getResources().getString(R.string.search), searchText);
+        outState.putString(getResources().getString(R.string.search), searchText);
     }
 }
