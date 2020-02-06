@@ -56,12 +56,12 @@
 
 
         <Button
-            android:id="@+id/search_icon"
+            android:id="@+id/home_icon"
             android:layout_width="@dimen/no_hardcode_dimension"
             android:layout_height="@dimen/no_hardcode_dimension"
-            android:background="@drawable/ic_search_icon"
+            android:background="@drawable/ic_home_icon"
             android:elevation="@dimen/no_elevation"
-            android:onClick="startSearchFragment"
+            android:onClick="startMainFragment"
             app:layout_constraintBottom_toBottomOf="@id/icon_guideline"
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintHorizontal_chainStyle="spread"
@@ -77,8 +77,8 @@
             app:layout_constraintBottom_toTopOf="@id/horizontal_line"
             app:layout_constraintHeight_percent="0.02"
             app:layout_constraintHorizontal_chainStyle="spread"
-            app:layout_constraintLeft_toLeftOf="@id/search_icon"
-            app:layout_constraintRight_toRightOf="@id/search_icon"
+            app:layout_constraintLeft_toLeftOf="@id/home_icon"
+            app:layout_constraintRight_toRightOf="@id/home_icon"
             app:layout_constraintWidth_percent="0.14" />
 
 
@@ -113,7 +113,7 @@
             app:layout_constraintBottom_toBottomOf="@id/icon_guideline"
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintHorizontal_chainStyle="spread"
-            app:layout_constraintLeft_toRightOf="@id/search_icon"
+            app:layout_constraintLeft_toRightOf="@id/home_icon"
             app:layout_constraintRight_toLeftOf="@id/give_icon"
             app:layout_constraintWidth_percent="0.083" />
 

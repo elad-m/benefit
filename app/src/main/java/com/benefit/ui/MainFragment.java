@@ -8,6 +8,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,12 +17,13 @@ import android.view.WindowManager;
 import android.widget.Button;
 
 import com.benefit.R;
-import com.benefit.activities.MainActivity2;
 import com.benefit.adapters.DisplayableRecycleAdapter;
 import com.benefit.model.Category;
 import com.benefit.model.CategoryCluster;
+import com.benefit.services.CategoryService;
 import com.benefit.ui.products.MetaCategoryBar;
 import com.benefit.ui.products.ProductsDisplay;
+import com.benefit.utilities.Factory;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -36,17 +38,16 @@ public class MainFragment extends Fragment {
     private static final int CATEGORIES_DISPLAYED = 1;
     private static final int CLUSTERS_DISPLAYED = 2;
 
-    private MainActivity2 mainActivity;
     private ProductsDisplay productsDisplay;
     private MetaCategoryBar metaCategoryBar;
     private Category metaCategoryChosen;
+    private CategoryService categoryService;
     private Button metaButtonChosen;
     private int itemsDisplayed;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mainActivity = (MainActivity2) getActivity();
         initiateWindow();
         addSearchListener();
     }
@@ -116,7 +117,7 @@ public class MainFragment extends Fragment {
             productsDisplay.populateDisplayTable(categories);
             addCategoryListeners();
         };
-        mainActivity.categoryService.getChildrenByParentId(parentId).observe(this, childCategoryObserver);
+        categoryService.getChildrenByParentId(parentId).observe(this, childCategoryObserver);
     }
 
     private void addSearchListener() {
@@ -141,6 +142,7 @@ public class MainFragment extends Fragment {
         setWindow();
         metaCategoryBar = new MetaCategoryBar(getActivity().findViewById(android.R.id.content).getRootView());
         productsDisplay = new ProductsDisplay(getActivity().findViewById(android.R.id.content).getRootView(), CATEGORIES);
+        categoryService = ViewModelProviders.of(this, Factory.getCategoryServiceFactory()).get(CategoryService.class);
         showMetaCategories();
         showItemsOnScreen();
     }
@@ -172,7 +174,7 @@ public class MainFragment extends Fragment {
             }
             addMetaCategoryListeners();
         };
-        mainActivity.categoryService.getAllMetaCategories().observe(this, metaCategoriesObserver);
+        categoryService.getAllMetaCategories().observe(this, metaCategoriesObserver);
     }
 
     private void showCategoryClusters() {
@@ -181,7 +183,7 @@ public class MainFragment extends Fragment {
             productsDisplay.populateDisplayTable(clusters);
             addCategoryListeners();
         };
-        mainActivity.categoryService.getAllHomepageCategoryClusters().observe(this, categoryObserver);
+        categoryService.getAllHomepageCategoryClusters().observe(this, categoryObserver);
     }
 
 }

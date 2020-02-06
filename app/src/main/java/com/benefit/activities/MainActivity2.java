@@ -38,7 +38,7 @@ public class MainActivity2 extends AppCompatActivity {
 
     private View chosenView;
     private FrameLayout settingButton;
-    private Button homeButton, searchButton, userProfileButton, giveButton;
+    private Button homeButton, mainButton, userProfileButton, giveButton;
     private Fragment activityFragment;
 
     private User user;
@@ -73,24 +73,24 @@ public class MainActivity2 extends AppCompatActivity {
     private void initiateViewElements(){
         chosenView = findViewById(R.id.chosen_view);
         settingButton = findViewById(R.id.sandwich_icon);
-        searchButton = findViewById(R.id.search_icon);
+        mainButton = findViewById(R.id.home_icon);
         userProfileButton = findViewById(R.id.user_icon);
         giveButton = findViewById(R.id.give_icon);
         activityFragment = getSupportFragmentManager().findFragmentById(R.id.activity_fragment);
     }
 
-    public void startSearchFragment(View view) {
+    public void startMainFragment(View view) {
         ConstraintLayout constraintLayout = findViewById(R.id.header);
         ConstraintSet constraintSet = new ConstraintSet();
         constraintSet.clone(constraintLayout);
-        constraintSet.connect(R.id.chosen_view, ConstraintSet.RIGHT, R.id.search_icon, ConstraintSet.RIGHT);
-        constraintSet.connect(R.id.chosen_view, ConstraintSet.LEFT, R.id.search_icon, ConstraintSet.LEFT);
+        constraintSet.connect(R.id.chosen_view, ConstraintSet.RIGHT, R.id.home_icon, ConstraintSet.RIGHT);
+        constraintSet.connect(R.id.chosen_view, ConstraintSet.LEFT, R.id.home_icon, ConstraintSet.LEFT);
         constraintSet.applyTo(constraintLayout);
 
         chosenView.setVisibility(View.VISIBLE);
         giveButton.setBackground(getDrawable(R.drawable.ic_give_icon));
         userProfileButton.setBackground(getDrawable(R.drawable.ic_user_icon));
-        searchButton.setBackground(getDrawable(R.drawable.ic_search_icon_color));
+        mainButton.setBackground(getDrawable(R.drawable.ic_home_colored));
 
         MainFragment fragment = new MainFragment();
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
@@ -110,7 +110,7 @@ public class MainActivity2 extends AppCompatActivity {
         chosenView.setVisibility(View.VISIBLE);
         giveButton.setBackground(getDrawable(R.drawable.ic_give_icon));
         userProfileButton.setBackground(getDrawable(R.drawable.ic_user_colored));
-        searchButton.setBackground(getDrawable(R.drawable.ic_search_icon));
+        mainButton.setBackground(getDrawable(R.drawable.ic_home_icon));
 
         /*
         UserProfileFragment fragment = new UserProfileFragment();
@@ -125,7 +125,7 @@ public class MainActivity2 extends AppCompatActivity {
         chosenView.setVisibility(View.INVISIBLE);
         giveButton.setBackground(getDrawable(R.drawable.ic_give_colored));
         userProfileButton.setBackground(getDrawable(R.drawable.ic_user_icon));
-        searchButton.setBackground(getDrawable(R.drawable.ic_search_icon));
+        mainButton.setBackground(getDrawable(R.drawable.ic_home_icon));
 
         /*
         GiveFragment fragment = new GiveFragment();
