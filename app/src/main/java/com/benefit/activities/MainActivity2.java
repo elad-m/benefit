@@ -5,7 +5,6 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.os.Bundle;
@@ -16,25 +15,21 @@ import android.widget.FrameLayout;
 import com.benefit.R;
 import com.benefit.drivers.DatabaseDriver;
 import com.benefit.drivers.StorageDriver;
+import com.benefit.model.Category;
 import com.benefit.model.User;
 import com.benefit.services.CategoryService;
 import com.benefit.services.ProductService;
 import com.benefit.services.SearchService;
 import com.benefit.services.UserService;
-import com.benefit.ui.MainFragment;
+import com.benefit.ui.AllProductsFragment;
+import com.benefit.ui.Displayable;
+import com.benefit.ui.HomeFragment;
 import com.benefit.utilities.Factory;
 
 /**
  * This is the main activity.
  */
 public class MainActivity2 extends AppCompatActivity {
-
-    public DatabaseDriver databaseDriver = new DatabaseDriver();
-    public StorageDriver storageDriver;
-    public CategoryService categoryService;
-    public ProductService productService;
-    public SearchService searchService;
-    public UserService userService;
 
     private View chosenView;
     private FrameLayout settingButton;
@@ -52,23 +47,10 @@ public class MainActivity2 extends AppCompatActivity {
         }
         user = (User) getIntent().getSerializableExtra(getString(R.string.user_relay));
 
-        initiateServices();
         initiateViewElements();
 
     }
 
-    private void initiateServices(){
-        productService = ViewModelProviders.of(this,
-                Factory.getProductServiceFactory()).get(ProductService.class);
-        categoryService = ViewModelProviders.of(this,
-                Factory.getCategoryServiceFactory()).get(CategoryService.class);
-        searchService = ViewModelProviders.of(this,
-                Factory.getSearchServiceFactory()).get(SearchService.class);
-        userService = ViewModelProviders.of(this,
-                Factory.getUserServiceFactory()).get(UserService.class);
-        this.storageDriver = ViewModelProviders.of(this,
-                Factory.getStorageDriverFactory()).get(StorageDriver.class);
-    }
 
     private void initiateViewElements(){
         chosenView = findViewById(R.id.chosen_view);
@@ -79,7 +61,18 @@ public class MainActivity2 extends AppCompatActivity {
         activityFragment = getSupportFragmentManager().findFragmentById(R.id.activity_fragment);
     }
 
-    public void startMainFragment(View view) {
+    private void replaceFragment(Fragment fragment){
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.activity_fragment, fragment);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
+    }
+
+    public void startHomeFragmentOnClick(View view) {
+        startHomeFragment(null);
+    }
+
+    public void startHomeFragment(Category metaCategoryChosen){
         ConstraintLayout constraintLayout = findViewById(R.id.header);
         ConstraintSet constraintSet = new ConstraintSet();
         constraintSet.clone(constraintLayout);
@@ -92,14 +85,18 @@ public class MainActivity2 extends AppCompatActivity {
         userProfileButton.setBackground(getDrawable(R.drawable.ic_user_icon));
         mainButton.setBackground(getDrawable(R.drawable.ic_home_colored));
 
-        MainFragment fragment = new MainFragment();
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.activity_fragment, fragment);
-        fragmentTransaction.addToBackStack(null);
-        fragmentTransaction.commit();
+        replaceFragment(HomeFragment.getInstance(metaCategoryChosen));
     }
 
-    public void startUserProfileFragment(View view) {
+    public void startAllProductsFragmentFromCategories(int itemsDisplayed, Displayable displayable, Category metaCategoryChosen){
+        replaceFragment(AllProductsFragment.newInstance(false, null, itemsDisplayed, displayable, metaCategoryChosen));
+    }
+
+    public void startAllProductsFragmentFromSearch(String searchTest){
+        replaceFragment(AllProductsFragment.newInstance(true, searchTest, 0, null, null));
+    }
+
+    public void startUserProfileFragmentOnClick(View view) {
         ConstraintLayout constraintLayout = findViewById(R.id.header);
         ConstraintSet constraintSet = new ConstraintSet();
         constraintSet.clone(constraintLayout);
@@ -113,26 +110,18 @@ public class MainActivity2 extends AppCompatActivity {
         mainButton.setBackground(getDrawable(R.drawable.ic_home_icon));
 
         /*
-        UserProfileFragment fragment = new UserProfileFragment();
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.activity_fragment, fragment);
-        fragmentTransaction.addToBackStack(null);
-        fragmentTransaction.commit();
+        replaceFragment(new UserProfileFragment());
          */
     }
 
-    public void startGiveFragment(View view) {
+    public void startGiveFragmentOnClick(View view) {
         chosenView.setVisibility(View.INVISIBLE);
         giveButton.setBackground(getDrawable(R.drawable.ic_give_colored));
         userProfileButton.setBackground(getDrawable(R.drawable.ic_user_icon));
         mainButton.setBackground(getDrawable(R.drawable.ic_home_icon));
 
         /*
-        GiveFragment fragment = new GiveFragment();
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.activity_fragment, fragment);
-        fragmentTransaction.addToBackStack(null);
-        fragmentTransaction.commit();
+        replaceFragment(new GiveFragment());
          */
     }
 }

@@ -17,7 +17,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 
 import com.benefit.R;
-import com.benefit.adapters.DisplayableRecycleAdapter;
+import com.benefit.activities.MainActivity2;
 import com.benefit.model.Category;
 import com.benefit.model.CategoryCluster;
 import com.benefit.services.CategoryService;
@@ -32,11 +32,17 @@ import java.util.Map;
 /**
  * This fragment is for the page that shows the categories
  */
-public class MainFragment extends Fragment {
+public class HomeFragment extends Fragment {
 
     private static final int CATEGORIES = 1;
     private static final int CATEGORIES_DISPLAYED = 1;
     private static final int CLUSTERS_DISPLAYED = 2;
+
+    public static HomeFragment getInstance(Category metaCategoryChosen){
+        HomeFragment fragment = new HomeFragment();
+        fragment.metaCategoryChosen = metaCategoryChosen;
+        return fragment;
+    }
 
     private ProductsDisplay productsDisplay;
     private MetaCategoryBar metaCategoryBar;
@@ -46,21 +52,19 @@ public class MainFragment extends Fragment {
     private int itemsDisplayed;
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        initiateWindow();
-        addSearchListener();
-    }
-
-    @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.main_fragment, container, false);
+        return inflater.inflate(R.layout.home_fragment, container, false);
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        if(savedInstanceState != null){
+            metaCategoryChosen = (Category) savedInstanceState.getSerializable(getActivity().getString(R.string.meta_category));
+        }
+        initiateWindow();
+        addSearchListener();
     }
 
     private void addCategoryListeners() {
@@ -68,7 +72,7 @@ public class MainFragment extends Fragment {
             if (position < productsDisplay.getDisplayableProducts().size()) {
                 Displayable productClicked = productsDisplay.getDisplayableProducts().get(position);
                 if (itemsDisplayed == CLUSTERS_DISPLAYED || ((Category) productClicked).getIsLeaf()) {
-                    //openProductsPage(productClicked); TODO
+                    ((MainActivity2) getActivity()).startAllProductsFragmentFromCategories(itemsDisplayed, productClicked, metaCategoryChosen);
                 } else {
                     productsDisplay.refreshDisplay();
                     showChildrenOfParent(((Category) productClicked).getIdAsInt());
@@ -126,7 +130,7 @@ public class MainFragment extends Fragment {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 if (query.length() >= 1) {
-                    //startProductActivityWithSearch(query); TODO
+                    ((MainActivity2) getActivity()).startAllProductsFragmentFromSearch(query);
                 }
                 return false;
             }
@@ -186,4 +190,9 @@ public class MainFragment extends Fragment {
         categoryService.getAllHomepageCategoryClusters().observe(this, categoryObserver);
     }
 
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable(getActivity().getString(R.string.meta_category), metaCategoryChosen);
+    }
 }

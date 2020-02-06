@@ -91,6 +91,7 @@
     <string name="intent_extra_null_user_toast">NULL USER</string>
     <string name="intent_extra_no_user_key_toast">NO USER KEY</string>
     <string name="intent_extra_no_bundle_toast">NULL BUNDLE</string>
+    <string name="meta_category">metaCategory</string>
     <string-array name="chat_sort_options">
         <item>your items</item>
         <item>wanted items</item>

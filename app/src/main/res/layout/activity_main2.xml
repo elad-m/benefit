@@ -39,7 +39,7 @@
             android:layout_gravity="center"
             android:background="@drawable/ic_give_icon"
             android:elevation="0dp"
-            android:onClick="startGiveFragment"
+            android:onClick="startGiveFragmentOnClick"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintDimensionRatio="0.81:1"
             app:layout_constraintRight_toRightOf="@id/give_right_guideline"
@@ -59,9 +59,9 @@
             android:id="@+id/home_icon"
             android:layout_width="@dimen/no_hardcode_dimension"
             android:layout_height="@dimen/no_hardcode_dimension"
-            android:background="@drawable/ic_home_icon"
+            android:background="@drawable/ic_home_colored"
             android:elevation="@dimen/no_elevation"
-            android:onClick="startMainFragment"
+            android:onClick="startHomeFragmentOnClick"
             app:layout_constraintBottom_toBottomOf="@id/icon_guideline"
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintHorizontal_chainStyle="spread"
@@ -109,7 +109,7 @@
             android:layout_height="@dimen/no_hardcode_dimension"
             android:background="@drawable/ic_user_icon"
             android:elevation="@dimen/no_elevation"
-            android:onClick="startUserProfileFragment"
+            android:onClick="startUserProfileFragmentOnClick"
             app:layout_constraintBottom_toBottomOf="@id/icon_guideline"
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintHorizontal_chainStyle="spread"
@@ -165,7 +165,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <fragment
-        android:name="com.benefit.ui.MainFragment"
+        android:name="com.benefit.ui.HomeFragment"
         android:id="@+id/activity_fragment"
         android:layout_width="match_parent"
         android:layout_height="@dimen/no_hardcode_dimension"
