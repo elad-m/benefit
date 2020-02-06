@@ -144,8 +144,8 @@ public class HomeFragment extends Fragment {
 
     private void initiateWindow(){
         setWindow();
-        metaCategoryBar = new MetaCategoryBar(getActivity().findViewById(android.R.id.content).getRootView());
-        productsDisplay = new ProductsDisplay(getActivity().findViewById(android.R.id.content).getRootView(), CATEGORIES);
+        metaCategoryBar = new MetaCategoryBar(getView());
+        productsDisplay = new ProductsDisplay(getView(), CATEGORIES);
         categoryService = ViewModelProviders.of(this, Factory.getCategoryServiceFactory()).get(CategoryService.class);
         showMetaCategories();
         showItemsOnScreen();
@@ -193,6 +193,8 @@ public class HomeFragment extends Fragment {
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putSerializable(getActivity().getString(R.string.meta_category), metaCategoryChosen);
+        if (metaCategoryChosen != null){
+            outState.putSerializable(getActivity().getString(R.string.meta_category), metaCategoryChosen);
+        }
     }
 }
