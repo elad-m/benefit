@@ -14,6 +14,14 @@ import android.view.ViewGroup;
 import com.benefit.R;
 import com.benefit.model.Category;
 import com.benefit.model.CategoryCluster;
+import com.benefit.model.PropertyName;
+import com.benefit.services.CategoryService;
+import com.benefit.services.ProductService;
+import com.benefit.services.SearchService;
+import com.benefit.ui.products.ProductsPageUI;
+
+import java.util.List;
+import java.util.Map;
 
 public class AllProductsFragment extends Fragment {
 
@@ -54,6 +62,12 @@ public class AllProductsFragment extends Fragment {
     private Category metaCategoryChosen;
     private CategoryCluster categoryCluster;
     private String searchText;
+    private List<PropertyName> allFilters;
+    private Map<String, List<String>> currentFilters;
+    private ProductsPageUI pageUI;
+    private CategoryService categoryService;
+    private ProductService productService;
+    private SearchService searchService;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -64,6 +78,18 @@ public class AllProductsFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
     }
 
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean(getResources().getString(R.string.received_search), are_products_displayed);
+        outState.putInt(getResources().getString(R.string.displayed), whichProductsDisplayed);
+        outState.putSerializable(getResources().getString(R.string.category), currentCategory);
+        outState.putSerializable(getResources().getString(R.string.cluster), categoryCluster);
+        outState.putSerializable(getResources().getString(R.string.meta_category), metaCategoryChosen);
+        outState.putSerializable(getResources().getString(R.string.search), searchText);
+    }
 }
