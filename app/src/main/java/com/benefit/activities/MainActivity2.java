@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -62,13 +63,14 @@ public class MainActivity2 extends AppCompatActivity {
         menu = findViewById(R.id.setting_navigation);
         menu.setNavigationItemSelectedListener(item -> {
             if (item.getTitle().equals(getString(R.string.sign_out))){
-                authenticationDriver.getAuth().signOut();
-                Intent intent = new Intent(this, SignInActivity.class);
-                startActivity(intent);
-                finish();
+                signOut();
             }
             return true;
         });
+    }
+
+    public void openSettingMenu(View view){
+        ((DrawerLayout) findViewById(R.id.drawer_layout)).openDrawer(findViewById(R.id.setting_navigation));
     }
 
     private void replaceFragment(Fragment fragment){
@@ -141,5 +143,12 @@ public class MainActivity2 extends AppCompatActivity {
         homeButton.setBackground(getDrawable(R.drawable.ic_home_icon));
 
         replaceFragment(GiveFragment.newInstance(user, product));
+    }
+
+    public void signOut(){
+        authenticationDriver.getAuth().signOut();
+        Intent intent = new Intent(this, SignInActivity.class);
+        startActivity(intent);
+        finish();
     }
 }
