@@ -16,6 +16,7 @@ import com.benefit.R;
 import com.benefit.drivers.DatabaseDriver;
 import com.benefit.drivers.StorageDriver;
 import com.benefit.model.Category;
+import com.benefit.model.Product;
 import com.benefit.model.User;
 import com.benefit.services.CategoryService;
 import com.benefit.services.ProductService;
@@ -94,6 +95,10 @@ public class MainActivity2 extends AppCompatActivity {
 
     public void startAllProductsFragmentFromSearch(String searchTest){
         replaceFragment(AllProductsFragment.newInstance(true, searchTest, 0, null, null));
+    }
+
+    public void startProductFragment(Product product){
+
     }
 
     public void startUserProfileFragmentOnClick(View view) {
