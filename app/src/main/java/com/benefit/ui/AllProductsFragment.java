@@ -30,6 +30,8 @@ import com.benefit.ui.products.FilterPopup;
 import com.benefit.ui.products.ProductsPageUI;
 import com.benefit.utilities.Factory;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -88,6 +90,8 @@ public class AllProductsFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        currentFilters = new HashMap<>();
+        allFilters = new ArrayList<>();
         initiateServices();
         if(savedInstanceState != null){
             extractBundle(savedInstanceState);

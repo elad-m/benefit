@@ -109,7 +109,7 @@
             android:layout_height="@dimen/no_hardcode_dimension"
             android:background="@drawable/ic_user_icon"
             android:elevation="@dimen/no_elevation"
-            android:onClick="startUserProfileFragmentOnClick"
+            android:onClick="startProfileFragmentOnClick"
             app:layout_constraintBottom_toBottomOf="@id/icon_guideline"
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintHorizontal_chainStyle="spread"
