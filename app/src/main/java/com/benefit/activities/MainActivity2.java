@@ -26,6 +26,10 @@ import com.benefit.ui.GiveFragment;
 import com.benefit.ui.HomeFragment;
 import com.benefit.ui.ProductFragment;
 import com.benefit.ui.ProfileFragment;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.material.navigation.NavigationView;
 
 /**
@@ -147,6 +151,17 @@ public class MainActivity2 extends AppCompatActivity {
 
     public void signOut(){
         authenticationDriver.getAuth().signOut();
+        //If sign in with google - sign out from google:
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+        if (account != null){
+            GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                    .requestIdToken(getString(R.string.default_web_client_id))
+                    .requestEmail()
+                    .build();
+            GoogleSignInClient mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+            mGoogleSignInClient.signOut();
+        }
+
         Intent intent = new Intent(this, SignInActivity.class);
         startActivity(intent);
         finish();
