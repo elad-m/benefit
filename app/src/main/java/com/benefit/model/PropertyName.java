@@ -1,6 +1,11 @@
 package com.benefit.model;
 
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
+
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Model POJO for property name.
@@ -44,7 +49,8 @@ public class PropertyName {
         return isMandatory;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public List<String> getValidValues() {
-        return validValues;
+        return validValues == null ? null : validValues.stream().sorted().collect(Collectors.toList());
     }
 }
