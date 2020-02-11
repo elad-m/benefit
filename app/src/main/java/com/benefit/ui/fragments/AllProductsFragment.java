@@ -1,4 +1,4 @@
-package com.benefit.ui;
+package com.benefit.ui.fragments;
 
 
 import android.os.Bundle;
@@ -26,6 +26,7 @@ import com.benefit.model.PropertyName;
 import com.benefit.services.CategoryService;
 import com.benefit.services.ProductService;
 import com.benefit.services.SearchService;
+import com.benefit.ui.Displayable;
 import com.benefit.ui.products.FilterPopup;
 import com.benefit.ui.products.ProductsPageUI;
 import com.benefit.utilities.Factory;

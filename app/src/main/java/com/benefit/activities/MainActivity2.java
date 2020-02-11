@@ -1,6 +1,5 @@
 package com.benefit.activities;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
@@ -10,7 +9,6 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -20,12 +18,12 @@ import com.benefit.drivers.AuthenticationDriver;
 import com.benefit.model.Category;
 import com.benefit.model.Product;
 import com.benefit.model.User;
-import com.benefit.ui.AllProductsFragment;
+import com.benefit.ui.fragments.AllProductsFragment;
 import com.benefit.ui.Displayable;
-import com.benefit.ui.GiveFragment;
-import com.benefit.ui.HomeFragment;
-import com.benefit.ui.ProductFragment;
-import com.benefit.ui.ProfileFragment;
+import com.benefit.ui.fragments.GiveFragment;
+import com.benefit.ui.fragments.HomeFragment;
+import com.benefit.ui.fragments.ProductFragment;
+import com.benefit.ui.fragments.ProfileFragment;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;

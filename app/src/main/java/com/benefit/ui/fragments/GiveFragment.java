@@ -1,6 +1,4 @@
-package com.benefit.ui;
-
-import androidx.lifecycle.ViewModelProviders;
+package com.benefit.ui.fragments;
 
 import android.os.Bundle;
 

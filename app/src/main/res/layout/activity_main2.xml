@@ -172,7 +172,7 @@
 
         <fragment
             android:id="@+id/activity_fragment"
-            android:name="com.benefit.ui.HomeFragment"
+            android:name="com.benefit.ui.fragments.HomeFragment"
             android:layout_width="match_parent"
             android:layout_height="@dimen/no_hardcode_dimension"
             app:layout_constraintBottom_toBottomOf="parent"

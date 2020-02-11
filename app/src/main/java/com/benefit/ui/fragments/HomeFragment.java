@@ -1,4 +1,4 @@
-package com.benefit.ui;
+package com.benefit.ui.fragments;
 
 import android.graphics.Color;
 import android.os.Bundle;
@@ -21,6 +21,7 @@ import com.benefit.activities.MainActivity2;
 import com.benefit.model.Category;
 import com.benefit.model.CategoryCluster;
 import com.benefit.services.CategoryService;
+import com.benefit.ui.Displayable;
 import com.benefit.ui.products.MetaCategoryBar;
 import com.benefit.ui.products.ProductsDisplay;
 import com.benefit.utilities.Factory;

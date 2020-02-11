@@ -25,7 +25,7 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.benefit.R;
 import com.benefit.model.enums.LoginState;
-import com.benefit.ui.WorkaroundMapFragment;
+import com.benefit.ui.fragments.WorkaroundMapFragment;
 import com.benefit.viewmodel.SignInViewModel;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;

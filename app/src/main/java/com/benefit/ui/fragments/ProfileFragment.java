@@ -1,6 +1,4 @@
-package com.benefit.ui;
-
-import androidx.lifecycle.ViewModelProviders;
+package com.benefit.ui.fragments;
 
 import android.os.Bundle;
 
@@ -13,32 +11,28 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.benefit.R;
-import com.benefit.model.Product;
 import com.benefit.model.User;
 
-public class ProductFragment extends Fragment {
+public class ProfileFragment extends Fragment {
 
 
-    public static ProductFragment newInstance(Product product, User user) {
-        ProductFragment fragment = new ProductFragment();
-        fragment.product = product;
+    public static ProfileFragment newInstance(User user) {
+        ProfileFragment fragment = new ProfileFragment();
         fragment.user = user;
-        return fragment;
+        return new ProfileFragment();
     }
 
-    private Product product;
     private User user;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.product_fragment, container, false);
+        return inflater.inflate(R.layout.profile_fragment, container, false);
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
     }
 
 }
