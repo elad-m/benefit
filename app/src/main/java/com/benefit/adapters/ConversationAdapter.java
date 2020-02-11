@@ -114,7 +114,7 @@ public class ConversationAdapter extends FirestoreRecyclerAdapter<Match, Convers
                        if (task.isSuccessful()){
                            for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
                                User sellerUser = document.toObject(User.class);
-                               conversationHolder.setProductOwnerName(sellerUser.getFullName());
+                               conversationHolder.setProductOwnerName(sellerUser.getNickname());
                            }
                        }
                     });

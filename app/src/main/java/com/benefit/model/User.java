@@ -9,9 +9,8 @@ import java.io.Serializable;
 public class User implements Serializable{
 
     private String uid;
-    private String firstName;
-    private String lastName;
-    private String address;
+    private String nickname;
+    private String city;
     private String phoneNumber;
     private double locationLatitude;
     private double locationLongitude;
@@ -27,20 +26,12 @@ public class User implements Serializable{
         return uid;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getNickname() {
+        return nickname;
     }
 
-    public String getLastName() {
-        return lastName;
-    }
-
-    public String getFullName(){
-        return firstName + " " + lastName;
-    }
-
-    public String getAddress() {
-        return address;
+    public String getCity() {
+        return city;
     }
 
     public double getRating() {
@@ -51,16 +42,12 @@ public class User implements Serializable{
         this.uid = uid;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
+    public void setCity(String city) {
+        this.city = city;
     }
 
     public void setRating(double rating) {

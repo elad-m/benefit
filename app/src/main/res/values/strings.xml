@@ -1,9 +1,8 @@
 <resources>
     <string name="app_name">Benefit</string>
     <string name="chat_title">Your Chatbox</string>
-    <string name="first_name_field">First name</string>
-    <string name="last_name_field">Last name</string>
-    <string name="address_field">City</string>
+    <string name="nickname_field">Nickname</string>
+    <string name="city_field">City</string>
     <string name="map_field_title">Move to your location</string>
     <string name="done_button">Done</string>
     <string name="required_fields_missing">Required fields are empty. Please enter additional details.</string>
@@ -42,7 +41,7 @@
     <string name="lets_start">Let\'s start</string>
     <string name="logging_in_title">Hang just a minute</string>
     <string name="sign_in_getting_user_title">You are in! Just checking if you are a new user.</string>
-    <string name="error_field_massge">Required field</string>
+    <string name="error_field_message">Required field</string>
     <string name="sign_in_fail_massage">Failed to sign in.</string>
     <string name="google_sign_in_fail_massage">Failed to sign in with google.</string>
     <string name="user_relay">user</string>
@@ -63,10 +62,6 @@
     <string name="filter">FILTERS</string>
     <string name="divider">|</string>
     <string name="sort">SORT</string>
-    <string name="user_location_relay">location</string>
-    <string name="user_address_relay">address</string>
-    <string name="user_last_name_relay">lastName</string>
-    <string name="user_first_name_relay">firstName</string>
     <string name="dialog_no_photo_or_title_heading">Hold Up!</string>
     <string name="default_and_hint_brand_name">Brand name...</string>
     <string name="chest_of_gold_description">Chest of gold to convey message of treasure</string>
@@ -83,14 +78,12 @@
     <string name="tip_lighting_description">Daylight photography or bright lighting will best highlight the color of the item.
         Clean the camera lens before each photo for a higher quality image.</string>
 
-    <!-- Facebook application ID and custom URL scheme (app ID prefixed by 'fb'). -->
-    <string name="facebook_application_id" translatable="false">2550633185150206</string>
-    <string name="facebook_login_protocol_scheme" translatable="false">fb2550633185150206</string>
     <string name="backButtonCaption">Back</string>
     <string name="productPageLocationTitleCaption">Location</string>
     <string name="productPagePropertiesSeparator">|</string>
     <string name="productPagePropertiesValuesSeparator">,</string>
     <string name="no_items_found">No items found</string>
+    <string name="invalid_phone_number">Invalid phone number</string>
     <string name="default_user_greeting">Hello You!</string>
     <string name="view_pager_finish_button_text">Finish</string>
     <string name="view_pager_next_button_text">Next</string>
@@ -98,6 +91,12 @@
     <string name="intent_extra_null_user_toast">NULL USER</string>
     <string name="intent_extra_no_user_key_toast">NO USER KEY</string>
     <string name="intent_extra_no_bundle_toast">NULL BUNDLE</string>
+    <string name="meta_category">metaCategory</string>
+    <string name="received_search">searchReceived</string>
+    <string name="displayed">displayed</string>
+    <string name="category">category</string>
+    <string name="cluster">cluster</string>
+    <string name="sign_out">sign out</string>
     <string-array name="chat_sort_options">
         <item>your items</item>
         <item>wanted items</item>

@@ -94,10 +94,10 @@
             android:visibility="visible">
 
             <TextView
-                android:id="@+id/first_name_title_text"
+                android:id="@+id/nickname_title_text"
                 style="@style/editFieldsTitle"
                 android:layout_marginTop="8dp"
-                android:text="@string/first_name_field" />
+                android:text="@string/nickname_field" />
 
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -108,29 +108,7 @@
                 app:boxStrokeWidth="2dp">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/first_name_input_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="textPersonName" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <TextView
-                android:id="@+id/last_name_title_text"
-                style="@style/editFieldsTitle"
-                android:layout_marginTop="8dp"
-                android:text="@string/last_name_field" />
-
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="48dp"
-                android:layout_marginEnd="48dp"
-                app:boxStrokeWidth="2dp">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/last_name_input_text"
+                    android:id="@+id/nickname_input_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textPersonName" />
@@ -160,10 +138,10 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
-                android:id="@+id/address_title_text"
+                android:id="@+id/city_title_text"
                 style="@style/editFieldsTitle"
                 android:layout_marginTop="8dp"
-                android:text="@string/address_field" />
+                android:text="@string/city_field" />
 
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -174,7 +152,7 @@
                 app:boxStrokeWidth="2dp">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/address_input_text"
+                    android:id="@+id/city_input_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textPersonName" />
@@ -191,7 +169,7 @@
 
             <fragment
                 android:id="@+id/googleMapFragment"
-                class="com.benefit.ui.WorkaroundMapFragment"
+                class="com.benefit.ui.fragments.WorkaroundMapFragment"
                 android:layout_width="match_parent"
                 android:layout_height="250dp"
                 android:layout_gravity="center_horizontal"

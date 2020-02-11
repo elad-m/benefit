@@ -1,4 +1,4 @@
-package com.benefit.ui;
+package com.benefit.ui.fragments;
 
 import android.content.Context;
 import android.os.Bundle;

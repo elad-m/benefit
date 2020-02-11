@@ -5,6 +5,7 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.telephony.PhoneNumberFormattingTextWatcher;
+
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -24,7 +25,7 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.benefit.R;
 import com.benefit.model.enums.LoginState;
-import com.benefit.ui.WorkaroundMapFragment;
+import com.benefit.ui.fragments.WorkaroundMapFragment;
 import com.benefit.viewmodel.SignInViewModel;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -47,10 +48,15 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  * This activity handle sign in and adding new user to database.
  */
 public class SignInActivity extends AppCompatActivity implements OnMapReadyCallback, OnMarkerDragListener {
+
+    private static final Boolean DEBUGGING = true;
 
     private static final String TAG = SignInActivity.class.getSimpleName();
     private static final int RC_GOOGLE_SIGN_IN = 9001;
@@ -69,7 +75,7 @@ public class SignInActivity extends AppCompatActivity implements OnMapReadyCallb
     private SignInButton googleSignInButton;
     private Button mailSignInButton, phoneSignInButton;
     private TextView title;
-    private TextInputEditText firstNameField, lastNameField, phoneField, addressField;
+    private TextInputEditText nicknameField, phoneField, cityField;
 
     // The entry point to the Fused Location Provider.
     private FusedLocationProviderClient mFusedLocationProviderClient;
@@ -85,6 +91,10 @@ public class SignInActivity extends AppCompatActivity implements OnMapReadyCallb
     // location retrieved by the Fused Location Provider.
     private Location mLastKnownLocation;
     private Marker mSelectedLocation;
+
+    //for checking if a phone number is valid
+    private final Pattern VALID_IL_MOBIL_NUMBER = Pattern.compile("(\\+972 |0)(5\\d-\\d{3}-\\d{4})");
+    private static final String IL_INITIAL = "+972 ";
 
 
     @Override
@@ -119,11 +129,10 @@ public class SignInActivity extends AppCompatActivity implements OnMapReadyCallb
         googleSignInButton.setOnClickListener(this::onGoogleSignInClicked);
         mailSignInButton = findViewById(R.id.mail_sign_in_button);
         phoneSignInButton = findViewById(R.id.phone_sign_in_button);
-        firstNameField = findViewById(R.id.first_name_input_text);
-        lastNameField = findViewById(R.id.last_name_input_text);
+        nicknameField = findViewById(R.id.nickname_input_text);
         phoneField = findViewById(R.id.phone_number_input_text);
         phoneField.addTextChangedListener(new PhoneNumberFormattingTextWatcher("IL"));
-        addressField = findViewById(R.id.address_input_text);
+        cityField = findViewById(R.id.city_input_text);
     }
 
     private void setUpGettingNewUserSucceeded() {
@@ -183,6 +192,9 @@ public class SignInActivity extends AppCompatActivity implements OnMapReadyCallb
                 break;
             case FINISH:
                 Intent intent = new Intent(this, MainActivity.class);
+                if (DEBUGGING){
+                    intent = new Intent(this, MainActivity2.class);
+                }
                 intent.putExtra(getString(R.string.user_relay), viewModel.getUser());
                 startActivity(intent);
                 finish();
@@ -405,31 +417,32 @@ public class SignInActivity extends AppCompatActivity implements OnMapReadyCallb
 
     public void onDoneClicked(View view) {
         if (viewModel.getLoginState() == LoginState.NEW_USER_SIGN_UP) {
-            firstNameField.setError(null);
-            lastNameField.setError(null);
-            String firstName = firstNameField.getText().toString();
-            String lastName = lastNameField.getText().toString();
+            nicknameField.setError(null);
+            phoneField.setError(null);
+            String nickname = nicknameField.getText().toString();
             String phoneNumber = phoneField.getText().toString();
-            String address = addressField.getText().toString();
-            if (firstName.isEmpty() || lastName.isEmpty() || phoneNumber.isEmpty()) {
+            String city = cityField.getText().toString();
+            if (nickname.isEmpty() || phoneNumber.isEmpty()) {
                 Toast.makeText(this, getString(R.string.required_fields_missing), Toast.LENGTH_LONG).show();
-                if (firstName.isEmpty()) {
-                    firstNameField.setError(getString(R.string.error_field_massge));
-                }
-                if (lastName.isEmpty()) {
-                    lastNameField.setError(getString(R.string.error_field_massge));
+                if (nickname.isEmpty()) {
+                    nicknameField.setError(getString(R.string.error_field_message));
                 }
                 if (phoneNumber.isEmpty()) {
-                    phoneField.setError(getString(R.string.error_field_massge));
+                    phoneField.setError(getString(R.string.error_field_message));
                 }
             } else {
-                viewModel.getUser().setFirstName(firstName);
-                viewModel.getUser().setLastName(lastName);
-                viewModel.getUser().setPhoneNumber(phoneNumber);
-                viewModel.getUser().setAddress(address);
-                viewModel.addNewUserToDatabase();
-                viewModel.setLoginState(LoginState.FINISH);
-                updateAccordingToLoginState();
+                Matcher phoneMatcher = VALID_IL_MOBIL_NUMBER.matcher(phoneNumber);
+                if (!phoneMatcher.find()) {
+                    Toast.makeText(this, getString(R.string.invalid_phone_number), Toast.LENGTH_LONG).show();
+                    phoneField.setError(getString(R.string.error_field_message));
+                } else {
+                    viewModel.getUser().setNickname(nickname);
+                    viewModel.getUser().setPhoneNumber(IL_INITIAL + phoneMatcher.group(2));
+                    viewModel.getUser().setCity(city);
+                    viewModel.addNewUserToDatabase();
+                    viewModel.setLoginState(LoginState.FINISH);
+                    updateAccordingToLoginState();
+                }
             }
         }
     }

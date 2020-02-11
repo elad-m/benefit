@@ -47,8 +47,8 @@ public class ProductsPageUI {
         this.view = view;
         this.currentCategory = currentCategory;
         this.categoryCluster = categoryCluster;
-        colorIcon();
-        productsDisplay = new ProductsDisplay(view.findViewById(android.R.id.content).getRootView(), PRODUCTS);
+        //colorIcon();
+        productsDisplay = new ProductsDisplay(view.getRootView(), PRODUCTS);
     }
 
     private void colorIcon() {
@@ -61,7 +61,7 @@ public class ProductsPageUI {
     }
 
     public void addMetaCategoryBar(List<Category> metaCategories) {
-        metaCategoryBar = new MetaCategoryBar(view.findViewById(android.R.id.content).getRootView());
+        metaCategoryBar = new MetaCategoryBar(view.getRootView());
         metaCategoryBar.createCategoryBar(metaCategories);
     }
 
