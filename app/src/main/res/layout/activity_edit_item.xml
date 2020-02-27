@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/colorWhite"
     android:layoutDirection="ltr"
-    tools:context=".activities.GiveItemActivity">
+    tools:context=".activities.EditItemActivity">
 
 
     <ScrollView
@@ -120,7 +120,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:onClick="onClickGive"
+            android:onClick="onClickDone"
             android:padding="20dp"
             android:text="@string/done_button"
             android:textAlignment="center"

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -19,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -49,12 +51,11 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 
 /**
- * This activity is used when the user wants to give/upload/offer item to his profile.
+ * This activity is used when the user wants to edit item in his profile.
  */
-public class GiveItemActivity extends AppCompatActivity {
+public class EditItemActivity extends AppCompatActivity {
 
     private static final int PICK_IMAGE = 1;
-    private static final int SNAP_PHOTO = 2;
     private static final int FIRST_CHILD_INDEX = 0;
 
     private StorageDriver storageDriver;
@@ -71,7 +72,6 @@ public class GiveItemActivity extends AppCompatActivity {
 
     // the following group are fields for creating a Product
     private Product mProductToEdit;
-    private boolean mIsInEditMode = false;
     private User mUser;
     private Uri mImageUri;
     private String mImageUrl;
@@ -119,12 +119,9 @@ public class GiveItemActivity extends AppCompatActivity {
             }
             if (bundleKeySet.contains(productKey)) {
                 mProductToEdit = (Product) bundle.getSerializable(productKey);
-                mIsInEditMode = true;
                 setContentView(R.layout.activity_edit_item);
             } else {
-                // todo: is this really the best way to do this? run the activity as upload when
-                // todo: it doesn't get a product in the extras?
-                setContentView(R.layout.activity_give_item);
+                makeToast(this.getString(R.string.intent_extra_no_product_key_toast));
             }
         } else {
             makeToast(this.getString(R.string.intent_extra_no_bundle_toast));
@@ -155,14 +152,8 @@ public class GiveItemActivity extends AppCompatActivity {
     }
 
     private void createActivityByMode() {
-        if (mIsInEditMode) {
-            loadProductFromExtras();
-            setMetaCategoryId(); // contains createAttributeChips
-
-        } else {
-            createActionBar();
-            createAttributeChips();
-        }
+        loadProductFromExtras();
+        setMetaCategoryId(); // contains createAttributeChips
     }
 
     private void loadBrandOnEdit() {
@@ -286,9 +277,9 @@ public class GiveItemActivity extends AppCompatActivity {
         chipGroup.addView(chip);
     }
 
-    private boolean checkCreatedChipIfInEdit(PropertyName propertyName, String propertyValue) {
+    private boolean isPropertyValueToCheck(PropertyName propertyName, String propertyValue) {
         String propertyNameBeingCreated = propertyName.getName();
-        if (mIsInEditMode && !propertyNameBeingCreated.isEmpty() && !mProperties.isEmpty()) {
+        if (!propertyNameBeingCreated.isEmpty() && !mProperties.isEmpty()) {
             List<String> propertyValues = mProperties.get(propertyNameBeingCreated);
             if (propertyValues != null) {
                 // for now assuming single property
@@ -309,6 +300,7 @@ public class GiveItemActivity extends AppCompatActivity {
 
         final List<PropertyName> observedPropertyNames = new LinkedList<>();
         final Observer<List<PropertyName>> propertyNamesObserver = new Observer<List<PropertyName>>() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onChanged(List<PropertyName> propertyNames) {
                 observedPropertyNames.addAll(propertyNames);
@@ -318,6 +310,7 @@ public class GiveItemActivity extends AppCompatActivity {
         categoryService.getAllPropertiesByCategoryId(categoryId).observe(this, propertyNamesObserver);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     private void createChipGroupsFromProperties(List<PropertyName> propertyNames,
                                                 ChipGroup categoryChipGroup) {
         for (PropertyName propertyName : propertyNames) {
@@ -326,6 +319,7 @@ public class GiveItemActivity extends AppCompatActivity {
         addCategoriesAndPropertiesChipGroupsToLayout(categoryChipGroup);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     private int addPropertiesAsChipsToChipGroup(PropertyName propertyName,
                                                 ChipGroup propertyGroup) {
 
@@ -333,7 +327,7 @@ public class GiveItemActivity extends AppCompatActivity {
         int chipIndexToCheck = FIRST_CHILD_INDEX;
         for (String value : propertyValues) {
             addPropertyAsChipToChipGroup(value, propertyName, propertyGroup);
-            if (checkCreatedChipIfInEdit(propertyName, value)) {
+            if (isPropertyValueToCheck(propertyName, value)) {
                 chipIndexToCheck = propertyValues.indexOf(value);
             }
         }
@@ -349,6 +343,7 @@ public class GiveItemActivity extends AppCompatActivity {
         propertyGroup.addView(chip);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     private void createChipGroupForPropertyName(PropertyName propertyName) {
 
         if (propertyName.getValidValues() == null)
@@ -472,7 +467,7 @@ public class GiveItemActivity extends AppCompatActivity {
      * =========================== Defining Activity Click events ================================
      */
 
-    public void onClickGive(View view) {
+    public void onClickDone(View view) {
         if (mImageUri == null || isThereNoTitle()) {
             createNoPhotoOrTitleDialog();
         } else {
@@ -486,14 +481,9 @@ public class GiveItemActivity extends AppCompatActivity {
                     itemTitle, itemDescription, 0, 0, date, mProperties, imagesUrls);
 
             productService.addProduct(productToAdd);
-            if (mIsInEditMode) {
-                productService.deleteProduct(mProductToEdit.getId());
-                Toast.makeText(this, "Changes Saved!", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(this, UserProfileActivity.class);
-                startActivity(intent);
-            } else {
-                createThankYouDailog();
-            }
+            productService.deleteProduct(mProductToEdit.getId());
+            Toast.makeText(this, "Changes Saved!", Toast.LENGTH_SHORT).show();
+            finish();
         }
     }
 
@@ -509,19 +499,6 @@ public class GiveItemActivity extends AppCompatActivity {
         return imagesUrls;
     }
 
-    private void createThankYouDailog() {
-        mThankYouDailog = new Dialog(this);
-        mThankYouDailog.setContentView(R.layout.dialog_thank_you);
-        mThankYouDailog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        mThankYouDailog.show();
-    }
-
-
-    public void doneButton(View view) {
-        mThankYouDailog.dismiss();
-        Intent intent = new Intent(this, UserProfileActivity.class);
-        startActivity(intent);
-    }
 
     private void paintRedMissingFields() {
         if (isThereNoTitle()) {
@@ -562,28 +539,8 @@ public class GiveItemActivity extends AppCompatActivity {
         mNoPhotoOrTitleAlertrDialog.show();
     }
 
-
-    public void popTipsDialog(View view) {
-        Intent intent = new Intent(getApplicationContext(), TipsActivity.class);
-        startActivity(intent);
-    }
-
-
     public void onClickBack(View view) {
         finish();
-    }
-
-
-    private void createActionBar() {
-        View view = findViewById(R.id.chosen_view);
-        view.setVisibility(View.INVISIBLE);
-        Button givePlusButton = findViewById(R.id.give_icon);
-        givePlusButton.setBackground(getResources().getDrawable(R.drawable.ic_give_colored));
-        setHeaderListeners();
-    }
-
-    private void setHeaderListeners() {
-        HeaderClickListener.setHeaderListeners(this);
     }
 
     @Override
