@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.PopupWindow;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -158,6 +159,7 @@ public class AllProductsFragment extends Fragment {
         setWindow();
         pageUI = new ProductsPageUI(allProductsView, currentCategory, categoryCluster);
         getAllMetaCategories();
+        addFilterListener();
         if (searchExecuted) {
             search(ALL_CATEGORY_SEARCH, searchText);
         }
@@ -268,9 +270,15 @@ public class AllProductsFragment extends Fragment {
         }
     }
 
-    public void openFilterPopup(View view) {
-        pageUI.openFilter(view, allFilters, currentFilters);
-        setFilterOnClickListeners(pageUI.getPopupView(), pageUI.getPopup(), pageUI.getFilterPopup());
+    private void addFilterListener(){
+        TextView filterButton = allProductsView.findViewById(R.id.filter);
+        filterButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                pageUI.openFilter(view, allFilters, currentFilters);
+                setFilterOnClickListeners(pageUI.getPopupView(), pageUI.getPopup(), pageUI.getFilterPopup());
+            }
+        });
     }
 
     private void setFilterOnClickListeners(View layout, final PopupWindow popup, final FilterPopup filterPopup) {
@@ -281,12 +289,14 @@ public class AllProductsFragment extends Fragment {
         done.setOnClickListener(v -> {
             currentFilters = filterPopup.getCurrentFilters();
             popup.dismiss();
-            pageUI.writeFiltersOnScreen(currentFilters);
-            pageUI.refreshTable();
-            if (currentFilters.size() == 0) {
-                addProductsToScreen();
-            } else {
-                showAllFilteredProducts();
+            if (!searchExecuted) {
+                pageUI.writeFiltersOnScreen(currentFilters);
+                pageUI.refreshTable();
+                if (currentFilters.size() == 0) {
+                    addProductsToScreen();
+                } else {
+                    showAllFilteredProducts();
+                }
             }
         });
     }

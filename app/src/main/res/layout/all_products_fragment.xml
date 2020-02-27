@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/all_products"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white"
@@ -20,10 +21,12 @@
         android:layoutDirection="ltr"
         app:layout_constraintHeight_percent="0.054"
         app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintVertical_chainStyle="spread"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintWidth_percent="0.81"
+        app:layout_constraintBottom_toBottomOf="@id/meta_category_guide"
         app:queryHint="@string/search"
         app:searchIcon="@drawable/ic_search_bar_icon" />
 
@@ -57,7 +60,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.16" />
+        app:layout_constraintGuide_percent="0.2" />
 
 
     <TextView
@@ -66,7 +69,6 @@
         android:layout_height="wrap_content"
         android:background="@android:color/white"
         android:elevation="@dimen/no_elevation"
-        android:onClick="openFilterPopup"
         android:text="@string/filter"
         android:textColor="@color/colorBenefitBlue"
         android:textSize="@dimen/filters_word_text_size"
@@ -81,7 +83,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.26" />
+        app:layout_constraintGuide_percent="0.3" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/current_filter_guide_vertical"
