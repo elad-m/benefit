@@ -72,13 +72,11 @@ public class GiveFragment extends Fragment {
     private CategoryService categoryService;
     private ProductService productService;
     private LayoutInflater mInflater;
-    private ViewGroup mContainer;
     private View mFragmentRootView;
 
     private Dialog mThankYouDailog;
     private Dialog mNoPhotoOrTitleAlertrDialog;
     private LinearLayout mActivityRootLinearLayout;
-    private String brandAsString;
 
     private boolean mHaveCategoriesBeenInflatedOnce = false;
 
@@ -90,7 +88,6 @@ public class GiveFragment extends Fragment {
     private EditText mEdTextTitle;
     private EditText mEdTextBrand;
     private ImageButton mImageButtonUpload;
-    private TextView mGiveButton;
     private LinearLayout mBrandLayout;
     private int mMetaCategory;
     private int mCategoryGroupIndexInLayout;
@@ -103,7 +100,6 @@ public class GiveFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         mInflater = inflater;
-        mContainer = container;
         return inflater.inflate(R.layout.fragment_give, container, false);
     }
 
@@ -130,28 +126,43 @@ public class GiveFragment extends Fragment {
 
     private void instantiateDataMembers() {
         mFragmentRootView = getView();
+        mActivityRootLinearLayout = mFragmentRootView.findViewById(R.id.activity_root_linear_layout);
         mEdTextTitle = mFragmentRootView.findViewById(R.id.item_title_text);
-        brandAsString = getResources().getString(R.string.brand_property_name);
+        createClickables();
+        createBrandLayout();
+
+    }
+
+    private void createBrandLayout() {
+        View brandLayout = mInflater.inflate(R.layout.brand_text_input_layout, null);
+        mEdTextBrand = brandLayout.findViewById(R.id.item_brand);
+        mBrandLayout = (LinearLayout) brandLayout;
+    }
+
+    private void createClickables(){
         mImageButtonUpload = mFragmentRootView.findViewById(R.id.image_button_choose_image);
+        TextView mGiveButton = mFragmentRootView.findViewById(R.id.give_button);
+        LinearLayout  mTipButton = mFragmentRootView.findViewById(R.id.give_item_tips_layout);
         mImageButtonUpload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 openFileChooser(v);
             }
         });
-        mGiveButton = mFragmentRootView.findViewById(R.id.give_button);
+
         mGiveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onClickGive(v);
             }
         });
-        mActivityRootLinearLayout = mFragmentRootView.findViewById(R.id.activity_root_linear_layout);
-//        mInflater = LayoutInflater.from(this); // todo: might bug
-        View brandLayout = mInflater.inflate(R.layout.brand_text_input_layout, null);
-        mEdTextBrand = brandLayout.findViewById(R.id.item_brand);
-        mBrandLayout = (LinearLayout) brandLayout;
 
+        mTipButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startTipsActivity(v);
+            }
+        });
     }
 
 
@@ -506,7 +517,7 @@ public class GiveFragment extends Fragment {
     }
 
 
-    public void popTipsDialog(View view) {
+    public void startTipsActivity(View view) {
         Intent intent = new Intent(getContext(), TipsActivity.class);
         startActivity(intent);
     }

@@ -50,7 +50,6 @@
                 android:layout_margin="@dimen/give_item_margins"
                 android:clickable="true"
                 android:focusable="true"
-                android:onClick="popTipsDialog"
                 android:orientation="vertical">
 
                 <ImageView
