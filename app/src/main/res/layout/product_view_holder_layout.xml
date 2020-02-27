@@ -18,19 +18,21 @@
             android:id="@+id/image_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/item_layout_bg"
             android:orientation="vertical"
-
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <ImageView
+            <com.github.siyamed.shapeimageview.RoundedImageView
                 android:id="@+id/item_image"
                 android:layout_width="@dimen/clothing_item_image_width"
                 android:layout_height="@dimen/clothing_item_image_height"
                 android:contentDescription="@string/clothing_item_image_description"
-                android:background="@color/colorGrayLight"/>
+
+                app:siRadius="@dimen/default_corner_radius"
+                app:siBorderWidth="0.5dp"
+                app:siBorderColor="@color/horizontal_line_color"
+                app:siSquare="true"/>
         </LinearLayout>
 
         <TextView

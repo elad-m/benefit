@@ -14,19 +14,21 @@ import com.benefit.R;
 import com.benefit.model.Product;
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Adapter for the user's products RecyclerView.
  */
 public class ProductRecyclerAdapter extends RecyclerView.Adapter<ProductRecyclerAdapter.ProductViewHolder> {
-    private ArrayList<Product> mProducts;
+    private List<Product> mProducts;
     private OnItemClickListener mListener;
     private RecyclerView mRecyclerView;
 
     public interface OnItemClickListener {
         void onItemClick(int position, View view);
+
         void onDeleteClick(int posotion, View view);
+
         void onEditClick(int position, View view);
     }
 
@@ -88,7 +90,7 @@ public class ProductRecyclerAdapter extends RecyclerView.Adapter<ProductRecycler
         }
     }
 
-    public ProductRecyclerAdapter(ArrayList<Product> itemList) {
+    public ProductRecyclerAdapter(List<Product> itemList) {
         mProducts = itemList;
     }
 
@@ -97,8 +99,7 @@ public class ProductRecyclerAdapter extends RecyclerView.Adapter<ProductRecycler
     public ProductViewHolder onCreateViewHolder(@NonNull ViewGroup parent,
                                                 int viewType) {
         View clothingItemAsView = LayoutInflater.from(parent.getContext()).inflate(
-                R.layout.product_view_holder_layout, parent, false);  // TODO OOOOOOOOOOOO
-        clothingItemAsView.findViewById(R.id.image_layout).setClipToOutline(true);
+                R.layout.product_view_holder_layout, parent, false);
         mRecyclerView = (RecyclerView) parent;
         return new ProductViewHolder(clothingItemAsView, mListener);
     }
@@ -119,6 +120,16 @@ public class ProductRecyclerAdapter extends RecyclerView.Adapter<ProductRecycler
     @Override
     public int getItemCount() {
         return mProducts.size();
+    }
+
+    public void clear() {
+        mProducts.clear();
+        notifyDataSetChanged();
+    }
+
+    public void addAll(List<Product> products) {
+        mProducts.addAll(products);
+        notifyDataSetChanged();
     }
 
 

@@ -24,7 +24,7 @@
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activities.GiveItemActivity"
+            android:name=".activities.EditItemActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
         <activity
@@ -64,11 +64,8 @@
         <activity android:name=".activities.AllProductsActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"/>
-        <activity android:name=".activities.UserProfileActivity"
-            android:configChanges="orientation"
-            android:screenOrientation="portrait"/>
         <activity android:name=".activities.TipsActivity"
-            android:parentActivityName=".activities.GiveItemActivity"/>
+            android:parentActivityName=".activities.EditItemActivity"/>
     </application>
 
 </manifest>

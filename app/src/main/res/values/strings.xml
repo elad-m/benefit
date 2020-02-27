@@ -97,6 +97,7 @@
     <string name="category">category</string>
     <string name="cluster">cluster</string>
     <string name="sign_out">sign out</string>
+    <string name="intent_extra_no_product_key_toast">NO PRODUCT KEY</string>
     <string-array name="chat_sort_options">
         <item>your items</item>
         <item>wanted items</item>
