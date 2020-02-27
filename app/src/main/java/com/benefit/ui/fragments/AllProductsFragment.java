@@ -1,21 +1,22 @@
 package com.benefit.ui.fragments;
 
 
+import android.os.Build;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.widget.SearchView;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.PopupWindow;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.widget.SearchView;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.benefit.R;
 import com.benefit.activities.MainActivity2;
@@ -50,11 +51,11 @@ public class AllProductsFragment extends Fragment {
                                                   Category metaCategoryChosen){
         AllProductsFragment fragment = new AllProductsFragment();
         if (fromSearch){
-            fragment.are_products_displayed = true;
+            fragment.searchExecuted = fromSearch;
             fragment.searchText = searchText;
         }
         else {
-            fragment.whichProductsDisplayed = itemsDisplayed;
+            fragment.multiOrSingleCategory = itemsDisplayed;
             fragment.metaCategoryChosen = metaCategoryChosen;
             switch (itemsDisplayed){
                 case MULTIPLE_CATEGORIES_DISPLAYED:
@@ -69,8 +70,8 @@ public class AllProductsFragment extends Fragment {
         return fragment;
     }
 
-    private boolean are_products_displayed = false;
-    private int whichProductsDisplayed;
+    private boolean searchExecuted = false;
+    private int multiOrSingleCategory;
     private Category currentCategory;
     private Category metaCategoryChosen;
     private CategoryCluster categoryCluster;
@@ -81,6 +82,7 @@ public class AllProductsFragment extends Fragment {
     private CategoryService categoryService;
     private ProductService productService;
     private SearchService searchService;
+    private View allProductsView;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -88,6 +90,12 @@ public class AllProductsFragment extends Fragment {
         return inflater.inflate(R.layout.all_products_fragment, container, false);
     }
 
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState){
+        super.onViewCreated(view, savedInstanceState);
+        allProductsView = view;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -108,8 +116,8 @@ public class AllProductsFragment extends Fragment {
     }
 
     private void extractBundle(Bundle savedInstanceState){
-        are_products_displayed = savedInstanceState.getBoolean(getResources().getString(R.string.received_search));
-        whichProductsDisplayed = savedInstanceState.getInt(getResources().getString(R.string.displayed));
+        searchExecuted = savedInstanceState.getBoolean(getResources().getString(R.string.received_search));
+        multiOrSingleCategory = savedInstanceState.getInt(getResources().getString(R.string.displayed));
         currentCategory = (Category) savedInstanceState.getSerializable(getResources().getString(R.string.category));
         categoryCluster = (CategoryCluster) savedInstanceState.getSerializable(getResources().getString(R.string.cluster));
         metaCategoryChosen = (Category) savedInstanceState.getSerializable(getResources().getString(R.string.meta_category));
@@ -130,7 +138,7 @@ public class AllProductsFragment extends Fragment {
                 searchService.getProductsBySearchString(searchText).observe(this, searchObserver);
                 break;
             case SPECIFIC_CATEGORY_SEARCH:
-                switch (whichProductsDisplayed) {
+                switch (multiOrSingleCategory) {
                     case MULTIPLE_CATEGORIES_DISPLAYED:
                         for (int categoryId : categoryCluster.getCategoryIdList()) {
                             searchService.getProductsBySearchString(searchText, categoryId).
@@ -145,13 +153,17 @@ public class AllProductsFragment extends Fragment {
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     private void initiateWindow() {
         setWindow();
-        pageUI = new ProductsPageUI(getView(), currentCategory, categoryCluster);
+        pageUI = new ProductsPageUI(allProductsView, currentCategory, categoryCluster);
         getAllMetaCategories();
-        if (!are_products_displayed) {
+        if (searchExecuted) {
+            search(ALL_CATEGORY_SEARCH, searchText);
+        }
+        else {
             addProductsToScreen();
-            if (whichProductsDisplayed == ONE_CATEGORY_DISPLAYED) {
+            if (multiOrSingleCategory == ONE_CATEGORY_DISPLAYED) {
                 getFilters(currentCategory.getIdAsInt());
             } else {
                 getAllCategoryFilters();
@@ -192,7 +204,7 @@ public class AllProductsFragment extends Fragment {
     }
 
     private void addProductsToScreen() {
-        switch (whichProductsDisplayed) {
+        switch (multiOrSingleCategory) {
             case MULTIPLE_CATEGORIES_DISPLAYED:
                 for (int categoryId : categoryCluster.getCategoryIdList()) {
                     showProducts(CATEGORY_PRODUCTS, categoryId);
@@ -227,6 +239,7 @@ public class AllProductsFragment extends Fragment {
         });
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     private void getFilters(int categoryId) {
         final Observer<List<PropertyName>> propertiesObserver = properties -> {
             for (PropertyName propertyName : properties) {
@@ -248,6 +261,7 @@ public class AllProductsFragment extends Fragment {
         return true;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     private void getAllCategoryFilters() {
         for (int categoryId : categoryCluster.getCategoryIdList()) {
             getFilters(categoryId);
@@ -278,7 +292,7 @@ public class AllProductsFragment extends Fragment {
     }
 
     private void showAllFilteredProducts() {
-        switch (whichProductsDisplayed) {
+        switch (multiOrSingleCategory) {
             case MULTIPLE_CATEGORIES_DISPLAYED:
                 for (int id : categoryCluster.getCategoryIdList()) {
                     showProducts(FILTERED_PRODUCTS, id);
@@ -291,7 +305,7 @@ public class AllProductsFragment extends Fragment {
     }
 
     private void addSearchListener() {
-        SearchView searchView = getView().findViewById(R.id.search_input);
+        SearchView searchView = allProductsView.findViewById(R.id.search_input);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -312,8 +326,8 @@ public class AllProductsFragment extends Fragment {
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putBoolean(getResources().getString(R.string.received_search), are_products_displayed);
-        outState.putInt(getResources().getString(R.string.displayed), whichProductsDisplayed);
+        outState.putBoolean(getResources().getString(R.string.received_search), searchExecuted);
+        outState.putInt(getResources().getString(R.string.displayed), multiOrSingleCategory);
         outState.putSerializable(getResources().getString(R.string.category), currentCategory);
         outState.putSerializable(getResources().getString(R.string.cluster), categoryCluster);
         outState.putSerializable(getResources().getString(R.string.meta_category), metaCategoryChosen);
