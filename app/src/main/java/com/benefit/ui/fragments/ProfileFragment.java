@@ -17,6 +17,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.benefit.R;
 import com.benefit.activities.EditItemActivity;
@@ -39,14 +40,13 @@ public class ProfileFragment extends Fragment {
         return fragment;
     }
 
+    private ProductService productService;
     private RecyclerView recyclerView;
     private ProductRecyclerAdapter adapter;
     private RecyclerView.LayoutManager layoutManager;
-    private ProductService productService;
-    private User user;
+    private SwipeRefreshLayout swipeContainer;
     private View fragmentRootView;
-
-    ArrayList<Product> products = new ArrayList<>();
+    private User user;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -82,8 +82,7 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onChanged(List<Product> observedProducts) {
                 userProducts.addAll(observedProducts);
-                products.addAll(userProducts);
-                buildRecyclerView();
+                buildRecyclerView(userProducts);
                 setGreeting();
             }
         };
@@ -92,17 +91,51 @@ public class ProfileFragment extends Fragment {
 
     }
 
+    private void getUserProductsSwipe() {
+        final List<Product> userProducts = new ArrayList<>();
+        final Observer<List<Product>> userProductsObserver = new Observer<List<Product>>() {
 
-    private void buildRecyclerView() {
+            @Override
+            public void onChanged(List<Product> observedProducts) {
+                userProducts.addAll(observedProducts);
+                adapter.addAll(userProducts);
+                swipeContainer.setRefreshing(false);
+            }
+        };
+        productService.getProductsBySellerId(user.getUid())
+                .observe(this, userProductsObserver);
+
+    }
+
+    private void setSwipeContainer(){
+        swipeContainer = fragmentRootView.findViewById(R.id.swipe_item_recycler);
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+
+                adapter.clear();
+                getUserProductsSwipe();
+            }
+        });
+        swipeContainer.setColorSchemeResources(R.color.colorBenefitBlue);
+
+    }
+
+
+    private void buildRecyclerView(List<Product> products) {
         fragmentRootView = getView();
+        setSwipeContainer();
+
         recyclerView = fragmentRootView.findViewById(R.id.items_recycler);
         recyclerView.setHasFixedSize(true);
         layoutManager = new GridLayoutManager(getActivity(), 2);
         adapter = new ProductRecyclerAdapter(products);
-
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
+        setAdapterClickListeners();
+    }
 
+    private void setAdapterClickListeners() {
         adapter.setOnItemClickListener(new ProductRecyclerAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position, View view) {
@@ -121,7 +154,7 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onEditClick(int position, View editButtonView) {
                 Product productToEdit = getProductFromButtonView(editButtonView);
-                Intent intent = new Intent(getActivity(), EditItemActivity.class); // todo: separate the two
+                Intent intent = new Intent(getActivity(), EditItemActivity.class);
                 intent.putExtra(getActivity().getString(R.string.product_relay), productToEdit);
                 startActivity(intent);
             }
@@ -149,7 +182,6 @@ public class ProfileFragment extends Fragment {
     }
 
     public void removeItem(int position) {
-        products.remove(position);
         adapter.notifyItemRemoved(position);
     }
 
