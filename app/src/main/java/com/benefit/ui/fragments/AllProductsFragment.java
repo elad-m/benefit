@@ -88,7 +88,7 @@ public class AllProductsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.all_products_fragment, container, false);
+        return inflater.inflate(R.layout.fragment_all_products, container, false);
     }
 
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState){
@@ -157,7 +157,8 @@ public class AllProductsFragment extends Fragment {
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void initiateWindow() {
         setWindow();
-        pageUI = new ProductsPageUI(allProductsView, currentCategory, categoryCluster);
+        pageUI = new ProductsPageUI(allProductsView, currentCategory, categoryCluster,
+                getActivity().findViewById(R.id.header));
         getAllMetaCategories();
         addFilterListener();
         if (searchExecuted) {

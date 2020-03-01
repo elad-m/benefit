@@ -16,10 +16,9 @@ import androidx.lifecycle.ViewModelProviders;
 import com.benefit.R;
 import com.benefit.model.Product;
 import com.benefit.model.User;
-import com.benefit.utilities.HeaderClickListener;
-import com.benefit.utilities.Factory;
 import com.benefit.services.ProductService;
 import com.benefit.services.UserService;
+import com.benefit.utilities.Factory;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -124,7 +123,7 @@ public class ProductPageActivity extends AppCompatActivity implements OnMapReady
     }
 
     private void setHeaderListeners() {
-        HeaderClickListener.setHeaderListeners(this);
+
     }
 
     @Override

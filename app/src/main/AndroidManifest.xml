@@ -20,10 +20,6 @@
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activities.MainActivity"
-            android:configChanges="orientation"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".activities.EditItemActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
@@ -59,9 +55,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".activities.ProductPageActivity"
-            android:configChanges="orientation"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".activities.AllProductsActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"/>
         <activity android:name=".activities.TipsActivity"

@@ -139,10 +139,10 @@ public class GiveFragment extends Fragment {
         mBrandLayout = (LinearLayout) brandLayout;
     }
 
-    private void createClickables(){
+    private void createClickables() {
         mImageButtonUpload = mFragmentRootView.findViewById(R.id.image_button_choose_image);
         TextView mGiveButton = mFragmentRootView.findViewById(R.id.give_button);
-        LinearLayout  mTipButton = mFragmentRootView.findViewById(R.id.give_item_tips_layout);
+        LinearLayout mTipButton = mFragmentRootView.findViewById(R.id.give_item_tips_layout);
         mImageButtonUpload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -377,7 +377,6 @@ public class GiveFragment extends Fragment {
      */
 
     // todo: what to do with this one?
-
     public void openFileChooser(View v) {
         Intent intent = new Intent();
         intent.setType("image/*");
@@ -521,20 +520,6 @@ public class GiveFragment extends Fragment {
         Intent intent = new Intent(getContext(), TipsActivity.class);
         startActivity(intent);
     }
-
-//
-//    private void createActionBar() {
-//        View view = mFragmentRootView.findViewById(R.id.chosen_view);
-//        view.setVisibility(View.INVISIBLE);
-//        Button givePlusButton = mFragmentRootView.findViewById(R.id.give_icon);
-//        givePlusButton.setBackground(getResources().getDrawable(R.drawable.ic_give_colored));
-//        setHeaderListeners();
-//    }
-//
-//    private void setHeaderListeners() {
-//        // todo: change the argument from appcompatactivity to fragment activity
-//        HeaderClickListener.setHeaderListeners(getActivity());
-//    }
 
 
 }

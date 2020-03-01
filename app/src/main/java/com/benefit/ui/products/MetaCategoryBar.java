@@ -41,7 +41,7 @@ public class MetaCategoryBar {
 
     public Button createCategoryBar(List<Category> category, Category existingMetaCategory) {
         this.category = category;
-        LinearLayout bar = view.findViewById(R.id.filter_bar);
+        LinearLayout bar = view.findViewById(R.id.meta_category_layout);
         Button existingCategoryButton = null;
         for (int i = 0; i < category.size(); i++) {
             Button metaCategoryButton = new Button(view.getContext());
@@ -61,7 +61,7 @@ public class MetaCategoryBar {
 
     public void createCategoryBar(List<Category> category) {
         this.category = category;
-        LinearLayout bar = view.findViewById(R.id.filter_bar);
+        LinearLayout bar = view.findViewById(R.id.meta_category_layout);
         for (int i = 0; i < category.size(); i++) {
             Button metaCategoryButton = new Button(view.getContext());
             metaCategoryButton.setText(category.get(i).getName());

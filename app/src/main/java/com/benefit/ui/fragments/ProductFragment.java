@@ -56,7 +56,7 @@ public class ProductFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.product_fragment, container, false);
+        return inflater.inflate(R.layout.fragment_product, container, false);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
