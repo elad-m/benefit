@@ -1,5 +1,6 @@
 package com.benefit.ui.fragments;
 
+import android.content.ComponentName;
 import android.content.Intent;
 import android.location.Location;
 import android.location.LocationManager;
@@ -13,10 +14,14 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.telephony.PhoneNumberUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.benefit.R;
@@ -27,6 +32,7 @@ import com.benefit.services.UserService;
 import com.benefit.utilities.Factory;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -34,8 +40,9 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
-public class ProductFragment extends Fragment {
+public class ProductFragment extends Fragment implements OnMapReadyCallback {
 
 
     public static ProductFragment newInstance(Product product, User user) {
@@ -49,9 +56,10 @@ public class ProductFragment extends Fragment {
     private User user;
     private ProductService productService;
     private UserService userService;
-
+    private static final String TAG = "ProductPageActivity";
     private GoogleMap mMap;
     private Location mapLocation;
+
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -83,11 +91,17 @@ public class ProductFragment extends Fragment {
         TextView textViewDescription = getActivity().findViewById(R.id.textviewProductPageDescription);
         TextView textViewProperties = getActivity().findViewById(R.id.textviewProductPageProperties);
         ImageView imageView = getActivity().findViewById(R.id.prpImagePlaceholder);
+
+        LinearLayout backButton = getView().findViewById(R.id.product_page_back_button);
+        backButton.setVisibility(View.INVISIBLE);
+
         textViewTitle.setText(product.getTitle());
         textViewDescription.setText(product.getDescription());
         textViewProperties.setText(getPropertiesString(product.getProperties()));
         Picasso.get().load(product.getImagesUrls().get(0)).into(imageView);
-        final Observer<User> userObserver = this::displayMap;
+//        final Observer<User> userObserver = this::displayMap;
+        final Observer<User> userObserver = this::userActions;
+
         userService.getUserById(product.getSellerId()).observe(this, userObserver);
     }
 
@@ -112,13 +126,25 @@ public class ProductFragment extends Fragment {
         this.mapLocation = new Location(LocationManager.GPS_PROVIDER);
         this.mapLocation.setLongitude(user.getLocationLongitude());
         this.mapLocation.setLatitude(user.getLocationLatitude());
-        SupportMapFragment mapFragment = (SupportMapFragment) getActivity().getSupportFragmentManager()
-                .findFragmentById(R.id.productPageMapFragment);
+//        SupportMapFragment mapFragment = (SupportMapFragment) getActivity().getSupportFragmentManager()
+//                .findFragmentById(R.id.productPageMapFragment);
 //        Objects.requireNonNull(mapFragment).getMapAsync(this);
 
     }
 
-    //    @Override
+    private void userActions(User user) {
+        this.mapLocation = new Location(LocationManager.GPS_PROVIDER);
+        this.mapLocation.setLongitude(user.getLocationLongitude());
+        this.mapLocation.setLatitude(user.getLocationLatitude());
+//        SupportMapFragment mapFragment = (SupportMapFragment) getFragmentManager()
+//                .findFragmentById(R.id.productPageMapFragment);
+//        Objects.requireNonNull(mapFragment).getMapAsync(this);
+//        final Button contactGiverButton = getView().findViewById(R.id.contact_giver_button);
+//        contactGiverButton.setOnClickListener(v -> openWhatsApp(user.getPhoneNumber()));
+
+    }
+
+    @Override
     public void onMapReady(GoogleMap googleMap) {
         this.mMap = googleMap;
         LatLng coordinates = new LatLng(mapLocation.getLatitude(), mapLocation.getLongitude());
@@ -140,6 +166,24 @@ public class ProductFragment extends Fragment {
         outState.putSerializable("product", product);
 
     }
+
+    private void openWhatsApp(String number) {
+        try {
+            number = number.replace(" ", "").replace("+", "");
+
+            Intent sendIntent = new Intent("android.intent.action.MAIN");
+            sendIntent.setComponent(new ComponentName("com.whatsapp", "com.whatsapp.Conversation"));
+            sendIntent.putExtra("jid", PhoneNumberUtils.stripSeparators(number) + "@s.whatsapp.net");
+            this.startActivity(sendIntent);
+
+        } catch (Exception e) {
+            Log.e(TAG, "ERROR_OPEN_MESSANGER" + e.toString());
+        }
+    }
+
+
+
+
 
 
 }
