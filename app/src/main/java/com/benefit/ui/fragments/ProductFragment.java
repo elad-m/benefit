@@ -144,12 +144,11 @@ public class ProductFragment extends Fragment implements OnMapReadyCallback {
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putSerializable("product", product);
-
     }
 
     private void openSms(String numero) {
         Intent intent = new Intent(Intent.ACTION_SEND);
-        intent.setData(Uri.parse("smsto:" + numero)); // This ensures only SMS apps respond
+        intent.setData(Uri.parse("smsto:" + numero));
         if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
             startActivity(intent);
         }
