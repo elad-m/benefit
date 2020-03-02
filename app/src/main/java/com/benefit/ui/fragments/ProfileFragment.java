@@ -21,7 +21,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.benefit.R;
 import com.benefit.activities.EditItemActivity;
-import com.benefit.activities.ProductPageActivity;
+import com.benefit.activities.MainActivity;
 import com.benefit.adapters.ProductRecyclerAdapter;
 import com.benefit.model.Product;
 import com.benefit.model.User;
@@ -140,9 +140,7 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onItemClick(int position, View view) {
                 Product clickedProduct = (Product) view.getTag();
-                Intent intent = new Intent(getActivity(), ProductPageActivity.class);
-                intent.putExtra("product", clickedProduct);
-                startActivity(intent);
+                ((MainActivity) getActivity()).startProductFragment(clickedProduct);
             }
 
             @Override

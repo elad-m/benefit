@@ -27,7 +27,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.benefit.R;
-import com.benefit.activities.MainActivity2;
+import com.benefit.activities.MainActivity;
 import com.benefit.activities.TipsActivity;
 import com.benefit.drivers.StorageDriver;
 import com.benefit.model.Category;
@@ -468,7 +468,7 @@ public class GiveFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 mThankYouDailog.dismiss();
-                ((MainActivity2) getActivity()).startProfileFragment();
+                ((MainActivity) getActivity()).startProfileFragment();
             }
         });
         mThankYouDailog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));

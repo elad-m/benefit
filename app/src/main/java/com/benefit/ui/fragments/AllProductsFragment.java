@@ -20,7 +20,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.benefit.R;
-import com.benefit.activities.MainActivity2;
+import com.benefit.activities.MainActivity;
 import com.benefit.model.Category;
 import com.benefit.model.CategoryCluster;
 import com.benefit.model.Product;
@@ -198,9 +198,9 @@ public class AllProductsFragment extends Fragment {
         for (final Map.Entry<Category, Button> metaCategory : pageUI.getMetaCategoryButtonMap().entrySet()) {
             metaCategory.getValue().setOnClickListener(v -> {
                 if (metaCategoryChosen != null && metaCategoryChosen.getName().equals(metaCategory.getKey().getName())) {
-                    ((MainActivity2) getActivity()).startHomeFragment(null);
+                    ((MainActivity) getActivity()).startHomeFragment(null);
                 } else {
-                    ((MainActivity2) getActivity()).startHomeFragment(metaCategory.getKey());
+                    ((MainActivity) getActivity()).startHomeFragment(metaCategory.getKey());
                 }
             });
         }
@@ -238,7 +238,7 @@ public class AllProductsFragment extends Fragment {
     private void addProductListeners() {
         pageUI.getDisplayableAdapter().setOnItemClickListener(position -> {
             Displayable productClicked = pageUI.getDisplayableProducts().get(position);
-            ((MainActivity2) getActivity()).startProductFragment((Product) productClicked);
+            ((MainActivity) getActivity()).startProductFragment((Product) productClicked);
         });
     }
 

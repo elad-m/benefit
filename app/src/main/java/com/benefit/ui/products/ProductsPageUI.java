@@ -21,7 +21,7 @@ import com.benefit.model.CategoryCluster;
 import com.benefit.model.Product;
 import com.benefit.model.PropertyName;
 import com.benefit.ui.Displayable;
-import com.benefit.utilities.staticClasses.Converters;
+import com.benefit.utilities.Converters;
 
 import java.util.List;
 import java.util.Map;

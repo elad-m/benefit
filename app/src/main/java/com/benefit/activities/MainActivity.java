@@ -33,7 +33,7 @@ import com.google.android.material.navigation.NavigationView;
 /**
  * This is the main activity.
  */
-public class MainActivity2 extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity {
 
     private AuthenticationDriver authenticationDriver = new AuthenticationDriver();
     private View chosenView;

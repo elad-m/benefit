@@ -191,7 +191,7 @@ public class SignInActivity extends AppCompatActivity implements OnMapReadyCallb
                 initiateGoogleMap();
                 break;
             case FINISH:
-                Intent intent = new Intent(this, MainActivity2.class);
+                Intent intent = new Intent(this, MainActivity.class);
                 intent.putExtra(getString(R.string.user_relay), viewModel.getUser());
                 startActivity(intent);
                 finish();
