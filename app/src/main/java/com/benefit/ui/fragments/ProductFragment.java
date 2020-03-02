@@ -1,13 +1,11 @@
 package com.benefit.ui.fragments;
 
-import android.content.ComponentName;
 import android.content.Intent;
 import android.location.Location;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.telephony.PhoneNumberUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,7 +60,7 @@ public class ProductFragment extends Fragment implements OnMapReadyCallback {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_product, container, false);
-        mapView = (MapView) v.findViewById(R.id.mapview);
+        mapView = v.findViewById(R.id.mapview);
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
         return v;
@@ -126,7 +124,7 @@ public class ProductFragment extends Fragment implements OnMapReadyCallback {
         this.mapLocation.setLatitude(user.getLocationLatitude());
         setMapLocation(mapLocation.getLatitude(), mapLocation.getLongitude());
         final Button contactGiverButton = getView().findViewById(R.id.contact_giver_button);
-        contactGiverButton.setOnClickListener(v -> openWhatsApp(user.getPhoneNumber()));
+        contactGiverButton.setOnClickListener(v -> openSms(user.getPhoneNumber()));
 
     }
 
@@ -149,20 +147,13 @@ public class ProductFragment extends Fragment implements OnMapReadyCallback {
 
     }
 
-    private void openWhatsApp(String number) {
-        try {
-            number = number.replace(" ", "").replace("+", "");
-
-            Intent sendIntent = new Intent("android.intent.action.MAIN");
-            sendIntent.setComponent(new ComponentName("com.whatsapp", "com.whatsapp.Conversation"));
-            sendIntent.putExtra("jid", PhoneNumberUtils.stripSeparators(number) + "@s.whatsapp.net");
-            this.startActivity(sendIntent);
-
-        } catch (Exception e) {
-            Log.e(TAG, "ERROR_OPEN_MESSANGER" + e.toString());
+    private void openSms(String numero) {
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setData(Uri.parse("smsto:" + numero)); // This ensures only SMS apps respond
+        if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
+            startActivity(intent);
         }
     }
-
 
     @Override
     public void onResume() {
