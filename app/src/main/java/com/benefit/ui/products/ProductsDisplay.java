@@ -10,6 +10,8 @@ import com.benefit.adapters.DisplayableRecycleAdapter;
 import com.benefit.ui.Displayable;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -50,6 +52,12 @@ public class ProductsDisplay {
     }
 
     private <T extends Displayable> void addItemsToDisplayableItems(List<T> displayableItems) {
+        Collections.sort(displayableItems, new Comparator<T>() {
+            @Override
+            public int compare(T t, T t1) {
+                return t.getName().compareTo(t1.getName());
+            }
+        });
         for (Displayable item : displayableItems) {
             if (!itemInList(item)) {
                 this.displayableItems.add(item);

@@ -1,17 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/all_products"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white"
     android:layoutDirection="ltr"
     android:orientation="vertical"
-    tools:context=".activities.AllProductsActivity">
-
-    <include
-        android:id="@+id/first_page_header"
-        layout="@layout/page_header" />
-
+    tools:context=".ui.fragments.AllProductsFragment">
 
     <androidx.appcompat.widget.SearchView
         android:id="@+id/search_input"
@@ -24,10 +21,12 @@
         android:layoutDirection="ltr"
         app:layout_constraintHeight_percent="0.054"
         app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintVertical_chainStyle="spread"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/first_page_header"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintWidth_percent="0.81"
+        app:layout_constraintBottom_toBottomOf="@id/meta_category_guide"
         app:queryHint="@string/search"
         app:searchIcon="@drawable/ic_search_bar_icon" />
 
@@ -36,17 +35,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.2" />
+        app:layout_constraintGuide_percent="0.08" />
 
     <HorizontalScrollView
         android:id="@+id/metaCategory_bar"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/meta_category_guide">
 
 
         <LinearLayout
-            android:id="@+id/filter_bar"
+            android:id="@+id/meta_category_layout"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:orientation="horizontal">
@@ -61,7 +62,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.28" />
+        app:layout_constraintGuide_percent="0.2" />
 
 
     <TextView
@@ -70,7 +71,6 @@
         android:layout_height="wrap_content"
         android:background="@android:color/white"
         android:elevation="@dimen/no_elevation"
-        android:onClick="openFilterPopup"
         android:text="@string/filter"
         android:textColor="@color/colorBenefitBlue"
         android:textSize="@dimen/filters_word_text_size"
@@ -85,7 +85,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.38" />
+        app:layout_constraintGuide_percent="0.3" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/current_filter_guide_vertical"
@@ -118,7 +118,6 @@
         android:padding="@dimen/recycler_padding"
         android:scrollbars="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHeight_percent="0.62"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/current_filters_guide">

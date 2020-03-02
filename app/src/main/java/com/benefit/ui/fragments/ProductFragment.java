@@ -3,8 +3,16 @@ package com.benefit.ui.fragments;
 import android.content.Intent;
 import android.location.Location;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -13,21 +21,15 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
-
 import com.benefit.R;
 import com.benefit.model.Product;
 import com.benefit.model.User;
-import com.benefit.services.ProductService;
 import com.benefit.services.UserService;
 import com.benefit.utilities.Factory;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.squareup.picasso.Picasso;
@@ -35,7 +37,7 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 import java.util.Map;
 
-public class ProductFragment extends Fragment {
+public class ProductFragment extends Fragment implements OnMapReadyCallback {
 
 
     public static ProductFragment newInstance(Product product, User user) {
@@ -47,33 +49,37 @@ public class ProductFragment extends Fragment {
 
     private Product product;
     private User user;
-    private ProductService productService;
     private UserService userService;
-
+    private static final String TAG = "ProductPageActivity";
+    MapView mapView;
     private GoogleMap mMap;
     private Location mapLocation;
+
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.product_fragment, container, false);
+        View v = inflater.inflate(R.layout.fragment_product, container, false);
+        mapView = v.findViewById(R.id.mapview);
+        mapView.onCreate(savedInstanceState);
+        mapView.getMapAsync(this);
+        return v;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        this.productService = ViewModelProviders.of(this, Factory.getProductServiceFactory()).get(ProductService.class);
         this.userService = ViewModelProviders.of(this, Factory.getUserServiceFactory()).get(UserService.class);
-        if (savedInstanceState != null){
+        if (savedInstanceState != null) {
             getProduct(savedInstanceState);
         }
-//        final Observer<Product> productObserver = this::displayProductOnPage;
-//        productService.getProductById(this.productId).observe(this, productObserver);
         displayProductOnPage(product);
+        ImageView backButton = getActivity().findViewById(R.id.product_page_back_arrow);
+        backButton.setOnClickListener(v -> getActivity().onBackPressed());
     }
 
-    private void getProduct(Bundle savedInstanceState){
+    private void getProduct(Bundle savedInstanceState) {
         product = (Product) savedInstanceState.getSerializable("product");
     }
 
@@ -83,11 +89,15 @@ public class ProductFragment extends Fragment {
         TextView textViewDescription = getActivity().findViewById(R.id.textviewProductPageDescription);
         TextView textViewProperties = getActivity().findViewById(R.id.textviewProductPageProperties);
         ImageView imageView = getActivity().findViewById(R.id.prpImagePlaceholder);
+
+        LinearLayout backButton = getView().findViewById(R.id.product_page_back_button);
+        backButton.setVisibility(View.INVISIBLE);
+
         textViewTitle.setText(product.getTitle());
         textViewDescription.setText(product.getDescription());
         textViewProperties.setText(getPropertiesString(product.getProperties()));
         Picasso.get().load(product.getImagesUrls().get(0)).into(imageView);
-        final Observer<User> userObserver = this::displayMap;
+        final Observer<User> userObserver = this::userActions;
         userService.getUserById(product.getSellerId()).observe(this, userObserver);
     }
 
@@ -108,24 +118,20 @@ public class ProductFragment extends Fragment {
         return propertiesString.toString();
     }
 
-    private void displayMap(User user) {
+    private void userActions(User user) {
         this.mapLocation = new Location(LocationManager.GPS_PROVIDER);
         this.mapLocation.setLongitude(user.getLocationLongitude());
         this.mapLocation.setLatitude(user.getLocationLatitude());
-        SupportMapFragment mapFragment = (SupportMapFragment) getActivity().getSupportFragmentManager()
-                .findFragmentById(R.id.productPageMapFragment);
-//        Objects.requireNonNull(mapFragment).getMapAsync(this);
+        setMapLocation(mapLocation.getLatitude(), mapLocation.getLongitude());
+        final Button contactGiverButton = getView().findViewById(R.id.contact_giver_button);
+        contactGiverButton.setOnClickListener(v -> openSms(user.getPhoneNumber()));
 
     }
 
-    //    @Override
+    @Override
     public void onMapReady(GoogleMap googleMap) {
         this.mMap = googleMap;
-        LatLng coordinates = new LatLng(mapLocation.getLatitude(), mapLocation.getLongitude());
-        mMap.addMarker(new MarkerOptions()
-                .position(coordinates)
-                .title("Marker"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(coordinates, 15));
+        setMapLocation(0, 0);
     }
 
     @Override
@@ -138,8 +144,47 @@ public class ProductFragment extends Fragment {
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putSerializable("product", product);
-
     }
 
+    private void openSms(String numero) {
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setData(Uri.parse("smsto:" + numero));
+        if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
+            startActivity(intent);
+        }
+    }
+
+    @Override
+    public void onResume() {
+        mapView.onResume();
+        super.onResume();
+    }
+
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mapView.onPause();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mapView.onDestroy();
+    }
+
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        mapView.onLowMemory();
+    }
+
+    public void setMapLocation(double latitude, double longitude) {
+        LatLng coordinates = new LatLng(latitude, longitude);
+        mMap.addMarker(new MarkerOptions()
+                .position(coordinates)
+                .title("Marker"));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(coordinates, 15));
+    }
 
 }

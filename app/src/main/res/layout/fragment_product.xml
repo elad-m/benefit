@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.fragments.ProductFragment">
 
     <TableLayout
@@ -19,10 +19,13 @@
             android:layout_height="wrap_content">
 
             <LinearLayout
+                android:id="@+id/product_page_back_button"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
+                android:layout_height="15dp"
+                android:clickable="true"
+                android:focusable="true"
                 android:gravity="center_vertical"
+                android:orientation="horizontal"
                 android:paddingLeft="@dimen/productPageGeneralPaddingLeft">
 
                 <ImageView
@@ -51,6 +54,7 @@
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@id/product_page_bottom_area"
         app:layout_constraintTop_toBottomOf="@id/product_page_back_area">
+
         <ScrollView
             android:id="@+id/product_page_scrollview"
             android:layout_width="fill_parent"
@@ -128,7 +132,8 @@
 
                 <TableRow
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:visibility="invisible">
 
                     <TextView
                         android:id="@+id/textviewProductPageLocationTitle"
@@ -148,13 +153,13 @@
                     android:layout_height="wrap_content"
                     android:gravity="center">
 
-                    <fragment
-                        android:id="@+id/productPageMapFragment"
+                    <com.google.android.gms.maps.MapView
+                        android:id="@+id/mapview"
                         android:name="com.google.android.gms.maps.SupportMapFragment"
                         android:layout_width="330dp"
                         android:layout_height="150dp"
                         android:gravity="center"
-                        tools:context="com.benefit.activities.ProductPageActivity" />
+                        tools:context="com.benefit.ui.fragments.ProductFragment" />
                 </TableRow>
 
 
@@ -184,6 +189,7 @@
             android:gravity="center">
 
             <Button
+                android:id="@+id/contact_giver_button"
                 android:layout_width="200dp"
                 android:layout_height="51dp"
                 android:background="@drawable/ic_contact_giver_button"

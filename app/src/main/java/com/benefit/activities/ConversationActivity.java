@@ -6,7 +6,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
@@ -14,13 +13,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.benefit.R;
-import com.benefit.adapters.ConversationAdapter;
 import com.benefit.drivers.DatabaseDriver;
 import com.benefit.model.User;
 import com.benefit.services.ChatService;
-import com.benefit.services.UserService;
-import com.benefit.utilities.Factory;
-import com.benefit.utilities.HeaderClickListener;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 
 public class ConversationActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
@@ -124,6 +119,6 @@ public class ConversationActivity extends AppCompatActivity implements AdapterVi
     }
 
     private void setHeaderListeners() {
-        HeaderClickListener.setHeaderListeners(this);
+
     }
 }

@@ -27,7 +27,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.benefit.R;
-import com.benefit.activities.MainActivity2;
+import com.benefit.activities.MainActivity;
 import com.benefit.activities.TipsActivity;
 import com.benefit.drivers.StorageDriver;
 import com.benefit.model.Category;
@@ -139,10 +139,10 @@ public class GiveFragment extends Fragment {
         mBrandLayout = (LinearLayout) brandLayout;
     }
 
-    private void createClickables(){
+    private void createClickables() {
         mImageButtonUpload = mFragmentRootView.findViewById(R.id.image_button_choose_image);
         TextView mGiveButton = mFragmentRootView.findViewById(R.id.give_button);
-        LinearLayout  mTipButton = mFragmentRootView.findViewById(R.id.give_item_tips_layout);
+        LinearLayout mTipButton = mFragmentRootView.findViewById(R.id.give_item_tips_layout);
         mImageButtonUpload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -377,7 +377,6 @@ public class GiveFragment extends Fragment {
      */
 
     // todo: what to do with this one?
-
     public void openFileChooser(View v) {
         Intent intent = new Intent();
         intent.setType("image/*");
@@ -469,7 +468,7 @@ public class GiveFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 mThankYouDailog.dismiss();
-                ((MainActivity2) getActivity()).startProfileFragment();
+                ((MainActivity) getActivity()).startProfileFragment();
             }
         });
         mThankYouDailog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -521,20 +520,6 @@ public class GiveFragment extends Fragment {
         Intent intent = new Intent(getContext(), TipsActivity.class);
         startActivity(intent);
     }
-
-//
-//    private void createActionBar() {
-//        View view = mFragmentRootView.findViewById(R.id.chosen_view);
-//        view.setVisibility(View.INVISIBLE);
-//        Button givePlusButton = mFragmentRootView.findViewById(R.id.give_icon);
-//        givePlusButton.setBackground(getResources().getDrawable(R.drawable.ic_give_colored));
-//        setHeaderListeners();
-//    }
-//
-//    private void setHeaderListeners() {
-//        // todo: change the argument from appcompatactivity to fragment activity
-//        HeaderClickListener.setHeaderListeners(getActivity());
-//    }
 
 
 }

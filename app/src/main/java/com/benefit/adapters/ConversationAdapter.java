@@ -1,7 +1,5 @@
 package com.benefit.adapters;
 
-import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +8,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.benefit.activities.ChatActivity;
 import com.benefit.R;
 import com.benefit.drivers.AuthenticationDriver;
 import com.benefit.drivers.DatabaseDriver;
@@ -56,18 +53,16 @@ public class ConversationAdapter extends FirestoreRecyclerAdapter<Match, Convers
             this.productOwnerName.setText(productOwner);
         }
 
-        void setLastChatDate(Date date){
+        void setLastChatDate(Date date) {
             lastChatDate.setText(dateFormat.format(date));
         }
 
-        void setMatch(Match match){
+        void setMatch(Match match) {
             this.match = match;
         }
 
         @Override
         public void onClick(View v) {
-            Context context = v.getContext();
-            Intent intent = new Intent(context, ChatActivity.class);
 
         }
     }
@@ -97,26 +92,25 @@ public class ConversationAdapter extends FirestoreRecyclerAdapter<Match, Convers
                 .whereEqualTo("id", match.getProductId())
                 .get()
                 .addOnCompleteListener(task -> {
-                    if(task.isSuccessful()){
+                    if (task.isSuccessful()) {
                         for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
                             conversationHolder.setProduct(document.toObject(Product.class));
                         }
                     }
                 });
-        if (match.getSellerId().equals(authenticationDriver.getUserUid())){
+        if (match.getSellerId().equals(authenticationDriver.getUserUid())) {
             conversationHolder.setProductOwnerName(conversationHolder.itemView.getContext().getString(R.string.user_item));
-        }
-        else {
+        } else {
             databaseDriver.getCollectionReferenceByName("users")
                     .whereEqualTo("uid", match.getSellerId())
                     .get()
                     .addOnCompleteListener(task -> {
-                       if (task.isSuccessful()){
-                           for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
-                               User sellerUser = document.toObject(User.class);
-                               conversationHolder.setProductOwnerName(sellerUser.getNickname());
-                           }
-                       }
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
+                                User sellerUser = document.toObject(User.class);
+                                conversationHolder.setProductOwnerName(sellerUser.getNickname());
+                            }
+                        }
                     });
         }
     }

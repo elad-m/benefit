@@ -21,7 +21,7 @@ import com.benefit.model.CategoryCluster;
 import com.benefit.model.Product;
 import com.benefit.model.PropertyName;
 import com.benefit.ui.Displayable;
-import com.benefit.utilities.staticClasses.Converters;
+import com.benefit.utilities.Converters;
 
 import java.util.List;
 import java.util.Map;
@@ -41,12 +41,14 @@ public class ProductsPageUI {
     private PopupWindow popup;
     private MetaCategoryBar metaCategoryBar;
     private ProductsDisplay productsDisplay;
+    private View headerView;
 
 
-    public ProductsPageUI(View view, Category currentCategory, CategoryCluster categoryCluster) {
+    public ProductsPageUI(View view, Category currentCategory, CategoryCluster categoryCluster, View headerView) {
         this.view = view;
         this.currentCategory = currentCategory;
         this.categoryCluster = categoryCluster;
+        this.headerView = headerView;
         //colorIcon();
         productsDisplay = new ProductsDisplay(view, PRODUCTS);
     }
@@ -56,7 +58,7 @@ public class ProductsPageUI {
     }
 
     public void addMetaCategoryBar(List<Category> metaCategories, Category metaCategoryChosen) {
-        metaCategoryBar = new MetaCategoryBar(view.findViewById(android.R.id.content));
+        metaCategoryBar = new MetaCategoryBar(view);
         metaCategoryBar.createCategoryBar(metaCategories, metaCategoryChosen);
     }
 
@@ -124,7 +126,9 @@ public class ProductsPageUI {
 
     public void undimBackground() {
         ViewOverlay overlay = view.getOverlay();
+        ViewOverlay headerOverlay = headerView.getOverlay();
         overlay.clear();
+        headerOverlay.clear();
     }
 
     public void openFilter(View view, List<PropertyName> filters, Map<String, List<String>> currentFilters) {
@@ -148,6 +152,8 @@ public class ProductsPageUI {
         dim.setBounds(0, 0, view.getWidth(), view.getHeight());
         dim.setAlpha((int) (255 * dimAmount));
         ViewOverlay overlay = view.getOverlay();
+        ViewOverlay headerOverlay = headerView.getOverlay();
+        headerOverlay.add(dim);
         overlay.add(dim);
     }
 

@@ -91,7 +91,7 @@ public class DisplayableRecycleAdapter extends RecyclerView.Adapter<DisplayableR
                 v.setElevation(0);
                 break;
         }
-        v.findViewById(R.id.item_image_layout).setClipToOutline(true);
+//        v.findViewById(R.id.item_image_layout).setClipToOutline(true);
         return new DisplayViewHolder(v, mListener);
     }
 

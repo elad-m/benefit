@@ -192,9 +192,6 @@ public class SignInActivity extends AppCompatActivity implements OnMapReadyCallb
                 break;
             case FINISH:
                 Intent intent = new Intent(this, MainActivity.class);
-                if (DEBUGGING){
-                    intent = new Intent(this, MainActivity2.class);
-                }
                 intent.putExtra(getString(R.string.user_relay), viewModel.getUser());
                 startActivity(intent);
                 finish();
